@@ -1,5 +1,6 @@
 import { useState, FormEvent } from "react";
 import { Send } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ChatInputProps {
   onSend: (message: string) => void;
@@ -8,6 +9,7 @@ interface ChatInputProps {
 
 const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
   const [input, setInput] = useState("");
+  const { t } = useLanguage();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -22,7 +24,7 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        placeholder="Describe your first aid situation..."
+        placeholder={t("inputPlaceholder")}
         disabled={disabled}
         className="flex-1 px-4 py-3 rounded-xl border border-input bg-card text-card-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring text-sm"
       />
