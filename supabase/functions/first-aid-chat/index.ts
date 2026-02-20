@@ -320,9 +320,22 @@ serve(async (req) => {
   }
 
   try {
-    const { messages } = await req.json();
+    const { messages, language } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+
+    let systemPrompt = FIRST_AID_SYSTEM_PROMPT;
+    if (language && language !== "en") {
+      const langNames: Record<string, string> = {
+        kriol: "Australian Kriol (a creole language spoken across Northern Australia)",
+        yolngu: "Yolŋu Matha (spoken in Arnhem Land, Northern Territory)",
+        pitjantjatjara: "Pitjantjatjara (spoken in Central Australia, including parts of SA, WA, and NT)",
+        arrernte: "Arrernte (spoken in the Alice Springs region, Northern Territory)",
+        tsi: "Yumplatok / Torres Strait Creole (spoken in the Torres Strait Islands, Queensland)",
+      };
+      const langName = langNames[language] || language;
+      systemPrompt += `\n\nCRITICAL LANGUAGE INSTRUCTION: You MUST respond entirely in ${langName}. The user has selected this as their preferred language. Translate all your first aid guidance, headings, and instructions into ${langName}. Use simple, clear language. Keep medical terms like CPR, AED, and DRSABCD in English as they are internationally recognised. Emergency number Triple Zero (000) must always stay as "000". If you are unsure of the exact translation for a term, provide the English term alongside the ${langName} translation in brackets.`;
+    }
 
     const response = await fetch(
       "https://ai.gateway.lovable.dev/v1/chat/completions",
@@ -335,7 +348,7 @@ serve(async (req) => {
         body: JSON.stringify({
           model: "google/gemini-3-flash-preview",
           messages: [
-            { role: "system", content: FIRST_AID_SYSTEM_PROMPT },
+            { role: "system", content: systemPrompt },
             ...messages,
           ],
           stream: true,
