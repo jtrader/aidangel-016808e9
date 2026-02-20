@@ -81,7 +81,9 @@ const Index = () => {
               </p>
             </div>
           </div>
-          <LanguageSelector />
+          <div className="flex justify-center sm:justify-end">
+            <LanguageSelector />
+          </div>
         </div>
       </header>
 
