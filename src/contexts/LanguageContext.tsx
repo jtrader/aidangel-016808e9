@@ -40,7 +40,7 @@ const translations: Record<LanguageCode, Record<TranslationKey, string>> = {
   en: {
     emergencyBanner: "In a life-threatening emergency, call Triple Zero (000) immediately",
     appTitle: "Aid Angel",
-    appSubtitle: "Your First Aid Assistant • Powered by Australian First Aid 5th Edition",
+    appSubtitle: "Your First Aid Assistant • Powered by St. John of God Australian First Aid 5th Edition",
     welcomeHeading: "How can I help?",
     welcomeDescription: "Ask me about any first aid situation. I'll provide step-by-step guidance based on the Australian First Aid manual.",
     inputPlaceholder: "Describe your first aid situation...",
