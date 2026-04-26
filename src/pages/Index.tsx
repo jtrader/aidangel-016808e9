@@ -105,6 +105,7 @@ const Index = () => {
               <HandHeart className="h-4 w-4" />
               Donate
             </a>
+            <ThemeToggle />
             <LanguageSelector />
           </div>
         </div>
