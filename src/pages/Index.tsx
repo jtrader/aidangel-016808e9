@@ -82,7 +82,7 @@ const Index = () => {
               </button>
             )}
             <a href="/" className="flex items-center gap-3 flex-1" onClick={(e) => { e.preventDefault(); setMessages([]); }}>
-              <img src={aidAngelLogo} alt="Aid Angel logo" className="w-10 h-10 rounded-xl object-cover" />
+              <img src={aidAngelLogo} alt="Aid Angel logo" className="w-14 h-14 rounded-xl object-cover" />
               <div className="flex-1">
                 <h1 className="font-display font-bold text-lg text-foreground leading-tight">
                   Aid Angel
