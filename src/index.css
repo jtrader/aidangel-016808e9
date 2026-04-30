@@ -1,215 +1,128 @@
-@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700;6..12,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700;6..12,800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  /* ===== Aid Angel — warm financial-aid recovery theme ===== */
+  /* Default = LIGHT mode. Inspired by Love Link Victoria. */
   :root {
-    --background: 0 0% 97%;
-    --foreground: 220 20% 14%;
+    --background: 36 40% 97%;
+    --foreground: 28 30% 12%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 20% 14%;
+    --card: 36 50% 99%;
+    --card-foreground: 28 30% 12%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 14%;
+    --popover: 36 50% 99%;
+    --popover-foreground: 28 30% 12%;
 
-    --primary: 0 99% 46%;
-    --primary-foreground: 0 0% 100%;
+    /* Warm amber/gold primary */
+    --primary: 38 92% 50%;
+    --primary-foreground: 28 40% 12%;
 
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 220 20% 14%;
+    --secondary: 36 25% 92%;
+    --secondary-foreground: 28 30% 18%;
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 36 20% 93%;
+    --muted-foreground: 28 12% 42%;
 
-    --accent: 0 99% 96%;
-    --accent-foreground: 0 99% 40%;
+    --accent: 38 80% 92%;
+    --accent-foreground: 28 60% 22%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 80% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 0 99% 46%;
+    --border: 32 20% 86%;
+    --input: 32 20% 86%;
+    --ring: 38 92% 50%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-
-    --emergency: 0 99% 46%;
+    /* Status accents */
+    --emergency: 0 80% 50%;
     --emergency-foreground: 0 0% 100%;
-    --safe: 142 71% 45%;
+    --safe: 142 60% 40%;
     --safe-foreground: 0 0% 100%;
     --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 100%;
+    --warning-foreground: 28 40% 12%;
 
-    font-family: 'Nunito Sans', 'Assistant', system-ui, sans-serif;
-  }
+    /* Pillars (used by category cards) */
+    --pillar-immediate: 12 80% 55%;
+    --pillar-financial: 38 92% 50%;
+    --pillar-housing: 24 85% 55%;
+    --pillar-emotional: 168 55% 42%;
 
-  /* CVGT partner theme — Orange #F37021 + Blue #0465A0 */
-  .partner-cvgt {
-    --primary: 20 90% 54%;
-    --primary-foreground: 0 0% 100%;
-    --accent: 204 93% 32%;
-    --accent-foreground: 0 0% 100%;
-    --ring: 20 90% 54%;
-    --emergency: 20 90% 54%;
-    --emergency-foreground: 0 0% 100%;
-  }
+    --sidebar-background: 36 40% 97%;
+    --sidebar-foreground: 28 30% 18%;
+    --sidebar-primary: 38 92% 50%;
+    --sidebar-primary-foreground: 28 40% 12%;
+    --sidebar-accent: 36 25% 92%;
+    --sidebar-accent-foreground: 28 30% 18%;
+    --sidebar-border: 32 20% 86%;
+    --sidebar-ring: 38 92% 50%;
 
-  .partner-cvgt.dark {
-    --primary: 20 90% 58%;
-    --primary-foreground: 0 0% 100%;
-    --accent: 204 80% 28%;
-    --accent-foreground: 0 0% 100%;
-    --ring: 20 90% 58%;
-    --emergency: 20 90% 58%;
-    --emergency-foreground: 0 0% 100%;
-  }
+    --gradient-warm: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(38 92% 50% / 0.18), transparent 70%);
+    --gradient-hero: linear-gradient(180deg, hsl(36 40% 97%) 0%, hsl(36 40% 95%) 100%);
+    --shadow-glow: 0 20px 60px -20px hsl(38 92% 50% / 0.45);
 
-  /* ===== Love Keyring theme variants (?theme=red|blue|teal|yellow) =====
-     Palettes drawn from lovekeyring.org sibling apps:
-       red    → Aid Angel       (#E60012-ish vivid red)
-       blue   → Crisis Compass  (#1E5A9C deep blue)
-       teal   → Guardian Guide  (#1AA7A0 teal)
-       yellow → warm safety yellow (#F4C20D)
-     Each variant includes a paired .dark override.
-  */
-
-  /* RED — Aid Angel */
-  .theme-red {
-    --primary: 354 99% 45%;
-    --primary-foreground: 0 0% 100%;
-    --accent: 354 99% 96%;
-    --accent-foreground: 354 99% 38%;
-    --ring: 354 99% 45%;
-    --emergency: 354 99% 45%;
-    --emergency-foreground: 0 0% 100%;
-  }
-  .theme-red.dark {
-    --primary: 354 90% 58%;
-    --primary-foreground: 0 0% 100%;
-    --accent: 354 60% 22%;
-    --accent-foreground: 354 90% 82%;
-    --ring: 354 90% 58%;
-    --emergency: 354 90% 58%;
-    --emergency-foreground: 0 0% 100%;
-  }
-
-  /* BLUE — Crisis Compass */
-  .theme-blue {
-    --primary: 211 68% 36%;
-    --primary-foreground: 0 0% 100%;
-    --accent: 211 75% 95%;
-    --accent-foreground: 211 68% 30%;
-    --ring: 211 68% 36%;
-    --emergency: 354 99% 45%;
-    --emergency-foreground: 0 0% 100%;
-  }
-  .theme-blue.dark {
-    --primary: 211 75% 58%;
-    --primary-foreground: 0 0% 100%;
-    --accent: 211 55% 22%;
-    --accent-foreground: 211 75% 82%;
-    --ring: 211 75% 58%;
-    --emergency: 354 90% 58%;
-    --emergency-foreground: 0 0% 100%;
-  }
-
-  /* TEAL — Guardian Guide */
-  .theme-teal {
-    --primary: 177 72% 38%;
-    --primary-foreground: 0 0% 100%;
-    --accent: 177 65% 94%;
-    --accent-foreground: 177 72% 28%;
-    --ring: 177 72% 38%;
-    --emergency: 354 99% 45%;
-    --emergency-foreground: 0 0% 100%;
-  }
-  .theme-teal.dark {
-    --primary: 177 70% 48%;
-    --primary-foreground: 0 0% 10%;
-    --accent: 177 50% 20%;
-    --accent-foreground: 177 70% 82%;
-    --ring: 177 70% 48%;
-    --emergency: 354 90% 58%;
-    --emergency-foreground: 0 0% 100%;
-  }
-
-  /* YELLOW — warm safety yellow */
-  .theme-yellow {
-    --primary: 45 95% 50%;
-    --primary-foreground: 30 40% 12%;
-    --accent: 45 95% 94%;
-    --accent-foreground: 30 60% 22%;
-    --ring: 45 95% 50%;
-    --emergency: 354 99% 45%;
-    --emergency-foreground: 0 0% 100%;
-  }
-  .theme-yellow.dark {
-    --primary: 45 95% 58%;
-    --primary-foreground: 30 40% 10%;
-    --accent: 45 50% 22%;
-    --accent-foreground: 45 95% 82%;
-    --ring: 45 95% 58%;
-    --emergency: 354 90% 58%;
-    --emergency-foreground: 0 0% 100%;
+    font-family: 'Nunito Sans', system-ui, sans-serif;
   }
 
   .dark {
-    /* Inspired by Crisis Compass Victoria dark theme */
-    --background: 220 39% 6%;
-    --foreground: 210 20% 96%;
+    /* Warm dark — like Love Link Victoria */
+    --background: 28 25% 7%;
+    --foreground: 38 30% 94%;
 
-    --card: 220 32% 9%;
-    --card-foreground: 210 20% 96%;
+    --card: 28 22% 10%;
+    --card-foreground: 38 30% 94%;
 
-    --popover: 220 32% 9%;
-    --popover-foreground: 210 20% 96%;
+    --popover: 28 22% 10%;
+    --popover-foreground: 38 30% 94%;
 
-    --primary: 0 80% 58%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 42 95% 58%;
+    --primary-foreground: 28 40% 10%;
 
-    --secondary: 220 24% 14%;
-    --secondary-foreground: 210 20% 96%;
+    --secondary: 28 18% 14%;
+    --secondary-foreground: 38 30% 94%;
 
-    --muted: 220 24% 14%;
-    --muted-foreground: 220 12% 65%;
+    --muted: 28 18% 14%;
+    --muted-foreground: 36 12% 65%;
 
-    --accent: 0 60% 20%;
-    --accent-foreground: 0 80% 80%;
+    --accent: 38 60% 18%;
+    --accent-foreground: 42 95% 78%;
 
-    --destructive: 0 70% 45%;
+    --destructive: 0 75% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 22% 18%;
-    --input: 220 22% 18%;
-    --ring: 0 80% 58%;
+    --border: 28 18% 18%;
+    --input: 28 18% 18%;
+    --ring: 42 95% 58%;
 
-    --emergency: 0 80% 58%;
+    --emergency: 0 75% 55%;
     --emergency-foreground: 0 0% 100%;
     --safe: 142 60% 48%;
     --safe-foreground: 0 0% 100%;
-    --warning: 38 92% 55%;
-    --warning-foreground: 220 39% 6%;
+    --warning: 42 95% 58%;
+    --warning-foreground: 28 40% 10%;
 
-    --sidebar-background: 220 32% 9%;
-    --sidebar-foreground: 210 20% 96%;
-    --sidebar-primary: 0 80% 58%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 24% 14%;
-    --sidebar-accent-foreground: 210 20% 96%;
-    --sidebar-border: 220 22% 18%;
-    --sidebar-ring: 0 80% 58%;
+    --pillar-immediate: 12 80% 60%;
+    --pillar-financial: 42 95% 58%;
+    --pillar-housing: 24 85% 60%;
+    --pillar-emotional: 168 55% 48%;
+
+    --sidebar-background: 28 22% 10%;
+    --sidebar-foreground: 38 30% 94%;
+    --sidebar-primary: 42 95% 58%;
+    --sidebar-primary-foreground: 28 40% 10%;
+    --sidebar-accent: 28 18% 14%;
+    --sidebar-accent-foreground: 38 30% 94%;
+    --sidebar-border: 28 18% 18%;
+    --sidebar-ring: 42 95% 58%;
+
+    --gradient-warm: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(42 95% 58% / 0.18), transparent 70%);
+    --gradient-hero: linear-gradient(180deg, hsl(28 25% 7%) 0%, hsl(28 25% 5%) 100%);
+    --shadow-glow: 0 20px 60px -20px hsl(42 95% 58% / 0.45);
   }
 }
 
@@ -220,16 +133,27 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    background-image: var(--gradient-warm);
+    background-repeat: no-repeat;
+    background-size: 100% 80vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    @apply tracking-tight;
   }
 }
 
 @layer utilities {
-  .chat-bubble-user {
-    @apply bg-primary text-primary-foreground rounded-2xl rounded-br-md;
+  .text-gradient-warm {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(24 85% 55%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
-  .chat-bubble-assistant {
-    @apply bg-card text-card-foreground rounded-2xl rounded-bl-md border border-border;
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
   }
 
   .scrollbar-thin {
@@ -237,14 +161,8 @@
     scrollbar-color: hsl(var(--border)) transparent;
   }
 
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
+  .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
   .scrollbar-thin::-webkit-scrollbar-thumb {
     background-color: hsl(var(--border));
     border-radius: 3px;
