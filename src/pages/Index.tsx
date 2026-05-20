@@ -175,9 +175,73 @@ const Index = () => {
           ) : (
             <>
               <div className="space-y-4">
-                {messages.map((msg, i) => (
-                  <ChatMessage key={i} message={msg} onAction={send} />
-                ))}
+                {messages.map((msg, i) => {
+                  const isLast = i === messages.length - 1;
+                  const showWalkNav = isLast && !isLoading && msg.role === "assistant" && inWalkthrough;
+                  return (
+                    <div key={i} className="space-y-2">
+                      <ChatMessage message={msg} onAction={send} />
+                      {showWalkNav && (
+                        <div className="ml-11 animate-fade-in space-y-2">
+                          {walkX && walkY && (
+                            <div className="space-y-1 max-w-sm">
+                              <div className="flex items-center justify-between text-xs">
+                                <span className="font-semibold text-foreground">
+                                  Step {walkX} of {walkY}
+                                </span>
+                                <span className="text-muted-foreground">{walkPct}%</span>
+                              </div>
+                              <div
+                                className="h-1.5 w-full rounded-full bg-muted overflow-hidden"
+                                role="progressbar"
+                                aria-valuemin={0}
+                                aria-valuemax={walkY}
+                                aria-valuenow={walkX}
+                                aria-label={`Step ${walkX} of ${walkY}`}
+                              >
+                                <div
+                                  className="h-full bg-primary transition-all duration-300 ease-out"
+                                  style={{ width: `${walkPct}%` }}
+                                />
+                              </div>
+                            </div>
+                          )}
+                          <div className="flex flex-wrap items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => send("next")}
+                              className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors"
+                            >
+                              Next →
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => send("back")}
+                              className="px-3 py-1.5 rounded-full bg-muted text-foreground text-xs font-medium hover:bg-muted/80 transition-colors"
+                            >
+                              Repeat
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => send("done")}
+                              className="px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground text-xs font-medium hover:bg-secondary/80 transition-colors"
+                            >
+                              Done ✓
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => send("stop")}
+                              className="px-3 py-1.5 rounded-full border border-border text-muted-foreground text-xs font-medium hover:bg-muted transition-colors"
+                            >
+                              Stop
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+
                 {isLoading && (
                   <div
                     className="flex gap-3 justify-start animate-fade-in"
