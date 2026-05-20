@@ -8,6 +8,7 @@ import NetworkFooter from "@/components/NetworkFooter";
 import LanguageSelector from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { translateTopic } from "@/lib/kbTranslate";
+import { translateStrings } from "@/lib/uiTranslate";
 
 const KbTopic = () => {
   const { slug = "" } = useParams<{ slug: string }>();
