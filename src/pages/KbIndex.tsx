@@ -13,12 +13,76 @@ import {
 } from "@/lib/kbTranslate";
 import { translateStrings } from "@/lib/uiTranslate";
 
+const STATIC_INDEX_STRINGS = [
+  "Back to chat",
+  "Knowledge base",
+  "First Aid Angel",
+  "First Aid Knowledge Base",
+  "Plain-English first aid guides for everyday Australians, organised by topic and adapted from The St John of God First Aid Manual 5th Edition.",
+  "In a real emergency, call 000 first. These guides are for learning and refresher use — not a substitute for professional medical care.",
+  "Translating topics…",
+  "Source:",
+  "The St John of God First Aid Manual 5th Edition (AFA5).",
+];
+
 const KbIndex = () => {
   const grouped = topicsByCategory();
   const orderedCategories = Object.keys(grouped).sort();
   const { language } = useLanguage();
   const [metaMap, setMetaMap] = useState<Record<string, TopicMetaTranslation>>({});
   const [prefetching, setPrefetching] = useState(false);
+  const [ui, setUi] = useState({
+    backToChat: "Back to chat",
+    knowledgeBase: "Knowledge base",
+    appName: "First Aid Angel",
+    pageTitle: "First Aid Knowledge Base",
+    intro: "Plain-English first aid guides for everyday Australians, organised by topic and adapted from The St John of God First Aid Manual 5th Edition.",
+    disclaimer: "In a real emergency, call 000 first. These guides are for learning and refresher use — not a substitute for professional medical care.",
+    translating: "Translating topics…",
+    sourceLabel: "Source:",
+    sourceValue: "The St John of God First Aid Manual 5th Edition (AFA5).",
+    categories: orderedCategories,
+  });
+
+  useEffect(() => {
+    if (language === "en") {
+      setUi({
+        backToChat: "Back to chat",
+        knowledgeBase: "Knowledge base",
+        appName: "First Aid Angel",
+        pageTitle: "First Aid Knowledge Base",
+        intro: STATIC_INDEX_STRINGS[4],
+        disclaimer: STATIC_INDEX_STRINGS[5],
+        translating: STATIC_INDEX_STRINGS[6],
+        sourceLabel: STATIC_INDEX_STRINGS[7],
+        sourceValue: STATIC_INDEX_STRINGS[8],
+        categories: orderedCategories,
+      });
+      return;
+    }
+    let cancelled = false;
+    translateStrings(language, STATIC_INDEX_STRINGS).then((s) => {
+      if (cancelled) return;
+      translateStrings(language, orderedCategories).then((cats) => {
+        if (cancelled) return;
+        const catMap: Record<string, string> = {};
+        orderedCategories.forEach((c, i) => { catMap[c] = cats[i] ?? c; });
+        setUi({
+          backToChat: s[2],
+          knowledgeBase: s[1],
+          appName: s[2],
+          pageTitle: s[3],
+          intro: s[4],
+          disclaimer: s[5],
+          translating: s[6],
+          sourceLabel: s[7],
+          sourceValue: s[8],
+          categories: orderedCategories.map((c) => catMap[c] ?? c),
+        });
+      });
+    });
+    return () => { cancelled = true; };
+  }, [language, orderedCategories]);
 
   useEffect(() => {
     if (language === "en") {
