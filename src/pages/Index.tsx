@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Heart, Loader2, RotateCcw, HandHeart, MapPin, ShoppingBag } from "lucide-react";
+import { Loader2, RotateCcw, HandHeart, MapPin, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 import EmergencyBanner from "@/components/EmergencyBanner";
 import ChatMessage from "@/components/ChatMessage";
@@ -7,6 +7,7 @@ import ChatInput from "@/components/ChatInput";
 import QuickActions from "@/components/QuickActions";
 import DRSABCDPanel from "@/components/DRSABCDPanel";
 import LanguageSelector from "@/components/LanguageSelector";
+import NetworkFooter from "@/components/NetworkFooter";
 import { streamChat } from "@/lib/chat-stream";
 import { useLanguage } from "@/contexts/LanguageContext";
 import aidAngelLogo from "@/assets/aidangel-logo.png";
@@ -191,46 +192,7 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-card px-4 py-6">
-        <div className="max-w-lg mx-auto flex flex-col items-center gap-2 text-sm text-muted-foreground">
-          <div className="w-full pt-2">
-            <h2 className="text-xs font-semibold uppercase tracking-wide text-foreground mb-2 text-center">
-              Emergency and Recovery Network
-            </h2>
-            <ul className="flex flex-col items-center gap-1 text-xs">
-              <li>
-                <a href="https://firstaidangel.lovekeyring.org" target="_blank" rel="noopener" className="hover:text-foreground transition-colors">
-                  First Aid Angel — quick first aid guidance
-                </a>
-              </li>
-              <li>
-                <strong className="font-bold text-foreground">
-                  Aid Angel — financial support navigator
-                </strong>
-              </li>
-              <li>
-                <a href="https://guardianguide.lovekeyring.org" target="_blank" rel="noopener" className="hover:text-foreground transition-colors">
-                  Guardian Guide — mental health support finder
-                </a>
-              </li>
-              <li>
-                <a href="https://crisiscompass.lovekeyring.org" target="_blank" rel="noopener" className="hover:text-foreground transition-colors">
-                  Crisis Compass — navigate emergencies
-                </a>
-              </li>
-              <li>
-                <a href="https://lovekeyring.org" target="_blank" rel="noopener" className="hover:text-foreground transition-colors">
-                  Love Key Hub — all our companion apps
-                </a>
-              </li>
-            </ul>
-          </div>
-          <p className="text-[11px] text-muted-foreground flex items-center justify-center gap-1 mt-2">
-            © 2026 Love Key Web Application <Heart className="h-3 w-3 inline" />
-          </p>
-        </div>
-      </footer>
+      <NetworkFooter currentApp="Aid Angel" />
     </div>
   );
 };
