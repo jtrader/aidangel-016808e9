@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+import { Heart, HandHeart, ShoppingBag } from "lucide-react";
 
 type NetworkLink = {
   href: string;
