@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, BookOpen, Loader2 } from "lucide-react";
 import { topicsByCategory, topics } from "@/lib/kb";
