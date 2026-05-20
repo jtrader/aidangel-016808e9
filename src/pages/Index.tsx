@@ -13,10 +13,12 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import aidAngelLogo from "@/assets/aidangel-logo.png";
 
 type Msg = { role: "user" | "assistant"; content: string };
+type ChatStatus = "idle" | "thinking" | "guiding";
 
 const Index = () => {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState<ChatStatus>("idle");
   const scrollRef = useRef<HTMLDivElement>(null);
   const { t, language } = useLanguage();
 
@@ -24,16 +26,18 @@ const Index = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, status]);
 
   const send = async (input: string) => {
     const userMsg: Msg = { role: "user", content: input };
     setMessages((prev) => [...prev, userMsg]);
     setIsLoading(true);
+    setStatus("thinking");
 
     let assistantSoFar = "";
     const upsertAssistant = (chunk: string) => {
       assistantSoFar += chunk;
+      setStatus("guiding");
       setMessages((prev) => {
         const last = prev[prev.length - 1];
         if (last?.role === "assistant") {
@@ -50,16 +54,21 @@ const Index = () => {
         messages: [...messages, userMsg],
         language,
         onDelta: (chunk) => upsertAssistant(chunk),
-        onDone: () => setIsLoading(false),
+        onDone: () => {
+          setIsLoading(false);
+          setStatus("idle");
+        },
         onError: (err) => {
           toast.error(err);
           setIsLoading(false);
+          setStatus("idle");
         },
       });
     } catch (e) {
       console.error(e);
       toast.error("Failed to get a response. Please try again.");
       setIsLoading(false);
+      setStatus("idle");
     }
   };
 
