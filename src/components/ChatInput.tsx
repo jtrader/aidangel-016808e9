@@ -24,8 +24,27 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
   const [suggestions, setSuggestions] = useState<DisplaySuggestion[]>([]);
   const [highlight, setHighlight] = useState(0);
   const [open, setOpen] = useState(false);
+  const [sendLabel, setSendLabel] = useState("Send");
+  const [helperText, setHelperText] = useState("↑↓ · Tab · Enter · Esc");
   const { t, language } = useLanguage();
   const wrapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (language === "en") {
+      setSendLabel("Send");
+      setHelperText("↑↓ · Tab · Enter · Esc");
+      return;
+    }
+    let cancelled = false;
+    translateStrings(language, ["Send", "↑↓ · Tab · Enter · Esc"]).then(([s, h]) => {
+      if (cancelled) return;
+      setSendLabel(s);
+      setHelperText(h);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [language]);
 
   // Recompute the underlying English suggestions as the user types.
   useEffect(() => {
