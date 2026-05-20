@@ -11,6 +11,7 @@ import {
   prefetchTopicListMeta,
   type TopicMetaTranslation,
 } from "@/lib/kbTranslate";
+import { translateStrings } from "@/lib/uiTranslate";
 
 const KbIndex = () => {
   const grouped = topicsByCategory();
