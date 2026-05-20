@@ -66,7 +66,7 @@ const Index = () => {
   const isEmpty = messages.length === 0;
 
   return (
-    <div className="flex flex-col h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background">
       <EmergencyBanner />
 
       {/* Header */}
@@ -110,20 +110,17 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Chat Area */}
-      <div
-        ref={scrollRef}
-        className="flex-1 overflow-y-auto scrollbar-thin px-4 py-6"
-      >
-        <div className="max-w-3xl mx-auto space-y-4">
+      {/* Main content */}
+      <main ref={scrollRef} className="flex-1 px-4 py-6">
+        <div className="max-w-3xl mx-auto space-y-6">
           {isEmpty ? (
-            <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
+            <>
               <div className="text-center space-y-3">
                 <img src={aidAngelLogo} alt="First Aid Angel" className="w-20 h-20 rounded-2xl object-cover mx-auto" />
                 <h2 className="font-display font-bold text-2xl text-foreground">
                   {t("welcomeHeading")}
                 </h2>
-                <p className="text-muted-foreground text-sm max-w-md">
+                <p className="text-muted-foreground text-sm max-w-md mx-auto">
                   {t("welcomeDescription")}
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
@@ -149,48 +146,62 @@ const Index = () => {
                   </a>
                 </div>
               </div>
+
+              {/* Input directly below the welcome heading */}
+              <div className="max-w-2xl mx-auto w-full">
+                <ChatInput onSend={send} disabled={isLoading} />
+                <p className="text-center text-xs text-muted-foreground mt-2">
+                  {t("disclaimer").split("000").map((part, i, arr) =>
+                    i < arr.length - 1 ? (
+                      <span key={i}>{part}<a href="tel:000" className="underline font-semibold hover:text-foreground transition-colors">000</a></span>
+                    ) : (
+                      <span key={i}>{part}</span>
+                    )
+                  )}
+                </p>
+              </div>
+
               <QuickActions onSelect={send} />
               <DRSABCDPanel onSelect={send} />
-            </div>
+            </>
           ) : (
             <>
-              {messages.map((msg, i) => (
-                <ChatMessage key={i} message={msg} onAction={send} />
-              ))}
-              {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
-                <div className="flex gap-3 justify-start">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                    <Loader2 className="h-4 w-4 text-primary-foreground animate-spin" />
-                  </div>
-                  <div className="chat-bubble-assistant px-4 py-3">
-                    <div className="flex gap-1">
-                      <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+              <div className="space-y-4">
+                {messages.map((msg, i) => (
+                  <ChatMessage key={i} message={msg} onAction={send} />
+                ))}
+                {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
+                  <div className="flex gap-3 justify-start">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                      <Loader2 className="h-4 w-4 text-primary-foreground animate-spin" />
+                    </div>
+                    <div className="chat-bubble-assistant px-4 py-3">
+                      <div className="flex gap-1">
+                        <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                        <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                        <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+
+              <div className="max-w-2xl mx-auto w-full pt-2">
+                <ChatInput onSend={send} disabled={isLoading} />
+                <p className="text-center text-xs text-muted-foreground mt-2">
+                  {t("disclaimer").split("000").map((part, i, arr) =>
+                    i < arr.length - 1 ? (
+                      <span key={i}>{part}<a href="tel:000" className="underline font-semibold hover:text-foreground transition-colors">000</a></span>
+                    ) : (
+                      <span key={i}>{part}</span>
+                    )
+                  )}
+                </p>
+              </div>
             </>
           )}
         </div>
-      </div>
-
-      {/* Input Area */}
-      <div className="border-t border-border bg-card px-4 py-4">
-        <div className="max-w-3xl mx-auto">
-          <ChatInput onSend={send} disabled={isLoading} />
-          <p className="text-center text-xs text-muted-foreground mt-2">
-            {t("disclaimer").split("000").map((part, i, arr) =>
-              i < arr.length - 1 ? (
-                <span key={i}>{part}<a href="tel:000" className="underline font-semibold hover:text-foreground transition-colors">000</a></span>
-              ) : (
-                <span key={i}>{part}</span>
-              )
-            )}
-          </p>
-        </div>
-      </div>
+      </main>
 
       <NetworkFooter currentApp="First Aid Angel" />
     </div>
