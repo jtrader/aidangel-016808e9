@@ -197,30 +197,85 @@ const Index = () => {
                   const last = messages[messages.length - 1];
                   if (isLoading || last?.role !== "assistant") return null;
                   const isTriage = /\[\[TRIAGE\]\]/.test(last.content);
+                  const isUrgent = /\[\[URGENT\]\]/.test(last.content);
                   const inWalkthrough =
                     /\[\[STEP\]\]/.test(last.content) &&
                     !/\[\[STEP_END\]\]/.test(last.content);
-                  if (isTriage) {
-                    return (
-                      <div className="flex flex-wrap items-center justify-center gap-2 mb-3 animate-fade-in">
-                        <button
-                          type="button"
-                          onClick={() => send("This is happening right now")}
-                          className="px-3 py-1.5 rounded-full bg-destructive text-destructive-foreground text-xs font-semibold hover:bg-destructive/90 transition-colors"
-                        >
-                          🚨 Happening now
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => send("I'm just brushing up for later")}
-                          className="px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold hover:bg-secondary/80 transition-colors"
-                        >
-                          📚 Just learning
-                        </button>
-                      </div>
-                    );
-                  }
-                  if (!inWalkthrough) return null;
+                  return (
+                    <>
+                      {isTriage && (
+                        <div className="flex flex-wrap items-center justify-center gap-2 mb-3 animate-fade-in">
+                          <button
+                            type="button"
+                            onClick={() => send("This is happening right now")}
+                            className="px-3 py-1.5 rounded-full bg-destructive text-destructive-foreground text-xs font-semibold hover:bg-destructive/90 transition-colors"
+                          >
+                            🚨 Happening now
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => send("I'm just brushing up for later")}
+                            className="px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold hover:bg-secondary/80 transition-colors"
+                          >
+                            📚 Just learning
+                          </button>
+                        </div>
+                      )}
+                      {isUrgent && (
+                        <div className="mb-3 rounded-2xl border border-destructive/30 bg-destructive/5 p-3 animate-fade-in">
+                          <p className="text-xs font-semibold uppercase tracking-wide text-destructive mb-2 text-center">
+                            Emergency resources
+                          </p>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            <a
+                              href="tel:000"
+                              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-destructive text-destructive-foreground text-xs font-semibold hover:bg-destructive/90 transition-colors"
+                            >
+                              <Phone className="h-3.5 w-3.5" />
+                              Call 000
+                            </a>
+                            <button
+                              type="button"
+                              onClick={() => send("Walk me through DRSABCD step by step")}
+                              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors"
+                            >
+                              <HeartPulse className="h-3.5 w-3.5" />
+                              DRSABCD
+                            </button>
+                            <a
+                              href="https://www.goodsamapp.org/locatorMap"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-card border border-border text-foreground text-xs font-semibold hover:bg-muted transition-colors"
+                            >
+                              <MapPin className="h-3.5 w-3.5" />
+                              Nearest AED
+                            </a>
+                            <a
+                              href="tel:131126"
+                              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-card border border-border text-foreground text-xs font-semibold hover:bg-muted transition-colors"
+                            >
+                              <FlaskConical className="h-3.5 w-3.5" />
+                              Poisons 13 11 26
+                            </a>
+                            <a
+                              href="tel:1800022222"
+                              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-card border border-border text-foreground text-xs font-semibold hover:bg-muted transition-colors"
+                            >
+                              <Stethoscope className="h-3.5 w-3.5" />
+                              Healthdirect
+                            </a>
+                            <button
+                              type="button"
+                              onClick={() => send("Talk me through this one step at a time")}
+                              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-secondary text-secondary-foreground text-xs font-semibold hover:bg-secondary/80 transition-colors"
+                            >
+                              Step-by-step
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                      {inWalkthrough && (
                   return (
                     <div className="flex flex-wrap items-center justify-center gap-2 mb-3 animate-fade-in">
                       <span className="text-xs text-muted-foreground mr-1">Walk-through:</span>
