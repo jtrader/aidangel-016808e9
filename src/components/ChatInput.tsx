@@ -203,7 +203,7 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
           className="inline-flex items-center justify-center gap-1.5 min-h-11 min-w-11 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <Send className="h-4 w-4" />
-          <span className="sr-only sm:not-sr-only">Send</span>
+          <span className="sr-only sm:not-sr-only" lang={language}>{sendLabel}</span>
         </button>
       </form>
     </div>
