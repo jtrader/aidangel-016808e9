@@ -169,7 +169,7 @@ const Index = () => {
                 )}
               </div>
 
-              <div className="text-center pt-2">
+              <div className="text-center">
                 <h2 className="font-display font-bold text-2xl text-foreground">
                   {t("welcomeHeading")}
                 </h2>
