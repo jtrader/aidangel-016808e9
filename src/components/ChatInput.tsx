@@ -26,14 +26,16 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
         onChange={(e) => setInput(e.target.value)}
         placeholder={t("inputPlaceholder")}
         disabled={disabled}
-        className="flex-1 px-4 py-3 rounded-xl border border-input bg-card text-card-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring text-sm"
+        className="flex-1 min-h-11 px-4 py-3 rounded-xl border border-input bg-card text-card-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring text-sm"
       />
       <button
         type="submit"
         disabled={disabled || !input.trim()}
-        className="px-4 py-3 rounded-xl bg-primary text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+        aria-label="Send message"
+        className="inline-flex items-center justify-center gap-1.5 min-h-11 min-w-11 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
         <Send className="h-4 w-4" />
+        <span className="sr-only sm:not-sr-only">Send</span>
       </button>
     </form>
   );
