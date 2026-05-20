@@ -24,8 +24,27 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
   const [suggestions, setSuggestions] = useState<DisplaySuggestion[]>([]);
   const [highlight, setHighlight] = useState(0);
   const [open, setOpen] = useState(false);
+  const [sendLabel, setSendLabel] = useState("Send");
+  const [helperText, setHelperText] = useState("↑↓ · Tab · Enter · Esc");
   const { t, language } = useLanguage();
   const wrapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (language === "en") {
+      setSendLabel("Send");
+      setHelperText("↑↓ · Tab · Enter · Esc");
+      return;
+    }
+    let cancelled = false;
+    translateStrings(language, ["Send", "↑↓ · Tab · Enter · Esc"]).then(([s, h]) => {
+      if (cancelled) return;
+      setSendLabel(s);
+      setHelperText(h);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [language]);
 
   // Recompute the underlying English suggestions as the user types.
   useEffect(() => {
@@ -156,8 +175,8 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
               </div>
             </li>
           ))}
-          <li className="px-3 py-1.5 text-[10px] text-muted-foreground bg-muted/40">
-            ↑↓ · Tab · Enter · Esc
+          <li className="px-3 py-1.5 text-[10px] text-muted-foreground bg-muted/40" lang={language}>
+            {helperText}
           </li>
         </ul>
       )}
@@ -184,7 +203,7 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
           className="inline-flex items-center justify-center gap-1.5 min-h-11 min-w-11 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <Send className="h-4 w-4" />
-          <span className="sr-only sm:not-sr-only">Send</span>
+          <span className="sr-only sm:not-sr-only" lang={language}>{sendLabel}</span>
         </button>
       </form>
     </div>

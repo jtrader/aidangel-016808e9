@@ -232,18 +232,22 @@ interface LanguageContextValue {
 
 const LanguageContext = createContext<LanguageContextValue | undefined>(undefined);
 
+const STORAGE_KEY = "faa:lang";
+
 const detectLanguage = (): LanguageCode => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY) as LanguageCode | null;
+    if (stored && languages.find((l) => l.code === stored)) return stored;
+  } catch {
+    /* ignore */
+  }
   const browserLangs = navigator.languages || [navigator.language];
   for (const bl of browserLangs) {
     const lower = bl.toLowerCase();
-    // Exact match
     const exact = languages.find((l) => l.code === lower);
     if (exact) return exact.code;
-    // Cantonese variants
     if (lower.startsWith("yue") || lower === "zh-hk" || lower === "zh-tw") return "yue";
-    // Mandarin variants
     if (lower.startsWith("zh")) return "zh";
-    // Prefix match (e.g. "ar-EG" -> "ar")
     const prefix = lower.split("-")[0];
     const match = languages.find((l) => l.code === prefix);
     if (match) return match.code;
@@ -252,7 +256,16 @@ const detectLanguage = (): LanguageCode => {
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState<LanguageCode>(detectLanguage);
+  const [language, setLanguageState] = useState<LanguageCode>(detectLanguage);
+
+  const setLanguage = (lang: LanguageCode) => {
+    setLanguageState(lang);
+    try {
+      localStorage.setItem(STORAGE_KEY, lang);
+    } catch {
+      /* ignore */
+    }
+  };
 
   const t = (key: TranslationKey): string => {
     return translations[language]?.[key] ?? translations.en[key] ?? key;
