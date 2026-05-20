@@ -175,8 +175,8 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
               </div>
             </li>
           ))}
-          <li className="px-3 py-1.5 text-[10px] text-muted-foreground bg-muted/40">
-            ↑↓ · Tab · Enter · Esc
+          <li className="px-3 py-1.5 text-[10px] text-muted-foreground bg-muted/40" lang={language}>
+            {helperText}
           </li>
         </ul>
       )}
