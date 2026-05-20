@@ -1,5 +1,7 @@
 // Knowledge base loader. Source of truth lives in /kb/*.md and /kb/_meta.json.
-import meta from "/kb/_meta.json";
+import metaRaw from "/kb/_meta.json?raw";
+
+const meta = JSON.parse(metaRaw) as TopicMeta[];
 
 const bodies = import.meta.glob("/kb/*.md", {
   query: "?raw",
