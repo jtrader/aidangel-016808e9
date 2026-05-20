@@ -74,6 +74,17 @@ const Index = () => {
 
   const isEmpty = messages.length === 0;
 
+  // Derive walk-through state from the latest assistant message
+  const lastAssistant = !isLoading && messages[messages.length - 1]?.role === "assistant"
+    ? messages[messages.length - 1]
+    : null;
+  const walkStepMatch = lastAssistant?.content.match(/\[\[STEP(?::(\d+)\/(\d+))?\]\]/);
+  const walkEnded = !!lastAssistant && /\[\[STEP_END\]\]/.test(lastAssistant.content);
+  const inWalkthrough = !!walkStepMatch && !walkEnded;
+  const walkX = walkStepMatch?.[1] ? parseInt(walkStepMatch[1], 10) : null;
+  const walkY = walkStepMatch?.[2] ? parseInt(walkStepMatch[2], 10) : null;
+  const walkPct = walkX && walkY ? Math.min(100, Math.round((walkX / walkY) * 100)) : null;
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <EmergencyBanner />
@@ -108,6 +119,69 @@ const Index = () => {
           </div>
         </div>
       </header>
+
+      {/* Sticky walk-through panel — pinned above messages while active */}
+      {inWalkthrough && (
+        <div className="sticky top-0 z-30 border-b border-border bg-card/95 backdrop-blur px-4 py-3 animate-fade-in">
+          <div className="max-w-3xl mx-auto space-y-2">
+            {walkX && walkY && (
+              <div className="space-y-1">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-semibold text-foreground">
+                    Step {walkX} of {walkY}
+                  </span>
+                  <span className="text-muted-foreground">{walkPct}%</span>
+                </div>
+                <div
+                  className="h-1.5 w-full rounded-full bg-muted overflow-hidden"
+                  role="progressbar"
+                  aria-valuemin={0}
+                  aria-valuemax={walkY}
+                  aria-valuenow={walkX}
+                  aria-label={`Step ${walkX} of ${walkY}`}
+                >
+                  <div
+                    className="h-full bg-primary transition-all duration-300 ease-out"
+                    style={{ width: `${walkPct}%` }}
+                  />
+                </div>
+              </div>
+            )}
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <span className="text-xs text-muted-foreground mr-1">Walk-through:</span>
+              <button
+                type="button"
+                onClick={() => send("next")}
+                className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors"
+              >
+                Next →
+              </button>
+              <button
+                type="button"
+                onClick={() => send("back")}
+                className="px-3 py-1.5 rounded-full bg-muted text-foreground text-xs font-medium hover:bg-muted/80 transition-colors"
+              >
+                Repeat
+              </button>
+              <button
+                type="button"
+                onClick={() => send("done")}
+                className="px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground text-xs font-medium hover:bg-secondary/80 transition-colors"
+              >
+                Done ✓
+              </button>
+              <button
+                type="button"
+                onClick={() => send("stop")}
+                className="px-3 py-1.5 rounded-full border border-border text-muted-foreground text-xs font-medium hover:bg-muted transition-colors"
+              >
+                Stop
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
 
       {/* Main content */}
       <main ref={scrollRef} className="flex-1 px-4 py-6">
@@ -198,12 +272,6 @@ const Index = () => {
                   if (isLoading || last?.role !== "assistant") return null;
                   const isTriage = /\[\[TRIAGE\]\]/.test(last.content);
                   const isUrgent = /\[\[URGENT\]\]/.test(last.content);
-                  const stepMatch = last.content.match(/\[\[STEP(?::(\d+)\/(\d+))?\]\]/);
-                  const stepEnded = /\[\[STEP_END\]\]/.test(last.content);
-                  const inWalkthrough = !!stepMatch && !stepEnded;
-                  const stepX = stepMatch?.[1] ? parseInt(stepMatch[1], 10) : null;
-                  const stepY = stepMatch?.[2] ? parseInt(stepMatch[2], 10) : null;
-                  const stepPct = stepX && stepY ? Math.min(100, Math.round((stepX / stepY) * 100)) : null;
                   return (
                     <>
                       {isTriage && (
@@ -278,64 +346,7 @@ const Index = () => {
                           </div>
                         </div>
                       )}
-                      {inWalkthrough && (
-                        <div className="mb-3 space-y-2 animate-fade-in">
-                          {stepX && stepY && (
-                            <div className="space-y-1">
-                              <div className="flex items-center justify-between text-xs">
-                                <span className="font-semibold text-foreground">
-                                  Step {stepX} of {stepY}
-                                </span>
-                                <span className="text-muted-foreground">{stepPct}%</span>
-                              </div>
-                              <div
-                                className="h-1.5 w-full rounded-full bg-muted overflow-hidden"
-                                role="progressbar"
-                                aria-valuemin={0}
-                                aria-valuemax={stepY}
-                                aria-valuenow={stepX}
-                                aria-label={`Step ${stepX} of ${stepY}`}
-                              >
-                                <div
-                                  className="h-full bg-primary transition-all duration-300 ease-out"
-                                  style={{ width: `${stepPct}%` }}
-                                />
-                              </div>
-                            </div>
-                          )}
-                          <div className="flex flex-wrap items-center justify-center gap-2">
-                            <span className="text-xs text-muted-foreground mr-1">Walk-through:</span>
-                            <button
-                              type="button"
-                              onClick={() => send("next")}
-                              className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors"
-                            >
-                            Next →
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => send("back")}
-                            className="px-3 py-1.5 rounded-full bg-muted text-foreground text-xs font-medium hover:bg-muted/80 transition-colors"
-                          >
-                            Repeat
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => send("done")}
-                            className="px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground text-xs font-medium hover:bg-secondary/80 transition-colors"
-                          >
-                            Done ✓
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => send("stop")}
-                            className="px-3 py-1.5 rounded-full border border-border text-muted-foreground text-xs font-medium hover:bg-muted transition-colors"
-                          >
-                            Stop
-                            </button>
-                          </div>
-                        </div>
-                      )}
+                      {/* Walk-through panel is rendered sticky above messages — see top of layout */}
                     </>
                   );
                 })()}
