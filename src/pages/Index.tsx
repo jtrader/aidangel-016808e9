@@ -151,7 +151,6 @@ const Index = () => {
             </a>
           </div>
           <div className="flex justify-center sm:justify-end items-center gap-2">
-            <DonateMenu variant="header" />
             <LanguageSelector />
           </div>
         </div>
