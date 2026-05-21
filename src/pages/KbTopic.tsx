@@ -123,9 +123,16 @@ const KbTopic = () => {
 
   const enTopics = topicsFor("en");
   const localTopics = topicsFor(language);
-  const related = topicEn.related
+  const related = relatedSlugs(topicEn.slug, 6)
     .map((s) => localTopics.find((t) => t.slug === s) ?? enTopics.find((t) => t.slug === s))
     .filter((t): t is NonNullable<typeof t> => !!t);
+
+  const linkedBody = autoLinkBody(
+    translated.body,
+    topicEn.slug,
+    language,
+    (s) => localizedPath(language, `/kb/${s}`),
+  );
 
   const kbPath = localizedPath(language, "/kb");
   const homePath = localizedPath(language, "/");
