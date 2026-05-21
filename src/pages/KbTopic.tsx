@@ -253,7 +253,7 @@ const KbTopic = () => {
                 {related.map((r) => (
                   <li key={r.slug}>
                     <Link
-                      to={`/kb/${r.slug}`}
+                      to={localizedPath(language, `/kb/${r.slug}`)}
                       className="block p-3 rounded-xl border border-border bg-card hover:border-primary transition-all"
                     >
                       <h3 className="font-semibold text-foreground text-sm">{r.title}</h3>
