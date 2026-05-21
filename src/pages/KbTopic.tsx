@@ -214,6 +214,7 @@ const KbTopic = () => {
           </Link>
         </div>
       </header>
+      <SupportUsBar />
 
       <main className="flex-1 px-4 py-8">
         <article className="max-w-3xl mx-auto">
