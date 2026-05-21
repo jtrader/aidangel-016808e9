@@ -295,7 +295,8 @@ export default function AdminDonations() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>When</TableHead>
-                    <TableHead>NGO</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Vendor</TableHead>
                     <TableHead>Country</TableHead>
                     <TableHead>Scope</TableHead>
                     <TableHead>Page</TableHead>
@@ -307,7 +308,10 @@ export default function AdminDonations() {
                   {rows.slice(0, 100).map((r) => (
                     <TableRow key={r.id}>
                       <TableCell className="whitespace-nowrap text-xs">{new Date(r.created_at).toLocaleString()}</TableCell>
-                      <TableCell>{NGOS[r.ngo_id as keyof typeof NGOS]?.short ?? r.ngo_id}</TableCell>
+                      <TableCell className="text-xs">
+                        {r.event_name === "shop_click" ? "🛒 Shop" : "❤️ Give"}
+                      </TableCell>
+                      <TableCell>{vendorLabel(r.event_name, r.ngo_id)}</TableCell>
                       <TableCell>{countryFlag(r.country_code)} {r.country_code}</TableCell>
                       <TableCell>
                         {r.is_national ? <Badge variant="default">National</Badge> : <Badge variant="secondary">Intl</Badge>}
@@ -318,7 +322,7 @@ export default function AdminDonations() {
                     </TableRow>
                   ))}
                   {rows.length === 0 && (
-                    <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-6">No clicks yet for this filter.</TableCell></TableRow>
+                    <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground py-6">No referrals yet for this filter.</TableCell></TableRow>
                   )}
                 </TableBody>
               </Table>
