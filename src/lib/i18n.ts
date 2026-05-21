@@ -38,7 +38,7 @@ export const HREFLANG: Record<Lang, string> = {
 };
 
 
-export const RTL_LANGS: Set<Lang> = new Set(["ar"]);
+export const RTL_LANGS: Set<Lang> = new Set(["ar", "he", "ur"]);
 
 export const dirFor = (lang: Lang): "ltr" | "rtl" => (RTL_LANGS.has(lang) ? "rtl" : "ltr");
 
