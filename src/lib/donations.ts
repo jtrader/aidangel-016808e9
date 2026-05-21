@@ -59,7 +59,7 @@ export const COUNTRIES: Country[] = [
   { code: "FJ", name: "Fiji", flag: "🇫🇯", donations: {
       redcross: "https://www.redcross.com.fj/donate/",
       msf: null,
-      stjohn: "https://stjohn.org.fj/donate/",
+      stjohn: null,
   }},
   { code: "PG", name: "Papua New Guinea", flag: "🇵🇬", donations: {
       redcross: "https://www.redcross.org.pg/",
@@ -71,7 +71,7 @@ export const COUNTRIES: Country[] = [
   { code: "GB", name: "United Kingdom", flag: "🇬🇧", donations: {
       redcross: "https://donate.redcross.org.uk/",
       msf: "https://www.msf.org.uk/donate",
-      stjohn: "https://www.sja.org.uk/get-involved/donate/",
+      stjohn: null,
   }},
   { code: "IE", name: "Ireland", flag: "🇮🇪", donations: {
       redcross: "https://www.redcross.ie/donate/",
@@ -83,7 +83,7 @@ export const COUNTRIES: Country[] = [
   { code: "US", name: "United States", flag: "🇺🇸", donations: {
       redcross: "https://www.redcross.org/donate/donation.html",
       msf: "https://donate.doctorswithoutborders.org/",
-      stjohn: "https://stjohnus.org/donate/",
+      stjohn: null,
   }},
   { code: "CA", name: "Canada", flag: "🇨🇦", donations: {
       redcross: "https://www.redcross.ca/donate",
@@ -92,33 +92,33 @@ export const COUNTRIES: Country[] = [
   }},
   { code: "MX", name: "Mexico", flag: "🇲🇽", donations: {
       redcross: "https://www.cruzrojadonaciones.org/",
-      msf: "https://www.msf.mx/donar",
+      msf: null,
       stjohn: null,
   }},
 
   // ───── Latin America ─────
   { code: "BR", name: "Brazil", flag: "🇧🇷", donations: {
-      redcross: "https://www.cruzvermelha.org.br/doe/",
+      redcross: null,
       msf: "https://doe.msf.org.br/",
       stjohn: null,
   }},
   { code: "AR", name: "Argentina", flag: "🇦🇷", donations: {
       redcross: "https://www.cruzroja.org.ar/donar/",
-      msf: "https://donaciones.msf.org.ar/",
+      msf: null,
       stjohn: null,
   }},
   { code: "CL", name: "Chile", flag: "🇨🇱", donations: {
-      redcross: "https://www.cruzroja.cl/donaciones/",
+      redcross: null,
       msf: null,
       stjohn: null,
   }},
   { code: "CO", name: "Colombia", flag: "🇨🇴", donations: {
-      redcross: "https://www.cruzrojacolombiana.org/dona-ya/",
+      redcross: null,
       msf: null,
       stjohn: null,
   }},
   { code: "PE", name: "Peru", flag: "🇵🇪", donations: {
-      redcross: "https://www.cruzroja.org.pe/donar/",
+      redcross: null,
       msf: null,
       stjohn: null,
   }},
@@ -136,36 +136,36 @@ export const COUNTRIES: Country[] = [
   }},
   { code: "IT", name: "Italy", flag: "🇮🇹", donations: {
       redcross: "https://dona.cri.it/",
-      msf: "https://dona.medicisenzafrontiere.it/",
+      msf: null,
       stjohn: null,
   }},
   { code: "ES", name: "Spain", flag: "🇪🇸", donations: {
       redcross: "https://www2.cruzroja.es/donaciones",
-      msf: "https://donaciones.msf.es/",
+      msf: null,
       stjohn: null,
   }},
   { code: "PT", name: "Portugal", flag: "🇵🇹", donations: {
-      redcross: "https://www.cruzvermelha.pt/donativos.html",
+      redcross: null,
       msf: null,
       stjohn: null,
   }},
   { code: "NL", name: "Netherlands", flag: "🇳🇱", donations: {
-      redcross: "https://www.rodekruis.nl/doneren/",
+      redcross: null,
       msf: "https://www.artsenzondergrenzen.nl/doneren/",
       stjohn: null,
   }},
   { code: "BE", name: "Belgium", flag: "🇧🇪", donations: {
       redcross: "https://www.rodekruis.be/gift",
-      msf: "https://www.msf-azg.be/nl/doneer",
+      msf: null,
       stjohn: null,
   }},
   { code: "LU", name: "Luxembourg", flag: "🇱🇺", donations: {
-      redcross: "https://www.croix-rouge.lu/fr/donner/",
+      redcross: null,
       msf: "https://www.msf.lu/fr/donner",
       stjohn: null,
   }},
   { code: "CH", name: "Switzerland", flag: "🇨🇭", donations: {
-      redcross: "https://www.redcross.ch/en/donate",
+      redcross: null,
       msf: "https://www.msf.ch/spenden",
       stjohn: null,
   }},
@@ -182,18 +182,18 @@ export const COUNTRIES: Country[] = [
       stjohn: null,
   }},
   { code: "NO", name: "Norway", flag: "🇳🇴", donations: {
-      redcross: "https://www.rodekors.no/gi-en-gave/",
+      redcross: null,
       msf: "https://legerutengrenser.no/stott-oss",
       stjohn: null,
   }},
   { code: "DK", name: "Denmark", flag: "🇩🇰", donations: {
-      redcross: "https://www.rodekors.dk/stoet/giv-et-bidrag",
+      redcross: null,
       msf: "https://laeger-uden-graenser.dk/stoet-os",
       stjohn: null,
   }},
   { code: "FI", name: "Finland", flag: "🇫🇮", donations: {
       redcross: "https://www.punainenristi.fi/lahjoita/",
-      msf: "https://lakaretutangranser.fi/lahjoita",
+      msf: null,
       stjohn: null,
   }},
   { code: "IS", name: "Iceland", flag: "🇮🇸", donations: {
@@ -204,8 +204,8 @@ export const COUNTRIES: Country[] = [
 
   // ───── Central & Eastern Europe ─────
   { code: "PL", name: "Poland", flag: "🇵🇱", donations: {
-      redcross: "https://pck.pl/wesprzyj-pck/",
-      msf: "https://lekarze-bez-granic.pl/wesprzyj-nas/",
+      redcross: null,
+      msf: null,
       stjohn: null,
   }},
   { code: "CZ", name: "Czechia", flag: "🇨🇿", donations: {
@@ -224,7 +224,7 @@ export const COUNTRIES: Country[] = [
       stjohn: null,
   }},
   { code: "RO", name: "Romania", flag: "🇷🇴", donations: {
-      redcross: "https://crucearosie.ro/doneaza/",
+      redcross: null,
       msf: null,
       stjohn: null,
   }},
@@ -244,13 +244,13 @@ export const COUNTRIES: Country[] = [
       stjohn: null,
   }},
   { code: "RS", name: "Serbia", flag: "🇷🇸", donations: {
-      redcross: "https://www.redcross.org.rs/sr/donirajte/",
+      redcross: null,
       msf: null,
       stjohn: null,
   }},
   { code: "GR", name: "Greece", flag: "🇬🇷", donations: {
-      redcross: "https://www.redcross.gr/donations/",
-      msf: "https://giving.msf.gr/",
+      redcross: null,
+      msf: null,
       stjohn: null,
   }},
   { code: "UA", name: "Ukraine", flag: "🇺🇦", donations: {
@@ -271,7 +271,7 @@ export const COUNTRIES: Country[] = [
       stjohn: null,
   }},
   { code: "LT", name: "Lithuania", flag: "🇱🇹", donations: {
-      redcross: "https://www.redcross.lt/parama/",
+      redcross: null,
       msf: null,
       stjohn: null,
   }},
@@ -283,7 +283,7 @@ export const COUNTRIES: Country[] = [
   { code: "MT", name: "Malta", flag: "🇲🇹", donations: {
       redcross: "https://redcross.org.mt/donate/",
       msf: null,
-      stjohn: "https://www.stjohn.org.mt/donate/",
+      stjohn: null,
   }},
 
   // ───── Middle East & North Africa ─────
@@ -308,12 +308,12 @@ export const COUNTRIES: Country[] = [
       stjohn: null,
   }},
   { code: "EG", name: "Egypt", flag: "🇪🇬", donations: {
-      redcross: "https://www.egyptianrc.org/Donation",
+      redcross: null,
       msf: "https://www.msf-me.org/en/donate",
       stjohn: null,
   }},
   { code: "MA", name: "Morocco", flag: "🇲🇦", donations: {
-      redcross: "https://www.croissant-rouge.ma/don/",
+      redcross: null,
       msf: null,
       stjohn: null,
   }},
@@ -325,24 +325,24 @@ export const COUNTRIES: Country[] = [
       stjohn: "https://stjohn.org.za/donate/",
   }},
   { code: "KE", name: "Kenya", flag: "🇰🇪", donations: {
-      redcross: "https://www.redcross.or.ke/donate/",
+      redcross: null,
       msf: null,
       stjohn: "https://www.stjohnkenya.org/donate/",
   }},
   { code: "NG", name: "Nigeria", flag: "🇳🇬", donations: {
       redcross: "https://redcrossnigeria.org/donate/",
       msf: null,
-      stjohn: "https://stjohnnigeria.org/donate/",
+      stjohn: null,
   }},
   { code: "GH", name: "Ghana", flag: "🇬🇭", donations: {
-      redcross: "https://www.redcrossghana.org/donate/",
+      redcross: null,
       msf: null,
-      stjohn: "https://stjohnambulanceghana.org/donate/",
+      stjohn: null,
   }},
   { code: "TZ", name: "Tanzania", flag: "🇹🇿", donations: {
-      redcross: "https://www.trcs.or.tz/donate/",
+      redcross: null,
       msf: null,
-      stjohn: "https://stjohntanzania.org/donate/",
+      stjohn: null,
   }},
   { code: "UG", name: "Uganda", flag: "🇺🇬", donations: {
       redcross: "https://www.redcrossug.org/donate/",
@@ -357,39 +357,39 @@ export const COUNTRIES: Country[] = [
   { code: "ZW", name: "Zimbabwe", flag: "🇿🇼", donations: {
       redcross: "https://www.redcrosszim.org.zw/donate/",
       msf: null,
-      stjohn: "https://stjohnzimbabwe.org/donate/",
+      stjohn: null,
   }},
   { code: "ZM", name: "Zambia", flag: "🇿🇲", donations: {
       redcross: "https://www.redcross.org.zm/donate/",
       msf: null,
-      stjohn: "https://stjohnzambia.org/donate/",
+      stjohn: null,
   }},
   { code: "MW", name: "Malawi", flag: "🇲🇼", donations: {
-      redcross: "https://www.malawiredcross.org/donate/",
+      redcross: null,
       msf: null,
       stjohn: "https://www.stjohnmalawi.org/donate/",
   }},
   { code: "NA", name: "Namibia", flag: "🇳🇦", donations: {
-      redcross: "https://www.redcross.org.na/donate/",
+      redcross: null,
       msf: null,
-      stjohn: "https://www.stjohnnamibia.org/donate/",
+      stjohn: null,
   }},
   { code: "BW", name: "Botswana", flag: "🇧🇼", donations: {
-      redcross: "https://www.redcross.org.bw/donate/",
+      redcross: null,
       msf: null,
       stjohn: null,
   }},
   { code: "MU", name: "Mauritius", flag: "🇲🇺", donations: {
-      redcross: "https://www.redcross.mu/donate/",
+      redcross: null,
       msf: null,
-      stjohn: "https://stjohnmauritius.org/donate/",
+      stjohn: null,
   }},
 
   // ───── South Asia ─────
   { code: "IN", name: "India", flag: "🇮🇳", donations: {
       redcross: "https://indianredcross.org/ircs/donate",
       msf: "https://www.msfindia.in/donate/",
-      stjohn: "https://stjohnindia.org/donate/",
+      stjohn: null,
   }},
   { code: "PK", name: "Pakistan", flag: "🇵🇰", donations: {
       redcross: "https://prcs.org.pk/donation/",
@@ -402,12 +402,12 @@ export const COUNTRIES: Country[] = [
       stjohn: null,
   }},
   { code: "LK", name: "Sri Lanka", flag: "🇱🇰", donations: {
-      redcross: "https://www.redcross.lk/donate/",
+      redcross: null,
       msf: null,
       stjohn: null,
   }},
   { code: "NP", name: "Nepal", flag: "🇳🇵", donations: {
-      redcross: "https://nrcs.org/donate/",
+      redcross: null,
       msf: null,
       stjohn: null,
   }},
@@ -419,19 +419,19 @@ export const COUNTRIES: Country[] = [
       stjohn: null,
   }},
   { code: "KR", name: "South Korea", flag: "🇰🇷", donations: {
-      redcross: "https://www.redcross.or.kr/donate/",
-      msf: "https://msf.or.kr/donate",
+      redcross: null,
+      msf: null,
       stjohn: null,
   }},
   { code: "TW", name: "Taiwan", flag: "🇹🇼", donations: {
       redcross: "https://www.redcross.org.tw/donate",
-      msf: "https://msf.org.tw/donate",
+      msf: null,
       stjohn: null,
   }},
   { code: "HK", name: "Hong Kong", flag: "🇭🇰", donations: {
-      redcross: "https://www.redcross.org.hk/en/donation.html",
+      redcross: null,
       msf: "https://www.msf.hk/en/donate",
-      stjohn: "https://www.stjohn.org.hk/en/donation/",
+      stjohn: null,
   }},
   { code: "SG", name: "Singapore", flag: "🇸🇬", donations: {
       redcross: "https://www.redcross.sg/donate.html",
@@ -439,9 +439,9 @@ export const COUNTRIES: Country[] = [
       stjohn: "https://www.stjohn.org.sg/donate/",
   }},
   { code: "MY", name: "Malaysia", flag: "🇲🇾", donations: {
-      redcross: "https://www.redcrescent.org.my/donate/",
+      redcross: null,
       msf: null,
-      stjohn: "https://www.sja.org.my/donate/",
+      stjohn: null,
   }},
   { code: "TH", name: "Thailand", flag: "🇹🇭", donations: {
       redcross: "https://www.redcross.or.th/donate/",
@@ -449,7 +449,7 @@ export const COUNTRIES: Country[] = [
       stjohn: null,
   }},
   { code: "PH", name: "Philippines", flag: "🇵🇭", donations: {
-      redcross: "https://redcross.org.ph/donate-now/",
+      redcross: null,
       msf: null,
       stjohn: null,
   }},
@@ -466,24 +466,24 @@ export const COUNTRIES: Country[] = [
 
   // ───── Caribbean ─────
   { code: "JM", name: "Jamaica", flag: "🇯🇲", donations: {
-      redcross: "https://www.jamaicaredcross.org/donate/",
+      redcross: null,
       msf: null,
-      stjohn: "https://stjohnjamaica.org/donate/",
+      stjohn: null,
   }},
   { code: "TT", name: "Trinidad & Tobago", flag: "🇹🇹", donations: {
-      redcross: "https://ttrcs.org/donate/",
+      redcross: null,
       msf: null,
-      stjohn: "https://stjohntt.org/donate/",
+      stjohn: null,
   }},
   { code: "BB", name: "Barbados", flag: "🇧🇧", donations: {
-      redcross: "https://barbadosredcross.org/donate/",
+      redcross: null,
       msf: null,
-      stjohn: "https://stjohnbarbados.org/donate/",
+      stjohn: null,
   }},
   { code: "BS", name: "Bahamas", flag: "🇧🇸", donations: {
       redcross: "https://www.bahamasredcross.org/donate/",
       msf: null,
-      stjohn: "https://stjohnbahamas.org/donate/",
+      stjohn: null,
   }},
 ];
 
