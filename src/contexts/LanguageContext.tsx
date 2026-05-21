@@ -284,15 +284,18 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const setAuto = () => {
+  const setAuto = (): LanguageCode => {
     try {
       localStorage.removeItem(STORAGE_KEY);
     } catch {
       /* ignore */
     }
+    const detected = detectFromBrowser();
     setIsAuto(true);
-    setLanguageState(detectFromBrowser());
+    setLanguageState(detected);
+    return detected;
   };
+
 
   const t = (key: TranslationKey): string => {
     return translations[language]?.[key] ?? translations.en[key] ?? key;
