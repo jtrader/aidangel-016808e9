@@ -25,6 +25,8 @@ const Index = () => {
   const [status, setStatus] = useState<ChatStatus>("idle");
   const scrollRef = useRef<HTMLDivElement>(null);
   const { t, language } = useLanguage();
+  const { code: countryCode } = useCountry();
+  const emergencyNumber = emergencyNumberForCountry(countryCode);
 
   useEffect(() => {
     if (scrollRef.current) {
