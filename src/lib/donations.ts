@@ -552,3 +552,42 @@ export function languageForCountry(code: string | null | undefined): string {
   return COUNTRY_PRIMARY_LANGUAGE[code] ?? "en";
 }
 
+/**
+ * National emergency / ambulance number per country. Where the country has
+ * separate police vs ambulance numbers, we prefer the medical / ambulance
+ * line that a first-aider would need.
+ */
+export const EMERGENCY_NUMBERS: Record<string, string> = {
+  // Oceania
+  AU: "000", NZ: "111", FJ: "911", PG: "111",
+  // Europe (most use the EU-wide 112; some have a dedicated medical line)
+  GB: "999", IE: "112", DE: "112", FR: "112", IT: "112", ES: "112",
+  PT: "112", NL: "112", BE: "112", LU: "112", CH: "144", AT: "144",
+  SE: "112", NO: "113", DK: "112", FI: "112", IS: "112", PL: "112",
+  CZ: "112", SK: "112", HU: "112", RO: "112", BG: "112", HR: "112",
+  SI: "112", RS: "194", GR: "166", UA: "103", EE: "112", LV: "113",
+  LT: "112", CY: "112", MT: "112", TR: "112",
+  // Americas
+  US: "911", CA: "911", MX: "911", BR: "192", AR: "911", CL: "131",
+  CO: "123", PE: "106", JM: "110", TT: "811", BB: "511", BS: "919",
+  // Middle East & North Africa
+  IL: "101", AE: "998", SA: "997", EG: "123", MA: "150",
+  // Africa
+  ZA: "10177", KE: "999", NG: "112", GH: "193", TZ: "112", UG: "999",
+  ET: "907", ZW: "994", ZM: "902", MW: "998", NA: "112", BW: "997",
+  MU: "114",
+  // South & East Asia
+  IN: "102", PK: "115", BD: "999", LK: "1990", NP: "102",
+  JP: "119", KR: "119", TW: "119", HK: "999", SG: "995", MY: "999",
+  TH: "1669", PH: "911", ID: "118", VN: "115",
+};
+
+const DEFAULT_EMERGENCY = "112";
+
+/** National emergency / ambulance number string for a country code. */
+export function emergencyNumberForCountry(code: string | null | undefined): string {
+  if (!code) return EMERGENCY_NUMBERS[DEFAULT_COUNTRY] ?? DEFAULT_EMERGENCY;
+  return EMERGENCY_NUMBERS[code] ?? DEFAULT_EMERGENCY;
+}
+
+
