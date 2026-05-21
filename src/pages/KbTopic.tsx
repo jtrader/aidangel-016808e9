@@ -203,17 +203,14 @@ const KbTopic = () => {
             <ArrowLeft className="h-4 w-4" />
             {ui.allTopics}
           </Link>
-          <div className="flex items-center gap-3">
-            <LanguageSelector />
-            <Link
-              to={homePath}
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80"
-            >
-              <MessageCircle className="h-4 w-4" aria-hidden="true" />
-              <span className="hidden sm:inline">{ui.askAssistant}</span>
-              <span className="sr-only sm:hidden">{ui.askAssistant}</span>
-            </Link>
-          </div>
+          <Link
+            to={homePath}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80"
+          >
+            <MessageCircle className="h-4 w-4" aria-hidden="true" />
+            <span className="hidden sm:inline">{ui.askAssistant}</span>
+            <span className="sr-only sm:hidden">{ui.askAssistant}</span>
+          </Link>
         </div>
       </header>
 
