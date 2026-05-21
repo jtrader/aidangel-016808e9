@@ -4,12 +4,13 @@ import ReactMarkdown from "react-markdown";
 import { ArrowLeft, BookOpen, Loader2, MessageCircle } from "lucide-react";
 import { getTopic, getBody, topicsFor } from "@/lib/kb";
 import { SeoHead } from "@/components/SeoHead";
-import { canonicalUrl, localizedPath, SITE_ORIGIN } from "@/lib/i18n";
+import { canonicalUrl, HREFLANG, localizedPath, SITE_ORIGIN } from "@/lib/i18n";
 import NetworkFooter from "@/components/NetworkFooter";
 import LanguageSelector from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { translateTopic } from "@/lib/kbTranslate";
 import { translateStrings } from "@/lib/uiTranslate";
+import { buildHowToJsonLd, buildFaqJsonLd } from "@/lib/kbSchema";
 
 const STATIC_TOPIC_STRINGS = [
   "All topics",
@@ -138,32 +139,48 @@ const KbTopic = () => {
         basePath={`/kb/${topic.slug}`}
         title={`${translated.title} · First Aid Angel`}
         description={translated.summary}
-        jsonLd={[
-          {
-            "@context": "https://schema.org",
-            "@type": "MedicalWebPage",
-            name: translated.title,
-            description: translated.summary,
-            url: `${SITE_ORIGIN}${topicPath}`,
-            about: { "@type": "MedicalCondition", name: topicEn.section },
-            keywords: topicEn.keywords.join(", "),
-            isPartOf: { "@type": "WebSite", name: "First Aid Angel", url: SITE_ORIGIN },
-            citation: {
-              "@type": "Book",
-              name: "The St John of God First Aid Manual 5th Edition",
-              author: "St John of God",
+        jsonLd={(() => {
+          const inLanguage = HREFLANG[language];
+          const topicUrl = `${SITE_ORIGIN}${topicPath}`;
+          const schemas: Array<Record<string, unknown>> = [
+            {
+              "@context": "https://schema.org",
+              "@type": "MedicalWebPage",
+              name: translated.title,
+              description: translated.summary,
+              url: topicUrl,
+              inLanguage,
+              about: { "@type": "MedicalCondition", name: topicEn.section },
+              keywords: topicEn.keywords.join(", "),
+              isPartOf: { "@type": "WebSite", name: "First Aid Angel", url: SITE_ORIGIN },
+              citation: {
+                "@type": "Book",
+                name: "The St John of God First Aid Manual 5th Edition",
+                author: "St John of God",
+              },
             },
-          },
-          {
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: ui.appName, item: `${SITE_ORIGIN}${homePath}` },
-              { "@type": "ListItem", position: 2, name: ui.knowledgeBase, item: `${SITE_ORIGIN}${kbPath}` },
-              { "@type": "ListItem", position: 3, name: translated.title, item: `${SITE_ORIGIN}${topicPath}` },
-            ],
-          },
-        ]}
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: ui.appName, item: `${SITE_ORIGIN}${homePath}` },
+                { "@type": "ListItem", position: 2, name: ui.knowledgeBase, item: `${SITE_ORIGIN}${kbPath}` },
+                { "@type": "ListItem", position: 3, name: translated.title, item: topicUrl },
+              ],
+            },
+          ];
+          const howTo = buildHowToJsonLd({
+            title: translated.title,
+            description: translated.summary,
+            url: topicUrl,
+            body: translated.body,
+            inLanguage,
+          });
+          if (howTo) schemas.push(howTo);
+          const faq = buildFaqJsonLd({ body: translated.body, inLanguage });
+          if (faq) schemas.push(faq);
+          return schemas;
+        })()}
       />
       <header className="border-b border-border bg-card">
         <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
