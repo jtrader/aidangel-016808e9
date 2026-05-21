@@ -62,7 +62,7 @@ export const COUNTRIES: Country[] = [
       stjohn: null,
   }},
   { code: "PG", name: "Papua New Guinea", flag: "🇵🇬", donations: {
-      redcross: "https://www.redcross.org.pg/",
+      redcross: null,
       msf: null,
       stjohn: null,
   }},
