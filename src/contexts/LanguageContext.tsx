@@ -226,7 +226,12 @@ export const languageFullName: Record<LanguageCode, string> = {
 
 interface LanguageContextValue {
   language: LanguageCode;
+  /** True when the language is following browser auto-detect (no manual override). */
+  isAuto: boolean;
+  /** Set a specific language (manual override). */
   setLanguage: (lang: LanguageCode) => void;
+  /** Clear the manual override and re-sync to the browser's detected language. */
+  setAuto: () => void;
   t: (key: TranslationKey) => string;
 }
 
@@ -234,15 +239,12 @@ const LanguageContext = createContext<LanguageContextValue | undefined>(undefine
 
 const STORAGE_KEY = "faa:lang";
 
-const detectLanguage = (): LanguageCode => {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY) as LanguageCode | null;
-    if (stored && languages.find((l) => l.code === stored)) return stored;
-  } catch {
-    /* ignore */
-  }
-  const browserLangs = navigator.languages || [navigator.language];
+/** Detect language from browser locale only (ignores stored override). */
+const detectFromBrowser = (): LanguageCode => {
+  const browserLangs =
+    (typeof navigator !== "undefined" && (navigator.languages || [navigator.language])) || [];
   for (const bl of browserLangs) {
+    if (!bl) continue;
     const lower = bl.toLowerCase();
     const exact = languages.find((l) => l.code === lower);
     if (exact) return exact.code;
@@ -255,11 +257,25 @@ const detectLanguage = (): LanguageCode => {
   return "en";
 };
 
+const readStored = (): LanguageCode | null => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY) as LanguageCode | null;
+    if (stored && languages.find((l) => l.code === stored)) return stored;
+  } catch {
+    /* ignore */
+  }
+  return null;
+};
+
+const initialLanguage = (): LanguageCode => readStored() ?? detectFromBrowser();
+
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguageState] = useState<LanguageCode>(detectLanguage);
+  const [language, setLanguageState] = useState<LanguageCode>(initialLanguage);
+  const [isAuto, setIsAuto] = useState<boolean>(() => readStored() === null);
 
   const setLanguage = (lang: LanguageCode) => {
     setLanguageState(lang);
+    setIsAuto(false);
     try {
       localStorage.setItem(STORAGE_KEY, lang);
     } catch {
@@ -267,12 +283,22 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const setAuto = () => {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
+    setIsAuto(true);
+    setLanguageState(detectFromBrowser());
+  };
+
   const t = (key: TranslationKey): string => {
     return translations[language]?.[key] ?? translations.en[key] ?? key;
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, isAuto, setLanguage, setAuto, t }}>
       {children}
     </LanguageContext.Provider>
   );
@@ -280,7 +306,9 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 
 const fallback: LanguageContextValue = {
   language: "en",
+  isAuto: false,
   setLanguage: () => {},
+  setAuto: () => {},
   t: (key: TranslationKey) => translations.en[key] ?? key,
 };
 
