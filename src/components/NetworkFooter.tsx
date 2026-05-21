@@ -20,7 +20,7 @@ const NETWORK_LINKS: NetworkLink[] = [
 ];
 
 const STATIC_STRINGS = [
-  "Donate",
+  "Give",
   "St John First Aid Shop",
   "📖 Browse the First Aid Knowledge Base",
   "Emergency and Recovery Network",
@@ -34,7 +34,7 @@ interface NetworkFooterProps {
 export default function NetworkFooter({ currentApp = "Aid Angel" }: NetworkFooterProps) {
   const { language } = useLanguage();
   const [tr, setTr] = useState({
-    donate: "Donate",
+    donate: "Give",
     shop: "St John First Aid Shop",
     browseKb: "📖 Browse the First Aid Knowledge Base",
     network: "Emergency and Recovery Network",
@@ -45,7 +45,7 @@ export default function NetworkFooter({ currentApp = "Aid Angel" }: NetworkFoote
   useEffect(() => {
     if (language === "en") {
       setTr({
-        donate: "Donate",
+        donate: "Give",
         shop: "St John First Aid Shop",
         browseKb: "📖 Browse the First Aid Knowledge Base",
         network: "Emergency and Recovery Network",
