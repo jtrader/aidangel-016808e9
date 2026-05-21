@@ -30,6 +30,7 @@ interface DonateMenuProps {
 
 const STATIC = [
   "Give",
+  "Donate",
   "Support first aid worldwide",
   "Change country",
   "Showing donation links for",
@@ -40,7 +41,8 @@ export default function DonateMenu({ variant = "header", ngos }: DonateMenuProps
   const { language } = useLanguage();
   const list = ngos ?? (Object.keys(NGOS) as NgoId[]);
   const [tr, setTr] = useState({
-    donate: "Give",
+    give: "Give",
+    donate: "Donate",
     heading: "Support first aid worldwide",
     change: "Change country",
     showing: "Showing donation links for",
@@ -48,13 +50,13 @@ export default function DonateMenu({ variant = "header", ngos }: DonateMenuProps
 
   useEffect(() => {
     if (language === "en") {
-      setTr({ donate: "Give", heading: STATIC[1], change: STATIC[2], showing: STATIC[3] });
+      setTr({ give: STATIC[0], donate: STATIC[1], heading: STATIC[2], change: STATIC[3], showing: STATIC[4] });
       return;
     }
     let cancelled = false;
     translateStrings(language, STATIC).then((s) => {
       if (cancelled) return;
-      setTr({ donate: s[0], heading: s[1], change: s[2], showing: s[3] });
+      setTr({ give: s[0], donate: s[1], heading: s[2], change: s[3], showing: s[4] });
     });
     return () => { cancelled = true; };
   }, [language]);
@@ -71,9 +73,11 @@ export default function DonateMenu({ variant = "header", ngos }: DonateMenuProps
         aria-label={`${tr.donate} — ${country.name}`}
       >
         <HandHeart className="h-4 w-4" />
-        <span>{tr.donate}</span>
+        <span className="sm:hidden">{tr.give}</span>
+        <span className="hidden sm:inline">{tr.donate}</span>
         <span aria-hidden="true" className="text-base leading-none">{country.flag}</span>
       </DropdownMenuTrigger>
+
       <DropdownMenuContent align="end" className="w-72 bg-popover">
         <DropdownMenuLabel className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           {tr.heading}
