@@ -1,22 +1,23 @@
-# Tif Blonga Pulim Kam Aut Said
+# Dog Out Tut
 
-Holim disfala grownap tif blonga pulim kam aut said long kron, wasim isi wida milk o salt wata sapos i no klin, en putim pasik long hol blong hem sapos yu kyan — olo man putim insaid milk o salava en go long dentis blonga 30 minit.
+Holim wanem adalt tut i dog out long hem crown, wasim soso long milk owa solwara wata sipos i doti, than putum bak long holo blo hem sipos yu kyan — owa storim long milk owa salaywa an kaman long wan dentis insaid 30 minit.
 
-## Grownap tif blonga pulim kam aut said
+## Dog out adalt tut
 
-1. **Holim tif long kron (wait hap)** — nomo holim long rut.
-2. Sapos i doti, wasim isi wida milk o salt wata (nomo wata sapos yu save aviodim). NOMO rabim.
-3. Traim blong **putim pasik long hol blong hem** long rait wei en mekim datpala pipol baitim isi long klin klos.
-4. Sapos yu no kyan putim pasik, putim datpala tif insaid **milk** o insaid pipol **wan salava** (bitwin chik en gam, sapos i olap pleni blong no swallowim).
-5. Go lukim **dentis insaid blong 30 minit** — mo kwik mo beta.
+1. **Holim tut long crown blo hem (wanem waitwan hap)** — nomo tochim rut blo hem.
+2. Sipos i doti, wasim soso long milk owa solwara wata (nomo wata sipos yu kyan aboidim). Nompo scrub.
+3. Trai fo **putum bak long holo blo hem** raitwanwei an mekim da pesin baid soso long wan klinwan kloth.
+4. Sipos yu nomo kyan putum bak, storim da tut long **milk** owa long da pesin **salaywa blo hem** (bitwin da chik an gum, sipos i olgenaf nomo swolowim).
+5. Lukim wan **dentis insaid 30 minit** — da suna da beta.
 
-## Beibi tif
+## Beibei tit
 
-**Nomo** putim pasik beibi tif blonga pulim kam aut said — i kyan spoulim datpala new grownap tif blonga kam aut. Stil go lukim dentis.
+**Nompo** putum bak wanem beibei tut i dog out — i kyan spoylim da adalt tut i groin.
+Sipul lukim wan dentis.
 
-## Brokim o chipim tif
+## Brokin owa chipin tut
 
-- Sevim eni tif haps insaid milk o salava.
-- Wasim maot isi wida hot wata.
-- Patim kolpak long chik blong mekim soeling daun.
-- Go lukim dentis kwiktaim.
+- Kirapim eni hap blo tut long milk owa salaywa.
+- Wasim da mout soso long wom wata.
+- Putum wan kol dakta long chik blo hem fo mekim da swelin go daun.
+- Lukim wan dentis as suun as posibul.

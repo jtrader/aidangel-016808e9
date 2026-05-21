@@ -1,18 +1,18 @@
-# Electric Shock
+# Electrik Sok
 
-No go pasim umman sapos power nomo off. Wen safe, followim DRSABCD, wunem 000, kikim-kikim burn an shock. Maski sapos umman luk gud after electric shock, gulum hospital go lukim.
+No bin tejet long tharran man ouman gaba bin offim power. Wen ijei seif-wei, fala DRSABCD, kol 000, kikim bons lang sok. Ebri wan man ouman hu luk nais afta electrik sok mas go ospital lang kikim.
 
-## Safety im namba wan
+## Seif-wei fast-im
 
-- **NO go pasim umman sapos power nomo off.** Electric immai travel thru-im umman, an thru-im yu tu.
-- Off-im power long mains o pug-im out appliance long wall.
-- Long high-voltage power lines (luk lak wanpela wire wea bin fall down), **stap atleast 8 metres away** an wunem **000** — only emergency services kempin mekim area safe.
+- **No bin tejet long tharran man ouman gaba bin offim power.** Electrik ijei bin go throu tharran lang throu yu.
+- Offim power di main o pulim dis apparat.
+- Long dis big power waires (e.g., waires-wei bin foldon), **stap eit mita aut-wei** lang kol **000** — onli dis emagensi sopes ijei bin wokim dis ples ijei bin seif.
 
-## Wen safe finis
+## Wen seif-wei
 
-1. Followim [DRSABCD](/kb/drsabcd).
-2. **Wunem 000.**
-3. Sapos nomo ansa wen yu tok, an nomo preding luk gud, startim [CPR](/kb/cpr) an putim [AED](/kb/aed).
-4. Putim [burn](/kb/burns) long kol wara go ron long im for atleast 20 minutes — often immai get **entry an exit burns**.
-5. Kikim-kikim for [shock](/kb/shock).
-6. Always go long hospital, maski sapos umman luk gud — internal damage an hat rhythm problem kempin kam ap leta.
+1. Fala [DRSABCD](/kb/drsabcd).
+2. **Kol 000.**
+3. If no bin rispon lang no bin breth nais-naisi, statim [CPR](/kb/cpr) lang tajim wan [AED](/kb/aed).
+4. Kulim eni [bons](/kb/burns) anda dis kul wata ijei bin ron long twenty menits — ijei bin abin **bons we ijei bin enjain lang outim**.
+5. Kikim long dis [sok](/kb/shock).
+6. Olweis go ospital, ebri if dis man ouman luk nais — inside jamaj lang hat no bin hit nais-naisi ijei bin bin kaman leta.

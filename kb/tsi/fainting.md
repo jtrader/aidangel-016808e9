@@ -1,24 +1,24 @@
-# Brai'n Fainim (Syncope)
+# Fainting (Syncope)
 
-Brai'n fainim loadan briftaim, bikos blud nomo ron gud long gedap blanga brai'n. Putum da pipul daun, haimapim da leg dem blanga dem go antap long hat, en luk long wan kain riisin sapos oli nomo kamin bak kwicktaim.
+Fainting da lugun briftaim longa wananisman blo mo pul blo blad go langa bren. Putum pipol splat, an hevim leg blo ol op pasa blo hat, an lukaut wananisim kaws sapos i slo olo.
 
-## Sain dem
+## Sain blo en
 
-- Kwicktaim brai'n fainim loadan
-- Skin blanga dem pael, swet, en kol
-- Pans blanga dem sloe
-- Kwicktaim kamin bak (maitbi long wan minit or tu minit)
+- Lugun briftaim longa wananisman blo
+- Skin blo en i wait, i sweti, i kol
+- Palpit blo hat i slo
+- Kwiktaim recover (yumala wanan minit o tu)
 
-## Wolat tu du
+## Wanem fo mekem
 
-1. Folom [DRSABCD](/kb/drsabcd).
-2. Putum da pipul **flaat** en **haimapim da leg dem blanga dem go antap long hat** (wanbaot 30 cm) blanga da blud kam bak long brai'n.
-3. Lusum da klos dem weh sait, en mekim sua i'go klin ia long de.
-4. Chedim en tritim eni enja weh kamin long daa fainim don.
-5. Wen dem i-kamin bak, tok tok gud long dem en letem dem sidon sloe sloe.
-6. Sapos dem nomo kamin bak insaid **2 minit**, kolim **000**.
-7. Sapos dem brai'n fainim loadan bat dem i-briting, putum dem long [rikaveri posisin](/kb/recovery-position).
+1. Folloim [DRSABCD](/kb/drsabcd).
+2. Putum pipol **splat** an **hevim leg blo ol op pasa blo hat levul** (bowt 30 cm) fo mekem blad pul go bak langa bren.
+3. Loosem tait klaot an mekem shua i gat fres er.
+4. Chedim an tritim eni enjiri fram da fal.
+5. Wen dei recover, gibit ol komfot an letem dei sidon slo olo.
+6. If dei nomo recover bifo **2 minit**, kol **000**.
+7. If dei unkonces bot i brithing, putum dei insaid da [recovery position](/kb/recovery-position).
 
-## Wen fainim i-kamin laik wan woning sain
+## Wen fainting da wanin sain
 
-Go luk daa dokta sapos fainim i-kamin wen yumekim wok, wit ches pen or hat bitin, en i-kamin evritaip, or long wanbaot hu i'pas 50 ia ol - i'ken bi wan sain blanga hat prablem or [straok](/kb/stroke).
+Go luktaut medikal advais sapos faintin i hapen wen yu exercesin, wit chest pen o palpitashun, o hapen evri taim, o longa eniwan we i owa 50 — em ken bi wan sain blo hat problem o [stroke](/kb/stroke).
