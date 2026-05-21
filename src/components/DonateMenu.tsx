@@ -40,7 +40,7 @@ export default function DonateMenu({ variant = "header", ngos }: DonateMenuProps
   const { language } = useLanguage();
   const list = ngos ?? (Object.keys(NGOS) as NgoId[]);
   const [tr, setTr] = useState({
-    donate: "Donate",
+    donate: "Give",
     heading: "Support first aid worldwide",
     change: "Change country",
     showing: "Showing donation links for",
@@ -48,7 +48,7 @@ export default function DonateMenu({ variant = "header", ngos }: DonateMenuProps
 
   useEffect(() => {
     if (language === "en") {
-      setTr({ donate: "Donate", heading: STATIC[1], change: STATIC[2], showing: STATIC[3] });
+      setTr({ donate: "Give", heading: STATIC[1], change: STATIC[2], showing: STATIC[3] });
       return;
     }
     let cancelled = false;
