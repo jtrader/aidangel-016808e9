@@ -25,17 +25,21 @@ const STATIC_TOPIC_STRINGS = [
 
 const KbTopic = () => {
   const { slug = "" } = useParams<{ slug: string }>();
-  const topic = getTopic(slug);
+  const { language } = useLanguage();
+  const topicEn = getTopic(slug, "en");
 
-  if (!topic) {
+  if (!topicEn) {
     return <Navigate to="/kb" replace />;
   }
 
-  const body = getBody(slug);
+  // Localized topic metadata + body (from static files when available)
+  const topic = getTopic(slug, language) ?? topicEn;
+  const rawBody = getBody(slug, language);
   // Strip the first "# Title" — we render it as a real <h1> ourselves.
-  const sourceBody = body.replace(/^#\s+.*\n+/, "");
+  const sourceBody = rawBody.replace(/^#\s+.*\n+/, "");
+  // Is the body in the selected language already? (true if it differs from English or English is selected)
+  const hasStaticBody = language === "en" || rawBody !== getBody(slug, "en");
 
-  const { language } = useLanguage();
   const [translated, setTranslated] = useState<{ title: string; summary: string; body: string }>({
     title: topic.title,
     summary: topic.summary,
@@ -74,36 +78,35 @@ const KbTopic = () => {
     let cancelled = false;
     translateStrings(language, STATIC_TOPIC_STRINGS).then((s) => {
       if (cancelled) return;
-      translateStrings(language, [topic.category]).then(([cat]) => {
-        if (cancelled) return;
-        setUi({
-          allTopics: s[0],
-          askAssistant: s[1],
-          appName: s[2],
-          knowledgeBase: s[3],
-          translating: s[4],
-          relatedTopics: s[5],
-          source: s[6],
-          adaptedFrom: s[7],
-          emergencyNote: s[8],
-          category: cat ?? topic.category,
-        });
+      setUi({
+        allTopics: s[0],
+        askAssistant: s[1],
+        appName: s[2],
+        knowledgeBase: s[3],
+        translating: s[4],
+        relatedTopics: s[5],
+        source: s[6],
+        adaptedFrom: s[7],
+        emergencyNote: s[8],
+        category: topic.category, // already comes from per-lang meta when available
       });
     });
     return () => { cancelled = true; };
   }, [language, topic.category]);
 
+  // Body: prefer static file; only call the AI fallback if no per-lang file exists.
   useEffect(() => {
     let cancelled = false;
-    if (language === "en") {
+    if (language === "en" || hasStaticBody) {
       setTranslated({ title: topic.title, summary: topic.summary, body: sourceBody });
+      setTranslating(false);
       return;
     }
     setTranslating(true);
     translateTopic(slug, language, {
-      title: topic.title,
-      summary: topic.summary,
-      body: sourceBody,
+      title: topicEn.title,
+      summary: topicEn.summary,
+      body: getBody(slug, "en").replace(/^#\s+.*\n+/, ""),
     })
       .then((res) => {
         if (!cancelled) setTranslated(res);
@@ -114,47 +117,19 @@ const KbTopic = () => {
     return () => {
       cancelled = true;
     };
-  }, [slug, language, topic.title, topic.summary, sourceBody]);
+  }, [slug, language, hasStaticBody, sourceBody, topic.title, topic.summary, topicEn.title, topicEn.summary]);
 
-  const related = topic.related
-    .map((s) => topics.find((t) => t.slug === s))
+  const enTopics = topicsFor("en");
+  const localTopics = topicsFor(language);
+  const related = topicEn.related
+    .map((s) => localTopics.find((t) => t.slug === s) ?? enTopics.find((t) => t.slug === s))
     .filter((t): t is NonNullable<typeof t> => !!t);
 
-  useSeo({
-    title: `${topic.title} – First Aid Guide | First Aid Angel`,
-    description: topic.summary,
-    canonical: `${SITE_URL}/kb/${topic.slug}`,
-    jsonLd: [
-      {
-        "@context": "https://schema.org",
-        "@type": "MedicalWebPage",
-        name: topic.title,
-        description: topic.summary,
-        url: `${SITE_URL}/kb/${topic.slug}`,
-        about: { "@type": "MedicalCondition", name: topic.section },
-        keywords: topic.keywords.join(", "),
-        isPartOf: {
-          "@type": "WebSite",
-          name: "First Aid Angel",
-          url: SITE_URL,
-        },
-        citation: {
-          "@type": "Book",
-          name: "The St John of God First Aid Manual 5th Edition",
-          author: "St John of God",
-        },
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "First Aid Angel", item: SITE_URL },
-          { "@type": "ListItem", position: 2, name: "Knowledge base", item: `${SITE_URL}/kb` },
-          { "@type": "ListItem", position: 3, name: topic.title, item: `${SITE_URL}/kb/${topic.slug}` },
-        ],
-      },
-    ],
-  });
+  const kbPath = localizedPath(language, "/kb");
+  const homePath = localizedPath(language, "/");
+  const topicPath = localizedPath(language, `/kb/${topic.slug}`);
+
+
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
