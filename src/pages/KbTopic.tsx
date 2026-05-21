@@ -9,6 +9,8 @@ import NetworkFooter from "@/components/NetworkFooter";
 import LanguageSelector from "@/components/LanguageSelector";
 import DonateMenu from "@/components/DonateMenu";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCountry } from "@/hooks/useCountry";
+import { emergencyNumberForCountry } from "@/lib/donations";
 import { translateTopic } from "@/lib/kbTranslate";
 import { translateStrings } from "@/lib/uiTranslate";
 import { buildHowToJsonLd, buildFaqJsonLd } from "@/lib/kbSchema";
@@ -28,6 +30,8 @@ const STATIC_TOPIC_STRINGS = [
 const KbTopic = () => {
   const { slug = "" } = useParams<{ slug: string }>();
   const { language } = useLanguage();
+  const { code: countryCode } = useCountry();
+  const emergencyNumber = emergencyNumberForCountry(countryCode);
   const topicEn = getTopic(slug, "en");
 
   if (!topicEn) {
@@ -301,13 +305,14 @@ const KbTopic = () => {
               {ui.adaptedFrom} <em>{topic.section}</em>.
             </p>
             <p lang={language} className="text-xs text-muted-foreground mt-3">
-              {ui.emergencyNote.split(/(000)/).map((part, i) =>
-                part === "000" ? (
-                  <a key={i} href="tel:000" className="text-primary font-semibold underline">000</a>
-                ) : (
-                  part
-                )
-              )}
+              {ui.emergencyNote.replace(/\b000\b/g, emergencyNumber).split(emergencyNumber).map((part, i, arr) => (
+                <span key={i}>
+                  {part}
+                  {i < arr.length - 1 && (
+                    <a href={`tel:${emergencyNumber}`} className="text-primary font-semibold underline">{emergencyNumber}</a>
+                  )}
+                </span>
+              ))}
             </p>
           </aside>
         </article>

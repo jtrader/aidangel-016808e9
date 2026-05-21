@@ -2,6 +2,8 @@ import ReactMarkdown from "react-markdown";
 import { Bot, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { findTopicBySection } from "@/lib/kb";
+import { useCountry } from "@/hooks/useCountry";
+import { emergencyNumberForCountry } from "@/lib/donations";
 
 interface Message {
   role: "user" | "assistant";
@@ -35,6 +37,8 @@ function linkAfaCitations(text: string): string {
 
 const ChatMessage = ({ message, onAction }: ChatMessageProps) => {
   const isUser = message.role === "user";
+  const { code: countryCode } = useCountry();
+  const emergencyNumber = emergencyNumberForCountry(countryCode);
 
   return (
     <div className={`flex gap-3 ${isUser ? "justify-end" : "justify-start"}`}>
@@ -92,7 +96,7 @@ const ChatMessage = ({ message, onAction }: ChatMessageProps) => {
                 message.content
                   .replace(/\[\[(?:STEP(?::\d+\/\d+)?(?:_END)?|TRIAGE|URGENT)\]\]/g, "")
                   .trim()
-                  .replace(/\b000\b/g, "[000](tel:000)")
+                  .replace(/\b000\b/g, `[${emergencyNumber}](tel:${emergencyNumber})`)
                   .replace(/\bDRSABCD\b/g, "[DRSABCD](#drsabcd)"),
               )}
             </ReactMarkdown>

@@ -12,6 +12,8 @@ import DonateMenu from "@/components/DonateMenu";
 import { SeoHead } from "@/components/SeoHead";
 import { streamChat } from "@/lib/chat-stream";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCountry } from "@/hooks/useCountry";
+import { emergencyNumberForCountry } from "@/lib/donations";
 import aidAngelLogo from "@/assets/aidangel-logo.png";
 
 type Msg = { role: "user" | "assistant"; content: string };
@@ -23,6 +25,8 @@ const Index = () => {
   const [status, setStatus] = useState<ChatStatus>("idle");
   const scrollRef = useRef<HTMLDivElement>(null);
   const { t, language } = useLanguage();
+  const { code: countryCode } = useCountry();
+  const emergencyNumber = emergencyNumberForCountry(countryCode);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -174,9 +178,9 @@ const Index = () => {
               <div className="max-w-2xl mx-auto w-full">
                 <ChatInput onSend={send} disabled={isLoading} />
                 <p className="text-center text-xs text-muted-foreground mt-2">
-                  {t("disclaimer").split("000").map((part, i, arr) =>
+                  {t("disclaimer").replace(/\b000\b/g, emergencyNumber).split(emergencyNumber).map((part, i, arr) =>
                     i < arr.length - 1 ? (
-                      <span key={i}>{part}<a href="tel:000" className="underline font-semibold hover:text-foreground transition-colors">000</a></span>
+                      <span key={i}>{part}<a href={`tel:${emergencyNumber}`} className="underline font-semibold hover:text-foreground transition-colors">{emergencyNumber}</a></span>
                     ) : (
                       <span key={i}>{part}</span>
                     )
@@ -366,11 +370,11 @@ const Index = () => {
                           </p>
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                             <a
-                              href="tel:000"
+                              href={`tel:${emergencyNumber}`}
                               className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-destructive text-destructive-foreground text-xs font-semibold hover:bg-destructive/90 transition-colors"
                             >
                               <Phone className="h-3.5 w-3.5" />
-                              Call 000
+                              Call {emergencyNumber}
                             </a>
                             <button
                               type="button"
@@ -419,9 +423,9 @@ const Index = () => {
                 })()}
                 <ChatInput onSend={send} disabled={isLoading} />
                 <p className="text-center text-xs text-muted-foreground mt-2">
-                  {t("disclaimer").split("000").map((part, i, arr) =>
+                  {t("disclaimer").replace(/\b000\b/g, emergencyNumber).split(emergencyNumber).map((part, i, arr) =>
                     i < arr.length - 1 ? (
-                      <span key={i}>{part}<a href="tel:000" className="underline font-semibold hover:text-foreground transition-colors">000</a></span>
+                      <span key={i}>{part}<a href={`tel:${emergencyNumber}`} className="underline font-semibold hover:text-foreground transition-colors">{emergencyNumber}</a></span>
                     ) : (
                       <span key={i}>{part}</span>
                     )
