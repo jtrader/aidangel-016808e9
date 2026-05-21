@@ -21,6 +21,7 @@ import {
 } from "@/lib/donations";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { translateStrings } from "@/lib/uiTranslate";
+import { trackGiveClick } from "@/lib/giveAnalytics";
 
 interface DonateMenuProps {
   variant?: "header" | "footer";
