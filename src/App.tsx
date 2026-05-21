@@ -12,6 +12,7 @@ import Index from "./pages/Index";
 import KbIndex from "./pages/KbIndex";
 import KbTopic from "./pages/KbTopic";
 import NotFound from "./pages/NotFound";
+import AdminDonations from "./pages/AdminDonations";
 
 const queryClient = new QueryClient();
 
