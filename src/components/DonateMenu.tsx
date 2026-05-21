@@ -21,6 +21,7 @@ import {
 } from "@/lib/donations";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { translateStrings } from "@/lib/uiTranslate";
+import { trackGiveClick } from "@/lib/giveAnalytics";
 
 interface DonateMenuProps {
   variant?: "header" | "footer";
@@ -96,6 +97,20 @@ export default function DonateMenu({ variant = "header", ngos }: DonateMenuProps
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() =>
+                  trackGiveClick({
+                    ngoId: id,
+                    countryCode: country.code,
+                    countryName: country.name,
+                    destinationUrl: url,
+                    isNational,
+                    language,
+                    variant,
+                  })
+                }
+                data-analytics-event="give_click"
+                data-analytics-ngo={id}
+                data-analytics-country={country.code}
                 className="flex flex-col items-start gap-0.5 cursor-pointer"
               >
                 <span className="text-sm font-medium text-foreground">{ngo.short}</span>
