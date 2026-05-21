@@ -30,9 +30,21 @@ export type GiveClickPayload = {
  * renamed UI label. Fire-and-forget; never blocks the navigation.
  */
 export function trackGiveClick(p: GiveClickPayload): void {
+  recordClick("give_click", p);
+}
+
+/**
+ * Records a Shop-button click into the same `give_clicks` table with a
+ * distinct event name so the referral dashboard can filter shop vs give.
+ */
+export function trackShopClick(p: GiveClickPayload): void {
+  recordClick("shop_click", p);
+}
+
+function recordClick(event: "give_click" | "shop_click", p: GiveClickPayload): void {
   try {
     const row = {
-      event_name: "give_click",
+      event_name: event,
       ngo_id: p.ngoId,
       country_code: p.countryCode,
       country_name: p.countryName,
