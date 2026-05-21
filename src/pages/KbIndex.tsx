@@ -31,6 +31,8 @@ const STATIC_INDEX_STRINGS = [
 
 const KbIndex = () => {
   const { language } = useLanguage();
+  const { code: countryCode } = useCountry();
+  const emergencyNumber = emergencyNumberForCountry(countryCode);
   const grouped = useMemo(() => topicsByCategory(language), [language]);
   const orderedCategories = useMemo(() => Object.keys(grouped).sort(), [grouped]);
   const enTopics = useMemo(() => topicsFor("en"), []);
