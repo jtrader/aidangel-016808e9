@@ -45,6 +45,8 @@ const App = forwardRef(function App(_props, _ref) {
                 <Route path="/kb" element={<KbIndex />} />
                 <Route path="/kb/:slug" element={<KbTopic />} />
 
+                <Route path="/admin/donations" element={<AdminDonations />} />
+
                 {/* Localized */}
                 <Route
                   path="/:lang"
