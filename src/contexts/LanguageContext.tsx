@@ -230,9 +230,10 @@ interface LanguageContextValue {
   isAuto: boolean;
   /** Set a specific language (manual override). */
   setLanguage: (lang: LanguageCode) => void;
-  /** Clear the manual override and re-sync to the browser's detected language. */
-  setAuto: () => void;
+  /** Clear the manual override and re-sync to the browser's detected language. Returns the detected language. */
+  setAuto: () => LanguageCode;
   t: (key: TranslationKey) => string;
+
 }
 
 const LanguageContext = createContext<LanguageContextValue | undefined>(undefined);
