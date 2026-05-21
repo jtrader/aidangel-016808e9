@@ -5,6 +5,7 @@ import { topicsByCategory, topicsFor } from "@/lib/kb";
 import { SeoHead } from "@/components/SeoHead";
 import { canonicalUrl, SITE_ORIGIN, localizedPath } from "@/lib/i18n";
 import NetworkFooter from "@/components/NetworkFooter";
+import SupportUsBar from "@/components/SupportUsBar";
 import LanguageSelector from "@/components/LanguageSelector";
 
 import { useLanguage } from "@/contexts/LanguageContext";
