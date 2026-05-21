@@ -370,11 +370,11 @@ const Index = () => {
                           </p>
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                             <a
-                              href="tel:000"
+                              href={`tel:${emergencyNumber}`}
                               className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-destructive text-destructive-foreground text-xs font-semibold hover:bg-destructive/90 transition-colors"
                             >
                               <Phone className="h-3.5 w-3.5" />
-                              Call 000
+                              Call {emergencyNumber}
                             </a>
                             <button
                               type="button"
