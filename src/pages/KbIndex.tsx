@@ -163,7 +163,6 @@ const KbIndex = () => {
             {ui.backToChat}
           </Link>
           <div className="flex items-center gap-3">
-            <DonateMenu variant="header" />
             <LanguageSelector />
             <span className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-foreground">
               <BookOpen className="h-4 w-4 text-primary" />
