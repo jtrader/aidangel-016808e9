@@ -18,33 +18,15 @@ const LanguageSelector = () => {
 
   const handleChange = (value: string) => {
     if (value === AUTO_VALUE) {
-      setAuto();
-      // Re-read detected language after setAuto (state updates async; use detection result).
-      // The provider already updated `language`; navigate on next tick via setTimeout 0.
-      setTimeout(() => {
-        // Pull current language from context via a fresh read of the URL+stored state.
-        // Simpler: rely on the provider's updated `language` on next render — manually
-        // route to root of detected lang here using the language already set.
-      }, 0);
-      // Navigate immediately using whatever the provider just resolved to.
-      // `language` from the closure may be stale; instead derive from a microtask.
-      queueMicrotask(() => {
-        const { basePath } = stripLangPrefix(location.pathname);
-        const target = localizedPath(
-          // After setAuto, the context's `language` has updated synchronously in state,
-          // but the closure here is stale. Read straight from localStorage detection
-          // by calling navigateToLang with the freshly-detected language via the DOM.
-          (document.documentElement.lang as LanguageCode) || "en",
-          basePath,
-        );
-        if (target !== location.pathname) navigate(target);
-      });
+      const detected = setAuto();
+      navigateToLang(detected);
       return;
     }
     const next = value as LanguageCode;
     setLanguage(next);
     navigateToLang(next);
   };
+
 
   const selectValue = isAuto ? AUTO_VALUE : language;
 
