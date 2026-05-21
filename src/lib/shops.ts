@@ -163,12 +163,21 @@ export const COUNTRY_SHOPS: Record<string, Partial<Record<ShopId, string>>> = {
 export function shopsForCountry(code: string | null | undefined): Array<{ id: ShopId; url: string; isNational: boolean }> {
   const country = getCountry(code ?? DEFAULT_COUNTRY);
   const national = COUNTRY_SHOPS[country.code] ?? {};
-  // Maintain a stable order: St John, Red Cross, National.
   const order: ShopId[] = ["stjohn", "redcross", "national"];
-  return order.map((id) => {
+  const out: Array<{ id: ShopId; url: string; isNational: boolean }> = [];
+  for (const id of order) {
     const url = national[id];
-    return { id, url: url ?? SHOPS[id].international, isNational: !!url };
-  });
+    if (url) {
+      // Confirmed national supplier.
+      out.push({ id, url, isNational: true });
+    } else if (id !== "national") {
+      // St John / Red Cross fall back to their verified international site.
+      out.push({ id, url: SHOPS[id].international, isNational: false });
+    }
+    // Generic "national" tier is omitted unless a country-specific supplier
+    // is configured — we don't show a US-only store to non-US users.
+  }
+  return out;
 }
 
 export function shopUrl(code: string | null | undefined, id: ShopId): string {
