@@ -312,7 +312,7 @@ const fallback: LanguageContextValue = {
   language: "en",
   isAuto: false,
   setLanguage: () => {},
-  setAuto: () => {},
+  setAuto: () => "en",
   t: (key: TranslationKey) => translations.en[key] ?? key,
 };
 
