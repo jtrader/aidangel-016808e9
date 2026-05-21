@@ -2,6 +2,8 @@ import ReactMarkdown from "react-markdown";
 import { Bot, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { findTopicBySection } from "@/lib/kb";
+import { useCountry } from "@/hooks/useCountry";
+import { emergencyNumberForCountry } from "@/lib/donations";
 
 interface Message {
   role: "user" | "assistant";
