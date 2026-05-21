@@ -205,14 +205,14 @@ export default function AdminDonations() {
 
   return (
     <main className="min-h-screen bg-background p-4 sm:p-6">
-      <Helmet><title>Give Analytics · Referral Dashboard</title><meta name="robots" content="noindex" /></Helmet>
+      <Helmet><title>Referral Analytics · Give & Shop</title><meta name="robots" content="noindex" /></Helmet>
 
       <div className="max-w-6xl mx-auto space-y-4">
         <header className="flex items-start justify-between gap-3 flex-wrap">
           <div>
-            <h1 className="text-2xl font-bold">Give Analytics</h1>
+            <h1 className="text-2xl font-bold">Referral Analytics</h1>
             <p className="text-sm text-muted-foreground">
-              Track who clicks Give, which NGO they pick, and where they came from.
+              Track Give (donations) and Shop (first aid supplies) referrals — who, what, and where.
             </p>
           </div>
           <Button variant="outline" size="sm" onClick={() => supabase.auth.signOut()}>Sign out</Button>
