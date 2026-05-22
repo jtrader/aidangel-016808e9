@@ -13,6 +13,7 @@ import {
 import NetworkFooter from "@/components/NetworkFooter";
 import LanguageSelector from "@/components/LanguageSelector";
 import { trackLearnClick } from "@/lib/giveAnalytics";
+import { Favicon } from "@/components/Favicon";
 
 export default function LearnCity() {
   const { language } = useLanguage();
