@@ -104,19 +104,34 @@ function StepBadge({ icon: Icon, active, done }: { icon: typeof ShieldAlert; act
   );
 }
 
+function detectInitialLang(): CprLangCode {
+  if (typeof window === "undefined") return "en";
+  const stored = window.localStorage.getItem("faa.cprLang") as CprLangCode | null;
+  if (stored && CPR_LANGUAGES.some((l) => l.code === stored)) return stored;
+  const nav = (navigator.language || "en").toLowerCase().split("-")[0];
+  const match = CPR_LANGUAGES.find((l) => l.code === nav);
+  return match ? match.code : "en";
+}
+
 export default function CprGuide() {
   const { code: countryCode } = useCountry();
   const emergency = emergencyNumberForCountry(countryCode);
   const [stepIdx, setStepIdx] = useState(0);
   const [voiceOn, setVoiceOn] = useState(true);
-  const [muted, setMuted] = useState(false);
+  const [lang, setLang] = useState<CprLangCode>(detectInitialLang);
   const wakeLockRef = useRef<WakeLockSentinel | null>(null);
   const voiceOnRef = useRef(voiceOn);
+  const langRef = useRef(lang);
   useEffect(() => { voiceOnRef.current = voiceOn; }, [voiceOn]);
+  useEffect(() => {
+    langRef.current = lang;
+    try { window.localStorage.setItem("faa.cprLang", lang); } catch { /* ignore */ }
+    prefetchCprVoice(lang);
+  }, [lang]);
 
   const handleBreath = useCallback(() => {
     if (!voiceOnRef.current) return;
-    speak("Two breaths. Then continue compressions.", { rate: 1.05, interrupt: true });
+    void speakCpr(langRef.current, "breath", { interrupt: true });
   }, []);
 
   const metronome = useMetronome({ bpm: 110, cycleLength: 30, onBreath: handleBreath });
@@ -134,7 +149,7 @@ export default function CprGuide() {
     };
   }, [metronome.isRunning]);
 
-  useEffect(() => () => { stopSpeaking(); }, []);
+  useEffect(() => () => { stopCprVoice(); }, []);
 
   const step = STEPS[stepIdx];
   const isCpr = step.key === "C";
@@ -144,11 +159,25 @@ export default function CprGuide() {
     setStepIdx(next);
     const s = STEPS[next];
     if (voiceOnRef.current) {
-      speak(s.spoken, { rate: 1.03, interrupt: true });
+      void speakCpr(langRef.current, s.key, { interrupt: true });
     }
     if (s.key !== "C") {
       metronome.stop();
     }
+  }, [metronome]);
+
+  const startCpr = useCallback(async () => {
+    if (voiceOnRef.current) {
+      await speakCpr(langRef.current, "startCpr", { interrupt: true });
+    }
+    metronome.start();
+  }, [metronome]);
+
+  const resetAll = useCallback(() => {
+    metronome.stop();
+    stopCprVoice();
+    setStepIdx(0);
+  }, [metronome]);
   }, [metronome]);
 
   const startCpr = useCallback(async () => {
