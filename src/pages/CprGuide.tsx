@@ -276,10 +276,14 @@ export default function CprGuide() {
                   ))}
                 </select>
                 {autoDetected && (
-                  <span className="absolute right-1 top-1/2 -translate-y-1/2 flex h-5 w-5 items-center justify-center">
+                  <button
+                    onClick={() => setAutoDetected(false)}
+                    title="Language auto-detected from your browser"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 flex h-5 w-5 items-center justify-center rounded-full"
+                  >
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-30" />
                     <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
-                  </span>
+                  </button>
                 )}
               </div>
               <button
