@@ -35,6 +35,8 @@ export default function ClaimListingDialog({
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [alreadyPending, setAlreadyPending] = useState<{ claimId: string; createdAt: string } | null>(null);
+  const [checking, setChecking] = useState(false);
   const [form, setForm] = useState({
     claimant_name: "",
     claimant_email: "",
@@ -43,6 +45,31 @@ export default function ClaimListingDialog({
     message: "",
     evidence_url: "",
   });
+
+  useEffect(() => {
+    if (!open) return;
+    const checkExisting = async () => {
+      setChecking(true);
+      try {
+        const raw = localStorage.getItem("faa_claims");
+        if (!raw) return;
+        const claims = JSON.parse(raw) as Array<{ educatorId: string; claimId: string; claimantEmail: string }>;
+        const mine = claims.filter((c) => c.educatorId === educatorId);
+        if (mine.length === 0) return;
+        const { data, error } = await supabase.rpc("get_claim_statuses", {
+          claim_ids: mine.map((c) => c.claimId),
+        });
+        if (error || !data) return;
+        const pending = data.find((d: { status: string }) => d.status === "pending");
+        if (pending) {
+          setAlreadyPending({ claimId: pending.id, createdAt: pending.created_at });
+        }
+      } finally {
+        setChecking(false);
+      }
+    };
+    checkExisting();
+  }, [open, educatorId]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
