@@ -121,7 +121,7 @@ export default function LearnCountry() {
     });
     getCitiesForCountry(country.code).then((c) => !cancelled && setCities(c));
     if (showNearby && geo?.lat && geo?.lng) {
-      getNearestVenues(geo.lat, geo.lng, { countryCode: country.code, limit: 3 }).then(
+      getNearestVenues(geo.lat, geo.lng, { countryCode: country.code, region: geo.region, city: geo.city, limit: 3 }).then(
         (v) => !cancelled && setNearby(v),
       );
     } else {
