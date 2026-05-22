@@ -71,6 +71,16 @@ export default function LearnIndex() {
             </p>
           </div>
         </div>
+
+        <div className="mt-4 p-4 border border-dashed border-border rounded-xl text-sm flex items-center justify-between gap-3">
+          <div>
+            <div className="font-medium text-foreground">Know a great course?</div>
+            <p className="text-muted-foreground text-xs">Help us grow the directory in your country and language.</p>
+          </div>
+          <Link to="/learn/submit" className="px-3 py-1.5 rounded-md bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 whitespace-nowrap">
+            Submit a course
+          </Link>
+        </div>
       </main>
 
       <NetworkFooter currentApp="First Aid Angel" />
