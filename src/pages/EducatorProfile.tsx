@@ -125,6 +125,20 @@ export default function EducatorProfile() {
           </div>
         )}
 
+        {myClaims.length > 1 && (
+          <section className="mb-6 -mt-2 space-y-2">
+            <h3 className="text-sm font-semibold text-foreground">Your claims</h3>
+            {myClaims.map((claim) => (
+              <ClaimStatusCard key={claim.id} claim={claim} />
+            ))}
+          </section>
+        )}
+        {myClaims.length === 1 && (
+          <section className="mb-6 -mt-2">
+            <ClaimStatusCard claim={myClaims[0]} />
+          </section>
+        )}
+
         <div className="flex flex-wrap gap-2 mb-8">
           {ed.booking_url && (
             <a
