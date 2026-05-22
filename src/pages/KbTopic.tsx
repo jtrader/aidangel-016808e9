@@ -214,7 +214,28 @@ const KbTopic = () => {
           });
           if (howTo) schemas.push(howTo);
           const faq = buildFaqJsonLd({ body: translated.body, inLanguage });
-          if (faq) schemas.push(faq);
+          // Merge curated Q&A into the FAQPage schema (or build one if body didn't have any).
+          if (qa.length > 0) {
+            const curated = qa.map((item) => ({
+              "@type": "Question",
+              name: item.q,
+              acceptedAnswer: { "@type": "Answer", text: item.a },
+            }));
+            if (faq) {
+              const existing = (faq.mainEntity as Array<Record<string, unknown>>) || [];
+              faq.mainEntity = [...existing, ...curated];
+              schemas.push(faq);
+            } else {
+              schemas.push({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                inLanguage,
+                mainEntity: curated,
+              });
+            }
+          } else if (faq) {
+            schemas.push(faq);
+          }
           return schemas;
         })()}
       />
