@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Heart, X } from "lucide-react";
 import DonateMenu from "@/components/DonateMenu";
 import ShopMenu from "@/components/ShopMenu";
+import LearnMenu from "@/components/LearnMenu";
 import { useEngagementCTA } from "@/hooks/useEngagementCTA";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { translateStrings } from "@/lib/uiTranslate";
@@ -47,6 +48,7 @@ export default function SupportUsBar() {
         <div className="flex items-center gap-2">
           <DonateMenu variant="header" />
           <ShopMenu variant="header" />
+          <LearnMenu variant="header" />
           <button
             type="button"
             onClick={dismiss}

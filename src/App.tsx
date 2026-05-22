@@ -15,6 +15,10 @@ import NotFound from "./pages/NotFound";
 import AdminDonations from "./pages/AdminDonations";
 import SymptomFinder from "./pages/SymptomFinder";
 import SymptomLander from "./pages/SymptomLander";
+import LearnIndex from "./pages/LearnIndex";
+import LearnCountry from "./pages/LearnCountry";
+import LearnCity from "./pages/LearnCity";
+import EducatorProfile from "./pages/EducatorProfile";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +52,10 @@ const App = forwardRef(function App(_props, _ref) {
                 <Route path="/kb/:slug" element={<KbTopic />} />
                 <Route path="/symptoms" element={<SymptomFinder />} />
                 <Route path="/symptoms/:slug" element={<SymptomLander />} />
+                <Route path="/learn" element={<LearnIndex />} />
+                <Route path="/learn/provider/:slug" element={<EducatorProfile />} />
+                <Route path="/learn/:country" element={<LearnCountry />} />
+                <Route path="/learn/:country/:city" element={<LearnCity />} />
 
                 <Route path="/admin/donations" element={<AdminDonations />} />
 

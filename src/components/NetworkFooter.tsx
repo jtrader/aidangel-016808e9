@@ -5,6 +5,7 @@ import { translateStrings } from "@/lib/uiTranslate";
 import { localizedPath } from "@/lib/i18n";
 import DonateMenu from "@/components/DonateMenu";
 import ShopMenu from "@/components/ShopMenu";
+import LearnMenu from "@/components/LearnMenu";
 
 type NetworkLink = {
   href: string;
@@ -84,6 +85,7 @@ export default function NetworkFooter({ currentApp = "Aid Angel" }: NetworkFoote
         <div className="flex flex-wrap items-center justify-center gap-2 pb-4">
           <DonateMenu variant="footer" />
           <ShopMenu variant="footer" />
+          <LearnMenu variant="footer" />
         </div>
         <div className="pb-2">
           <a href={kbHref} className="text-xs font-semibold text-primary hover:underline">

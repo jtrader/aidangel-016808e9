@@ -1,0 +1,179 @@
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { ArrowLeft, ExternalLink, MapPin, Globe, Heart } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { SeoHead } from "@/components/SeoHead";
+import { EducatorFull, getEducatorBySlug, citySlug } from "@/lib/educators";
+import { getCountry } from "@/lib/donations";
+import NetworkFooter from "@/components/NetworkFooter";
+import LanguageSelector from "@/components/LanguageSelector";
+
+export default function EducatorProfile() {
+  const { language } = useLanguage();
+  const { slug } = useParams<{ slug: string }>();
+  const [ed, setEd] = useState<EducatorFull | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    getEducatorBySlug(slug ?? "").then((data) => {
+      if (cancelled) return;
+      setEd(data);
+      setLoading(false);
+    });
+    return () => { cancelled = true; };
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <p className="text-sm text-muted-foreground">Loading…</p>
+      </div>
+    );
+  }
+  if (!ed) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <main className="flex-1 max-w-3xl mx-auto px-4 py-12 text-center">
+          <h1 className="font-heading text-2xl font-bold mb-2">Provider not found</h1>
+          <Link to="/learn" className="text-primary underline">Back to Learn First Aid</Link>
+        </main>
+      </div>
+    );
+  }
+
+  const title = `${ed.name} — First Aid Courses`;
+  const desc = ed.blurb ?? `${ed.name} first aid and CPR training provider profile.`;
+
+  return (
+    <div className="min-h-screen flex flex-col bg-background">
+      <SeoHead lang={language} title={title} description={desc} basePath={`/learn/provider/${ed.slug}`} />
+      <header className="border-b border-border px-4 py-3 flex items-center justify-between bg-background">
+        <Link to="/learn" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+          <ArrowLeft className="h-4 w-4" /> Learn
+        </Link>
+        <LanguageSelector />
+      </header>
+
+      <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-8">
+        <div className="mb-6">
+          <div className="text-xs uppercase tracking-wide text-primary font-semibold mb-1">
+            First aid training provider
+          </div>
+          <h1 className="font-heading text-3xl font-bold mb-2">{ed.name}</h1>
+          {ed.blurb && <p className="text-muted-foreground">{ed.blurb}</p>}
+        </div>
+
+        <div className="flex flex-wrap gap-2 mb-8">
+          {ed.booking_url && (
+            <a
+              href={ed.booking_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90"
+            >
+              Book a course <ExternalLink className="h-3 w-3" />
+            </a>
+          )}
+          {ed.website && (
+            <a
+              href={ed.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 px-4 py-2 rounded-full border border-border text-sm hover:bg-accent"
+            >
+              Website <ExternalLink className="h-3 w-3" />
+            </a>
+          )}
+        </div>
+
+        {ed.service_areas.length > 0 && (
+          <section className="mb-8">
+            <h2 className="font-heading text-lg font-semibold mb-3 inline-flex items-center gap-2">
+              <Globe className="h-4 w-4 text-primary" /> Service areas
+            </h2>
+            <ul className="grid sm:grid-cols-2 gap-2">
+              {ed.service_areas.map((area) => {
+                const country = getCountry(area.country_code);
+                return (
+                  <li key={area.id} className="bg-card border border-border rounded-lg px-3 py-2 text-sm">
+                    <Link to={`/learn/${area.country_code.toLowerCase()}`} className="font-medium hover:text-primary">
+                      {country?.flag} {country?.name ?? area.country_code}
+                    </Link>
+                    {(area.city || area.region) && (
+                      <span className="text-muted-foreground"> — {[area.city, area.region].filter(Boolean).join(", ")}</span>
+                    )}
+                    {area.notes && <div className="text-xs text-muted-foreground">{area.notes}</div>}
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        )}
+
+        {ed.locations.length > 0 && (
+          <section className="mb-8">
+            <h2 className="font-heading text-lg font-semibold mb-3 inline-flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-primary" /> Training venues
+            </h2>
+            <ul className="grid gap-2">
+              {ed.locations.map((loc) => {
+                const country = getCountry(loc.country_code);
+                return (
+                  <li key={loc.id} className="bg-card border border-border rounded-lg p-3 text-sm">
+                    <div className="font-medium">{loc.address ?? loc.city}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {loc.city && (
+                        <Link
+                          to={`/learn/${loc.country_code.toLowerCase()}/${citySlug(loc.city)}`}
+                          className="hover:text-primary"
+                        >
+                          {loc.city}
+                        </Link>
+                      )}
+                      {loc.region && <>, {loc.region}</>}
+                      {country && <> — {country.flag} {country.name}</>}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        )}
+
+        {ed.languages.length > 0 && (
+          <section className="mb-8">
+            <h2 className="font-heading text-lg font-semibold mb-3">Languages taught</h2>
+            <ul className="flex flex-wrap gap-2">
+              {ed.languages.map((l) => (
+                <li key={l} className="px-3 py-1 rounded-full bg-card border border-border text-xs uppercase">
+                  {l}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <section className="mt-4 p-5 bg-accent/40 rounded-xl">
+          <h2 className="font-heading text-base font-semibold mb-1 inline-flex items-center gap-2">
+            <Heart className="h-4 w-4 text-primary" /> Find an AED near you
+          </h2>
+          <p className="text-sm text-muted-foreground mb-3">
+            Defibrillator access is as important as training. Map your nearest AED before you need it.
+          </p>
+          <a
+            href="https://www.google.com/maps/search/AED+defibrillator+near+me"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+          >
+            Find an AED near me
+          </a>
+        </section>
+      </main>
+
+      <NetworkFooter currentApp="First Aid Angel" />
+    </div>
+  );
+}
