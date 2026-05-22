@@ -81,10 +81,24 @@ export default function EducatorProfile() {
             <div className="text-xs uppercase tracking-wide text-primary font-semibold mb-1">
               First aid training provider
             </div>
-            <h1 className="font-heading text-3xl font-bold mb-2">{ed.name}</h1>
+            <div className="flex items-center gap-2 flex-wrap mb-2">
+              <h1 className="font-heading text-3xl font-bold">{ed.name}</h1>
+              {ed.is_claimed && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                  <BadgeCheck className="h-3.5 w-3.5" /> Verified
+                </span>
+              )}
+            </div>
             {ed.blurb && <p className="text-muted-foreground">{ed.blurb}</p>}
           </div>
         </div>
+
+        {!ed.is_claimed && (
+          <div className="mb-6 -mt-2">
+            <ClaimListingDialog educatorId={ed.id} educatorName={ed.name} />
+            <span className="ml-2 text-xs text-muted-foreground">Are you {ed.name}?</span>
+          </div>
+        )}
 
         <div className="flex flex-wrap gap-2 mb-8">
           {ed.booking_url && (
