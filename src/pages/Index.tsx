@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Loader2, RotateCcw, MapPin, Phone, HeartPulse, Stethoscope, FlaskConical } from "lucide-react";
+import { Loader2, RotateCcw, MapPin, Phone, HeartPulse, Stethoscope, FlaskConical, Search } from "lucide-react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import EmergencyBanner from "@/components/EmergencyBanner";
 import ChatMessage from "@/components/ChatMessage";
@@ -211,6 +212,14 @@ const Index = () => {
                     <MapPin className="h-4 w-4" />
                     AED Finder
                   </a>
+                  <Link
+                    to="/symptoms"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors border border-border"
+                    aria-label="Find first aid by symptom"
+                  >
+                    <Search className="h-4 w-4" />
+                    Symptom Finder
+                  </Link>
                 </div>
               </div>
 

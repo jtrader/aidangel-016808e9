@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, BookOpen, Loader2 } from "lucide-react";
+import { ArrowLeft, BookOpen, Loader2, Search } from "lucide-react";
 import { topicsByCategory, topicsFor } from "@/lib/kb";
 import { SeoHead } from "@/components/SeoHead";
 import { canonicalUrl, SITE_ORIGIN, localizedPath } from "@/lib/i18n";
@@ -198,6 +198,15 @@ const KbIndex = () => {
               </span>
             ))}
           </p>
+          <div className="mb-6">
+            <Link
+              to="/symptoms"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+            >
+              <Search className="h-4 w-4" />
+              Not sure where to start? Find by symptom
+            </Link>
+          </div>
 
 
           {prefetching && language !== "en" && (
