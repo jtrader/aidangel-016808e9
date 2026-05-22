@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, ExternalLink, MapPin, Globe, Heart, Search, Navigation } from "lucide-react";
+import { ArrowLeft, ExternalLink, MapPin, Globe, Heart, Search, Navigation, X, Loader2 } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { COUNTRIES, getCountry } from "@/lib/donations";
@@ -12,11 +12,35 @@ import {
   getNearestVenues,
   citySlug,
 } from "@/lib/educators";
-import { useGeoLocation } from "@/hooks/useGeoLocation";
+import { useGeoLocation, setManualGeo, GeoInfo } from "@/hooks/useGeoLocation";
 import NetworkFooter from "@/components/NetworkFooter";
 import LanguageSelector from "@/components/LanguageSelector";
 import { trackLearnClick } from "@/lib/giveAnalytics";
 import { Favicon } from "@/components/Favicon";
+
+async function geocodeNominatim(query: string): Promise<GeoInfo | null> {
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
+    const res = await fetch(url, { headers: { "Accept-Language": "en" } });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) return null;
+    const place = data[1] ?? data[0];
+    const display = place.display_name ?? "";
+    const parts = display.split(",").map((s: string) => s.trim());
+    return {
+      city: parts[0] ?? null,
+      region: parts[1] ?? null,
+      country: place.address?.country_code?.toUpperCase() ?? null,
+      lat: parseFloat(place.lat),
+      lng: parseFloat(place.lon),
+      source: "manual",
+      fetchedAt: Date.now(),
+    };
+  } catch {
+    return null;
+  }
+}
 
 
 type NearbyVenue = EducatorLocation & { educator: Educator; distance_km: number | null };
