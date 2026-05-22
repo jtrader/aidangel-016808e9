@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, ExternalLink, MapPin, Globe, Heart } from "lucide-react";
+import { ArrowLeft, ExternalLink, MapPin, Globe, Heart, BadgeCheck } from "lucide-react";
+import ClaimListingDialog from "@/components/ClaimListingDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SeoHead } from "@/components/SeoHead";
 import { EducatorFull, getEducatorBySlug, citySlug } from "@/lib/educators";
