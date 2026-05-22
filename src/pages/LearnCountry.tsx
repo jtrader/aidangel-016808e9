@@ -278,7 +278,7 @@ export default function LearnCountry() {
             </button>
           </form>
           {searchError && <p className="text-xs text-red-500 mt-1.5">{searchError}</p>}
-          {activeGeo?.city && showNearby && (
+          {activeGeo?.city && (
             <p className="text-sm text-muted-foreground mt-2 inline-flex items-center gap-1">
               <Navigation className="h-3.5 w-3.5" /> Showing courses near {activeGeo.city}
               {activeGeo.region ? `, ${activeGeo.region}` : ""}
@@ -291,6 +291,12 @@ export default function LearnCountry() {
                   Reset
                 </button>
               )}
+            </p>
+          )}
+          {geoError && !activeGeo && (
+            <p className="text-sm text-muted-foreground mt-2 inline-flex items-center gap-1">
+              <Navigation className="h-3.5 w-3.5" />
+              Couldn’t detect your location automatically. Enter your city above to find nearby venues.
             </p>
           )}
         </div>
