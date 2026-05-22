@@ -7,12 +7,28 @@ import { EducatorFull, getEducatorBySlug, citySlug } from "@/lib/educators";
 import { getCountry } from "@/lib/donations";
 import NetworkFooter from "@/components/NetworkFooter";
 import LanguageSelector from "@/components/LanguageSelector";
+import { trackLearnClick } from "@/lib/giveAnalytics";
+import { useCountry } from "@/hooks/useCountry";
 
 export default function EducatorProfile() {
   const { language } = useLanguage();
+  const { country } = useCountry();
   const { slug } = useParams<{ slug: string }>();
   const [ed, setEd] = useState<EducatorFull | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const trackOutbound = (url: string, variant: "booking" | "website") => {
+    if (!ed) return;
+    trackLearnClick({
+      ngoId: ed.slug,
+      countryCode: ed.hq_country_code ?? country.code,
+      countryName: (ed.hq_country_code ? getCountry(ed.hq_country_code)?.name : country.name) ?? country.name,
+      destinationUrl: url,
+      isNational: (ed.hq_country_code ?? "").toUpperCase() === country.code.toUpperCase(),
+      language,
+      variant,
+    });
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -71,6 +87,9 @@ export default function EducatorProfile() {
               href={ed.booking_url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackOutbound(ed.booking_url!, "booking")}
+              data-analytics-event="learn_click"
+              data-analytics-educator={ed.slug}
               className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90"
             >
               Book a course <ExternalLink className="h-3 w-3" />
@@ -81,6 +100,9 @@ export default function EducatorProfile() {
               href={ed.website}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackOutbound(ed.website!, "website")}
+              data-analytics-event="learn_click"
+              data-analytics-educator={ed.slug}
               className="inline-flex items-center gap-1 px-4 py-2 rounded-full border border-border text-sm hover:bg-accent"
             >
               Website <ExternalLink className="h-3 w-3" />

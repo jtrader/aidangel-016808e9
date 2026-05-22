@@ -15,6 +15,8 @@ import {
 import { useGeoLocation } from "@/hooks/useGeoLocation";
 import NetworkFooter from "@/components/NetworkFooter";
 import LanguageSelector from "@/components/LanguageSelector";
+import { trackLearnClick } from "@/lib/giveAnalytics";
+
 
 type NearbyVenue = EducatorLocation & { educator: Educator; distance_km: number };
 
@@ -27,7 +29,18 @@ const TYPE_LABELS: Record<string, string> = {
   community: "Community provider",
 };
 
-function EducatorCard({ ed }: { ed: Educator }) {
+function EducatorCard({ ed, countryCode, countryName, language }: { ed: Educator; countryCode: string; countryName: string; language: string }) {
+  const isNational = (ed.hq_country_code ?? "").toUpperCase() === countryCode.toUpperCase();
+  const track = (url: string, variant: "booking" | "website") =>
+    trackLearnClick({
+      ngoId: ed.slug,
+      countryCode,
+      countryName,
+      destinationUrl: url,
+      isNational,
+      language,
+      variant,
+    });
   return (
     <article className="bg-card border border-border rounded-xl p-5">
       <div className="flex items-start justify-between gap-3 mb-2">
@@ -56,6 +69,9 @@ function EducatorCard({ ed }: { ed: Educator }) {
             href={ed.booking_url}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => track(ed.booking_url!, "booking")}
+            data-analytics-event="learn_click"
+            data-analytics-educator={ed.slug}
             className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
           >
             Book a course <ExternalLink className="h-3 w-3" />
@@ -66,6 +82,9 @@ function EducatorCard({ ed }: { ed: Educator }) {
             href={ed.website}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => track(ed.website!, "website")}
+            data-analytics-event="learn_click"
+            data-analytics-educator={ed.slug}
             className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border border-border hover:bg-accent"
           >
             Website <ExternalLink className="h-3 w-3" />
@@ -170,6 +189,19 @@ export default function LearnCountry() {
                         href={v.booking_url ?? v.educator.booking_url ?? "#"}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() =>
+                          trackLearnClick({
+                            ngoId: v.educator.slug,
+                            countryCode: country.code,
+                            countryName: country.name,
+                            destinationUrl: v.booking_url ?? v.educator.booking_url ?? "",
+                            isNational: (v.educator.hq_country_code ?? "").toUpperCase() === country.code,
+                            language,
+                            variant: "booking",
+                          })
+                        }
+                        data-analytics-event="learn_click"
+                        data-analytics-educator={v.educator.slug}
                         className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
                       >
                         Book a course <ExternalLink className="h-3 w-3" />
@@ -196,7 +228,7 @@ export default function LearnCountry() {
             </p>
           ) : (
             <div className="grid gap-3">
-              {inPerson.map((ed) => <EducatorCard key={ed.id} ed={ed} />)}
+              {inPerson.map((ed) => <EducatorCard key={ed.id} ed={ed} countryCode={country.code} countryName={country.name} language={language} />)}
             </div>
           )}
         </section>
@@ -206,7 +238,7 @@ export default function LearnCountry() {
             <h2 id="online" className="font-heading text-xl font-semibold mb-3 inline-flex items-center gap-2">
               <Globe className="h-5 w-5 text-primary" /> Online course in your language
             </h2>
-            <EducatorCard ed={online} />
+            <EducatorCard ed={online} countryCode={country.code} countryName={country.name} language={language} />
           </section>
         )}
 

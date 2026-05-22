@@ -16,11 +16,12 @@ import type { Session } from "@supabase/supabase-js";
 import { NGOS, COUNTRIES } from "@/lib/donations";
 import { SHOPS } from "@/lib/shops";
 
-type EventFilter = "all" | "give_click" | "shop_click";
+type EventFilter = "all" | "give_click" | "shop_click" | "learn_click";
 
 function vendorLabel(eventName: string, id: string | null): string {
   if (!id) return "—";
   if (eventName === "shop_click") return SHOPS[id as keyof typeof SHOPS]?.short ?? id;
+  if (eventName === "learn_click") return id; // educator slug
   return NGOS[id as keyof typeof NGOS]?.short ?? id;
 }
 
@@ -162,13 +163,15 @@ export default function AdminDonations() {
     const uniqueSessions = new Set(rows.map((r) => r.id)).size;
     const giveCount = rows.filter((r) => r.event_name === "give_click").length;
     const shopCount = rows.filter((r) => r.event_name === "shop_click").length;
+    const learnCount = rows.filter((r) => r.event_name === "learn_click").length;
     const byVendor: Record<string, number> = {};
     const byCountry: Record<string, number> = {};
     const byPage: Record<string, number> = {};
     const byReferrer: Record<string, number> = {};
     for (const r of rows) {
       const label = vendorLabel(r.event_name, r.ngo_id);
-      const key = `${r.event_name === "shop_click" ? "🛒" : "❤️"} ${label}`;
+      const icon = r.event_name === "shop_click" ? "🛒" : r.event_name === "learn_click" ? "🎓" : "❤️";
+      const key = `${icon} ${label}`;
       byVendor[key] = (byVendor[key] ?? 0) + 1;
       if (r.country_code) byCountry[r.country_code] = (byCountry[r.country_code] ?? 0) + 1;
       if (r.page_path) byPage[r.page_path] = (byPage[r.page_path] ?? 0) + 1;
@@ -176,7 +179,7 @@ export default function AdminDonations() {
       byReferrer[ref] = (byReferrer[ref] ?? 0) + 1;
     }
     const sortDesc = (o: Record<string, number>) => Object.entries(o).sort((a, b) => b[1] - a[1]);
-    return { total, uniqueSessions, giveCount, shopCount, byVendor: sortDesc(byVendor), byCountry: sortDesc(byCountry), byPage: sortDesc(byPage).slice(0, 8), byReferrer: sortDesc(byReferrer).slice(0, 8) };
+    return { total, uniqueSessions, giveCount, shopCount, learnCount, byVendor: sortDesc(byVendor), byCountry: sortDesc(byCountry), byPage: sortDesc(byPage).slice(0, 8), byReferrer: sortDesc(byReferrer).slice(0, 8) };
   }, [rows]);
 
   if (!session) {
@@ -240,6 +243,7 @@ export default function AdminDonations() {
                   <SelectItem value="all">All referrals</SelectItem>
                   <SelectItem value="give_click">❤️ Give (donations)</SelectItem>
                   <SelectItem value="shop_click">🛒 Shop (first aid)</SelectItem>
+                  <SelectItem value="learn_click">🎓 Learn (courses)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -271,10 +275,11 @@ export default function AdminDonations() {
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
           <StatCard label="Total referrals" value={stats.total} />
           <StatCard label="❤️ Give clicks" value={stats.giveCount} />
           <StatCard label="🛒 Shop clicks" value={stats.shopCount} />
+          <StatCard label="🎓 Learn clicks" value={stats.learnCount} />
           <StatCard label="Unique sessions" value={stats.uniqueSessions} />
         </div>
 
@@ -309,7 +314,7 @@ export default function AdminDonations() {
                     <TableRow key={r.id}>
                       <TableCell className="whitespace-nowrap text-xs">{new Date(r.created_at).toLocaleString()}</TableCell>
                       <TableCell className="text-xs">
-                        {r.event_name === "shop_click" ? "🛒 Shop" : "❤️ Give"}
+                        {r.event_name === "shop_click" ? "🛒 Shop" : r.event_name === "learn_click" ? "🎓 Learn" : "❤️ Give"}
                       </TableCell>
                       <TableCell>{vendorLabel(r.event_name, r.ngo_id)}</TableCell>
                       <TableCell>{countryFlag(r.country_code)} {r.country_code}</TableCell>
