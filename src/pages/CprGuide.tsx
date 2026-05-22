@@ -104,13 +104,22 @@ function StepBadge({ icon: Icon, active, done }: { icon: typeof ShieldAlert; act
   );
 }
 
-function detectInitialLang(): CprLangCode {
-  if (typeof window === "undefined") return "en";
+function detectInitialLang(): { lang: CprLangCode; auto: boolean } {
+  if (typeof window === "undefined") return { lang: "en", auto: false };
   const stored = window.localStorage.getItem("faa.cprLang") as CprLangCode | null;
-  if (stored && CPR_LANGUAGES.some((l) => l.code === stored)) return stored;
-  const nav = (navigator.language || "en").toLowerCase().split("-")[0];
-  const match = CPR_LANGUAGES.find((l) => l.code === nav);
-  return match ? match.code : "en";
+  if (stored && CPR_LANGUAGES.some((l) => l.code === stored)) return { lang: stored, auto: false };
+
+  // Check full BCP47 codes first, then fall back to base language codes
+  const prefs = navigator.languages?.length ? navigator.languages : [navigator.language || "en"];
+  for (const raw of prefs) {
+    const full = raw.toLowerCase();
+    const base = full.split("-")[0];
+    const fullMatch = CPR_LANGUAGES.find((l) => l.bcp47.toLowerCase() === full || l.code === full);
+    if (fullMatch) return { lang: fullMatch.code, auto: true };
+    const baseMatch = CPR_LANGUAGES.find((l) => l.code === base);
+    if (baseMatch) return { lang: baseMatch.code, auto: true };
+  }
+  return { lang: "en", auto: true };
 }
 
 export default function CprGuide() {
@@ -118,7 +127,9 @@ export default function CprGuide() {
   const emergency = emergencyNumberForCountry(countryCode);
   const [stepIdx, setStepIdx] = useState(0);
   const [voiceOn, setVoiceOn] = useState(true);
-  const [lang, setLang] = useState<CprLangCode>(detectInitialLang);
+  const initial = detectInitialLang();
+  const [lang, setLang] = useState<CprLangCode>(initial.lang);
+  const [autoDetected, setAutoDetected] = useState(initial.auto);
   const wakeLockRef = useRef<WakeLockSentinel | null>(null);
   const voiceOnRef = useRef(voiceOn);
   const langRef = useRef(lang);
@@ -128,6 +139,11 @@ export default function CprGuide() {
     try { window.localStorage.setItem("faa.cprLang", lang); } catch { /* ignore */ }
     prefetchCprVoice(lang);
   }, [lang]);
+
+  const handleLangChange = (next: CprLangCode) => {
+    setLang(next);
+    setAutoDetected(false);
+  };
 
   const handleBreath = useCallback(() => {
     if (!voiceOnRef.current) return;
@@ -247,17 +263,29 @@ export default function CprGuide() {
               </div>
               <h2 className="font-heading text-xl sm:text-2xl font-bold mt-0.5">{step.title}</h2>
             </div>
-            <div className="flex items-center gap-2 shrink-0">
-              <select
-                value={lang}
-                onChange={(e) => setLang(e.target.value as CprLangCode)}
-                aria-label="Voice-over language"
-                className="h-10 rounded-full border border-border bg-background text-sm px-3 text-foreground hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary"
-              >
-                {CPR_LANGUAGES.map((l) => (
-                  <option key={l.code} value={l.code}>{l.label}</option>
-                ))}
-              </select>
+            <div className="flex items-center gap-2 shrink-1">
+              <div className="relative">
+                <select
+                  value={lang}
+                  onChange={(e) => handleLangChange(e.target.value as CprLangCode)}
+                  aria-label="Voice-over language"
+                  className="h-10 rounded-full border border-border bg-background text-sm px-3 text-foreground hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary pr-8"
+                >
+                  {CPR_LANGUAGES.map((l) => (
+                    <option key={l.code} value={l.code}>{l.label}</option>
+                  ))}
+                </select>
+                {autoDetected && (
+                  <button
+                    onClick={() => setAutoDetected(false)}
+                    title="Language auto-detected from your browser"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 flex h-5 w-5 items-center justify-center rounded-full"
+                  >
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-30" />
+                    <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
+                  </button>
+                )}
+              </div>
               <button
                 onClick={() => setVoiceOn((v) => { if (v) stopCprVoice(); return !v; })}
                 aria-label={voiceOn ? "Mute voice" : "Unmute voice"}
