@@ -13,6 +13,7 @@ import KbIndex from "./pages/KbIndex";
 import KbTopic from "./pages/KbTopic";
 import NotFound from "./pages/NotFound";
 import AdminDonations from "./pages/AdminDonations";
+import SymptomFinder from "./pages/SymptomFinder";
 
 const queryClient = new QueryClient();
 
