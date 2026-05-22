@@ -388,11 +388,9 @@ export default function CprGuide() {
           </div>
         </section>
 
-        {!isSpeechSupported() && (
-          <p className="text-xs text-muted-foreground mt-3 text-center">
-            Voice guidance isn't supported in this browser — visual cues still work.
-          </p>
-        )}
+        <p className="text-xs text-muted-foreground mt-3 text-center">
+          Voice-over by ElevenLabs · available in 10 major world languages.
+        </p>
 
         <aside className="mt-6 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs leading-relaxed">
           <strong>Emergency reminder:</strong> This guide is for learning and assistance — it doesn't replace
