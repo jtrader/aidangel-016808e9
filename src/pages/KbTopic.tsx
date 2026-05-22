@@ -281,9 +281,11 @@ const KbTopic = () => {
             </h1>
             <LanguageSelector />
           </div>
-          <p className="text-lg text-muted-foreground mb-8 leading-relaxed" lang={language}>
+          <p className="text-lg text-muted-foreground mb-6 leading-relaxed" lang={language}>
             {translated.summary}
           </p>
+
+          <TopicIllustration slug={topicEn.slug} />
 
           {translating && (
             <div className="mb-6 inline-flex items-center gap-2 text-xs text-muted-foreground">
