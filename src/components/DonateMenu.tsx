@@ -22,6 +22,7 @@ import {
 import { useLanguage } from "@/contexts/LanguageContext";
 import { translateStrings } from "@/lib/uiTranslate";
 import { trackGiveClick } from "@/lib/giveAnalytics";
+import { Favicon } from "@/components/Favicon";
 
 interface DonateMenuProps {
   variant?: "header" | "footer";
