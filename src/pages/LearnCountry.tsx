@@ -15,6 +15,8 @@ import {
 import { useGeoLocation } from "@/hooks/useGeoLocation";
 import NetworkFooter from "@/components/NetworkFooter";
 import LanguageSelector from "@/components/LanguageSelector";
+import { trackLearnClick } from "@/lib/giveAnalytics";
+import { useLanguage as _unused } from "@/contexts/LanguageContext";
 
 type NearbyVenue = EducatorLocation & { educator: Educator; distance_km: number };
 
