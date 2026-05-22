@@ -8,6 +8,7 @@ First Aid Angel is a free chatbot and knowledge base that helps members of the p
 
 - [Home / AI assistant](/): Ask the AI chatbot a first aid question.
 - [First aid by symptom](/symptoms): Symptom-first directory — tap what's happening to jump to the right guide.
+- [Learn first aid (courses by country)](/learn): Directory of in-person and online first aid courses worldwide — St John, Red Cross and accredited providers.
 - [Knowledge base](/kb): All first aid topics, organised by category.
 
 ## Symptom landing pages (long-tail)
