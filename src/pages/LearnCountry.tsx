@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, ExternalLink, MapPin, Globe, Heart, Search, Navigation } from "lucide-react";
+import { ArrowLeft, ExternalLink, MapPin, Globe, Heart, Search, Navigation, X, Loader2 } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { COUNTRIES, getCountry } from "@/lib/donations";
@@ -12,11 +12,35 @@ import {
   getNearestVenues,
   citySlug,
 } from "@/lib/educators";
-import { useGeoLocation } from "@/hooks/useGeoLocation";
+import { useGeoLocation, setManualGeo, GeoInfo } from "@/hooks/useGeoLocation";
 import NetworkFooter from "@/components/NetworkFooter";
 import LanguageSelector from "@/components/LanguageSelector";
 import { trackLearnClick } from "@/lib/giveAnalytics";
 import { Favicon } from "@/components/Favicon";
+
+async function geocodeNominatim(query: string): Promise<GeoInfo | null> {
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
+    const res = await fetch(url, { headers: { "Accept-Language": "en" } });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) return null;
+    const place = data[0];
+    const display = place.display_name ?? "";
+    const parts = display.split(",").map((s: string) => s.trim());
+    return {
+      city: parts[0] ?? null,
+      region: parts[1] ?? null,
+      country: place.address?.country_code?.toUpperCase() ?? null,
+      lat: parseFloat(place.lat),
+      lng: parseFloat(place.lon),
+      source: "manual",
+      fetchedAt: Date.now(),
+    };
+  } catch {
+    return null;
+  }
+}
 
 
 type NearbyVenue = EducatorLocation & { educator: Educator; distance_km: number | null };
@@ -109,8 +133,33 @@ export default function LearnCountry() {
   const [online, setOnline] = useState<Educator | null>(null);
   const [cities, setCities] = useState<string[]>([]);
   const [nearby, setNearby] = useState<NearbyVenue[]>([]);
+  const [searchQ, setSearchQ] = useState("");
+  const [searching, setSearching] = useState(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
 
-  const showNearby = !!(geo?.lat && geo?.lng && geo.country?.toUpperCase() === country.code);
+  const activeGeo = geo;
+  const showNearby = !!(activeGeo?.lat && activeGeo?.lng);
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQ.trim()) return;
+    setSearching(true);
+    setSearchError(null);
+    const result = await geocodeNominatim(`${searchQ.trim()}, ${country.name}`);
+    setSearching(false);
+    if (result && result.lat != null && result.lng != null) {
+      setManualGeo(result);
+    } else {
+      setSearchError("Location not found. Try a nearby city or suburb.");
+    }
+  };
+
+  const handleClear = () => {
+    try { window.localStorage.removeItem("faa.geo"); } catch { /* ignore */ }
+    window.dispatchEvent(new CustomEvent("faa-geo-updated"));
+    setSearchQ("");
+    setSearchError(null);
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -120,15 +169,18 @@ export default function LearnCountry() {
       setOnline(online);
     });
     getCitiesForCountry(country.code).then((c) => !cancelled && setCities(c));
-    if (showNearby && geo?.lat && geo?.lng) {
-      getNearestVenues(geo.lat, geo.lng, { countryCode: country.code, region: geo.region, city: geo.city, limit: 3 }).then(
-        (v) => !cancelled && setNearby(v),
-      );
+    if (showNearby && activeGeo?.lat && activeGeo?.lng) {
+      getNearestVenues(activeGeo.lat, activeGeo.lng, {
+        countryCode: country.code,
+        region: activeGeo.region,
+        city: activeGeo.city,
+        limit: 3,
+      }).then((v) => !cancelled && setNearby(v));
     } else {
       setNearby([]);
     }
     return () => { cancelled = true; };
-  }, [country.code, language, geo?.lat, geo?.lng, showNearby]);
+  }, [country.code, language, activeGeo?.lat, activeGeo?.lng, activeGeo?.region, activeGeo?.city, showNearby]);
 
   const title = `First Aid Courses in ${country.name} — St John, Red Cross & Online`;
   const desc = `Find accredited first aid training in ${country.name}. In-person courses from St John Ambulance and Red Cross, plus online options.`;
@@ -149,10 +201,49 @@ export default function LearnCountry() {
           <h1 className="font-heading text-3xl font-bold">
             {country.flag} First Aid Courses — {country.name}
           </h1>
-          {geo?.city && showNearby && (
-            <p className="text-sm text-muted-foreground mt-1 inline-flex items-center gap-1">
-              <Navigation className="h-3.5 w-3.5" /> Showing courses near {geo.city}
-              {geo.region ? `, ${geo.region}` : ""}.
+          <form onSubmit={handleSearch} className="mt-3 flex items-center gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input
+                type="text"
+                value={searchQ}
+                onChange={(e) => setSearchQ(e.target.value)}
+                placeholder={`Enter city or suburb in ${country.name}`}
+                className="w-full rounded-lg border border-border bg-background pl-9 pr-8 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+              />
+              {searchQ && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQ("")}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
+            <button
+              type="submit"
+              disabled={searching || !searchQ.trim()}
+              className="inline-flex items-center gap-1.5 rounded-lg bg-primary text-primary-foreground px-3 py-2 text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
+            >
+              {searching ? <Loader2 className="h-4 w-4 animate-spin" /> : <Navigation className="h-4 w-4" />}
+              Use my location
+            </button>
+          </form>
+          {searchError && <p className="text-xs text-red-500 mt-1.5">{searchError}</p>}
+          {activeGeo?.city && showNearby && (
+            <p className="text-sm text-muted-foreground mt-2 inline-flex items-center gap-1">
+              <Navigation className="h-3.5 w-3.5" /> Showing courses near {activeGeo.city}
+              {activeGeo.region ? `, ${activeGeo.region}` : ""}
+              {activeGeo.source === "manual" && (
+                <button
+                  type="button"
+                  onClick={handleClear}
+                  className="ml-1 text-xs underline text-primary hover:text-primary/80"
+                >
+                  Reset
+                </button>
+              )}
             </p>
           )}
         </div>
