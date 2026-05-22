@@ -17,6 +17,7 @@ type Claim = {
   claimant_phone: string | null;
   message: string | null;
   evidence_url: string | null;
+  evidence_file_paths: string[] | null;
   status: "pending" | "approved" | "rejected";
   review_notes: string | null;
   created_at: string;
