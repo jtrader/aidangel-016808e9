@@ -437,6 +437,20 @@ const KbTopic = () => {
             <p lang={language} className="text-muted-foreground mb-2">
               {ui.adaptedFrom} <em>{topic.section}</em>.
             </p>
+            <p className="text-xs text-muted-foreground mb-2">
+              <span className="font-semibold text-foreground">Last reviewed:</span>{" "}
+              <time dateTime={LAST_REVIEWED_ISO}>{LAST_REVIEWED_HUMAN}</time>{" "}
+              · Aligned with{" "}
+              <a
+                href="https://www.resus.org.au/guidelines/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary underline"
+              >
+                Australian Resuscitation Council guidelines
+              </a>
+              .
+            </p>
             <p lang={language} className="text-xs text-muted-foreground mt-3">
               {ui.emergencyNote.replace(/\b000\b/g, emergencyNumber).split(emergencyNumber).map((part, i, arr) => (
                 <span key={i}>
