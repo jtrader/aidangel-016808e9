@@ -37,6 +37,7 @@ export default function ClaimListingDialog({
   const [loading, setLoading] = useState(false);
   const [alreadyPending, setAlreadyPending] = useState<{ claimId: string; createdAt: string } | null>(null);
   const [checking, setChecking] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
   const [form, setForm] = useState({
     claimant_name: "",
     claimant_email: "",
@@ -45,6 +46,28 @@ export default function ClaimListingDialog({
     message: "",
     evidence_url: "",
   });
+
+  const MAX_FILES = 3;
+  const MAX_SIZE = 8 * 1024 * 1024; // 8 MB per file
+  const ACCEPTED = ["application/pdf", "image/jpeg", "image/png", "image/webp"];
+
+  const onPickFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const picked = Array.from(e.target.files ?? []);
+    const valid: File[] = [];
+    for (const f of picked) {
+      if (!ACCEPTED.includes(f.type)) {
+        toast({ title: "Unsupported file", description: `${f.name} must be PDF, JPG, PNG, or WebP.`, variant: "destructive" });
+        continue;
+      }
+      if (f.size > MAX_SIZE) {
+        toast({ title: "File too large", description: `${f.name} must be under 8 MB.`, variant: "destructive" });
+        continue;
+      }
+      valid.push(f);
+    }
+    setFiles((prev) => [...prev, ...valid].slice(0, MAX_FILES));
+    e.target.value = "";
+  };
 
   useEffect(() => {
     if (!open) return;
