@@ -127,7 +127,9 @@ export default function CprGuide() {
   const emergency = emergencyNumberForCountry(countryCode);
   const [stepIdx, setStepIdx] = useState(0);
   const [voiceOn, setVoiceOn] = useState(true);
-  const [lang, setLang] = useState<CprLangCode>(detectInitialLang);
+  const initial = detectInitialLang();
+  const [lang, setLang] = useState<CprLangCode>(initial.lang);
+  const [autoDetected, setAutoDetected] = useState(initial.auto);
   const wakeLockRef = useRef<WakeLockSentinel | null>(null);
   const voiceOnRef = useRef(voiceOn);
   const langRef = useRef(lang);
@@ -137,6 +139,11 @@ export default function CprGuide() {
     try { window.localStorage.setItem("faa.cprLang", lang); } catch { /* ignore */ }
     prefetchCprVoice(lang);
   }, [lang]);
+
+  const handleLangChange = (next: CprLangCode) => {
+    setLang(next);
+    setAutoDetected(false);
+  };
 
   const handleBreath = useCallback(() => {
     if (!voiceOnRef.current) return;
