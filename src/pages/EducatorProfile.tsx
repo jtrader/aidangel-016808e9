@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, ExternalLink, MapPin, Globe, Heart, BadgeCheck } from "lucide-react";
+import { ArrowLeft, ExternalLink, MapPin, Globe, Heart, BadgeCheck, Clock, CheckCircle2, XCircle } from "lucide-react";
 import ClaimListingDialog from "@/components/ClaimListingDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SeoHead } from "@/components/SeoHead";
@@ -11,6 +11,62 @@ import LanguageSelector from "@/components/LanguageSelector";
 import { trackLearnClick } from "@/lib/giveAnalytics";
 import { useCountry } from "@/hooks/useCountry";
 import { Favicon } from "@/components/Favicon";
+import { supabase } from "@/integrations/supabase/client";
+
+type ClaimStatus = "pending" | "approved" | "rejected";
+
+interface MyClaim {
+  id: string;
+  status: ClaimStatus;
+  created_at: string;
+  review_notes: string | null;
+  reviewed_at: string | null;
+}
+
+function ClaimStatusCard({ claim }: { claim: MyClaim }) {
+  const config: Record<
+    ClaimStatus,
+    { label: string; icon: React.ReactNode; color: string; bg: string }
+  > = {
+    pending: {
+      label: "Pending review",
+      icon: <Clock className="h-4 w-4" />,
+      color: "text-amber-600",
+      bg: "bg-amber-50",
+    },
+    approved: {
+      label: "Approved",
+      icon: <CheckCircle2 className="h-4 w-4" />,
+      color: "text-emerald-600",
+      bg: "bg-emerald-50",
+    },
+    rejected: {
+      label: "Declined",
+      icon: <XCircle className="h-4 w-4" />,
+      color: "text-rose-600",
+      bg: "bg-rose-50",
+    },
+  };
+  const style = config[claim.status];
+  return (
+    <div className={`rounded-lg border border-border p-3 ${style.bg}`}>
+      <div className="flex items-center gap-2 mb-1">
+        <span className={`inline-flex items-center gap-1.5 text-sm font-medium ${style.color}`}>
+          {style.icon} {style.label}
+        </span>
+        <span className="text-xs text-muted-foreground ml-auto">
+          Submitted {new Date(claim.created_at).toLocaleDateString()}
+        </span>
+      </div>
+      {claim.status === "pending" && (
+        <p className="text-xs text-muted-foreground">We'll review your claim and email you within a few business days.</p>
+      )}
+      {claim.review_notes && (
+        <p className="text-xs text-muted-foreground mt-1">Note: {claim.review_notes}</p>
+      )}
+    </div>
+  );
+}
 
 export default function EducatorProfile() {
   const { language } = useLanguage();
@@ -18,6 +74,7 @@ export default function EducatorProfile() {
   const { slug } = useParams<{ slug: string }>();
   const [ed, setEd] = useState<EducatorFull | null>(null);
   const [loading, setLoading] = useState(true);
+  const [myClaims, setMyClaims] = useState<MyClaim[]>([]);
 
   const trackOutbound = (url: string, variant: "booking" | "website") => {
     if (!ed) return;
@@ -42,6 +99,19 @@ export default function EducatorProfile() {
     });
     return () => { cancelled = true; };
   }, [slug]);
+
+  // Fetch claim statuses for this educator from localStorage
+  useEffect(() => {
+    if (!ed) return;
+    const stored = JSON.parse(localStorage.getItem("faa_claims") ?? "[]") as Array<{ educatorId: string; claimId: string; claimantEmail: string }>;
+    const mine = stored.filter((c) => c.educatorId === ed.id);
+    if (mine.length === 0) return;
+    const ids = mine.map((c) => c.claimId);
+    supabase.rpc("get_claim_statuses", { claim_ids: ids }).then(({ data, error }) => {
+      if (error || !data) return;
+      setMyClaims(data as MyClaim[]);
+    });
+  }, [ed]);
 
   if (loading) {
     return (
@@ -98,6 +168,20 @@ export default function EducatorProfile() {
             <ClaimListingDialog educatorId={ed.id} educatorName={ed.name} />
             <span className="ml-2 text-xs text-muted-foreground">Are you {ed.name}?</span>
           </div>
+        )}
+
+        {myClaims.length > 1 && (
+          <section className="mb-6 -mt-2 space-y-2">
+            <h3 className="text-sm font-semibold text-foreground">Your claims</h3>
+            {myClaims.map((claim) => (
+              <ClaimStatusCard key={claim.id} claim={claim} />
+            ))}
+          </section>
+        )}
+        {myClaims.length === 1 && (
+          <section className="mb-6 -mt-2">
+            <ClaimStatusCard claim={myClaims[0]} />
+          </section>
         )}
 
         <div className="flex flex-wrap gap-2 mb-8">
