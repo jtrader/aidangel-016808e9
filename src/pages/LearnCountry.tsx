@@ -19,7 +19,7 @@ import { trackLearnClick } from "@/lib/giveAnalytics";
 import { Favicon } from "@/components/Favicon";
 
 
-type NearbyVenue = EducatorLocation & { educator: Educator; distance_km: number };
+type NearbyVenue = EducatorLocation & { educator: Educator; distance_km: number | null };
 
 const TYPE_LABELS: Record<string, string> = {
   st_john: "St John Ambulance",
@@ -121,7 +121,7 @@ export default function LearnCountry() {
     });
     getCitiesForCountry(country.code).then((c) => !cancelled && setCities(c));
     if (showNearby && geo?.lat && geo?.lng) {
-      getNearestVenues(geo.lat, geo.lng, { countryCode: country.code, limit: 3 }).then(
+      getNearestVenues(geo.lat, geo.lng, { countryCode: country.code, region: geo.region, city: geo.city, limit: 3 }).then(
         (v) => !cancelled && setNearby(v),
       );
     } else {
@@ -173,15 +173,15 @@ export default function LearnCountry() {
                           {v.educator.name}
                         </div>
                         <h3 className="font-heading text-base font-semibold">
-                          {v.address ?? v.city}
+                          {v.address ?? v.city ?? `${country.name}-wide`}
                         </h3>
                         <div className="text-xs text-muted-foreground">
-                          {[v.city, v.region].filter(Boolean).join(", ")}
+                          {[v.city, v.region].filter(Boolean).join(", ") || `Serves ${country.name}`}
                         </div>
                       </div>
                     </div>
                     <span className="text-[11px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium whitespace-nowrap">
-                      {Math.round(v.distance_km)} km away
+                      {v.distance_km == null ? "Serves your area" : `${Math.round(v.distance_km)} km away`}
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-2 mt-2">
