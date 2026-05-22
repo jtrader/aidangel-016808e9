@@ -15,6 +15,7 @@ import { emergencyNumberForCountry } from "@/lib/donations";
 import { translateTopic } from "@/lib/kbTranslate";
 import { translateStrings } from "@/lib/uiTranslate";
 import { buildHowToJsonLd, buildFaqJsonLd } from "@/lib/kbSchema";
+import { qaFor } from "@/data/kbQa";
 
 const STATIC_TOPIC_STRINGS = [
   "All topics",
