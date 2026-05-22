@@ -41,7 +41,16 @@ export function trackShopClick(p: GiveClickPayload): void {
   recordClick("shop_click", p);
 }
 
-function recordClick(event: "give_click" | "shop_click", p: GiveClickPayload): void {
+/**
+ * Records a Learn-referral click (educator booking/website outbound).
+ * Uses `ngo_id` to store the educator slug, and `variant` for
+ * "booking" | "website" | "profile" so the dashboard can group.
+ */
+export function trackLearnClick(p: GiveClickPayload): void {
+  recordClick("learn_click", p);
+}
+
+function recordClick(event: "give_click" | "shop_click" | "learn_click", p: GiveClickPayload): void {
   try {
     const row = {
       event_name: event,
