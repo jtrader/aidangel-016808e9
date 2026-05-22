@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import { COUNTRIES } from "@/lib/donations";
+import AdminClaims from "@/components/AdminClaims";
 
 type Pending = {
   id: string;
