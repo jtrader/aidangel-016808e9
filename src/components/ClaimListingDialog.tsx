@@ -129,7 +129,22 @@ export default function ClaimListingDialog({
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-        {done ? (
+        {checking ? (
+          <div className="py-8 text-center">
+            <DialogDescription>Checking your claim status…</DialogDescription>
+          </div>
+        ) : alreadyPending ? (
+          <div className="py-6 text-center space-y-3">
+            <AlertCircle className="h-10 w-10 text-amber-500 mx-auto" />
+            <DialogTitle>You already have a pending claim</DialogTitle>
+            <DialogDescription>
+              You submitted a claim for this listing on{" "}
+              {new Date(alreadyPending.createdAt).toLocaleDateString()}. We'll review it and contact you within a few
+              business days. You can check its status on this profile page.
+            </DialogDescription>
+            <Button onClick={() => setOpen(false)} className="mt-4">Close</Button>
+          </div>
+        ) : done ? (
           <div className="py-6 text-center space-y-3">
             <CheckCircle2 className="h-10 w-10 text-primary mx-auto" />
             <DialogTitle>Thanks — we're on it</DialogTitle>
