@@ -9,6 +9,13 @@ import DRSABCDPanel from "@/components/DRSABCDPanel";
 import LanguageSelector from "@/components/LanguageSelector";
 import NetworkFooter from "@/components/NetworkFooter";
 import SupportUsBar from "@/components/SupportUsBar";
+import KbSuggestionCard from "@/components/KbSuggestionCard";
+import { findBestTopic } from "@/lib/kb";
+
+const URGENT_SLUGS = new Set([
+  "cpr", "choking", "anaphylaxis", "snake-bite", "severe-bleeding",
+  "stroke", "heart-attack", "drsabcd", "unconscious",
+]);
 
 import { SeoHead } from "@/components/SeoHead";
 import { streamChat } from "@/lib/chat-stream";
@@ -222,9 +229,19 @@ const Index = () => {
                   const sx = stepMatch?.[1] ? parseInt(stepMatch[1], 10) : null;
                   const sy = stepMatch?.[2] ? parseInt(stepMatch[2], 10) : null;
                   const sp = sx && sy ? Math.min(100, Math.round((sx / sy) * 100)) : null;
+                  const suggestion = (() => {
+                    if (msg.role !== "assistant" || streaming) return null;
+                    const prevUser = i > 0 && messages[i - 1].role === "user" ? messages[i - 1].content : "";
+                    const combined = `${prevUser}\n${msg.content}`;
+                    const topic = findBestTopic(combined);
+                    return topic ? { slug: topic.slug, urgent: URGENT_SLUGS.has(topic.slug) } : null;
+                  })();
                   return (
                     <div key={i} className="space-y-2">
                       <ChatMessage message={msg} onAction={send} />
+                      {suggestion && (
+                        <KbSuggestionCard slug={suggestion.slug} urgent={suggestion.urgent} />
+                      )}
                       {showWalkNav && (
                         <div className="ml-11 animate-fade-in space-y-2">
                           {sx && sy && (
