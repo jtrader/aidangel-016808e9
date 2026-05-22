@@ -7,12 +7,28 @@ import { EducatorFull, getEducatorBySlug, citySlug } from "@/lib/educators";
 import { getCountry } from "@/lib/donations";
 import NetworkFooter from "@/components/NetworkFooter";
 import LanguageSelector from "@/components/LanguageSelector";
+import { trackLearnClick } from "@/lib/giveAnalytics";
+import { useCountry } from "@/hooks/useCountry";
 
 export default function EducatorProfile() {
   const { language } = useLanguage();
+  const { country } = useCountry();
   const { slug } = useParams<{ slug: string }>();
   const [ed, setEd] = useState<EducatorFull | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const trackOutbound = (url: string, variant: "booking" | "website") => {
+    if (!ed) return;
+    trackLearnClick({
+      ngoId: ed.slug,
+      countryCode: ed.hq_country_code ?? country.code,
+      countryName: (ed.hq_country_code ? getCountry(ed.hq_country_code)?.name : country.name) ?? country.name,
+      destinationUrl: url,
+      isNational: (ed.hq_country_code ?? "").toUpperCase() === country.code.toUpperCase(),
+      language,
+      variant,
+    });
+  };
 
   useEffect(() => {
     let cancelled = false;
