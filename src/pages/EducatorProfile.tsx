@@ -9,6 +9,7 @@ import NetworkFooter from "@/components/NetworkFooter";
 import LanguageSelector from "@/components/LanguageSelector";
 import { trackLearnClick } from "@/lib/giveAnalytics";
 import { useCountry } from "@/hooks/useCountry";
+import { Favicon } from "@/components/Favicon";
 
 export default function EducatorProfile() {
   const { language } = useLanguage();
