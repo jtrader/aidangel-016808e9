@@ -48,6 +48,7 @@ export default function SupportUsBar() {
         <div className="flex items-center gap-2">
           <DonateMenu variant="header" />
           <ShopMenu variant="header" />
+          <LearnMenu variant="header" />
           <button
             type="button"
             onClick={dismiss}
