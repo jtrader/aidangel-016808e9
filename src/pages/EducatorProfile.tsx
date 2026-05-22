@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, ExternalLink, MapPin, Globe, Heart, BadgeCheck } from "lucide-react";
+import { ArrowLeft, ExternalLink, MapPin, Globe, Heart, BadgeCheck, Clock, CheckCircle2, XCircle } from "lucide-react";
 import ClaimListingDialog from "@/components/ClaimListingDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SeoHead } from "@/components/SeoHead";
@@ -11,6 +11,17 @@ import LanguageSelector from "@/components/LanguageSelector";
 import { trackLearnClick } from "@/lib/giveAnalytics";
 import { useCountry } from "@/hooks/useCountry";
 import { Favicon } from "@/components/Favicon";
+import { supabase } from "@/integrations/supabase/client";
+
+type ClaimStatus = "pending" | "approved" | "rejected";
+
+interface MyClaim {
+  id: string;
+  status: ClaimStatus;
+  created_at: string;
+  review_notes: string | null;
+  reviewed_at: string | null;
+}
 
 export default function EducatorProfile() {
   const { language } = useLanguage();
