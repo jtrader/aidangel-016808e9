@@ -22,6 +22,7 @@ import LearnCity from "./pages/LearnCity";
 import LearnSubmit from "./pages/LearnSubmit";
 import EducatorProfile from "./pages/EducatorProfile";
 import CprGuide from "./pages/CprGuide";
+import Unsubscribe from "./pages/Unsubscribe";
 import OfflineBanner from "./components/OfflineBanner";
 import InstallPrompt from "./components/InstallPrompt";
 
