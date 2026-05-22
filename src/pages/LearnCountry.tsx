@@ -69,6 +69,9 @@ function EducatorCard({ ed, countryCode, countryName, language }: { ed: Educator
             href={ed.booking_url}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => track(ed.booking_url!, "booking")}
+            data-analytics-event="learn_click"
+            data-analytics-educator={ed.slug}
             className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
           >
             Book a course <ExternalLink className="h-3 w-3" />
@@ -79,6 +82,9 @@ function EducatorCard({ ed, countryCode, countryName, language }: { ed: Educator
             href={ed.website}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => track(ed.website!, "website")}
+            data-analytics-event="learn_click"
+            data-analytics-educator={ed.slug}
             className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border border-border hover:bg-accent"
           >
             Website <ExternalLink className="h-3 w-3" />
