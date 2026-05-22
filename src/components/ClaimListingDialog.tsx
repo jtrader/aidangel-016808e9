@@ -232,6 +232,47 @@ export default function ClaimListingDialog({
                 <Input id="cevidence" type="url" placeholder="https://your-site.com/team" value={form.evidence_url} onChange={(e) => setForm({ ...form, evidence_url: e.target.value })} />
               </div>
               <div>
+                <Label>Upload evidence (optional)</Label>
+                <p className="text-xs text-muted-foreground mb-2">
+                  PDF, JPG, PNG or WebP — up to {MAX_FILES} files, 8 MB each. Examples: business registration, ID badge, invoice.
+                </p>
+                <label
+                  htmlFor="cfiles"
+                  className="flex items-center justify-center gap-2 border border-dashed border-border rounded-md px-3 py-4 text-sm text-muted-foreground hover:bg-accent cursor-pointer"
+                >
+                  <Upload className="h-4 w-4" />
+                  {files.length >= MAX_FILES ? "Maximum files reached" : "Choose files"}
+                </label>
+                <input
+                  id="cfiles"
+                  type="file"
+                  multiple
+                  accept=".pdf,application/pdf,image/jpeg,image/png,image/webp"
+                  className="hidden"
+                  onChange={onPickFiles}
+                  disabled={files.length >= MAX_FILES}
+                />
+                {files.length > 0 && (
+                  <ul className="mt-2 space-y-1">
+                    {files.map((f, i) => (
+                      <li key={i} className="flex items-center gap-2 text-xs bg-muted/40 rounded px-2 py-1">
+                        <FileText className="h-3.5 w-3.5 text-muted-foreground" />
+                        <span className="truncate flex-1">{f.name}</span>
+                        <span className="text-muted-foreground">{(f.size / 1024).toFixed(0)} KB</span>
+                        <button
+                          type="button"
+                          onClick={() => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
+                          className="text-muted-foreground hover:text-destructive"
+                          aria-label={`Remove ${f.name}`}
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <div>
                 <Label htmlFor="cmsg">Anything else?</Label>
                 <Textarea id="cmsg" rows={3} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="What would you like to update on this listing?" />
               </div>
