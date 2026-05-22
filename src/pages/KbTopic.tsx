@@ -65,6 +65,7 @@ const KbTopic = () => {
     source: "Source",
     adaptedFrom: "Adapted from The St John of God First Aid Manual 5th Edition — section",
     emergencyNote: "In an emergency call 000. These guides are for learning and refresher use — not a substitute for professional medical care.",
+    qaHeading: "Questions & answers",
     category: topic.category,
   });
 
