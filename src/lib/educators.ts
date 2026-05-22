@@ -14,6 +14,8 @@ export interface Educator {
   hq_country_code: string | null;
   is_online: boolean;
   is_verified: boolean;
+  is_claimed?: boolean;
+  claimed_at?: string | null;
   priority: number;
 }
 
