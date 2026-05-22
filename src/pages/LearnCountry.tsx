@@ -154,17 +154,20 @@ export default function LearnCountry() {
   const code = (countryParam ?? "au").toUpperCase();
   const country = getCountry(code) ?? COUNTRIES[0];
   const { language } = useLanguage();
-  const { geo } = useGeoLocation();
+  const { geo, loading: geoLoading, error: geoError } = useGeoLocation();
   const [inPerson, setInPerson] = useState<Educator[]>([]);
   const [online, setOnline] = useState<Educator | null>(null);
   const [cities, setCities] = useState<string[]>([]);
   const [nearby, setNearby] = useState<NearbyVenue[]>([]);
+  const [nearbyLoading, setNearbyLoading] = useState(false);
   const [searchQ, setSearchQ] = useState("");
   const [searching, setSearching] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
 
   const activeGeo = geo;
-  const showNearby = !!(activeGeo?.lat && activeGeo?.lng);
+  const hasCoords = !!(activeGeo?.lat && activeGeo?.lng);
+  const hasLocation = hasCoords || !!(activeGeo?.city || activeGeo?.region);
+  const showNearbySection = geoLoading || hasLocation || geoError;
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -195,18 +198,36 @@ export default function LearnCountry() {
       setOnline(online);
     });
     getCitiesForCountry(country.code).then((c) => !cancelled && setCities(c));
-    if (showNearby && activeGeo?.lat && activeGeo?.lng) {
+
+    if (hasCoords) {
+      setNearbyLoading(true);
       getNearestVenues(activeGeo.lat, activeGeo.lng, {
         countryCode: country.code,
         region: activeGeo.region,
         city: activeGeo.city,
         limit: 3,
-      }).then((v) => !cancelled && setNearby(v));
+      }).then((v) => {
+        if (!cancelled) setNearby(v);
+        setNearbyLoading(false);
+      });
+    } else if (hasLocation && activeGeo) {
+      // No lat/lng but we have city/region — use service-area fallback
+      setNearbyLoading(true);
+      getNearestVenues(null, null, {
+        countryCode: country.code,
+        region: activeGeo.region,
+        city: activeGeo.city,
+        limit: 3,
+      }).then((v) => {
+        if (!cancelled) setNearby(v);
+        setNearbyLoading(false);
+      });
     } else {
       setNearby([]);
+      setNearbyLoading(false);
     }
     return () => { cancelled = true; };
-  }, [country.code, language, activeGeo?.lat, activeGeo?.lng, activeGeo?.region, activeGeo?.city, showNearby]);
+  }, [country.code, language, activeGeo?.lat, activeGeo?.lng, activeGeo?.region, activeGeo?.city, hasCoords, hasLocation]);
 
   const title = `First Aid Courses in ${country.name} — St John, Red Cross & Online`;
   const desc = `Find accredited first aid training in ${country.name}. In-person courses from St John Ambulance and Red Cross, plus online options.`;
