@@ -14,6 +14,7 @@ import KbTopic from "./pages/KbTopic";
 import NotFound from "./pages/NotFound";
 import AdminDonations from "./pages/AdminDonations";
 import SymptomFinder from "./pages/SymptomFinder";
+import SymptomLander from "./pages/SymptomLander";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const App = forwardRef(function App(_props, _ref) {
                 <Route path="/kb" element={<KbIndex />} />
                 <Route path="/kb/:slug" element={<KbTopic />} />
                 <Route path="/symptoms" element={<SymptomFinder />} />
+                <Route path="/symptoms/:slug" element={<SymptomLander />} />
 
                 <Route path="/admin/donations" element={<AdminDonations />} />
 
