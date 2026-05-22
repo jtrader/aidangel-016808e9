@@ -119,6 +119,7 @@ export default function ClaimListingDialog({
         setOpen(o);
         if (!o) {
           setDone(false);
+          setAlreadyPending(null);
           setForm({ claimant_name: "", claimant_email: "", claimant_role: "", claimant_phone: "", message: "", evidence_url: "" });
         }
       }}
