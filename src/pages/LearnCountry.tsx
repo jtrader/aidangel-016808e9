@@ -189,6 +189,19 @@ export default function LearnCountry() {
                         href={v.booking_url ?? v.educator.booking_url ?? "#"}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() =>
+                          trackLearnClick({
+                            ngoId: v.educator.slug,
+                            countryCode: country.code,
+                            countryName: country.name,
+                            destinationUrl: v.booking_url ?? v.educator.booking_url ?? "",
+                            isNational: (v.educator.hq_country_code ?? "").toUpperCase() === country.code,
+                            language,
+                            variant: "booking",
+                          })
+                        }
+                        data-analytics-event="learn_click"
+                        data-analytics-educator={v.educator.slug}
                         className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
                       >
                         Book a course <ExternalLink className="h-3 w-3" />
@@ -215,7 +228,7 @@ export default function LearnCountry() {
             </p>
           ) : (
             <div className="grid gap-3">
-              {inPerson.map((ed) => <EducatorCard key={ed.id} ed={ed} />)}
+              {inPerson.map((ed) => <EducatorCard key={ed.id} ed={ed} countryCode={country.code} countryName={country.name} language={language} />)}
             </div>
           )}
         </section>
@@ -225,7 +238,7 @@ export default function LearnCountry() {
             <h2 id="online" className="font-heading text-xl font-semibold mb-3 inline-flex items-center gap-2">
               <Globe className="h-5 w-5 text-primary" /> Online course in your language
             </h2>
-            <EducatorCard ed={online} />
+            <EducatorCard ed={online} countryCode={country.code} countryName={country.name} language={language} />
           </section>
         )}
 
