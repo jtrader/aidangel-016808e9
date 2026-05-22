@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, ExternalLink, MapPin, Globe, Heart, BadgeCheck, Clock, CheckCircle2, XCircle } from "lucide-react";
 import ClaimListingDialog from "@/components/ClaimListingDialog";
+import EditListingDialog from "@/components/EditListingDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SeoHead } from "@/components/SeoHead";
 import { EducatorFull, getEducatorBySlug, citySlug } from "@/lib/educators";
