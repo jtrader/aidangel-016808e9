@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { z } from "zod";
-import { CheckCircle2, ShieldCheck, Send, AlertCircle } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Send, AlertCircle, Upload, X, FileText } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
