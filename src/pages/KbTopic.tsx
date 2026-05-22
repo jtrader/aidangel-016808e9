@@ -320,6 +320,46 @@ const KbTopic = () => {
             </ReactMarkdown>
           </div>
 
+          {qa.length > 0 && (
+            <section className="mt-12 pt-8 border-t border-border">
+              <h2 lang={language} className="text-sm font-bold uppercase tracking-wider text-primary mb-4">
+                {ui.qaHeading}
+              </h2>
+              <div className="space-y-3">
+                {qa.map((item, idx) => (
+                  <details
+                    key={idx}
+                    className="group rounded-xl border border-border bg-card p-4 open:border-primary/40 transition-colors"
+                  >
+                    <summary
+                      lang={language}
+                      className="cursor-pointer list-none font-semibold text-foreground text-sm sm:text-base flex items-start justify-between gap-3"
+                    >
+                      <span>{item.q}</span>
+                      <span
+                        aria-hidden="true"
+                        className="mt-1 inline-block text-primary transition-transform group-open:rotate-45 leading-none text-lg"
+                      >
+                        +
+                      </span>
+                    </summary>
+                    <p lang={language} className="mt-3 text-sm text-card-foreground leading-relaxed">
+                      {item.a.split(/(\b000\b)/g).map((part, i) =>
+                        part === "000" ? (
+                          <a key={i} href={`tel:${emergencyNumber}`} className="text-primary font-semibold underline">
+                            {emergencyNumber}
+                          </a>
+                        ) : (
+                          <span key={i}>{part}</span>
+                        )
+                      )}
+                    </p>
+                  </details>
+                ))}
+              </div>
+            </section>
+          )}
+
           {related.length > 0 && (
             <section className="mt-12 pt-8 border-t border-border">
               <h2 lang={language} className="text-sm font-bold uppercase tracking-wider text-primary mb-4">
