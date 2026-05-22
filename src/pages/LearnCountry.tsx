@@ -201,10 +201,49 @@ export default function LearnCountry() {
           <h1 className="font-heading text-3xl font-bold">
             {country.flag} First Aid Courses — {country.name}
           </h1>
-          {geo?.city && showNearby && (
-            <p className="text-sm text-muted-foreground mt-1 inline-flex items-center gap-1">
-              <Navigation className="h-3.5 w-3.5" /> Showing courses near {geo.city}
-              {geo.region ? `, ${geo.region}` : ""}.
+          <form onSubmit={handleSearch} className="mt-3 flex items-center gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input
+                type="text"
+                value={searchQ}
+                onChange={(e) => setSearchQ(e.target.value)}
+                placeholder={`Enter city or suburb in ${country.name}`}
+                className="w-full rounded-lg border border-border bg-background pl-9 pr-8 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+              />
+              {searchQ && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQ("")}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
+            <button
+              type="submit"
+              disabled={searching || !searchQ.trim()}
+              className="inline-flex items-center gap-1.5 rounded-lg bg-primary text-primary-foreground px-3 py-2 text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
+            >
+              {searching ? <Loader2 className="h-4 w-4 animate-spin" /> : <Navigation className="h-4 w-4" />}
+              Use my location
+            </button>
+          </form>
+          {searchError && <p className="text-xs text-red-500 mt-1.5">{searchError}</p>}
+          {activeGeo?.city && showNearby && (
+            <p className="text-sm text-muted-foreground mt-2 inline-flex items-center gap-1">
+              <Navigation className="h-3.5 w-3.5" /> Showing courses near {activeGeo.city}
+              {activeGeo.region ? `, ${activeGeo.region}` : ""}
+              {activeGeo.source === "manual" && (
+                <button
+                  type="button"
+                  onClick={handleClear}
+                  className="ml-1 text-xs underline text-primary hover:text-primary/80"
+                >
+                  Reset
+                </button>
+              )}
             </p>
           )}
         </div>
