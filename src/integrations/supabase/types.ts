@@ -540,6 +540,16 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      get_claim_statuses: {
+        Args: { claim_ids: string[] }
+        Returns: {
+          created_at: string
+          id: string
+          review_notes: string
+          reviewed_at: string
+          status: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
