@@ -5,6 +5,7 @@ import { translateStrings } from "@/lib/uiTranslate";
 import { localizedPath } from "@/lib/i18n";
 import DonateMenu from "@/components/DonateMenu";
 import ShopMenu from "@/components/ShopMenu";
+import LearnMenu from "@/components/LearnMenu";
 
 type NetworkLink = {
   href: string;
