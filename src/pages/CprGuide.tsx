@@ -32,7 +32,6 @@ interface Step {
   label: string;
   title: string;
   icon: typeof ShieldAlert;
-  spoken: string;
   detail: string;
 }
 
