@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
-import { CheckCircle2, ShieldCheck, Send } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Send, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,6 +35,8 @@ export default function ClaimListingDialog({
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [alreadyPending, setAlreadyPending] = useState<{ claimId: string; createdAt: string } | null>(null);
+  const [checking, setChecking] = useState(false);
   const [form, setForm] = useState({
     claimant_name: "",
     claimant_email: "",
@@ -43,6 +45,31 @@ export default function ClaimListingDialog({
     message: "",
     evidence_url: "",
   });
+
+  useEffect(() => {
+    if (!open) return;
+    const checkExisting = async () => {
+      setChecking(true);
+      try {
+        const raw = localStorage.getItem("faa_claims");
+        if (!raw) return;
+        const claims = JSON.parse(raw) as Array<{ educatorId: string; claimId: string; claimantEmail: string }>;
+        const mine = claims.filter((c) => c.educatorId === educatorId);
+        if (mine.length === 0) return;
+        const { data, error } = await supabase.rpc("get_claim_statuses", {
+          claim_ids: mine.map((c) => c.claimId),
+        });
+        if (error || !data) return;
+        const pending = data.find((d: { status: string }) => d.status === "pending");
+        if (pending) {
+          setAlreadyPending({ claimId: pending.id, createdAt: pending.created_at });
+        }
+      } finally {
+        setChecking(false);
+      }
+    };
+    checkExisting();
+  }, [open, educatorId]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,6 +119,7 @@ export default function ClaimListingDialog({
         setOpen(o);
         if (!o) {
           setDone(false);
+          setAlreadyPending(null);
           setForm({ claimant_name: "", claimant_email: "", claimant_role: "", claimant_phone: "", message: "", evidence_url: "" });
         }
       }}
@@ -102,7 +130,22 @@ export default function ClaimListingDialog({
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-        {done ? (
+        {checking ? (
+          <div className="py-8 text-center">
+            <DialogDescription>Checking your claim status…</DialogDescription>
+          </div>
+        ) : alreadyPending ? (
+          <div className="py-6 text-center space-y-3">
+            <AlertCircle className="h-10 w-10 text-amber-500 mx-auto" />
+            <DialogTitle>You already have a pending claim</DialogTitle>
+            <DialogDescription>
+              You submitted a claim for this listing on{" "}
+              {new Date(alreadyPending.createdAt).toLocaleDateString()}. We'll review it and contact you within a few
+              business days. You can check its status on this profile page.
+            </DialogDescription>
+            <Button onClick={() => setOpen(false)} className="mt-4">Close</Button>
+          </div>
+        ) : done ? (
           <div className="py-6 text-center space-y-3">
             <CheckCircle2 className="h-10 w-10 text-primary mx-auto" />
             <DialogTitle>Thanks — we're on it</DialogTitle>
