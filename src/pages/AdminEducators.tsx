@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import { COUNTRIES } from "@/lib/donations";
+import AdminClaims from "@/components/AdminClaims";
 
 type Pending = {
   id: string;
@@ -275,6 +276,8 @@ export default function AdminEducators() {
             <p className="text-sm text-muted-foreground text-center py-8">No {statusFilter === "all" ? "" : statusFilter} submissions.</p>
           )}
         </div>
+
+        <AdminClaims />
       </div>
     </main>
   );
