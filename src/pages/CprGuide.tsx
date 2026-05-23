@@ -19,6 +19,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
+import { CprExplainerVideo } from "@/components/CprExplainerVideo";
 import { useCountry } from "@/hooks/useCountry";
 import { emergencyNumberForCountry } from "@/lib/donations";
 import { useMetronome } from "@/hooks/useMetronome";
@@ -125,7 +126,8 @@ function detectInitialLang(): { lang: CprLangCode; auto: boolean } {
 export default function CprGuide() {
   const { code: countryCode } = useCountry();
   const emergency = emergencyNumberForCountry(countryCode);
-  const [stepIdx, setStepIdx] = useState(0);
+  // Open directly on the CPR (C) step so the metronome is one tap away.
+  const [stepIdx, setStepIdx] = useState(STEPS.findIndex((s) => s.key === "C"));
   const [voiceOn, setVoiceOn] = useState(true);
   const initial = detectInitialLang();
   const [lang, setLang] = useState<CprLangCode>(initial.lang);
@@ -231,6 +233,8 @@ export default function CprGuide() {
           <h1 className="font-heading text-2xl sm:text-3xl font-bold">Live CPR Guide</h1>
           <p className="text-sm text-muted-foreground">Voice-guided DRSABCD with a 100–120 bpm metronome</p>
         </div>
+
+        <CprExplainerVideo countryCode={countryCode} />
 
         <ol className="grid grid-cols-7 gap-1.5 mb-5">
           {STEPS.map((s, i) => (
