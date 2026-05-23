@@ -194,6 +194,7 @@ export default function AgentChat() {
             Send
           </button>
         </form>
+        <ChatDisclaimer />
       </main>
 
       <NetworkFooter />
