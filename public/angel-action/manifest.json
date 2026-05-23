@@ -12,7 +12,7 @@
   {
     "slug": "aed",
     "title": "AED \u2014 Automated External Defibrillator",
-    "size_kb": 5
+    "size_kb": 4
   },
   {
     "slug": "recovery-position",
@@ -57,7 +57,7 @@
   {
     "slug": "heart-attack",
     "title": "Heart Attack",
-    "size_kb": 4
+    "size_kb": 3
   },
   {
     "slug": "stroke",
@@ -87,7 +87,7 @@
   {
     "slug": "fractures",
     "title": "Fractures (Broken Bones)",
-    "size_kb": 4
+    "size_kb": 3
   },
   {
     "slug": "sprains-strains",
