@@ -219,14 +219,6 @@ const Index = () => {
                     AED Finder
                   </Link>
                   <Link
-                    to="/courses"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
-                    aria-label="Free online first aid courses"
-                  >
-                    <BookOpen className="h-4 w-4" />
-                    Free Courses
-                  </Link>
-                  <Link
                     to="/symptoms"
                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors border border-border"
                     aria-label="Find first aid by symptom"
