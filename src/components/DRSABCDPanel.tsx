@@ -17,6 +17,7 @@ import { translateStrings } from "@/lib/uiTranslate";
 const steps = [
   {
     letter: "D",
+    stepKey: "D",
     label: "Danger",
     shortLabel: "Danger",
     blurb: "Check the scene is safe",
@@ -25,6 +26,7 @@ const steps = [
   },
   {
     letter: "R",
+    stepKey: "R",
     label: "Response",
     shortLabel: "Response",
     blurb: "Talk & touch — any reply?",
@@ -33,6 +35,7 @@ const steps = [
   },
   {
     letter: "S",
+    stepKey: "S",
     label: "Send for help",
     shortLabel: "Send",
     blurb: "Call 000 right away",
@@ -41,6 +44,7 @@ const steps = [
   },
   {
     letter: "A",
+    stepKey: "A",
     label: "Airway",
     shortLabel: "Airway",
     blurb: "Open & clear the airway",
@@ -49,6 +53,7 @@ const steps = [
   },
   {
     letter: "B",
+    stepKey: "B",
     label: "Breathing",
     shortLabel: "Breathing",
     blurb: "Look, listen, feel",
@@ -57,6 +62,7 @@ const steps = [
   },
   {
     letter: "C",
+    stepKey: "C",
     label: "CPR",
     shortLabel: "CPR",
     blurb: "30 compressions : 2 breaths",
@@ -65,6 +71,7 @@ const steps = [
   },
   {
     letter: "D",
+    stepKey: "AED",
     label: "Defibrillator",
     shortLabel: "Defib",
     blurb: "Attach AED & follow prompts",
