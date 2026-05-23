@@ -541,6 +541,7 @@ export const VERTICALS: Vertical[] = [
     summary:
       "When first responders need first aid — firefighter burns, police assault injuries, smoke inhalation and operational PTSD.",
     gradient: "from-red-600 to-rose-800",
+    image: emergencyServicesImg,
     icon: "Siren",
     stats: {
       workforce: "85,000+ workers",
@@ -575,6 +576,7 @@ export const VERTICALS: Vertical[] = [
     summary:
       "Cabin crew, ground staff and aerospace workers — turbulence, in-flight emergencies, decompression and aircraft-maintenance injuries.",
     gradient: "from-indigo-500 to-sky-700",
+    image: aviationImg,
     icon: "Plane",
     stats: {
       workforce: "60,000+ workers",
@@ -607,6 +609,7 @@ export const VERTICALS: Vertical[] = [
     summary:
       "Lifeguards, gym staff and sports facility workers — drowning, spinal injuries from diving, sudden cardiac events and marine stings.",
     gradient: "from-cyan-500 to-blue-800",
+    image: aquaticLeisureImg,
     icon: "Waves",
     stats: {
       workforce: "180,000+ workers",
@@ -641,6 +644,7 @@ export const VERTICALS: Vertical[] = [
     summary:
       "Crew, performers and event staff — rigging falls, pyrotechnic burns, stunt injuries and crowd medical events.",
     gradient: "from-purple-600 to-fuchsia-700",
+    image: entertainmentImg,
     icon: "Film",
     stats: {
       workforce: "65,000+ workers",
@@ -674,6 +678,7 @@ export const VERTICALS: Vertical[] = [
     summary:
       "Chemical exposure, biohazard contamination, cryogenic burns and lab eye injuries — university, hospital and industrial research settings.",
     gradient: "from-emerald-600 to-teal-800",
+    image: laboratoryImg,
     icon: "FlaskConical",
     stats: {
       workforce: "40,000+ workers",
@@ -708,6 +713,7 @@ export const VERTICALS: Vertical[] = [
     summary:
       "Electrical, water, gas and telecommunications workers — high-voltage shock, arc flash, falls from towers and confined-space rescue.",
     gradient: "from-yellow-500 to-orange-700",
+    image: utilitiesImg,
     icon: "Zap",
     stats: {
       workforce: "120,000+ workers",
@@ -741,6 +747,7 @@ export const VERTICALS: Vertical[] = [
     summary:
       "Oil & gas, shipping and port workers — man-overboard, hypothermia, helicopter evac and multi-day extended-care offshore.",
     gradient: "from-blue-700 to-cyan-900",
+    image: maritimeImg,
     icon: "Ship",
     stats: {
       workforce: "45,000+ workers",
@@ -775,6 +782,7 @@ export const VERTICALS: Vertical[] = [
     summary:
       "Garbage truck crews, transfer station and recycling facility staff — needlesticks, chemical exposure and compactor crush injuries.",
     gradient: "from-lime-600 to-green-800",
+    image: wasteImg,
     icon: "Recycle",
     stats: {
       workforce: "55,000+ workers",
@@ -808,6 +816,7 @@ export const VERTICALS: Vertical[] = [
     summary:
       "Security officers, armed guards and corrections staff — assault wounds, stab and gunshot trauma, restraint injuries and overdose response.",
     gradient: "from-zinc-700 to-stone-900",
+    image: securityImg,
     icon: "Shield",
     stats: {
       workforce: "85,000+ workers",
@@ -842,6 +851,7 @@ export const VERTICALS: Vertical[] = [
     summary:
       "Salons, spas and personal-care studios — chemical burns from treatments, allergic reactions, hot-tool burns and client medical emergencies.",
     gradient: "from-rose-400 to-pink-600",
+    image: beautyWellnessImg,
     icon: "Sparkles",
     stats: {
       workforce: "95,000+ workers",
