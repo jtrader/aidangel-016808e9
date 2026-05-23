@@ -7,6 +7,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetClose,
+  SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
