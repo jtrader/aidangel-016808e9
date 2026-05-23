@@ -92,6 +92,17 @@ const App = forwardRef(function App(_props, _ref) {
                 <Route path="/admin/donations" element={<AdminDonations />} />
                 <Route path="/admin/educators" element={<AdminEducators />} />
                 <Route path="/admin/kb" element={<AdminKb />} />
+                <Route path="/admin/courses" element={<RequireAuth adminOnly><AdminCourses /></RequireAuth>} />
+
+                {/* Learning / LMS */}
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/courses" element={<Courses />} />
+                <Route path="/courses/:slug" element={<CourseDetail />} />
+                <Route path="/courses/:slug/lesson/:lessonSlug" element={<RequireAuth><CourseLesson /></RequireAuth>} />
+                <Route path="/courses/:slug/quiz" element={<RequireAuth><CourseQuiz /></RequireAuth>} />
+                <Route path="/courses/:slug/certificate" element={<RequireAuth><CourseCertificate /></RequireAuth>} />
+                <Route path="/my-learning" element={<RequireAuth><MyLearning /></RequireAuth>} />
+                <Route path="/verify/:number" element={<CertificateVerify />} />
 
                 {/* Localized */}
                 <Route
