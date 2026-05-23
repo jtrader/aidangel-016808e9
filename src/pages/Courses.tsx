@@ -26,6 +26,8 @@ export default function Courses() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SeoHead
+        lang="en"
+        basePath="/courses"
         title="Free Online First Aid Courses with Certificate | First Aid Angel"
         description="Self-paced first aid courses with quizzes and free PDF certificate. CPR, choking, bleeding, burns and more — based on Australian First Aid 5th Edition."
       />

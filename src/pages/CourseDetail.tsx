@@ -63,6 +63,8 @@ export default function CourseDetail() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SeoHead
+        lang="en"
+        basePath="/courses"
         title={`${course.title} — Free Online Course | First Aid Angel`}
         description={course.summary ?? `Free self-paced ${course.title} course with quiz and PDF certificate.`}
         jsonLd={{
