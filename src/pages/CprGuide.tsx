@@ -19,6 +19,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
+import { CprExplainerVideo } from "@/components/CprExplainerVideo";
 import { useCountry } from "@/hooks/useCountry";
 import { emergencyNumberForCountry } from "@/lib/donations";
 import { useMetronome } from "@/hooks/useMetronome";
