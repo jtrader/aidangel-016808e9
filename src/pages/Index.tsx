@@ -12,6 +12,7 @@ import LanguageSelector from "@/components/LanguageSelector";
 import NetworkFooter from "@/components/NetworkFooter";
 import SupportUsBar from "@/components/SupportUsBar";
 import KbSuggestionCard from "@/components/KbSuggestionCard";
+import EmergencyCallButton from "@/components/EmergencyCallButton";
 import { findBestTopic } from "@/lib/kb";
 
 const URGENT_SLUGS = new Set([
@@ -454,6 +455,7 @@ const Index = () => {
         </div>
       </main>
 
+      <EmergencyCallButton />
       <NetworkFooter currentApp="First Aid Angel" />
     </div>
   );
