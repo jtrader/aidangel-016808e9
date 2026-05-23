@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
   HeartPulse,
@@ -126,8 +126,19 @@ function detectInitialLang(): { lang: CprLangCode; auto: boolean } {
 export default function CprGuide() {
   const { code: countryCode } = useCountry();
   const emergency = emergencyNumberForCountry(countryCode);
-  // Open directly on the CPR (C) step so the metronome is one tap away.
-  const [stepIdx, setStepIdx] = useState(STEPS.findIndex((s) => s.key === "C"));
+  const [searchParams] = useSearchParams();
+  // Allow deep-linking to a specific DRSABCD step via ?step=D|R|S|A|B|C|AED.
+  // Default to CPR (C) so the metronome is one tap away.
+  const initialStepIdx = (() => {
+    const raw = searchParams.get("step");
+    if (raw) {
+      const key = raw.toUpperCase() === "DEFIB" ? "AED" : raw.toUpperCase();
+      const idx = STEPS.findIndex((s) => s.key === key);
+      if (idx >= 0) return idx;
+    }
+    return STEPS.findIndex((s) => s.key === "C");
+  })();
+  const [stepIdx, setStepIdx] = useState(initialStepIdx);
   const [voiceOn, setVoiceOn] = useState(true);
   const initial = detectInitialLang();
   const [lang, setLang] = useState<CprLangCode>(initial.lang);
