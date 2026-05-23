@@ -14,7 +14,13 @@ async function fetchMapsKey(): Promise<{ key: string; trackingId: string }> {
   return res.json();
 }
 
-const OVERPASS_ENDPOINT = "https://overpass-api.de/api/interpreter";
+// OpenAEDMap exposes precomputed per-country GeoJSON files keyed by ISO-2 code.
+// We fetch the file for the country in view once, cache it in memory + localStorage
+// for 7 days, and then filter to the current map bounds client-side. This avoids
+// hitting Overpass on every pan/zoom and gives instant subsequent results.
+const OAM_COUNTRY_URL = (iso2: string) =>
+  `https://openaedmap.org/api/v1/countries/${iso2.toUpperCase()}.geojson`;
+const OAM_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
 type Aed = {
   id: string;
@@ -71,6 +77,8 @@ function accessLabel(access?: string) {
       return { label: "Permissive access", color: "#10b981" };
     case "customers":
       return { label: "Customers only", color: "#d97706" };
+    case "permit":
+      return { label: "Permit required", color: "#d97706" };
     case "private":
       return { label: "Private", color: "#dc2626" };
     case "no":
@@ -80,31 +88,95 @@ function accessLabel(access?: string) {
   }
 }
 
-async function fetchAeds(bounds: { south: number; west: number; north: number; east: number }, signal?: AbortSignal): Promise<Aed[]> {
-  const { south, west, north, east } = bounds;
-  // Limit query to reasonable bbox area to avoid massive responses
-  const query = `[out:json][timeout:25];node["emergency"="defibrillator"](${south},${west},${north},${east});out body 500;`;
-  const res = await fetch(OVERPASS_ENDPOINT, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: `data=${encodeURIComponent(query)}`,
-    signal,
-  });
-  if (!res.ok) throw new Error(`Overpass error ${res.status}`);
-  const json = await res.json();
-  return (json.elements || []).map((el: any) => ({
-    id: String(el.id),
-    lat: el.lat,
-    lng: el.lon,
-    name: el.tags?.name,
-    operator: el.tags?.operator,
-    access: el.tags?.access,
-    indoor: el.tags?.indoor,
-    location: el.tags?.["defibrillator:location"] || el.tags?.location,
-    opening_hours: el.tags?.opening_hours,
-    phone: el.tags?.phone,
-    description: el.tags?.description,
-  }));
+// In-memory cache of per-country AED arrays.
+const countryCache: Record<string, Aed[]> = {};
+const inflight: Record<string, Promise<Aed[]>> = {};
+
+function pickLocation(props: Record<string, unknown>): string | undefined {
+  // OpenAEDMap exposes localized location keys like `defibrillator:location:pl`.
+  const direct =
+    (props["defibrillator:location"] as string | undefined) ??
+    (props["location"] as string | undefined);
+  if (direct) return direct;
+  for (const k of Object.keys(props)) {
+    if (k.startsWith("defibrillator:location")) {
+      const v = props[k];
+      if (typeof v === "string" && v) return v;
+    }
+  }
+  return undefined;
+}
+
+async function fetchCountryAeds(iso2: string): Promise<Aed[]> {
+  const key = iso2.toUpperCase();
+  if (countryCache[key]) return countryCache[key];
+  if (inflight[key]) return inflight[key];
+
+  // Try localStorage cache first.
+  try {
+    const raw = localStorage.getItem(`faa.oam.${key}`);
+    if (raw) {
+      const parsed = JSON.parse(raw) as { ts: number; data: Aed[] };
+      if (Date.now() - parsed.ts < OAM_CACHE_TTL_MS && Array.isArray(parsed.data)) {
+        countryCache[key] = parsed.data;
+        return parsed.data;
+      }
+    }
+  } catch {
+    /* ignore */
+  }
+
+  const promise = (async () => {
+    const res = await fetch(OAM_COUNTRY_URL(key));
+    if (!res.ok) throw new Error(`OpenAEDMap ${key} ${res.status}`);
+    const json = await res.json();
+    const features: any[] = json.features || [];
+    const aeds: Aed[] = features.map((f) => {
+      const [lng, lat] = f.geometry?.coordinates || [0, 0];
+      const p = f.properties || {};
+      return {
+        id: String(p["@osm_id"] ?? `${lat},${lng}`),
+        lat,
+        lng,
+        name: p.name,
+        operator: p.operator,
+        access: p.access,
+        indoor: p.indoor,
+        location: pickLocation(p),
+        opening_hours: p.opening_hours,
+        phone: p.phone,
+        description: p.description,
+      };
+    });
+    countryCache[key] = aeds;
+    try {
+      localStorage.setItem(`faa.oam.${key}`, JSON.stringify({ ts: Date.now(), data: aeds }));
+    } catch {
+      /* quota — skip */
+    }
+    return aeds;
+  })();
+  inflight[key] = promise;
+  try {
+    return await promise;
+  } finally {
+    delete inflight[key];
+  }
+}
+
+function filterByBounds(
+  aeds: Aed[],
+  b: { south: number; west: number; north: number; east: number },
+  cap = 800,
+): Aed[] {
+  const out: Aed[] = [];
+  for (const a of aeds) {
+    if (a.lat >= b.south && a.lat <= b.north && a.lng >= b.west && a.lng <= b.east) {
+      out.push(a);
+      if (out.length >= cap) break;
+    }
+  }
+  return out;
 }
 
 export default function AedFinder() {
