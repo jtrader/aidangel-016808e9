@@ -12,6 +12,7 @@ import NetworkFooter from "@/components/NetworkFooter";
 import CourseLayout from "@/components/CourseLayout";
 import { SeoHead } from "@/components/SeoHead";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type Course = any;
 type Lesson = { id: string; slug: string; title: string; duration_minutes: number; sort_order: number };
@@ -19,6 +20,7 @@ type Lesson = { id: string; slug: string; title: string; duration_minutes: numbe
 export default function CourseDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { user } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [course, setCourse] = useState<Course | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
@@ -55,7 +57,7 @@ export default function CourseDetail() {
   };
 
   if (loading) return <div className="flex h-screen items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
-  if (!course) return <div className="min-h-screen flex items-center justify-center">Course not found.</div>;
+  if (!course) return <div className="min-h-screen flex items-center justify-center">{t("courseNotFound")}</div>;
 
   const completedCount = lessons.filter(l => completedIds.has(l.id)).length;
   const allDone = lessons.length > 0 && completedCount === lessons.length;
@@ -85,7 +87,7 @@ export default function CourseDetail() {
       />
       <CoursesHeader />
       <main className="flex-1 container max-w-4xl mx-auto px-4 py-10">
-        <Link to="/courses" className="text-sm text-muted-foreground hover:text-primary mb-4 inline-block">← All courses</Link>
+        <Link to="/courses" className="text-sm text-muted-foreground hover:text-primary mb-4 inline-block">← {t("courseAllCourses")}</Link>
         <Card className="overflow-hidden rounded-2xl mb-8">
           {course.cover_url && (
             <div className="aspect-[2/1] bg-muted">
@@ -95,9 +97,9 @@ export default function CourseDetail() {
           <div className="p-6 md:p-8">
             <div className="flex gap-2 mb-3 flex-wrap">
               <Badge variant="secondary" className="capitalize">{course.level}</Badge>
-              <Badge variant="outline" className="gap-1"><Clock className="h-3 w-3" />{course.duration_minutes} min</Badge>
-              <Badge variant="outline" className="gap-1"><BookOpen className="h-3 w-3" />{lessons.length} lessons</Badge>
-              <Badge variant="outline" className="gap-1"><Award className="h-3 w-3" />Pass {course.pass_mark}%</Badge>
+              <Badge variant="outline" className="gap-1"><Clock className="h-3 w-3" />{course.duration_minutes} {t("courseDurationMin")}</Badge>
+              <Badge variant="outline" className="gap-1"><BookOpen className="h-3 w-3" />{lessons.length} {t("courseLessonsLabel")}</Badge>
+              <Badge variant="outline" className="gap-1"><Award className="h-3 w-3" />{t("coursePassMark")} {course.pass_mark}%</Badge>
             </div>
             <h1 className="font-display text-3xl md:text-4xl font-bold mb-3">{course.title}</h1>
             {course.summary && <p className="text-muted-foreground text-lg mb-6">{course.summary}</p>}
@@ -106,7 +108,7 @@ export default function CourseDetail() {
             {enrolled && (
               <div className="mb-6">
                 <div className="flex justify-between text-sm mb-1">
-                  <span>Your progress</span>
+                  <span>{t("courseProgressLabel")}</span>
                   <span className="text-muted-foreground">{completedCount} / {lessons.length}</span>
                 </div>
                 <Progress value={pct} />
@@ -116,29 +118,29 @@ export default function CourseDetail() {
             <div className="flex gap-3 flex-wrap">
               {!enrolled ? (
                 <Button size="lg" onClick={enroll}>
-                  <Play className="h-4 w-4 mr-2" /> {user ? "Start course" : "Sign in to start"}
+                  <Play className="h-4 w-4 mr-2" /> {user ? t("courseStart") : t("courseSignInToStart")}
                 </Button>
               ) : hasCert ? (
                 <Button size="lg" onClick={() => navigate(`/courses/${slug}/certificate`)}>
-                  <Award className="h-4 w-4 mr-2" /> View certificate
+                  <Award className="h-4 w-4 mr-2" /> {t("courseViewCert")}
                 </Button>
               ) : allDone ? (
                 <Button size="lg" onClick={() => navigate(`/courses/${slug}/quiz`)}>
-                  Take final quiz
+                  {t("courseTakeFinalQuiz")}
                 </Button>
               ) : (
                 <Button size="lg" onClick={() => {
                   const next = lessons.find(l => !completedIds.has(l.id)) ?? lessons[0];
                   navigate(`/courses/${slug}/lesson/${next.slug}`);
                 }}>
-                  <Play className="h-4 w-4 mr-2" /> Continue
+                  <Play className="h-4 w-4 mr-2" /> {t("actionContinue")}
                 </Button>
               )}
             </div>
           </div>
         </Card>
 
-        <h2 className="font-display text-2xl font-bold mb-4">Lessons</h2>
+        <h2 className="font-display text-2xl font-bold mb-4">{t("courseLessonsHeading")}</h2>
         <div className="space-y-2">
           {lessons.map((l, i) => {
             const done = completedIds.has(l.id);
@@ -156,7 +158,7 @@ export default function CourseDetail() {
                   <div className="flex-1">
                     <div className="font-medium">{l.title}</div>
                     <div className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                      <Clock className="h-3 w-3" /> {l.duration_minutes} min
+                      <Clock className="h-3 w-3" /> {l.duration_minutes} {t("courseDurationMin")}
                     </div>
                   </div>
                 </Card>

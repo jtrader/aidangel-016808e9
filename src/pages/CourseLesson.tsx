@@ -10,10 +10,12 @@ import CoursesHeader from "@/components/CoursesHeader";
 import CourseLayout from "@/components/CourseLayout";
 import { SeoHead } from "@/components/SeoHead";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function CourseLesson() {
   const { slug, lessonSlug } = useParams();
   const { user } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [course, setCourse] = useState<any>(null);
   const [lesson, setLesson] = useState<any>(null);
@@ -55,7 +57,7 @@ export default function CourseLesson() {
   const isLast = idx === lessons.length - 1;
 
   if (loading) return <div className="flex h-screen items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
-  if (!lesson) return <div className="min-h-screen flex items-center justify-center">Lesson not found.</div>;
+  if (!lesson) return <div className="min-h-screen flex items-center justify-center">{t("lessonNotFound")}</div>;
 
   return (
     <CourseLayout>
@@ -65,7 +67,7 @@ export default function CourseLesson() {
       <main className="flex-1 container max-w-3xl mx-auto px-4 py-8">
         <Link to={`/courses/${slug}`} className="text-sm text-muted-foreground hover:text-primary mb-4 inline-block">← {course?.title}</Link>
         <h1 className="font-display text-3xl font-bold mb-2">{lesson.title}</h1>
-        <p className="text-sm text-muted-foreground mb-6">Lesson {idx + 1} of {lessons.length}</p>
+        <p className="text-sm text-muted-foreground mb-6">{t("lessonOfTotal").replace("{n}", String(idx + 1)).replace("{total}", String(lessons.length))}</p>
 
         {lesson.video_url && (
           <Card className="overflow-hidden rounded-2xl mb-6">
@@ -89,7 +91,7 @@ export default function CourseLesson() {
 
         {Array.isArray(lesson.sources) && lesson.sources.length > 0 && (
           <Card className="p-6 rounded-2xl mb-6">
-            <h2 className="font-display text-lg font-semibold mb-3">Sources</h2>
+            <h2 className="font-display text-lg font-semibold mb-3">{t("sourcesTitle")}</h2>
             <ul className="space-y-2 text-sm">
               {(lesson.sources as Array<{ label: string; url: string; type?: "web" | "pdf" }>).map((s, i) => {
                 const isPdf = s.type === "pdf" || /\.pdf($|\?)/i.test(s.url);
@@ -114,7 +116,7 @@ export default function CourseLesson() {
               })}
             </ul>
             <p className="text-xs text-muted-foreground mt-3">
-              Always defer to local emergency services and current guidelines.
+              {t("lessonSourcesDisclaimer")}
             </p>
           </Card>
         )}
@@ -122,7 +124,7 @@ export default function CourseLesson() {
 
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <Button variant="outline" onClick={() => prev && navigate(`/courses/${slug}/lesson/${prev.slug}`)} disabled={!prev}>
-            <ChevronLeft className="h-4 w-4 mr-1" /> Previous
+            <ChevronLeft className="h-4 w-4 mr-1" /> {t("lessonPrevious")}
           </Button>
           <Button onClick={async () => {
             await markComplete();
@@ -130,7 +132,7 @@ export default function CourseLesson() {
             else navigate(`/courses/${slug}/quiz`);
           }}>
             {done ? <CheckCircle2 className="h-4 w-4 mr-1" /> : null}
-            {isLast ? "Complete & start quiz" : (done ? "Next lesson" : "Mark complete & next")}
+            {isLast ? t("lessonCompleteStartQuiz") : (done ? t("lessonNextLesson") : t("lessonMarkCompleteNext"))}
             <ChevronRight className="h-4 w-4 ml-1" />
           </Button>
         </div>
