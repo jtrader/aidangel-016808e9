@@ -68,6 +68,7 @@ const App = forwardRef(function App(_props, _ref) {
                 <Route path="/learn/:country" element={<LearnCountry />} />
                 <Route path="/learn/:country/:city" element={<LearnCity />} />
                 <Route path="/cpr" element={<CprGuide />} />
+                <Route path="/aed-finder" element={<AedFinder />} />
                 <Route path="/agent" element={<AgentChat />} />
                 <Route path="/unsubscribe" element={<Unsubscribe />} />
 
