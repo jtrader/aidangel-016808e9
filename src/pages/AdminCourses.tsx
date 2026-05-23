@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Plus, Trash2, Save, Loader2, Upload, FileText, ExternalLink } from "lucide-react";
 import CoursesHeader from "@/components/CoursesHeader";
+import LessonSourcesEditor from "@/components/admin/LessonSourcesEditor";
 import { toast } from "sonner";
 
 export default function AdminCourses() {
