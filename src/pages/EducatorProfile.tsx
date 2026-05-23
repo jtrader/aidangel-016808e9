@@ -124,6 +124,39 @@ export default function EducatorProfile() {
     });
   }, [ed]);
 
+  // Load (and if missing, generate) the AI-enriched profile
+  useEffect(() => {
+    if (!ed) return;
+    let cancelled = false;
+    setProfileError(null);
+    (async () => {
+      const { data: existing } = await supabase
+        .from("educator_profiles")
+        .select("who_text,how_text,what_text,why_text,qas")
+        .eq("educator_id", ed.id)
+        .maybeSingle();
+      if (cancelled) return;
+      if (existing) {
+        setProfile({ ...existing, qas: (existing.qas as Array<{ question: string; answer: string }>) ?? [] });
+        return;
+      }
+      if (!ed.website && !ed.booking_url) return;
+      setProfileLoading(true);
+      const { data, error } = await supabase.functions.invoke("generate-educator-profile", {
+        body: { educator_id: ed.id },
+      });
+      if (cancelled) return;
+      setProfileLoading(false);
+      if (error || data?.error) {
+        setProfileError(data?.error ?? error?.message ?? "Could not generate profile");
+        return;
+      }
+      const p = data?.profile;
+      if (p) setProfile({ ...p, qas: p.qas ?? [] });
+    })();
+    return () => { cancelled = true; };
+  }, [ed]);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
