@@ -447,15 +447,7 @@ const Index = () => {
                   );
                 })()}
                 <ChatInput onSend={send} disabled={isLoading} />
-                <p className="text-center text-xs text-muted-foreground mt-2">
-                  {t("disclaimer").replace(/\b000\b/g, emergencyNumber).split(emergencyNumber).map((part, i, arr) =>
-                    i < arr.length - 1 ? (
-                      <span key={i}>{part}<a href={`tel:${emergencyNumber}`} className="underline font-semibold hover:text-foreground transition-colors">{emergencyNumber}</a></span>
-                    ) : (
-                      <span key={i}>{part}</span>
-                    )
-                  )}
-                </p>
+                <ChatDisclaimer />
               </div>
             </>
           )}
