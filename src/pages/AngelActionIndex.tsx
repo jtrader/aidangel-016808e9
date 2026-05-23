@@ -7,6 +7,7 @@ import NetworkFooter from "@/components/NetworkFooter";
 import SupportUsBar from "@/components/SupportUsBar";
 import { useLanguage } from "@/contexts/LanguageContext";
 import EmergencyCallButton from "@/components/EmergencyCallButton";
+import HamburgerMenu from "@/components/HamburgerMenu";
 
 const AngelActionIndex = () => {
   const { language } = useLanguage();
