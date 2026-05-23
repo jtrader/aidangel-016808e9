@@ -61,6 +61,7 @@ export default function CourseDetail() {
   const allDone = lessons.length > 0 && completedCount === lessons.length;
   const pct = lessons.length ? (completedCount / lessons.length) * 100 : 0;
 
+  return (
     <CourseLayout>
     <div className="min-h-screen bg-background flex flex-col">
       <SeoHead
