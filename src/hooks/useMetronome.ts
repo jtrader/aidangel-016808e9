@@ -92,16 +92,19 @@ export function useMetronome({
 
     breathCountdownTimerRef.current = window.setInterval(() => {
       const elapsed = (Date.now() - breathStartMs) / 1000;
-      remaining = Math.max(1, Math.ceil(breathPauseSecRef.current - elapsed));
+      const rawRemaining = breathPauseSecRef.current - elapsed;
+      remaining = Math.max(0, Math.ceil(rawRemaining));
       setBreathCountdown(remaining);
 
-      if (remaining <= 1) {
+      if (rawRemaining <= 0) {
         if (breathCountdownTimerRef.current) {
           window.clearInterval(breathCountdownTimerRef.current);
           breathCountdownTimerRef.current = null;
         }
         totalBreathPauseMsRef.current += Date.now() - breathStartMs;
         inBreathPhaseRef.current = false;
+        setInBreathPhase(false);
+        setBreathCountdown(0);
         const ctx = ctxRef.current;
         if (ctx) {
           nextNoteTimeRef.current = ctx.currentTime + 0.05;
@@ -116,21 +119,21 @@ export function useMetronome({
     if (inBreathPhaseRef.current) return;
 
     const lookAhead = 0.1; // seconds
+    let next = countRef.current;
     while (nextNoteTimeRef.current < ctx.currentTime + lookAhead) {
-      const next = countRef.current + 1;
-      const cyclePos = (next - 1) % cycleLength;
+      next += 1;
+      const scheduledCount = next;
+      const cyclePos = (scheduledCount - 1) % cycleLength;
       const isAccent = cyclePos === 0; // first beat of cycle
       scheduleClick(nextNoteTimeRef.current, isAccent);
 
-      // Update React state slightly ahead to feel responsive
       const tickDelayMs = Math.max(0, (nextNoteTimeRef.current - ctx.currentTime) * 1000);
       window.setTimeout(() => {
-        countRef.current = next;
-        setCount(next);
-        onTickRef.current?.(next);
+        countRef.current = scheduledCount;
+        setCount(scheduledCount);
+        onTickRef.current?.(scheduledCount);
 
-        // After completing a cycle (30 compressions), enter breath pause
-        if (next % cycleLength === 0 && next > 1) {
+        if (scheduledCount % cycleLength === 0 && scheduledCount > 1) {
           enterBreathPhase();
         }
       }, tickDelayMs);
@@ -188,7 +191,7 @@ export function useMetronome({
   const setBpm = useCallback((v: number) => setCurrentBpm(Math.min(140, Math.max(80, Math.round(v)))), []);
 
   const cyclePos = count === 0 ? 0 : ((count - 1) % cycleLength);
-  const cycle = Math.floor((count - 1) / cycleLength) + 1;
+  const cycle = count === 0 ? 0 : Math.floor((count - 1) / cycleLength) + 1;
 
   return { isRunning, bpm: currentBpm, setBpm, count, cyclePos, cycle, elapsedSec, inBreathPhase, breathCountdown, start, stop };
 }
