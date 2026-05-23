@@ -204,7 +204,7 @@ export default function CprGuide() {
 
   const pulseDurMs = Math.round((60 / metronome.bpm) * 1000);
 
-  const inBreathPhase = isCpr && metronome.isRunning && metronome.cyclePos === 29;
+  const inBreathPhase = isCpr && metronome.inBreathPhase;
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -320,9 +320,9 @@ export default function CprGuide() {
                   <div
                     className={[
                       "absolute inset-0 rounded-full bg-destructive/15",
-                      metronome.isRunning ? "animate-ping" : "",
+                      metronome.isRunning && !metronome.inBreathPhase ? "animate-ping" : "",
                     ].join(" ")}
-                    style={metronome.isRunning ? { animationDuration: `${pulseDurMs}ms` } : undefined}
+                    style={metronome.isRunning && !metronome.inBreathPhase ? { animationDuration: `${pulseDurMs}ms` } : undefined}
                   />
                   <div
                     className={[
@@ -330,7 +330,7 @@ export default function CprGuide() {
                       inBreathPhase ? "bg-primary" : "bg-destructive",
                     ].join(" ")}
                     style={
-                      metronome.isRunning
+                      metronome.isRunning && !metronome.inBreathPhase
                         ? { animation: `cpr-beat ${pulseDurMs}ms ease-in-out infinite` }
                         : undefined
                     }
@@ -340,7 +340,9 @@ export default function CprGuide() {
                       {inBreathPhase ? "🫁" : (metronome.cyclePos + (metronome.isRunning ? 1 : 0)) || "—"}
                     </div>
                     <div className="text-[11px] uppercase tracking-wider mt-1 opacity-90">
-                      {inBreathPhase ? "Give 2 breaths" : `of 30 · cycle ${metronome.cycle + (metronome.isRunning ? 1 : 0)}`}
+                      {inBreathPhase
+                        ? `Give 2 breaths · resume in ${metronome.breathCountdown}s`
+                        : `of 30 · cycle ${metronome.cycle}`}
                     </div>
                   </div>
                 </div>
