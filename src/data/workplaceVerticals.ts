@@ -12,7 +12,7 @@ import retailImg from "@/assets/workplace/retail.jpg";
 import transportImg from "@/assets/workplace/transport.jpg";
 import officeImg from "@/assets/workplace/office.jpg";
 
-export type RiskLevel = "Low" | "Low–Medium" | "Medium" | "Medium–High" | "High" | "Extreme";
+export type RiskLevel = string;
 export type Tier = 1 | 2 | 3;
 
 export interface SubTopic {
