@@ -14,7 +14,7 @@ import {
 } from "@/lib/educators";
 import { useGeoLocation, setManualGeo, GeoInfo } from "@/hooks/useGeoLocation";
 import NetworkFooter from "@/components/NetworkFooter";
-import LanguageSelector from "@/components/LanguageSelector";
+import SiteHeader from "@/components/SiteHeader";
 import { trackLearnClick } from "@/lib/giveAnalytics";
 import { Favicon } from "@/components/Favicon";
 import { CityAutocomplete, SelectedPlace } from "@/components/CityAutocomplete";
