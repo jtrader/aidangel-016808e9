@@ -244,6 +244,13 @@ def main():
         body = md_path.read_text()
         # Strip the first H1 — we render the title ourselves.
         body = re.sub(r"^#\s+.*\n+", "", body, count=1)
+        # Strip the leading summary paragraph if it duplicates the meta summary.
+        summary_norm = re.sub(r"\s+", " ", topic["summary"]).strip()
+        first_para_match = re.match(r"\s*([^\n][^\n]*(?:\n(?!\n)[^\n]+)*)\n*", body)
+        if first_para_match:
+            first_para = re.sub(r"\s+", " ", first_para_match.group(1)).strip()
+            if first_para == summary_norm:
+                body = body[first_para_match.end():]
         out_path = OUT_DIR / f"{slug}.pdf"
         build_pdf(topic, body, out_path)
         size_kb = out_path.stat().st_size // 1024
