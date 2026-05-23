@@ -121,6 +121,7 @@ export default function AgentChat() {
         title="Gemini Agent — First Aid Angel"
         description="Chat with a Gemini-powered first aid agent. Calm, practical, Australian-aligned guidance."
         basePath="/agent"
+        lang="en"
       />
       <EmergencyBanner />
 
