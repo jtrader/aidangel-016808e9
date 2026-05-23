@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, ExternalLink, MapPin, Globe, Heart, BadgeCheck, Clock, CheckCircle2, XCircle, Users, Wrench, BookOpen, Sparkles, HelpCircle, Loader2 } from "lucide-react";
+import { ExternalLink, MapPin, Globe, Heart, BadgeCheck, Clock, CheckCircle2, XCircle, Users, Wrench, BookOpen, Sparkles, HelpCircle, Loader2 } from "lucide-react";
+import SiteHeader from "@/components/SiteHeader";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import ClaimListingDialog from "@/components/ClaimListingDialog";
 import EditListingDialog from "@/components/EditListingDialog";
