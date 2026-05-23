@@ -12,7 +12,7 @@ import {
 } from "@/lib/educators";
 import { supabase } from "@/integrations/supabase/client";
 import NetworkFooter from "@/components/NetworkFooter";
-import LanguageSelector from "@/components/LanguageSelector";
+import SiteHeader from "@/components/SiteHeader";
 import { trackLearnClick } from "@/lib/giveAnalytics";
 import { Favicon } from "@/components/Favicon";
 import { AedEmbedMap } from "@/components/AedEmbedMap";
