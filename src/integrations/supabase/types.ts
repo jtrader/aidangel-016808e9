@@ -300,6 +300,51 @@ export type Database = {
           },
         ]
       }
+      educator_profiles: {
+        Row: {
+          created_at: string
+          educator_id: string
+          generated_at: string
+          how_text: string | null
+          id: string
+          model: string | null
+          qas: Json
+          source_url: string | null
+          updated_at: string
+          what_text: string | null
+          who_text: string | null
+          why_text: string | null
+        }
+        Insert: {
+          created_at?: string
+          educator_id: string
+          generated_at?: string
+          how_text?: string | null
+          id?: string
+          model?: string | null
+          qas?: Json
+          source_url?: string | null
+          updated_at?: string
+          what_text?: string | null
+          who_text?: string | null
+          why_text?: string | null
+        }
+        Update: {
+          created_at?: string
+          educator_id?: string
+          generated_at?: string
+          how_text?: string | null
+          id?: string
+          model?: string | null
+          qas?: Json
+          source_url?: string | null
+          updated_at?: string
+          what_text?: string | null
+          who_text?: string | null
+          why_text?: string | null
+        }
+        Relationships: []
+      }
       educator_service_areas: {
         Row: {
           city: string | null
