@@ -244,7 +244,8 @@ export default function AedFinder() {
       // Figure out which country file(s) we need. Start with the user's detected
       // country, then add the country under the current map center.
       const isoCodes = new Set<string>();
-      if (country && typeof country === "string") isoCodes.add(country.toUpperCase());
+      const countryStr = country as unknown as string;
+      if (countryStr && typeof countryStr === "string") isoCodes.add(countryStr.toUpperCase());
       const center = map.getCenter();
       if (center) {
         const iso = await reverseCountry(center.lat(), center.lng());
