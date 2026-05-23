@@ -114,6 +114,8 @@ export default function AedFinder() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <SeoHead
+        lang={language}
+        basePath="/aed-finder"
         title="AED Finder — First Aid Angel"
         description="Find your nearest defibrillator (AED) on an interactive map."
       />
