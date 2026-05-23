@@ -24,6 +24,10 @@ import LanguageSelector from "@/components/LanguageSelector";
 import { useCountry } from "@/hooks/useCountry";
 import { emergencyNumberForCountry } from "@/lib/donations";
 import { useMetronome } from "@/hooks/useMetronome";
+import DonateMenu from "@/components/DonateMenu";
+import ShopMenu from "@/components/ShopMenu";
+import LearnMenu from "@/components/LearnMenu";
+import NetworkFooter from "@/components/NetworkFooter";
 import { speakCpr, stopCprVoice, prefetchCprVoice } from "@/lib/cprVoice";
 import { CPR_LANGUAGES, type CprLangCode } from "@/data/cprTranslations";
 
