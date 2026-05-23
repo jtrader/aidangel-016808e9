@@ -126,7 +126,8 @@ function detectInitialLang(): { lang: CprLangCode; auto: boolean } {
 export default function CprGuide() {
   const { code: countryCode } = useCountry();
   const emergency = emergencyNumberForCountry(countryCode);
-  const [stepIdx, setStepIdx] = useState(0);
+  // Open directly on the CPR (C) step so the metronome is one tap away.
+  const [stepIdx, setStepIdx] = useState(STEPS.findIndex((s) => s.key === "C"));
   const [voiceOn, setVoiceOn] = useState(true);
   const initial = detectInitialLang();
   const [lang, setLang] = useState<CprLangCode>(initial.lang);
