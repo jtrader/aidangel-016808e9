@@ -1,5 +1,7 @@
 // CPR voice-over via ElevenLabs multilingual TTS.
 // Returns MP3 audio bytes for a given text + language.
+// On rate-limit / upstream failure, returns JSON { fallback: true } with 200
+// so the client can gracefully fall back to the browser SpeechSynthesis API.
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -7,20 +9,21 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-// Multilingual-capable voice (works well across all top languages with eleven_multilingual_v2)
 const DEFAULT_VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Sarah
+
+function fallbackResponse(reason: string) {
+  return new Response(
+    JSON.stringify({ fallback: true, reason }),
+    { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+  );
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
     const apiKey = Deno.env.get("ELEVENLABS_API_KEY");
-    if (!apiKey) {
-      return new Response(JSON.stringify({ error: "ELEVENLABS_API_KEY not configured" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    if (!apiKey) return fallbackResponse("missing_api_key");
 
     const { text, voiceId } = await req.json();
     if (!text || typeof text !== "string" || text.length > 1000) {
@@ -36,10 +39,7 @@ Deno.serve(async (req) => {
       `https://api.elevenlabs.io/v1/text-to-speech/${vId}?output_format=mp3_44100_128`,
       {
         method: "POST",
-        headers: {
-          "xi-api-key": apiKey,
-          "Content-Type": "application/json",
-        },
+        headers: { "xi-api-key": apiKey, "Content-Type": "application/json" },
         body: JSON.stringify({
           text,
           model_id: "eleven_multilingual_v2",
@@ -57,6 +57,10 @@ Deno.serve(async (req) => {
     if (!resp.ok) {
       const errTxt = await resp.text();
       console.error("ElevenLabs error", resp.status, errTxt);
+      // Rate-limit or upstream errors → tell client to fall back
+      if (resp.status === 429 || resp.status >= 500) {
+        return fallbackResponse(`upstream_${resp.status}`);
+      }
       return new Response(JSON.stringify({ error: `TTS failed: ${resp.status}` }), {
         status: 502,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -74,9 +78,6 @@ Deno.serve(async (req) => {
     });
   } catch (e) {
     console.error("cpr-tts error", e);
-    return new Response(JSON.stringify({ error: (e as Error).message }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return fallbackResponse("exception");
   }
 });
