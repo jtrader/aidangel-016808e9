@@ -1,3 +1,9 @@
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
+  prompt(): Promise<void>;
+}
+
 import { useEffect, useState, useCallback } from "react";
 import { Heart, Download } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
