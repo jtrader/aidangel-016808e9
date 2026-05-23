@@ -581,6 +581,15 @@ serve(async (req) => {
       systemPrompt += `\n\nCRITICAL LANGUAGE INSTRUCTION: You MUST respond entirely in ${langName}. The user has selected this as their preferred language. Translate all your first aid guidance, headings, and instructions into ${langName}. Use simple, clear language. Keep medical terms like CPR, AED, and DRSABCD in English as they are internationally recognised. Emergency number Triple Zero (000) must always stay as "000". If you are unsure of the exact translation for a term, provide the English term alongside the ${langName} translation in brackets.`;
     }
 
+    // Retrieval-augmented grounding: pull top-matching KB chunks for the latest user turn.
+    const lastUser = [...messages].reverse().find((m: { role: string; content: string }) => m.role === "user");
+    if (lastUser?.content) {
+      const ctx = await retrieveKbContext(lastUser.content, LOVABLE_API_KEY);
+      if (ctx) {
+        systemPrompt += `\n\n## RETRIEVED AFA5 CONTEXT (use this verbatim when relevant; cite the section name in your reply)\n${ctx}`;
+      }
+    }
+
     const response = await fetch(
       "https://ai.gateway.lovable.dev/v1/chat/completions",
       {
