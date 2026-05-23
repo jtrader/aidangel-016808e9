@@ -14,7 +14,13 @@ async function fetchMapsKey(): Promise<{ key: string; trackingId: string }> {
   return res.json();
 }
 
-const OVERPASS_ENDPOINT = "https://overpass-api.de/api/interpreter";
+// OpenAEDMap exposes precomputed per-country GeoJSON files keyed by ISO-2 code.
+// We fetch the file for the country in view once, cache it in memory + localStorage
+// for 7 days, and then filter to the current map bounds client-side. This avoids
+// hitting Overpass on every pan/zoom and gives instant subsequent results.
+const OAM_COUNTRY_URL = (iso2: string) =>
+  `https://openaedmap.org/api/v1/countries/${iso2.toUpperCase()}.geojson`;
+const OAM_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
 type Aed = {
   id: string;
@@ -71,6 +77,8 @@ function accessLabel(access?: string) {
       return { label: "Permissive access", color: "#10b981" };
     case "customers":
       return { label: "Customers only", color: "#d97706" };
+    case "permit":
+      return { label: "Permit required", color: "#d97706" };
     case "private":
       return { label: "Private", color: "#dc2626" };
     case "no":
@@ -80,31 +88,95 @@ function accessLabel(access?: string) {
   }
 }
 
-async function fetchAeds(bounds: { south: number; west: number; north: number; east: number }, signal?: AbortSignal): Promise<Aed[]> {
-  const { south, west, north, east } = bounds;
-  // Limit query to reasonable bbox area to avoid massive responses
-  const query = `[out:json][timeout:25];node["emergency"="defibrillator"](${south},${west},${north},${east});out body 500;`;
-  const res = await fetch(OVERPASS_ENDPOINT, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: `data=${encodeURIComponent(query)}`,
-    signal,
-  });
-  if (!res.ok) throw new Error(`Overpass error ${res.status}`);
-  const json = await res.json();
-  return (json.elements || []).map((el: any) => ({
-    id: String(el.id),
-    lat: el.lat,
-    lng: el.lon,
-    name: el.tags?.name,
-    operator: el.tags?.operator,
-    access: el.tags?.access,
-    indoor: el.tags?.indoor,
-    location: el.tags?.["defibrillator:location"] || el.tags?.location,
-    opening_hours: el.tags?.opening_hours,
-    phone: el.tags?.phone,
-    description: el.tags?.description,
-  }));
+// In-memory cache of per-country AED arrays.
+const countryCache: Record<string, Aed[]> = {};
+const inflight: Record<string, Promise<Aed[]>> = {};
+
+function pickLocation(props: Record<string, unknown>): string | undefined {
+  // OpenAEDMap exposes localized location keys like `defibrillator:location:pl`.
+  const direct =
+    (props["defibrillator:location"] as string | undefined) ??
+    (props["location"] as string | undefined);
+  if (direct) return direct;
+  for (const k of Object.keys(props)) {
+    if (k.startsWith("defibrillator:location")) {
+      const v = props[k];
+      if (typeof v === "string" && v) return v;
+    }
+  }
+  return undefined;
+}
+
+async function fetchCountryAeds(iso2: string): Promise<Aed[]> {
+  const key = iso2.toUpperCase();
+  if (countryCache[key]) return countryCache[key];
+  if (inflight[key]) return inflight[key];
+
+  // Try localStorage cache first.
+  try {
+    const raw = localStorage.getItem(`faa.oam.${key}`);
+    if (raw) {
+      const parsed = JSON.parse(raw) as { ts: number; data: Aed[] };
+      if (Date.now() - parsed.ts < OAM_CACHE_TTL_MS && Array.isArray(parsed.data)) {
+        countryCache[key] = parsed.data;
+        return parsed.data;
+      }
+    }
+  } catch {
+    /* ignore */
+  }
+
+  const promise = (async () => {
+    const res = await fetch(OAM_COUNTRY_URL(key));
+    if (!res.ok) throw new Error(`OpenAEDMap ${key} ${res.status}`);
+    const json = await res.json();
+    const features: any[] = json.features || [];
+    const aeds: Aed[] = features.map((f) => {
+      const [lng, lat] = f.geometry?.coordinates || [0, 0];
+      const p = f.properties || {};
+      return {
+        id: String(p["@osm_id"] ?? `${lat},${lng}`),
+        lat,
+        lng,
+        name: p.name,
+        operator: p.operator,
+        access: p.access,
+        indoor: p.indoor,
+        location: pickLocation(p),
+        opening_hours: p.opening_hours,
+        phone: p.phone,
+        description: p.description,
+      };
+    });
+    countryCache[key] = aeds;
+    try {
+      localStorage.setItem(`faa.oam.${key}`, JSON.stringify({ ts: Date.now(), data: aeds }));
+    } catch {
+      /* quota — skip */
+    }
+    return aeds;
+  })();
+  inflight[key] = promise;
+  try {
+    return await promise;
+  } finally {
+    delete inflight[key];
+  }
+}
+
+function filterByBounds(
+  aeds: Aed[],
+  b: { south: number; west: number; north: number; east: number },
+  cap = 800,
+): Aed[] {
+  const out: Aed[] = [];
+  for (const a of aeds) {
+    if (a.lat >= b.south && a.lat <= b.north && a.lng >= b.west && a.lng <= b.east) {
+      out.push(a);
+      if (out.length >= cap) break;
+    }
+  }
+  return out;
 }
 
 export default function AedFinder() {
@@ -124,6 +196,35 @@ export default function AedFinder() {
   const [count, setCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
+  // Reverse-geocode a lat/lng to an ISO-2 country code (cached on the Geocoder instance).
+  const geocoderRef = useRef<any>(null);
+  const reverseCountryCache = useRef<Map<string, string | null>>(new Map());
+  const reverseCountry = useCallback(async (lat: number, lng: number): Promise<string | null> => {
+    const key = `${lat.toFixed(1)},${lng.toFixed(1)}`;
+    if (reverseCountryCache.current.has(key)) return reverseCountryCache.current.get(key)!;
+    const google = window.google;
+    if (!google?.maps?.Geocoder) return null;
+    if (!geocoderRef.current) geocoderRef.current = new google.maps.Geocoder();
+    return new Promise((resolve) => {
+      geocoderRef.current.geocode({ location: { lat, lng } }, (results: any[], status: string) => {
+        if (status !== "OK" || !results?.length) {
+          reverseCountryCache.current.set(key, null);
+          return resolve(null);
+        }
+        let iso: string | null = null;
+        for (const r of results) {
+          const c = r.address_components?.find((c: any) => c.types?.includes("country"));
+          if (c?.short_name) {
+            iso = c.short_name;
+            break;
+          }
+        }
+        reverseCountryCache.current.set(key, iso);
+        resolve(iso);
+      });
+    });
+  }, []);
+
   const loadInBounds = useCallback(async () => {
     const map = mapRef.current;
     if (!map) return;
@@ -133,15 +234,6 @@ export default function AedFinder() {
     const sw = b.getSouthWest();
     const bounds = { south: sw.lat(), west: sw.lng(), north: ne.lat(), east: ne.lng() };
 
-    // Bail if zoomed too far out (Overpass would return too much)
-    if (map.getZoom() < 9) {
-      setCount(0);
-      // Clear markers
-      markersRef.current.forEach((m) => m.setMap(null));
-      markersRef.current.clear();
-      return;
-    }
-
     fetchAbort.current?.abort();
     const ctrl = new AbortController();
     fetchAbort.current = ctrl;
@@ -149,7 +241,25 @@ export default function AedFinder() {
     setError(null);
 
     try {
-      const aeds = await fetchAeds(bounds, ctrl.signal);
+      // Figure out which country file(s) we need. Start with the user's detected
+      // country, then add the country under the current map center.
+      const isoCodes = new Set<string>();
+      const countryStr = country as unknown as string;
+      if (countryStr && typeof countryStr === "string") isoCodes.add(countryStr.toUpperCase());
+      const center = map.getCenter();
+      if (center) {
+        const iso = await reverseCountry(center.lat(), center.lng());
+        if (iso) isoCodes.add(iso);
+      }
+      if (isoCodes.size === 0) isoCodes.add("AU");
+
+      const lists = await Promise.all(
+        Array.from(isoCodes).map((c) => fetchCountryAeds(c).catch(() => [] as Aed[])),
+      );
+      if (ctrl.signal.aborted) return;
+      const all = lists.flat();
+      const aeds = filterByBounds(all, bounds);
+
       const google = window.google;
       const seen = new Set<string>();
 
@@ -183,7 +293,7 @@ export default function AedFinder() {
             aed.indoor === "yes" ? `<div style="font-size: 12px; color: #6b7280; margin-bottom: 2px;">Indoor</div>` : aed.indoor === "no" ? `<div style="font-size: 12px; color: #6b7280; margin-bottom: 2px;">Outdoor</div>` : "",
             aed.phone ? `<div style="font-size: 12px; margin-bottom: 2px;"><a href="tel:${aed.phone}" style="color: #dc2626;">📞 ${aed.phone}</a></div>` : "",
             `<a href="${directions}" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;background:#dc2626;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;">Get directions</a>`,
-            `<div style="margin-top:6px;font-size:10px;color:#9ca3af;">Source: OpenStreetMap</div>`,
+            `<div style="margin-top:6px;font-size:10px;color:#9ca3af;">Source: OpenAEDMap / OpenStreetMap</div>`,
             `</div>`,
           ].join("");
           info.setContent(lines);
@@ -192,7 +302,7 @@ export default function AedFinder() {
         markersRef.current.set(aed.id, marker);
       });
 
-      // Remove markers no longer in result set (keep cache simple: only remove if outside current view)
+      // Remove markers that have scrolled out of the current view.
       markersRef.current.forEach((m, id) => {
         if (!seen.has(id)) {
           const pos = m.getPosition();
@@ -211,7 +321,7 @@ export default function AedFinder() {
     } finally {
       setFetchingAeds(false);
     }
-  }, []);
+  }, [country, reverseCountry]);
 
   useEffect(() => {
     let cancelled = false;
@@ -349,7 +459,7 @@ export default function AedFinder() {
           </Button>
 
           <div className="absolute top-4 right-4 z-10 bg-white/95 rounded-lg shadow px-3 py-2 text-[11px] text-muted-foreground max-w-[220px]">
-            Zoom in (level 9+) to load nearby AEDs. Data © OpenStreetMap contributors via{" "}
+            Pan or zoom the map to load AEDs in view. Data © OpenStreetMap contributors via{" "}
             <a href="https://openaedmap.org/" target="_blank" rel="noopener" className="text-primary underline">
               OpenAEDMap
             </a>.
