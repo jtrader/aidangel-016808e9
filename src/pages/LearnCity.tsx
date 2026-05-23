@@ -10,6 +10,7 @@ import {
   getCityLocations,
   cityFromSlug,
 } from "@/lib/educators";
+import { supabase } from "@/integrations/supabase/client";
 import NetworkFooter from "@/components/NetworkFooter";
 import LanguageSelector from "@/components/LanguageSelector";
 import { trackLearnClick } from "@/lib/giveAnalytics";
@@ -22,12 +23,20 @@ export default function LearnCity() {
   const country = getCountry(code) ?? COUNTRIES[0];
   const cityName = cityFromSlug(citySlugParam ?? "");
   const [rows, setRows] = useState<Array<EducatorLocation & { educator: Educator }>>([]);
+  const [faa, setFaa] = useState<Educator | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     getCityLocations(country.code, cityName).then((r) => !cancelled && setRows(r));
+    supabase
+      .from("educators")
+      .select("*")
+      .eq("slug", "first-aid-angel")
+      .maybeSingle()
+      .then(({ data }) => !cancelled && setFaa((data as Educator | null) ?? null));
     return () => { cancelled = true; };
   }, [country.code, cityName]);
+
 
   const title = `First Aid Courses in ${cityName}, ${country.name}`;
   const desc = `Accredited first aid and CPR training in ${cityName}, ${country.name}. St John, Red Cross and local providers.`;
@@ -51,18 +60,66 @@ export default function LearnCity() {
         </p>
 
         {rows.length === 0 ? (
-          <div className="bg-card border border-border rounded-xl p-5">
-            <p className="text-sm text-muted-foreground">
-              We don't have a verified venue listed in {cityName} yet. Try{" "}
-              <Link to={`/learn/${country.code.toLowerCase()}`} className="text-primary underline">
-                country-wide providers for {country.name}
-              </Link>{" "}
-              — most offer mobile/onsite training.
-            </p>
+          <div className="space-y-4">
+            <div className="bg-card border border-border rounded-xl p-5">
+              <p className="text-sm text-muted-foreground">
+                We don't have a verified in-person venue listed in {cityName} yet. Try{" "}
+                <Link to={`/learn/${country.code.toLowerCase()}`} className="text-primary underline">
+                  country-wide providers for {country.name}
+                </Link>{" "}
+                — most offer mobile/onsite training. Or start online today with the course below.
+              </p>
+            </div>
+            {faa && (
+              <article className="bg-card border border-border rounded-xl p-5">
+                <div className="flex items-start gap-3 mb-2">
+                  <Favicon url={faa.website ?? faa.booking_url} logoUrl={faa.logo_url} alt="" size={28} className="mt-0.5 rounded-md border border-border bg-background p-0.5" />
+                  <div className="min-w-0">
+                    <div className="text-[11px] uppercase tracking-wide text-primary font-semibold mb-1">
+                      Online course · Worldwide
+                    </div>
+                    <h2 className="font-heading text-base font-semibold mb-1">{faa.name}</h2>
+                    {faa.blurb && <p className="text-xs text-muted-foreground mb-2">{faa.blurb}</p>}
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Link
+                    to={`/learn/provider/${faa.slug}`}
+                    className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border border-border hover:bg-accent"
+                  >
+                    Provider profile
+                  </Link>
+                  {faa.booking_url && (
+                    <a
+                      href={faa.booking_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() =>
+                        trackLearnClick({
+                          ngoId: faa.slug,
+                          countryCode: country.code,
+                          countryName: country.name,
+                          destinationUrl: faa.booking_url ?? "",
+                          isNational: false,
+                          language,
+                          variant: "booking",
+                        })
+                      }
+                      data-analytics-event="learn_click"
+                      data-analytics-educator={faa.slug}
+                      className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                    >
+                      Start course <ExternalLink className="h-3 w-3" />
+                    </a>
+                  )}
+                </div>
+              </article>
+            )}
           </div>
         ) : (
           <div className="grid gap-3">
             {rows.map((row) => (
+
               <article key={row.id} className="bg-card border border-border rounded-xl p-5">
                 <div className="flex items-start gap-3 mb-1">
                   <Favicon url={row.educator.website ?? row.educator.booking_url} logoUrl={row.educator.logo_url} alt="" size={28} className="mt-0.5 rounded-md border border-border bg-background p-0.5" />
