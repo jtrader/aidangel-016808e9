@@ -24,6 +24,7 @@ import EducatorProfile from "./pages/EducatorProfile";
 import CprGuide from "./pages/CprGuide";
 import AgentChat from "./pages/AgentChat";
 import Unsubscribe from "./pages/Unsubscribe";
+import AedFinder from "./pages/AedFinder";
 import OfflineBanner from "./components/OfflineBanner";
 import InstallPrompt from "./components/InstallPrompt";
 
