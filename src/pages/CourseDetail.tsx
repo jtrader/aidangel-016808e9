@@ -9,6 +9,7 @@ import { Clock, BookOpen, Award, Play, CheckCircle2, Loader2 } from "lucide-reac
 import { useAuth } from "@/hooks/useAuth";
 import CoursesHeader from "@/components/CoursesHeader";
 import NetworkFooter from "@/components/NetworkFooter";
+import CourseLayout from "@/components/CourseLayout";
 import { SeoHead } from "@/components/SeoHead";
 import { toast } from "sonner";
 
