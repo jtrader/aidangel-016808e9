@@ -10,6 +10,7 @@ import {
   getCityLocations,
   cityFromSlug,
 } from "@/lib/educators";
+import { supabase } from "@/integrations/supabase/client";
 import NetworkFooter from "@/components/NetworkFooter";
 import LanguageSelector from "@/components/LanguageSelector";
 import { trackLearnClick } from "@/lib/giveAnalytics";
@@ -22,12 +23,20 @@ export default function LearnCity() {
   const country = getCountry(code) ?? COUNTRIES[0];
   const cityName = cityFromSlug(citySlugParam ?? "");
   const [rows, setRows] = useState<Array<EducatorLocation & { educator: Educator }>>([]);
+  const [faa, setFaa] = useState<Educator | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     getCityLocations(country.code, cityName).then((r) => !cancelled && setRows(r));
+    supabase
+      .from("educators")
+      .select("*")
+      .eq("slug", "first-aid-angel")
+      .maybeSingle()
+      .then(({ data }) => !cancelled && setFaa((data as Educator | null) ?? null));
     return () => { cancelled = true; };
   }, [country.code, cityName]);
+
 
   const title = `First Aid Courses in ${cityName}, ${country.name}`;
   const desc = `Accredited first aid and CPR training in ${cityName}, ${country.name}. St John, Red Cross and local providers.`;
