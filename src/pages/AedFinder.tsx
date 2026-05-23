@@ -1,10 +1,11 @@
 import { useState, useCallback, useEffect } from "react";
-import { Map, Marker, NavigationControl, GeolocateControl, Popup } from "react-map-gl";
+import { Map, Marker, NavigationControl, GeolocateControl, Popup } from "react-map-gl/mapbox";
 import { MapPin, AlertCircle, Loader2, Navigation, X, Cross } from "lucide-react";
 import type { Map as MapboxMap } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { SeoHead } from "@/components/SeoHead";
 import { useCountry } from "@/hooks/useCountry";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { emergencyNumberForCountry } from "@/lib/donations";
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
