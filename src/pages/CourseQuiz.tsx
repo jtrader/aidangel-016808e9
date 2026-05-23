@@ -11,12 +11,14 @@ import CoursesHeader from "@/components/CoursesHeader";
 import CourseLayout from "@/components/CourseLayout";
 import { SeoHead } from "@/components/SeoHead";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type Q = { id: string; question: string; choices: string[]; correct_index: number; explanation: string | null };
 
 export default function CourseQuiz() {
   const { slug } = useParams();
   const { user } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [course, setCourse] = useState<any>(null);
   const [questions, setQuestions] = useState<Q[]>([]);
@@ -38,7 +40,7 @@ export default function CourseQuiz() {
 
   const submit = async () => {
     if (!user || !course) return;
-    if (Object.keys(answers).length < questions.length) { toast.error("Please answer every question."); return; }
+    if (Object.keys(answers).length < questions.length) { toast.error(t("quizAnswerAll")); return; }
     setSubmitting(true);
     const correct = questions.filter(q => answers[q.id] === q.correct_index).length;
     const pct = Math.round((correct / questions.length) * 100);
@@ -52,7 +54,7 @@ export default function CourseQuiz() {
 
   if (loading) return <div className="flex h-screen items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
   if (!course || questions.length === 0) return (
-    <div className="min-h-screen flex flex-col"><CoursesHeader /><div className="flex-1 flex items-center justify-center">No quiz available yet.</div></div>
+    <div className="min-h-screen flex flex-col"><CoursesHeader /><div className="flex-1 flex items-center justify-center">{t("quizNoneAvailable")}</div></div>
   );
 
   return (
@@ -62,8 +64,8 @@ export default function CourseQuiz() {
       <CoursesHeader />
       <main className="flex-1 container max-w-3xl mx-auto px-4 py-8">
         <Link to={`/courses/${slug}`} className="text-sm text-muted-foreground hover:text-primary mb-4 inline-block">← {course.title}</Link>
-        <h1 className="font-display text-3xl font-bold mb-2">Final Quiz</h1>
-        <p className="text-muted-foreground mb-6">Score {course.pass_mark}% or higher to earn your certificate.</p>
+        <h1 className="font-display text-3xl font-bold mb-2">{t("quizFinalTitle")}</h1>
+        <p className="text-muted-foreground mb-6">{t("quizScoreToPass").replace("{percent}", String(course.pass_mark))}</p>
 
         {!result ? (
           <div className="space-y-6">
@@ -84,7 +86,7 @@ export default function CourseQuiz() {
               </Card>
             ))}
             <Button size="lg" onClick={submit} disabled={submitting} className="w-full">
-              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Submit quiz"}
+              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : t("quizSubmit")}
             </Button>
           </div>
         ) : (
@@ -93,36 +95,41 @@ export default function CourseQuiz() {
               {result.passed ? (
                 <>
                   <CheckCircle2 className="h-16 w-16 text-primary mx-auto mb-4" />
-                  <h2 className="font-display text-3xl font-bold mb-2">Passed — {result.score}%</h2>
+                  <h2 className="font-display text-3xl font-bold mb-2">{t("quizPassedHeading").replace("{score}", String(result.score))}</h2>
                   <p className="text-muted-foreground mb-6">
-                    You got {questions.filter(q => answers[q.id] === q.correct_index).length} of {questions.length} correct. Your certificate is ready.
+                    {t("quizGotXofY")
+                      .replace("{correct}", String(questions.filter(q => answers[q.id] === q.correct_index).length))
+                      .replace("{total}", String(questions.length))}
                   </p>
                   <div className="flex gap-3 justify-center flex-wrap">
                     <Button size="lg" onClick={() => navigate(`/courses/${slug}/certificate`)}>
-                      <Award className="h-4 w-4 mr-2" /> Get certificate
+                      <Award className="h-4 w-4 mr-2" /> {t("quizGetCertificate")}
                     </Button>
                     <Button variant="outline" size="lg" onClick={() => { setResult(null); setAnswers({}); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-                      Retake quiz
+                      {t("quizRetake")}
                     </Button>
                   </div>
                 </>
               ) : (
                 <>
                   <XCircle className="h-16 w-16 text-destructive mx-auto mb-4" />
-                  <h2 className="font-display text-3xl font-bold mb-2">Not quite — {result.score}%</h2>
+                  <h2 className="font-display text-3xl font-bold mb-2">{t("quizFailedHeading").replace("{score}", String(result.score))}</h2>
                   <p className="text-muted-foreground mb-6">
-                    You got {questions.filter(q => answers[q.id] === q.correct_index).length} of {questions.length} correct. You need {course.pass_mark}% to pass.
+                    {t("quizGotXofYNeed")
+                      .replace("{correct}", String(questions.filter(q => answers[q.id] === q.correct_index).length))
+                      .replace("{total}", String(questions.length))
+                      .replace("{pct}", String(course.pass_mark))}
                   </p>
                   <div className="flex gap-3 justify-center flex-wrap">
-                    <Button variant="outline" onClick={() => navigate(`/courses/${slug}`)}>Review lessons</Button>
-                    <Button onClick={() => { setResult(null); setAnswers({}); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Retake quiz</Button>
+                    <Button variant="outline" onClick={() => navigate(`/courses/${slug}`)}>{t("quizReviewLessons")}</Button>
+                    <Button onClick={() => { setResult(null); setAnswers({}); window.scrollTo({ top: 0, behavior: "smooth" }); }}>{t("quizRetake")}</Button>
                   </div>
                 </>
               )}
             </Card>
 
             <div>
-              <h3 className="font-display text-xl font-bold mb-3">Review your answers</h3>
+              <h3 className="font-display text-xl font-bold mb-3">{t("quizReviewYourAnswers")}</h3>
               <div className="space-y-4">
                 {questions.map((q, i) => {
                   const userIdx = answers[q.id];
@@ -153,15 +160,15 @@ export default function CourseQuiz() {
                               }`}
                             >
                               <span className="font-medium">{c}</span>
-                              {isAnswer && <span className="ml-2 text-xs font-semibold text-primary">Correct answer</span>}
-                              {isUser && !isAnswer && <span className="ml-2 text-xs font-semibold text-destructive">Your answer</span>}
+                              {isAnswer && <span className="ml-2 text-xs font-semibold text-primary">{t("quizCorrectAnswer")}</span>}
+                              {isUser && !isAnswer && <span className="ml-2 text-xs font-semibold text-destructive">{t("quizYourAnswer")}</span>}
                             </div>
                           );
                         })}
                       </div>
                       {q.explanation && (
                         <div className="mt-3 ml-8 p-3 rounded-md bg-muted/60 text-sm">
-                          <span className="font-semibold">Explanation: </span>{q.explanation}
+                          <span className="font-semibold">{t("quizExplanation")}: </span>{q.explanation}
                         </div>
                       )}
                     </Card>
@@ -171,8 +178,8 @@ export default function CourseQuiz() {
             </div>
 
             <div className="flex gap-3 justify-center flex-wrap pt-2">
-              <Button variant="outline" onClick={() => navigate(`/courses/${slug}`)}>Back to course</Button>
-              <Button onClick={() => { setResult(null); setAnswers({}); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Retake quiz</Button>
+              <Button variant="outline" onClick={() => navigate(`/courses/${slug}`)}>{t("quizBackToCourse")}</Button>
+              <Button onClick={() => { setResult(null); setAnswers({}); window.scrollTo({ top: 0, behavior: "smooth" }); }}>{t("quizRetake")}</Button>
             </div>
           </div>
         )}

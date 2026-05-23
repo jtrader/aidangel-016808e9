@@ -8,7 +8,7 @@ import NetworkFooter from "@/components/NetworkFooter";
 import LanguageSelector from "@/components/LanguageSelector";
 
 export default function LearnIndex() {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const { country } = useCountry();
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -19,7 +19,7 @@ export default function LearnIndex() {
       />
       <header className="border-b border-border px-4 py-3 flex items-center justify-between bg-background">
         <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-4 w-4" /> Home
+          <ArrowLeft className="h-4 w-4" /> {t("navHome")}
         </Link>
         <LanguageSelector />
       </header>
@@ -27,9 +27,9 @@ export default function LearnIndex() {
       <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <GraduationCap className="h-10 w-10 mx-auto text-primary mb-3" />
-          <h1 className="font-heading text-3xl md:text-4xl font-bold mb-2">Learn First Aid</h1>
+          <h1 className="font-heading text-3xl md:text-4xl font-bold mb-2">{t("learnTitle")}</h1>
           <p className="text-muted-foreground">
-            In-person courses from St John Ambulance, Red Cross and trusted local educators — plus online training in your language.
+            {t("learnSubtitle")}
           </p>
         </div>
 
@@ -40,13 +40,13 @@ export default function LearnIndex() {
           <div className="flex items-center gap-3">
             <MapPin className="h-5 w-5" />
             <div>
-              <div className="text-xs uppercase tracking-wide opacity-80">Courses near you</div>
+              <div className="text-xs uppercase tracking-wide opacity-80">{t("learnCoursesNearYou")}</div>
               <div className="font-semibold text-lg">{country.flag} {country.name}</div>
             </div>
           </div>
         </Link>
 
-        <h2 className="font-heading text-lg font-semibold mb-3">Browse by country</h2>
+        <h2 className="font-heading text-lg font-semibold mb-3">{t("learnBrowseByCountry")}</h2>
         <ul className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {COUNTRIES.map((c) => (
             <li key={c.code}>
@@ -64,21 +64,21 @@ export default function LearnIndex() {
         <div className="mt-8 p-4 bg-accent/40 rounded-xl flex items-start gap-3">
           <Search className="h-5 w-5 text-primary shrink-0 mt-0.5" />
           <div className="text-sm">
-            <div className="font-medium text-foreground mb-1">Need help right now?</div>
+            <div className="font-medium text-foreground mb-1">{t("learnNeedHelpNow")}</div>
             <p className="text-muted-foreground">
-              In an emergency call <a href="tel:000" className="font-semibold text-primary underline">000</a> (Australia). Otherwise{" "}
-              <Link to="/symptoms" className="text-primary underline">find by symptom</Link>.
+              {t("learnEmergencyPrefix")} <a href="tel:000" className="font-semibold text-primary underline">000</a> {t("learnEmergencyCountry")} {t("learnOtherwise")}{" "}
+              <Link to="/symptoms" className="text-primary underline">{t("learnFindBySymptom")}</Link>.
             </p>
           </div>
         </div>
 
         <div className="mt-4 p-4 border border-dashed border-border rounded-xl text-sm flex items-center justify-between gap-3">
           <div>
-            <div className="font-medium text-foreground">Know a great course?</div>
-            <p className="text-muted-foreground text-xs">Help us grow the directory in your country and language.</p>
+            <div className="font-medium text-foreground">{t("learnKnowCourse")}</div>
+            <p className="text-muted-foreground text-xs">{t("learnHelpGrow")}</p>
           </div>
           <Link to="/learn/submit" className="px-3 py-1.5 rounded-md bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 whitespace-nowrap">
-            Submit a course
+            {t("learnSubmitCourse")}
           </Link>
         </div>
       </main>

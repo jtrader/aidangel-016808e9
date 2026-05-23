@@ -9,8 +9,10 @@ import { useAuth } from "@/hooks/useAuth";
 import CoursesHeader from "@/components/CoursesHeader";
 import NetworkFooter from "@/components/NetworkFooter";
 import { SeoHead } from "@/components/SeoHead";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function MyLearning() {
+  const { t } = useLanguage();
   const { user } = useAuth();
   const [rows, setRows] = useState<any[]>([]);
   const [certs, setCerts] = useState<any[]>([]);
@@ -51,20 +53,20 @@ export default function MyLearning() {
       <SeoHead lang="en" basePath="/my-learning" title="My Learning | First Aid Angel" description="Your enrolled courses, progress and certificates." />
       <CoursesHeader />
       <main className="flex-1 container max-w-5xl mx-auto px-4 py-10">
-        <h1 className="font-display text-3xl font-bold mb-6">My learning</h1>
+        <h1 className="font-display text-3xl font-bold mb-6">{t("myLearningTitle")}</h1>
         {loading ? (
           <div className="flex justify-center py-16"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
         ) : rows.length === 0 && certs.length === 0 ? (
           <Card className="p-8 rounded-2xl text-center">
             <BookOpen className="h-10 w-10 text-primary/40 mx-auto mb-3" />
-            <p className="text-muted-foreground mb-4">You haven't enrolled in any courses yet.</p>
-            <Link to="/courses" className="text-primary underline">Browse courses</Link>
+            <p className="text-muted-foreground mb-4">{t("myLearningEmpty")}</p>
+            <Link to="/courses" className="text-primary underline">{t("myLearningBrowse")}</Link>
           </Card>
         ) : (
           <>
             {rows.length > 0 && (
               <>
-                <h2 className="font-display text-xl font-bold mb-3">In progress</h2>
+                <h2 className="font-display text-xl font-bold mb-3">{t("myLearningInProgress")}</h2>
                 <div className="grid gap-3 mb-10">
                   {rows.map((r) => {
                     const pct = r.total ? (r.completed / r.total) * 100 : 0;
@@ -79,7 +81,7 @@ export default function MyLearning() {
                             <Badge variant="secondary" className="capitalize text-xs mt-1">{r.course.level}</Badge>
                             <div className="mt-2">
                               <Progress value={pct} className="h-2" />
-                              <div className="text-xs text-muted-foreground mt-1">{r.completed} / {r.total} lessons</div>
+                              <div className="text-xs text-muted-foreground mt-1">{t("myLearningLessonsCount").replace("{done}", String(r.completed)).replace("{total}", String(r.total))}</div>
                             </div>
                           </div>
                         </Card>
@@ -91,7 +93,7 @@ export default function MyLearning() {
             )}
             {certs.length > 0 && (
               <>
-                <h2 className="font-display text-xl font-bold mb-3">Certificates</h2>
+                <h2 className="font-display text-xl font-bold mb-3">{t("myLearningCertificates")}</h2>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {certs.map((c) => (
                     <Link to={`/courses/${c.course.slug}/certificate`} key={c.certificate_number}>
