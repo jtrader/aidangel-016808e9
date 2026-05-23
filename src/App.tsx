@@ -26,6 +26,9 @@ import CprGuide from "./pages/CprGuide";
 import AgentChat from "./pages/AgentChat";
 import Unsubscribe from "./pages/Unsubscribe";
 import AedFinder from "./pages/AedFinder";
+import AedIndex from "./pages/AedIndex";
+import AedCountry from "./pages/AedCountry";
+import AedCity from "./pages/AedCity";
 import OfflineBanner from "./components/OfflineBanner";
 import InstallPrompt from "./components/InstallPrompt";
 
@@ -70,6 +73,9 @@ const App = forwardRef(function App(_props, _ref) {
                 <Route path="/learn/:country/:city" element={<LearnCity />} />
                 <Route path="/cpr" element={<CprGuide />} />
                 <Route path="/aed-finder" element={<AedFinder />} />
+                <Route path="/aed" element={<AedIndex />} />
+                <Route path="/aed/:country" element={<AedCountry />} />
+                <Route path="/aed/:country/:city" element={<AedCity />} />
                 <Route path="/agent" element={<AgentChat />} />
                 <Route path="/unsubscribe" element={<Unsubscribe />} />
 

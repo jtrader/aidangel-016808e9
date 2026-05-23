@@ -408,6 +408,12 @@ export default function AedFinder() {
               </p>
             </div>
             <a
+              href="/aed"
+              className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline px-2"
+            >
+              Browse by city
+            </a>
+            <a
               href="/"
               className="p-2 rounded-full hover:bg-muted"
               aria-label="Close"
