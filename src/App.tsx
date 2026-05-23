@@ -44,6 +44,7 @@ import OfflineBanner from "./components/OfflineBanner";
 import InstallPrompt from "./components/InstallPrompt";
 import Partners from "./pages/Partners";
 import ShopPartners from "./pages/ShopPartners";
+import About from "./pages/About";
 
 const queryClient = new QueryClient();
 
@@ -93,6 +94,8 @@ const App = forwardRef(function App(_props, _ref) {
                 <Route path="/aed/:country/:city" element={<AedCity />} />
                 <Route path="/agent" element={<AgentChat />} />
                 <Route path="/unsubscribe" element={<Unsubscribe />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/:lang/about" element={<About />} />
 
                 <Route path="/admin/donations" element={<AdminDonations />} />
                 <Route path="/admin/educators" element={<AdminEducators />} />
