@@ -41,17 +41,15 @@ export default function HamburgerMenu() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <div className="fixed top-4 right-4 z-50 md:static">
-        <SheetTrigger asChild>
-          <button
-            type="button"
-            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-            aria-label="Open navigation menu"
-          >
-            <Menu className="h-5 w-5" />
-          </button>
-        </SheetTrigger>
-      </div>
+      <SheetTrigger asChild>
+        <button
+          type="button"
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors self-center"
+          aria-label="Open navigation menu"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+      </SheetTrigger>
       <SheetContent side="right" className="w-72 sm:w-80 p-0">
         <div className="flex flex-col h-full">
           <SheetHeader className="px-6 py-5 border-b border-border">
