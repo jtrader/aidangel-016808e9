@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import EmergencyBanner from "@/components/EmergencyBanner";
 import ChatMessage from "@/components/ChatMessage";
 import ChatInput from "@/components/ChatInput";
+import ChatDisclaimer from "@/components/ChatDisclaimer";
 import QuickActions from "@/components/QuickActions";
 import DRSABCDPanel from "@/components/DRSABCDPanel";
 import LanguageSelector from "@/components/LanguageSelector";
@@ -186,15 +187,7 @@ const Index = () => {
               {/* Input directly below the welcome heading */}
               <div className="max-w-2xl mx-auto w-full">
                 <ChatInput onSend={send} disabled={isLoading} />
-                <p className="text-center text-xs text-muted-foreground mt-2">
-                  {t("disclaimer").replace(/\b000\b/g, emergencyNumber).split(emergencyNumber).map((part, i, arr) =>
-                    i < arr.length - 1 ? (
-                      <span key={i}>{part}<a href={`tel:${emergencyNumber}`} className="underline font-semibold hover:text-foreground transition-colors">{emergencyNumber}</a></span>
-                    ) : (
-                      <span key={i}>{part}</span>
-                    )
-                  )}
-                </p>
+                <ChatDisclaimer />
               </div>
 
               <div className="text-center space-y-3">
@@ -454,15 +447,7 @@ const Index = () => {
                   );
                 })()}
                 <ChatInput onSend={send} disabled={isLoading} />
-                <p className="text-center text-xs text-muted-foreground mt-2">
-                  {t("disclaimer").replace(/\b000\b/g, emergencyNumber).split(emergencyNumber).map((part, i, arr) =>
-                    i < arr.length - 1 ? (
-                      <span key={i}>{part}<a href={`tel:${emergencyNumber}`} className="underline font-semibold hover:text-foreground transition-colors">{emergencyNumber}</a></span>
-                    ) : (
-                      <span key={i}>{part}</span>
-                    )
-                  )}
-                </p>
+                <ChatDisclaimer />
               </div>
             </>
           )}
