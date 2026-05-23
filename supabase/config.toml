@@ -1,33 +1,4 @@
 project_id = "luocpjawdzwreskitrqj"
 
-[functions.first-aid-chat]
-verify_jwt = false
-
-[functions.translate-kb]
-verify_jwt = false
-
-[functions.translate-ui]
-verify_jwt = false
-[functions.process-email-queue]
-verify_jwt = true
-
-[functions.send-transactional-email]
-verify_jwt = true
-
-[functions.preview-transactional-email]
-verify_jwt = false
-
-[functions.handle-email-unsubscribe]
-verify_jwt = false
-
-[functions.handle-email-suppression]
-verify_jwt = false
-
-[functions.update-educator-listing]
-verify_jwt = false
-
-[functions.cpr-tts]
-verify_jwt = false
-
-[functions.gemini-agent]
+[functions.get-maps-key]
 verify_jwt = false
