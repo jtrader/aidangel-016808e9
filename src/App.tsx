@@ -44,6 +44,7 @@ import OfflineBanner from "./components/OfflineBanner";
 import InstallPrompt from "./components/InstallPrompt";
 import Partners from "./pages/Partners";
 import ShopPartners from "./pages/ShopPartners";
+import About from "./pages/About";
 
 const queryClient = new QueryClient();
 
