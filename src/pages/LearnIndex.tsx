@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, GraduationCap, MapPin, Search } from "lucide-react";
+import { GraduationCap, MapPin, Search } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SeoHead } from "@/components/SeoHead";
 import { useCountry } from "@/hooks/useCountry";
 import { COUNTRIES } from "@/lib/donations";
 import NetworkFooter from "@/components/NetworkFooter";
-import LanguageSelector from "@/components/LanguageSelector";
+import SiteHeader from "@/components/SiteHeader";
 
 export default function LearnIndex() {
   const { language, t } = useLanguage();
