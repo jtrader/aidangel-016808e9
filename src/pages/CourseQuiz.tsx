@@ -56,7 +56,7 @@ export default function CourseQuiz() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SeoHead title={`${course.title} Quiz | First Aid Angel`} description="Test your knowledge and earn your certificate." />
+      <SeoHead lang="en" basePath="/courses" title={`${course.title} Quiz | First Aid Angel`} description="Test your knowledge and earn your certificate." />
       <CoursesHeader />
       <main className="flex-1 container max-w-3xl mx-auto px-4 py-8">
         <Link to={`/courses/${slug}`} className="text-sm text-muted-foreground hover:text-primary mb-4 inline-block">← {course.title}</Link>

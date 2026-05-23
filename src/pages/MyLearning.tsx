@@ -48,7 +48,7 @@ export default function MyLearning() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SeoHead title="My Learning | First Aid Angel" description="Your enrolled courses, progress and certificates." />
+      <SeoHead lang="en" basePath="/my-learning" title="My Learning | First Aid Angel" description="Your enrolled courses, progress and certificates." />
       <CoursesHeader />
       <main className="flex-1 container max-w-5xl mx-auto px-4 py-10">
         <h1 className="font-display text-3xl font-bold mb-6">My learning</h1>

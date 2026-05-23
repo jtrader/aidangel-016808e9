@@ -79,7 +79,7 @@ export default function CourseCertificate() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SeoHead title={`${course.title} Certificate | First Aid Angel`} description="Download your certificate of completion." />
+      <SeoHead lang="en" basePath="/courses" title={`${course.title} Certificate | First Aid Angel`} description="Download your certificate of completion." />
       <CoursesHeader />
       <main className="flex-1 container max-w-2xl mx-auto px-4 py-10">
         {!cert ? (

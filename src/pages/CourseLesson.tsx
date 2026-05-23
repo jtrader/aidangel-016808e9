@@ -58,7 +58,7 @@ export default function CourseLesson() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SeoHead title={`${lesson.title} — ${course?.title} | First Aid Angel`} description={`Lesson: ${lesson.title}`} />
+      <SeoHead lang="en" basePath="/courses" title={`${lesson.title} — ${course?.title} | First Aid Angel`} description={`Lesson: ${lesson.title}`} />
       <CoursesHeader />
       <main className="flex-1 container max-w-3xl mx-auto px-4 py-8">
         <Link to={`/courses/${slug}`} className="text-sm text-muted-foreground hover:text-primary mb-4 inline-block">← {course?.title}</Link>

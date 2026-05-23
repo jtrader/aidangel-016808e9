@@ -79,7 +79,7 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
-      <SeoHead title={`${mode === "signin" ? "Sign in" : "Create account"} — First Aid Angel Learning`} description="Sign in to track your first aid course progress and earn certificates." />
+      <SeoHead lang="en" basePath="/auth" title={`${mode === "signin" ? "Sign in" : "Create account"} — First Aid Angel Learning`} description="Sign in to track your first aid course progress and earn certificates." />
       <Card className="w-full max-w-md p-8 rounded-2xl">
         <Link to="/" className="flex items-center gap-2 mb-6 text-primary">
           <ShieldPlus className="h-6 w-6" />

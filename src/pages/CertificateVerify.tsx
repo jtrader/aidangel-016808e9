@@ -21,7 +21,7 @@ export default function CertificateVerify() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SeoHead title={`Verify certificate ${number} | First Aid Angel`} description="Verify a First Aid Angel course certificate." />
+      <SeoHead lang="en" basePath="/verify" title={`Verify certificate ${number} | First Aid Angel`} description="Verify a First Aid Angel course certificate." />
       <CoursesHeader />
       <main className="flex-1 container max-w-2xl mx-auto px-4 py-12">
         <Card className="p-8 rounded-2xl text-center">
