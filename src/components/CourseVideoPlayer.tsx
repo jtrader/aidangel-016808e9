@@ -116,6 +116,7 @@ export default function CourseVideoPlayer({ courseId, videoUrl, posterUrl, store
         <video
           ref={videoRef}
           src={videoUrl}
+          poster={posterUrl || undefined}
           controls
           controlsList="nodownload"
           onContextMenu={(e) => e.preventDefault()}
