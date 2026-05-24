@@ -79,6 +79,7 @@ const FEATURES = [
 export default function PersonalMarketing() {
   const { user } = useAuth();
   const startHref = user ? "/programs" : "/auth?redirect=/programs";
+  const [topicsOpen, setTopicsOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
