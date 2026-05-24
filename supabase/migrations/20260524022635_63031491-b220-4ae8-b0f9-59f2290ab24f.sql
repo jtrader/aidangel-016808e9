@@ -1,0 +1,1 @@
+UPDATE public.programs SET cover_url = 'https://luocpjawdzwreskitrqj.supabase.co/storage/v1/object/public/lesson-sources/programs%2Femergency-response-cover.jpg' WHERE slug = 'emergency-response-program';
