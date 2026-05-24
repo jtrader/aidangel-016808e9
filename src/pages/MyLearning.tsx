@@ -41,11 +41,6 @@ export default function MyLearning() {
         completed: progressByCourse[e.course_id] ?? 0,
         total: lessonsByCourse[e.course_id] ?? 0,
       })));
-      const { data: cs } = await supabase
-        .from("certificates")
-        .select("certificate_number, issued_at, course:courses(slug,title)")
-        .eq("user_id", user.id).order("issued_at", { ascending: false });
-      setCerts(cs ?? []);
 
       const { data: pEnrolls } = await supabase
         .from("program_enrollments")
