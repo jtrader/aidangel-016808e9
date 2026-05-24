@@ -44,7 +44,7 @@ export default function TopicsSidebar() {
         .select("id, slug, title")
         .eq("slug", "emergency-response-program")
         .maybeSingle();
-      if (prog) setProgram({ slug: prog.slug, title: prog.title });
+      if (prog) setProgram({ id: prog.id, slug: prog.slug, title: prog.title });
 
       if (prog?.id) {
         const { data: topics } = await supabase
@@ -57,6 +57,7 @@ export default function TopicsSidebar() {
           .filter(Boolean) as Course[];
         if (ordered.length) {
           setCourses(ordered);
+          setProgramCourseIds(ordered.map((c) => c.id));
           setLoading(false);
           return;
         }
