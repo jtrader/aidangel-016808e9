@@ -76,6 +76,7 @@ export default function CourseCertificate() {
       courseTitle: course.title,
       certificateNumber: cert.certificate_number,
       issuedAt: cert.issued_at,
+      org: org,
     });
   };
 
