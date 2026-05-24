@@ -53,6 +53,7 @@ import EmployerPeople from "./pages/EmployerPeople";
 import EmployerSettings from "./pages/EmployerSettings";
 import EmployerPlaceholder from "./pages/EmployerPlaceholder";
 import EmployerImport from "./pages/EmployerImport";
+import EmployerAssignments from "./pages/EmployerAssignments";
 import JoinOrg from "./pages/JoinOrg";
 
 const queryClient = new QueryClient();
