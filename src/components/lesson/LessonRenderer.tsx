@@ -24,6 +24,10 @@ Apply a pressure immobilisation bandage to slow venom spread.
 :::illustration[snake-bite-bandage]
 
 Then splint the limb and keep the patient completely still.
+
+:::illustration[severe-bleeding]
+
+Remember to keep the patient calm and still at all times.
 `;
 
 /**
