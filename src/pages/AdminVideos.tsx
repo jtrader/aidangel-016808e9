@@ -427,6 +427,7 @@ export default function AdminVideos() {
                     </Button>
                   </div>
                 </div>
+                <LessonVideos course={c} />
               </Card>
             );
           })}
