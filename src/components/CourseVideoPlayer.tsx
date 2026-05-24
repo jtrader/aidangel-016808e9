@@ -49,7 +49,7 @@ export default function CourseVideoPlayer({ courseId, videoUrl, storedDuration, 
   }, [user, courseId]);
 
   const save = async (force = false) => {
-    if (!user) return;
+    if (!user || !trackProgress) return;
     const watched = maxWatchedRef.current;
     if (!force && Math.abs(watched - lastSavedRef.current) < SAVE_INTERVAL_SEC) return;
     lastSavedRef.current = watched;
