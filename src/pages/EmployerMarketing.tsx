@@ -168,18 +168,6 @@ export default function EmployerMarketing() {
         </div>
       </section>
 
-      {/* Features */}
-      <section className="container max-w-6xl mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-3 gap-6">
-          {FEATURES.map((f) => (
-            <Card key={f.title} className="p-6 rounded-2xl">
-              <f.icon className="h-8 w-8 text-primary mb-3" />
-              <h3 className="font-display font-bold text-lg mb-2">{f.title}</h3>
-              <p className="text-sm text-muted-foreground">{f.body}</p>
-            </Card>
-          ))}
-        </div>
-      </section>
 
       {/* Pricing */}
       <section className="bg-[#F7F7F7] border-y">
