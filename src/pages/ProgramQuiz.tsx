@@ -76,7 +76,16 @@ export default function ProgramQuiz() {
         <h1 className="font-display text-3xl font-bold mb-2">{program.title} — Final quiz</h1>
         <p className="text-muted-foreground mb-6">Pass mark: {program.pass_mark}%</p>
 
-        {result ? (
+        {topicCount > 0 && topicsPassed < topicCount ? (
+          <Card className="p-8 text-center rounded-2xl">
+            <Lock className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+            <h2 className="font-display text-2xl font-bold mb-2">Final quiz locked</h2>
+            <p className="text-muted-foreground mb-6">
+              Pass all {topicCount} topic quizzes to unlock the program final quiz. You've passed {topicsPassed} of {topicCount}.
+            </p>
+            <Button onClick={() => navigate(`/programs/${slug}`)}>Back to program</Button>
+          </Card>
+        ) : result ? (
           <Card className="p-8 text-center rounded-2xl">
             {result.passed ? (
               <CheckCircle2 className="h-16 w-16 text-primary mx-auto mb-4" />
