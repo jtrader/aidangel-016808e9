@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { CheckCircle2, XCircle, Loader2, Award } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Award, Lock, Play } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import CoursesHeader from "@/components/CoursesHeader";
 import CourseLayout from "@/components/CourseLayout";
@@ -26,6 +26,7 @@ export default function CourseQuiz() {
   const [result, setResult] = useState<{ score: number; total: number; passed: boolean } | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [videoLocked, setVideoLocked] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -34,12 +35,17 @@ export default function CourseQuiz() {
       setCourse(c);
       const { data: qs } = await supabase.from("quiz_questions").select("*").eq("course_id", c.id).order("sort_order");
       setQuestions((qs ?? []) as Q[]);
+      if (c.video_url && user) {
+        const { data: vp } = await supabase.from("course_video_progress").select("completed").eq("user_id", user.id).eq("course_id", c.id).maybeSingle();
+        setVideoLocked(!vp?.completed);
+      }
       setLoading(false);
     })();
-  }, [slug]);
+  }, [slug, user]);
 
   const submit = async () => {
     if (!user || !course) return;
+    if (videoLocked) { toast.error("Watch the video first to unlock the quiz."); return; }
     if (Object.keys(answers).length < questions.length) { toast.error(t("quizAnswerAll")); return; }
     setSubmitting(true);
     const correct = questions.filter(q => answers[q.id] === q.correct_index).length;
@@ -56,6 +62,26 @@ export default function CourseQuiz() {
   if (!course || questions.length === 0) return (
     <div className="min-h-screen flex flex-col"><CoursesHeader /><div className="flex-1 flex items-center justify-center">{t("quizNoneAvailable")}</div></div>
   );
+
+  if (videoLocked) {
+    return (
+      <CourseLayout>
+        <div className="min-h-screen bg-background flex flex-col">
+          <CoursesHeader />
+          <main className="flex-1 container max-w-2xl mx-auto px-4 py-16 text-center">
+            <Lock className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+            <h1 className="font-display text-3xl font-bold mb-2">Watch the video first</h1>
+            <p className="text-muted-foreground mb-6">
+              You need to watch the training video for this topic before you can take the quiz.
+            </p>
+            <Button size="lg" onClick={() => navigate(`/topics/${slug}`)}>
+              <Play className="h-4 w-4 mr-2" /> Go to the video
+            </Button>
+          </main>
+        </div>
+      </CourseLayout>
+    );
+  }
 
   return (
     <CourseLayout>

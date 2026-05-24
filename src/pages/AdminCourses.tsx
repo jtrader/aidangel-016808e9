@@ -188,6 +188,7 @@ export default function AdminCourses() {
       <main className="flex-1 container max-w-7xl mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-4">
           <h1 className="font-display text-2xl font-bold">Topics</h1>
+          <Link to="/admin/videos" className="text-sm text-muted-foreground hover:text-primary">→ Manage videos</Link>
           <Link to="/admin/programs" className="text-sm text-muted-foreground hover:text-primary">→ Manage programs</Link>
         </div>
 
