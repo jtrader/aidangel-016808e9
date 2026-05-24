@@ -138,11 +138,6 @@ export default function PersonalMarketing() {
                 Start learning <ArrowRight className="h-4 w-4 ml-2" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
-              <a href="#topics-marquee" onClick={handleBrowseTopics}>
-                Browse topics
-              </a>
-            </Button>
           </div>
           <p className="text-xs text-muted-foreground mt-4">
             One-off annual payment · No subscription traps · Cancel renewals
