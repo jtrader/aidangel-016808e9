@@ -47,16 +47,24 @@ export default function AdminVideos() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploadingId, setUploadingId] = useState<string | null>(null);
+  const [savingId, setSavingId] = useState<string | null>(null);
+  const [edits, setEdits] = useState<Record<string, { name: string; website: string; youtube: string }>>({});
   const [progress, setProgress] = useState<Record<string, number>>({});
   const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const load = async () => {
     const { data, error } = await supabase
       .from("courses")
-      .select("id,slug,title,video_url,video_duration_seconds,sort_order")
+      .select("id,slug,title,video_url,video_duration_seconds,sort_order,video_source_name,video_source_website,video_source_youtube")
       .order("sort_order");
     if (error) toast.error(error.message);
-    setCourses((data ?? []) as Course[]);
+    const list = (data ?? []) as Course[];
+    setCourses(list);
+    setEdits(Object.fromEntries(list.map(c => [c.id, {
+      name: c.video_source_name ?? "",
+      website: c.video_source_website ?? "",
+      youtube: c.video_source_youtube ?? "",
+    }])));
     setLoading(false);
   };
 
