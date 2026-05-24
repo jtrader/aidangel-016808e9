@@ -236,10 +236,13 @@ export default function EmployerMarketing() {
                     </li>
                   ))}
                 </ul>
-                <Button asChild className="w-full" variant={t.popular ? "default" : "outline"}>
-                  <Link to={user ? "/employer/onboarding" : "/auth?redirect=/employer/onboarding"}>
-                    Get started
-                  </Link>
+                <Button
+                  className="w-full"
+                  variant={t.popular ? "default" : "outline"}
+                  disabled={checkoutLoading}
+                  onClick={() => handleBuy(t)}
+                >
+                  {checkoutLoading ? "Loading…" : t.perSeat ? "Buy seats" : "Get started"}
                 </Button>
               </Card>
             ))}
