@@ -1,10 +1,23 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Check, Building2, Upload, BarChart3, ShieldCheck, ArrowRight } from "lucide-react";
+import { Check, Building2, Upload, BarChart3, ShieldCheck, ArrowRight, BookOpen, Clock } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { SeoHead } from "@/components/SeoHead";
 import CoursesHeader from "@/components/CoursesHeader";
+import { supabase } from "@/integrations/supabase/client";
+import { Badge } from "@/components/ui/badge";
+
+type TopicCard = {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string | null;
+  cover_url: string | null;
+  level: string;
+  duration_minutes: number;
+};
 
 const TIERS = [
   { name: "Starter", price: "AU$29", unit: "/ seat / year", seats: "Up to 10 seats", popular: false,
