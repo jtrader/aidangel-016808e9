@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -14,7 +13,6 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { SeoHead } from "@/components/SeoHead";
 import CoursesHeader from "@/components/CoursesHeader";
-import { TopicExplorerDialog } from "@/components/TopicExplorerDialog";
 
 const TIERS = [
   {
@@ -79,7 +77,6 @@ const FEATURES = [
 export default function PersonalMarketing() {
   const { user } = useAuth();
   const startHref = user ? "/programs" : "/auth?redirect=/programs";
-  const [topicsOpen, setTopicsOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -114,11 +111,10 @@ export default function PersonalMarketing() {
                 Start learning <ArrowRight className="h-4 w-4 ml-2" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" onClick={() => setTopicsOpen(true)}>
-              <BookOpen className="h-4 w-4 mr-2" /> Browse topics
+            <Button asChild size="lg" variant="outline">
+              <Link to="/topics">Browse topics</Link>
             </Button>
           </div>
-          <TopicExplorerDialog open={topicsOpen} onOpenChange={setTopicsOpen} />
           <p className="text-xs text-muted-foreground mt-4">
             One-off annual payment · No subscription traps · Cancel renewals
             anytime
