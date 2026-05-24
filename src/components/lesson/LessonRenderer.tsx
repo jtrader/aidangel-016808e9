@@ -115,12 +115,11 @@ export default function LessonRenderer() {
       : "https://firstaidangel.org/topics/cpr/lesson/using-an-aed";
 
   const schemaJson = useMemo(() => {
+    const bodySteps = (LESSON_BODY ? undefined : undefined); // markdown extracted by buildLessonSchema
     const actionSteps: LessonSchemaStep[] = actions.map((a) => ({
       name: a.title,
       text: a.title,
-      image: a.image
-        ? new URL(a.image, lessonUrl).toString()
-        : undefined,
+      image: a.image ? new URL(a.image, lessonUrl).toString() : undefined,
     }));
     return JSON.stringify(
       buildLessonSchema({
@@ -130,12 +129,10 @@ export default function LessonRenderer() {
         inLanguage: "en-AU",
         condition: "Cardiac arrest",
         body: LESSON_BODY,
-        // Append the interactive action items as additional ordered steps.
-        steps: [
-          ...actionSteps,
-          ...(LESSON_BODY ? [] : []),
-        ].length
-          ? undefined // prefer markdown extraction + warnings; keep actions inline below
+        // Combine markdown-derived narrative steps with the interactive
+        // quick-action checklist so search engines see one ordered HowTo.
+        steps: bodySteps ?? actionSteps.length
+          ? actionSteps
           : undefined,
         warnings: [
           {
