@@ -10,7 +10,7 @@ const TIERS = [
   { name: "Starter", price: "AU$29", unit: "/ seat / year", seats: "Up to 10 seats", popular: false,
     features: ["Bulk CSV import", "Course assignments", "Compliance dashboard", "Email invitations"] },
   { name: "Team 25", price: "AU$625", unit: "flat / year", seats: "25 seats included", popular: true,
-    features: ["Everything in Starter", "Branded certificates", "Manager roles", "CSV / PDF reports"] },
+    features: ["Everything in Starter", "CPD-certified branded certificates", "Manager roles", "CSV / PDF reports"] },
   { name: "Team 50", price: "AU$1,250", unit: "flat / year", seats: "50 seats included", popular: false,
     features: ["Everything in Team 25", "Priority support", "Audit log access"] },
   { name: "Workplace", price: "AU$1,500", unit: "/ year", seats: "Unlimited seats", popular: false,
@@ -20,7 +20,7 @@ const TIERS = [
 const FEATURES = [
   { icon: Upload, title: "Bulk import in minutes", body: "Upload a CSV of your team and we'll invite everyone, auto-link them when they sign up, and pre-assign their courses." },
   { icon: BarChart3, title: "Live compliance tracking", body: "See who's done, who's overdue, and who needs a nudge. Export CSV/PDF for audits anytime." },
-  { icon: ShieldCheck, title: "Australian First Aid 5th Ed.", body: "Every learner gets the same evidence-based content used across our public courses, with a branded certificate." },
+  { icon: ShieldCheck, title: "Australian First Aid 5th Ed.", body: "Every learner gets the same evidence-based content used across our public courses, with a CPD-certified branded certificate." },
 ];
 
 export default function EmployerMarketing() {
@@ -32,7 +32,7 @@ export default function EmployerMarketing() {
         lang="en"
         basePath="/employer"
         title="First Aid Training for Teams | First Aid Angel for Continuing Professional Development"
-        description="Train and certify your whole workforce in evidence-based first aid. Bulk import, automatic compliance tracking, branded certificates. Plans from AU$29/seat."
+        description="Train and certify your whole workforce in evidence-based first aid. Bulk import, automatic compliance tracking, CPD-certified branded certificates. Plans from AU$29/seat."
       />
       <CoursesHeader />
 
@@ -47,7 +47,7 @@ export default function EmployerMarketing() {
             Prove compliance in a click.
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-            Bulk-invite your workforce, assign Australian First Aid 5th Edition courses, and track completion in a single dashboard. Branded certificates included.
+            Bulk-invite your workforce, assign Australian First Aid 5th Edition courses, and track completion in a single dashboard. CPD-certified branded certificates included.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
