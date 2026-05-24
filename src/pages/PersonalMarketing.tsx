@@ -114,10 +114,11 @@ export default function PersonalMarketing() {
                 Start learning <ArrowRight className="h-4 w-4 ml-2" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link to="/topics">Browse topics</Link>
+            <Button size="lg" variant="outline" onClick={() => setTopicsOpen(true)}>
+              <BookOpen className="h-4 w-4 mr-2" /> Browse topics
             </Button>
           </div>
+          <TopicExplorerDialog open={topicsOpen} onOpenChange={setTopicsOpen} />
           <p className="text-xs text-muted-foreground mt-4">
             One-off annual payment · No subscription traps · Cancel renewals
             anytime
