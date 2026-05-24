@@ -136,7 +136,7 @@ const App = forwardRef(function App(_props, _ref) {
                 <Route path="/employer/people" element={<RequireAuth><EmployerPeople /></RequireAuth>} />
                 <Route path="/employer/people/import" element={<RequireAuth><EmployerImport /></RequireAuth>} />
                 <Route path="/employer/assignments" element={<RequireAuth><EmployerAssignments /></RequireAuth>} />
-                <Route path="/employer/reports" element={<RequireAuth><EmployerPlaceholder title="Reports" phase="Phase 4" /></RequireAuth>} />
+                <Route path="/employer/reports" element={<RequireAuth><EmployerReports /></RequireAuth>} />
                 <Route path="/employer/settings" element={<RequireAuth><EmployerSettings /></RequireAuth>} />
                 <Route path="/join/:token" element={<JoinOrg />} />
 
