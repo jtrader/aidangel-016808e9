@@ -18,6 +18,8 @@ export default function ProgramQuiz() {
   const [result, setResult] = useState<{ score: number; total: number; passed: boolean } | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [topicCount, setTopicCount] = useState(0);
+  const [topicsPassed, setTopicsPassed] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -26,9 +28,22 @@ export default function ProgramQuiz() {
       setProgram(p);
       const { data: qs } = await supabase.from("program_quiz_questions").select("*").eq("program_id", p.id).order("sort_order");
       setQuestions(qs ?? []);
+      const { data: topics } = await supabase.from("program_topics").select("course_id").eq("program_id", p.id);
+      const courseIds = (topics ?? []).map((t: any) => t.course_id);
+      setTopicCount(courseIds.length);
+      if (user && courseIds.length) {
+        const { data: attempts } = await supabase
+          .from("quiz_attempts")
+          .select("course_id")
+          .eq("user_id", user.id)
+          .eq("passed", true)
+          .in("course_id", courseIds);
+        const passed = new Set((attempts ?? []).map((a: any) => a.course_id));
+        setTopicsPassed(courseIds.filter((id) => passed.has(id)).length);
+      }
       setLoading(false);
     })();
-  }, [slug]);
+  }, [slug, user]);
 
   const submit = async () => {
     if (!user || !program) return;
