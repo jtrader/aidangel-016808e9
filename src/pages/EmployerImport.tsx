@@ -19,7 +19,7 @@ interface ImportJob {
   created_at: string;
 }
 
-const TEMPLATE = "email,full_name,role,department,employee_ref\nalice@example.com,Alice Nguyen,learner,Operations,EMP-001\nbob@example.com,Bob Smith,manager,Safety,EMP-002\n";
+const TEMPLATE = "email,full_name,role,department,employee_ref,assign_course_slugs\nalice@example.com,Alice Nguyen,learner,Operations,EMP-001,cpr-basics\nbob@example.com,Bob Smith,manager,Safety,EMP-002,\"cpr-basics,bleeding-control\"\n";
 
 export default function EmployerImport() {
   const { activeOrg, can } = useOrg();
@@ -94,12 +94,14 @@ export default function EmployerImport() {
 
       await supabase.from("org_import_jobs").update({ file_path: path }).eq("id", job.id);
 
-      const { data: result, error: fnErr } = await supabase.functions.invoke("org-import-process", { body: { job_id: job.id } });
+      const { data: result, error: fnErr } = await supabase.functions.invoke("org-import-process", {
+        body: { job_id: job.id, site_url: window.location.origin },
+      });
       if (fnErr) throw fnErr;
 
       toast({
         title: "Import finished",
-        description: `${result?.inserted ?? 0} added · ${result?.errors ?? 0} errors of ${result?.total ?? 0} rows.`,
+        description: `${result?.inserted ?? 0} added · ${result?.invitesSent ?? 0} invites sent · ${result?.assignmentsCreated ?? 0} courses assigned · ${result?.errors ?? 0} errors.`,
       });
       load();
     } catch (e) {
@@ -122,7 +124,9 @@ export default function EmployerImport() {
             <code className="text-xs bg-muted px-1 py-0.5 rounded">full_name</code>, optional{" "}
             <code className="text-xs bg-muted px-1 py-0.5 rounded">role</code> (owner/admin/manager/learner),{" "}
             <code className="text-xs bg-muted px-1 py-0.5 rounded">department</code>,{" "}
-            <code className="text-xs bg-muted px-1 py-0.5 rounded">employee_ref</code>. Duplicate emails are skipped.
+            <code className="text-xs bg-muted px-1 py-0.5 rounded">employee_ref</code>,{" "}
+            <code className="text-xs bg-muted px-1 py-0.5 rounded">assign_course_slugs</code> (comma-separated published course slugs).
+            Duplicate emails are skipped. Each new person is emailed a secure join link.
           </p>
           <div className="flex flex-wrap gap-3">
             <Button variant="outline" onClick={downloadTemplate}>
