@@ -35,7 +35,7 @@ import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
 import CourseLesson from "./pages/CourseLesson";
 import CourseQuiz from "./pages/CourseQuiz";
-import CourseCertificate from "./pages/CourseCertificate";
+
 import CertificateVerify from "./pages/CertificateVerify";
 import MyLearning from "./pages/MyLearning";
 import AdminCourses from "./pages/AdminCourses";
