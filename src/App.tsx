@@ -70,6 +70,7 @@ import EmployerImport from "./pages/EmployerImport";
 import EmployerAssignments from "./pages/EmployerAssignments";
 import EmployerReports from "./pages/EmployerReports";
 import EmployerMarketing from "./pages/EmployerMarketing";
+import PersonalMarketing from "./pages/PersonalMarketing";
 import JoinCodeEntry from "./pages/JoinCodeEntry";
 import JoinOrg from "./pages/JoinOrg";
 
@@ -158,6 +159,7 @@ const App = forwardRef(function App(_props, _ref) {
 
                 {/* Employer admin */}
                 <Route path="/employer" element={<EmployerMarketing />} />
+                <Route path="/personal" element={<PersonalMarketing />} />
                 <Route path="/employer/onboarding" element={<RequireAuth><EmployerOnboarding /></RequireAuth>} />
                 <Route path="/employer/dashboard" element={<RequireAuth><EmployerDashboard /></RequireAuth>} />
                 <Route path="/employer/people" element={<RequireAuth><EmployerPeople /></RequireAuth>} />
