@@ -17,6 +17,7 @@ import { SeoHead } from "@/components/SeoHead";
 import CoursesHeader from "@/components/CoursesHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
+import { optimizeSupabaseImage } from "@/lib/imageOptimization";
 
 const TIERS = [
   {
