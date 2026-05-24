@@ -15,7 +15,7 @@ export default function MyLearning() {
   const { t } = useLanguage();
   const { user } = useAuth();
   const [rows, setRows] = useState<any[]>([]);
-  const [certs] = useState<any[]>([]);
+  const certs: any[] = [];
   const [programs, setPrograms] = useState<any[]>([]);
   const [programCerts, setProgramCerts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
