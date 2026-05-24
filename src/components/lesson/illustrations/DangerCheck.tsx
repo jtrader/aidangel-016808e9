@@ -1,11 +1,16 @@
 interface DangerCheckProps {
   className?: string;
+  /** Accessible label — translate via your i18n layer. */
   title?: string;
 }
 
 /**
  * DangerCheck — flat 2D hazard icon: electrical arcs + spill boundary
  * with a solid Emergency Red warning border.
+ *
+ * NOTE: This illustration intentionally contains no baked-in text glyphs.
+ * All human-readable copy is exposed via the `title` prop so it stays in
+ * sync with the platform's translation engine.
  */
 export default function DangerCheck({
   className,
