@@ -16,6 +16,8 @@ export default function MyLearning() {
   const { user } = useAuth();
   const [rows, setRows] = useState<any[]>([]);
   const [certs, setCerts] = useState<any[]>([]);
+  const [programs, setPrograms] = useState<any[]>([]);
+  const [programCerts, setProgramCerts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -44,6 +46,39 @@ export default function MyLearning() {
         .select("certificate_number, issued_at, course:courses(slug,title)")
         .eq("user_id", user.id).order("issued_at", { ascending: false });
       setCerts(cs ?? []);
+
+      const { data: pEnrolls } = await supabase
+        .from("program_enrollments")
+        .select("program_id, started_at, program:programs(id,slug,title,cover_url,duration_minutes)")
+        .eq("user_id", user.id).order("started_at", { ascending: false });
+      const programIds = (pEnrolls ?? []).map((p: any) => p.program_id);
+      let topicsTotal: Record<string, number> = {};
+      let topicsPassed: Record<string, number> = {};
+      if (programIds.length) {
+        const { data: pts } = await supabase.from("program_topics").select("program_id, course_id").in("program_id", programIds);
+        const allCourseIds = (pts ?? []).map((x: any) => x.course_id);
+        for (const pt of pts ?? []) topicsTotal[pt.program_id] = (topicsTotal[pt.program_id] ?? 0) + 1;
+        const { data: passes } = await supabase
+          .from("quiz_attempts")
+          .select("course_id")
+          .eq("user_id", user.id).eq("passed", true).in("course_id", allCourseIds);
+        const passedCourses = new Set((passes ?? []).map((p: any) => p.course_id));
+        for (const pt of pts ?? []) {
+          if (passedCourses.has(pt.course_id)) topicsPassed[pt.program_id] = (topicsPassed[pt.program_id] ?? 0) + 1;
+        }
+      }
+      setPrograms((pEnrolls ?? []).map((p: any) => ({
+        ...p,
+        passed: topicsPassed[p.program_id] ?? 0,
+        total: topicsTotal[p.program_id] ?? 0,
+      })));
+
+      const { data: pcs } = await supabase
+        .from("program_certificates")
+        .select("certificate_number, issued_at, program:programs(slug,title)")
+        .eq("user_id", user.id).order("issued_at", { ascending: false });
+      setProgramCerts(pcs ?? []);
+
       setLoading(false);
     })();
   }, [user]);
