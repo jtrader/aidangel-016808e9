@@ -45,7 +45,7 @@ export default function SpiderBiteCheck({ className }: { className?: string; tit
       {/* Skin texture subtle lines */}
       <line x1="80" y1="60" x2="320" y2="60" stroke={SLATE} strokeWidth="1" opacity="0.25" />
       <line x1="80" y1="100" x2="320" y2="100" stroke={SLATE} strokeWidth="1" opacity="0.2" />
-      <line x1="80" y1="140" x2="320" y2="140" stroke={SLATE} strokeWidth="1" opacity="1" opacity="0.15" />
+      <line x1="80" y1="140" x2="320" y2="140" stroke={SLATE} strokeWidth="1" opacity="0.15" />
       <line x1="80" y1="180" x2="320" y2="180" stroke={SLATE} strokeWidth="1" opacity="0.2" />
       <line x1="110" y1="50" x2="110" y2="210" stroke={SLATE} strokeWidth="1" opacity="0.15" />
       <line x1="200" y1="50" x2="200" y2="210" stroke={SLATE} strokeWidth="1" opacity="0.2" />
