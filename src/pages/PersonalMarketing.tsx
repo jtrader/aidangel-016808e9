@@ -24,7 +24,7 @@ const TIERS = [
     features: [
       "Full Australian First Aid 5th Ed. course library",
       "Interactive quizzes & progress tracking",
-      "Personal completion certificate",
+      "CPD-certified personal completion certificate",
       "Lifetime access to updates for the year",
     ],
   },
@@ -37,8 +37,8 @@ const TIERS = [
     features: [
       "Everything in Single Licence",
       "Share with family or housemates",
-      "Save AU$15 vs. individual licences",
-      "Individual certificates for each learner",
+      "Save $15 vs. individual licences",
+      "Individual CPD-certified certificates for each learner",
     ],
   },
   {
@@ -64,8 +64,8 @@ const FEATURES = [
   },
   {
     icon: Award,
-    title: "Earn a certificate",
-    body: "Complete the course and quizzes to download a personal certificate of completion based on Australian First Aid 5th Edition.",
+    title: "Earn a CPD-certified certificate",
+    body: "Complete the course and quizzes to download a CPD-certified personal certificate of completion based on Australian First Aid 5th Edition.",
   },
   {
     icon: HeartPulse,
