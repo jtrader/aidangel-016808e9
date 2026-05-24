@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import {
   Check,
   X,
@@ -12,6 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Illustration from "./Illustration";
+import { buildLessonSchema, type LessonSchemaStep } from "@/lib/lessonSchema";
 
 /**
  * Demo markdown body that includes an `:::illustration[...]` directive.
@@ -102,8 +104,53 @@ export default function LessonRenderer() {
   const isCorrect = picked === CORRECT;
   const isWrong = picked !== null && !isCorrect;
 
+  // Build inline JSON-LD: MedicalWebPage + HowTo/FirstAidInstructions +
+  // MedicalCondition, plus MedicalWarning entries from the warning rail.
+  const lessonTitle = "Using an AED";
+  const lessonDescription =
+    "Follow these steps to safely deliver a shock with an Automated External Defibrillator.";
+  const lessonUrl =
+    typeof window !== "undefined"
+      ? window.location.origin + window.location.pathname
+      : "https://firstaidangel.org/topics/cpr/lesson/using-an-aed";
+
+  const schemaJson = useMemo(() => {
+    const actionSteps: LessonSchemaStep[] = actions.map((a) => ({
+      name: a.title,
+      text: a.title,
+      image: a.image ? new URL(a.image, lessonUrl).toString() : undefined,
+    }));
+    return JSON.stringify(
+      buildLessonSchema({
+        title: lessonTitle,
+        description: lessonDescription,
+        url: lessonUrl,
+        inLanguage: "en-AU",
+        condition: "Cardiac arrest",
+        // Use the interactive action checklist as the authoritative ordered
+        // HowTo step list. Narrative body is also indexed via the page text.
+        body: LESSON_BODY,
+        steps: actionSteps.length ? actionSteps : undefined,
+        warnings: [
+          {
+            name: "Look for the pictures",
+            text: "The AED pads will have clear pictures showing where to stick them.",
+          },
+          {
+            name: "Stand clear during analysis and shock",
+            text: "Anyone touching the person could be shocked or interfere with the heart-rhythm analysis.",
+          },
+        ],
+        provider: { name: "First Aid Angel", url: "https://firstaidangel.org" },
+      }),
+    );
+  }, [lessonUrl]);
+
   return (
     <div className="min-h-screen bg-muted/40 py-8 px-4">
+      <Helmet>
+        <script type="application/ld+json">{schemaJson}</script>
+      </Helmet>
       <article className="mx-auto max-w-2xl space-y-6">
         {/* Header */}
         <header className="space-y-2">
