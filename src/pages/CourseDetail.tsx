@@ -70,7 +70,7 @@ export default function CourseDetail() {
         lang="en"
         basePath="/courses"
         title={`${course.title} — Free Online Course | First Aid Angel`}
-        description={course.summary ?? `Free self-paced ${course.title} course with quiz and PDF certificate.`}
+        description={course.summary ?? `Free self-paced ${course.title} course with quiz.`}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Course",
