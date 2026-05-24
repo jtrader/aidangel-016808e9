@@ -9,6 +9,9 @@ import { cn } from "@/lib/utils";
  */
 const REGISTRY: Record<string, ComponentType<{ className?: string; title?: string }>> = {
   "snake-bite-bandage": lazy(() => import("./illustrations/SnakeBiteBandage")),
+  "danger-check": lazy(() => import("./illustrations/DangerCheck")),
+  "response-check": lazy(() => import("./illustrations/ResponseCheck")),
+  "send-for-help": lazy(() => import("./illustrations/SendForHelp")),
 };
 
 interface IllustrationProps {
@@ -25,11 +28,11 @@ function humanizeKey(key: string) {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-function IllustrationFallback({ key: label }: { key: string }) {
+function IllustrationFallback({ name }: { name: string }) {
   return (
     <figure
       role="img"
-      aria-label={`Illustration placeholder: ${label}`}
+      aria-label={`Illustration placeholder: ${name}`}
       className={cn(
         "my-6 overflow-hidden rounded-2xl border border-border bg-card shadow-sm",
         "border-l-4 border-l-primary"
@@ -44,7 +47,7 @@ function IllustrationFallback({ key: label }: { key: string }) {
             Graphic coming soon
           </p>
           <p className="font-display text-lg font-bold text-foreground">
-            {humanizeKey(label)}
+            {humanizeKey(name)}
           </p>
         </div>
         <p className="max-w-xs text-xs text-muted-foreground">
@@ -62,7 +65,7 @@ export default function Illustration({ name, title, className }: IllustrationPro
   const Component = key ? REGISTRY[key] : undefined;
 
   if (!Component) {
-    return <IllustrationFallback key={key} />;
+    return <IllustrationFallback name={key || "unknown"} />;
   }
 
   return (
