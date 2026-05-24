@@ -3,7 +3,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Upload, Trash2, Video as VideoIcon, CheckCircle2, ArrowLeft } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Loader2, Upload, Trash2, Video as VideoIcon, CheckCircle2, ArrowLeft, Save } from "lucide-react";
 import CoursesHeader from "@/components/CoursesHeader";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
@@ -15,6 +17,9 @@ interface Course {
   video_url: string | null;
   video_duration_seconds: number | null;
   sort_order: number;
+  video_source_name: string | null;
+  video_source_website: string | null;
+  video_source_youtube: string | null;
 }
 
 function formatDuration(sec: number | null | undefined): string {
