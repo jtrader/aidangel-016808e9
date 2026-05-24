@@ -11,6 +11,7 @@ interface Props {
   storedDuration?: number | null;
   onCompleted?: () => void;
   trackProgress?: boolean;
+  edgeToEdge?: boolean;
 }
 
 const COMPLETION_RATIO = 0.9;
@@ -18,7 +19,7 @@ const SAVE_INTERVAL_SEC = 5;
 // Allow small forward jumps (e.g. browser buffering) but block real skip-ahead.
 const FORWARD_SEEK_TOLERANCE_SEC = 2;
 
-export default function CourseVideoPlayer({ courseId, videoUrl, posterUrl, storedDuration, onCompleted, trackProgress = true }: Props) {
+export default function CourseVideoPlayer({ courseId, videoUrl, posterUrl, storedDuration, onCompleted, trackProgress = true, edgeToEdge }: Props) {
   const { user } = useAuth();
   const videoRef = useRef<HTMLVideoElement>(null);
   const maxWatchedRef = useRef(0);
@@ -111,8 +112,8 @@ export default function CourseVideoPlayer({ courseId, videoUrl, posterUrl, store
   const requiredPct = COMPLETION_RATIO * 100;
 
   return (
-    <div className="mb-6">
-      <div className="relative bg-black rounded-2xl overflow-hidden aspect-video">
+    <div className={edgeToEdge ? "" : "mb-6"}>
+      <div className={`relative bg-black overflow-hidden aspect-video ${edgeToEdge ? "" : "rounded-2xl"}`}>
         <video
           ref={videoRef}
           src={videoUrl}

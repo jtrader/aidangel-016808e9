@@ -98,29 +98,20 @@ export default function CourseDetail() {
               <img src={course.cover_url} alt={course.title} className="w-full h-full object-cover" />
             </div>
           )}
-          <div className="p-6 md:p-8">
-            <div className="flex gap-2 mb-3 flex-wrap">
-              <Badge variant="secondary" className="capitalize">{course.level}</Badge>
-              <Badge variant="outline" className="gap-1"><Clock className="h-3 w-3" />{course.duration_minutes} {t("courseDurationMin")}</Badge>
-              <Badge variant="outline" className="gap-1"><BookOpen className="h-3 w-3" />{lessons.length} {t("courseLessonsLabel")}</Badge>
-              <Badge variant="outline" className="gap-1"><Award className="h-3 w-3" />{t("coursePassMark")} {course.pass_mark}%</Badge>
-            </div>
-            <h1 className="font-display text-3xl md:text-4xl font-bold mb-3">{course.title}</h1>
-            {course.summary && <p className="text-muted-foreground text-lg mb-6">{course.summary}</p>}
-            {course.description && <div className="prose prose-sm max-w-none text-foreground/80 mb-6 whitespace-pre-wrap">{course.description}</div>}
-
-            {course.video_url && (
-              <>
-                <CourseVideoPlayer
-                  courseId={course.id}
-                  videoUrl={course.video_url}
-                  posterUrl={course.cover_url}
-                  storedDuration={course.video_duration_seconds}
-                  onCompleted={() => setVideoCompleted(true)}
-                  trackProgress={enrolled}
-                />
-                {(course.video_source_name || course.video_source_website || course.video_source_youtube) && (
-                  <p className="text-xs text-muted-foreground -mt-2 mb-6">
+          {course.video_url && (
+            <>
+              <CourseVideoPlayer
+                courseId={course.id}
+                videoUrl={course.video_url}
+                posterUrl={course.cover_url}
+                storedDuration={course.video_duration_seconds}
+                onCompleted={() => setVideoCompleted(true)}
+                trackProgress={enrolled}
+                edgeToEdge
+              />
+              {(course.video_source_name || course.video_source_website || course.video_source_youtube) && (
+                <div className="px-6 md:px-8 pt-3 pb-1">
+                  <p className="text-xs text-muted-foreground">
                     Source/credit:{" "}
                     {course.video_source_website ? (
                       <a href={course.video_source_website} target="_blank" rel="noreferrer noopener" className="underline hover:text-primary">
@@ -138,9 +129,20 @@ export default function CourseDetail() {
                       </>
                     )}
                   </p>
-                )}
-              </>
-            )}
+                </div>
+              )}
+            </>
+          )}
+          <div className="p-6 md:p-8">
+            <div className="flex gap-2 mb-3 flex-wrap">
+              <Badge variant="secondary" className="capitalize">{course.level}</Badge>
+              <Badge variant="outline" className="gap-1"><Clock className="h-3 w-3" />{course.duration_minutes} {t("courseDurationMin")}</Badge>
+              <Badge variant="outline" className="gap-1"><BookOpen className="h-3 w-3" />{lessons.length} {t("courseLessonsLabel")}</Badge>
+              <Badge variant="outline" className="gap-1"><Award className="h-3 w-3" />{t("coursePassMark")} {course.pass_mark}%</Badge>
+            </div>
+            <h1 className="font-display text-3xl md:text-4xl font-bold mb-3">{course.title}</h1>
+            {course.summary && <p className="text-muted-foreground text-lg mb-6">{course.summary}</p>}
+            {course.description && <div className="prose prose-sm max-w-none text-foreground/80 mb-6 whitespace-pre-wrap">{course.description}</div>}
 
             {enrolled && (
               <div className="mb-6">
