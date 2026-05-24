@@ -26,7 +26,7 @@ export default function CourseDetail() {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
   const [enrolled, setEnrolled] = useState(false);
-  const [hasCert, setHasCert] = useState(false);
+  const [passed, setPassed] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
