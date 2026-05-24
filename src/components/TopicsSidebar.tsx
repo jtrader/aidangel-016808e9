@@ -31,7 +31,9 @@ export default function TopicsSidebar() {
   const [activeLessons, setActiveLessons] = useState<Lesson[]>([]);
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
-  const [program, setProgram] = useState<{ slug: string; title: string } | null>(null);
+  const [program, setProgram] = useState<{ id: string; slug: string; title: string } | null>(null);
+  const [programCourseIds, setProgramCourseIds] = useState<string[]>([]);
+  const [passedCourseIds, setPassedCourseIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     (async () => {
