@@ -24,6 +24,7 @@ export default function LessonContent({ children }: Props) {
           checklist: Checklist as any,
           quiz: KnowledgeCheck as any,
           scenario: Scenario as any,
+          illustration: Illustration as any,
         } as any}
       >
         {children}
