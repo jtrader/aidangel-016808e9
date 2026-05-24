@@ -94,6 +94,23 @@ export default function TopicsSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
+        {program && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Program</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild tooltip={program.title}>
+                    <NavLink to={`/programs/${program.slug}`} className="flex items-center gap-2">
+                      <GraduationCap className="h-4 w-4 shrink-0 text-primary" />
+                      {!collapsed && <span className="truncate font-semibold">{program.title}</span>}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
         <SidebarGroup>
           <SidebarGroupLabel>Topics</SidebarGroupLabel>
           <SidebarGroupContent>
