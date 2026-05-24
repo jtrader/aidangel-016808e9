@@ -93,6 +93,20 @@ export default function TopicsSidebar() {
       }
     })();
   }, [slug, courses, user]);
+  useEffect(() => {
+    (async () => {
+      if (!user || programCourseIds.length === 0) { setPassedCourseIds(new Set()); return; }
+      const { data } = await supabase
+        .from("quiz_attempts")
+        .select("course_id")
+        .eq("user_id", user.id)
+        .eq("passed", true)
+        .in("course_id", programCourseIds);
+      setPassedCourseIds(new Set((data ?? []).map((r: any) => r.course_id)));
+    })();
+  }, [user, programCourseIds]);
+
+  const allTopicsPassed = programCourseIds.length > 0 && programCourseIds.every((id) => passedCourseIds.has(id));
 
   return (
     <Sidebar collapsible="icon">
