@@ -1,4 +1,5 @@
 import { lazy, Suspense, type ComponentType } from "react";
+import { Image } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -18,6 +19,42 @@ interface IllustrationProps {
   className?: string;
 }
 
+function humanizeKey(key: string) {
+  return key
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function IllustrationFallback({ key: label }: { key: string }) {
+  return (
+    <figure
+      role="img"
+      aria-label={`Illustration placeholder: ${label}`}
+      className={cn(
+        "my-6 overflow-hidden rounded-2xl border border-border bg-card shadow-sm",
+        "border-l-4 border-l-primary"
+      )}
+    >
+      <div className="flex flex-col items-center justify-center gap-4 px-6 py-10 text-center">
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+          <Image className="h-7 w-7 text-primary/60" />
+        </div>
+        <div className="space-y-1">
+          <p className="font-display text-sm font-semibold uppercase tracking-wide text-primary">
+            Graphic coming soon
+          </p>
+          <p className="font-display text-lg font-bold text-foreground">
+            {humanizeKey(label)}
+          </p>
+        </div>
+        <p className="max-w-xs text-xs text-muted-foreground">
+          This illustration is being prepared. Check back shortly for the updated visual guide.
+        </p>
+      </div>
+    </figure>
+  );
+}
+
 export default function Illustration({ name, title, className }: IllustrationProps) {
   // The remark directive passes `:::illustration[key]` as the `title` prop.
   // Also accept an explicit `name` attribute for `{name="..."}` usage.
@@ -25,21 +62,15 @@ export default function Illustration({ name, title, className }: IllustrationPro
   const Component = key ? REGISTRY[key] : undefined;
 
   if (!Component) {
-    return (
-      <div
-        role="img"
-        aria-label={`Missing illustration: ${key || "(unspecified)"}`}
-        className="my-4 rounded-lg border border-dashed border-border bg-muted/40 p-4 text-xs text-muted-foreground"
-      >
-        Illustration not found: <code className="font-mono">{key || "(none)"}</code>
-      </div>
-    );
+    return <IllustrationFallback key={key} />;
   }
 
   return (
     <figure className={cn("my-6 flex justify-center", className)}>
       <Suspense
-        fallback={<div className="h-40 w-full max-w-md animate-pulse rounded-lg bg-muted" />}
+        fallback={
+          <div className="h-40 w-full max-w-md animate-pulse rounded-2xl bg-muted" />
+        }
       >
         <Component className="w-full max-w-md mx-auto" />
       </Suspense>
