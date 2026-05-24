@@ -125,6 +125,50 @@ export default function MyLearning() {
                   })}
                 </div>
               </>
+            {programs.length > 0 && (
+              <>
+                <h2 className="font-display text-xl font-bold mb-3 flex items-center gap-2"><GraduationCap className="h-5 w-5 text-primary" /> Programs</h2>
+                <div className="grid gap-3 mb-10">
+                  {programs.map((p) => {
+                    const pct = p.total ? (p.passed / p.total) * 100 : 0;
+                    return (
+                      <Link to={`/programs/${p.program.slug}`} key={p.program_id}>
+                        <Card className="p-4 hover:shadow-md transition flex gap-4">
+                          <div className="w-20 h-20 rounded-lg bg-muted flex-shrink-0 overflow-hidden flex items-center justify-center">
+                            {p.program.cover_url ? <img src={p.program.cover_url} alt="" className="w-full h-full object-cover" /> : <GraduationCap className="h-8 w-8 text-primary/40" />}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium truncate">{p.program.title}</div>
+                            <Badge variant="secondary" className="text-xs mt-1">Program</Badge>
+                            <div className="mt-2">
+                              <Progress value={pct} className="h-2" />
+                              <div className="text-xs text-muted-foreground mt-1">{p.passed} of {p.total} topics passed</div>
+                            </div>
+                          </div>
+                        </Card>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+            {programCerts.length > 0 && (
+              <>
+                <h2 className="font-display text-xl font-bold mb-3">Program certificates</h2>
+                <div className="grid sm:grid-cols-2 gap-3 mb-10">
+                  {programCerts.map((c) => (
+                    <Link to={`/programs/${c.program.slug}/certificate`} key={c.certificate_number}>
+                      <Card className="p-4 hover:shadow-md transition flex items-center gap-3">
+                        <Award className="h-8 w-8 text-primary" />
+                        <div className="flex-1 min-w-0">
+                          <div className="font-medium truncate">{c.program.title}</div>
+                          <div className="text-xs text-muted-foreground">{c.certificate_number} · {new Date(c.issued_at).toLocaleDateString()}</div>
+                        </div>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+              </>
             )}
             {certs.length > 0 && (
               <>
