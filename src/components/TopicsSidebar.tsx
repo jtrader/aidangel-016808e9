@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { CheckCircle2, BookOpen, Loader2 } from "lucide-react";
+import { CheckCircle2, BookOpen, Loader2, GraduationCap } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
