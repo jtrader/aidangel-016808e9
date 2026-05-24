@@ -223,6 +223,7 @@ export type Database = {
           reviewed_at: string | null
           reviewed_by: string | null
           status: Database["public"]["Enums"]["claim_status"]
+          submitter_user_id: string | null
           updated_at: string
         }
         Insert: {
@@ -241,6 +242,7 @@ export type Database = {
           reviewed_at?: string | null
           reviewed_by?: string | null
           status?: Database["public"]["Enums"]["claim_status"]
+          submitter_user_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -259,6 +261,7 @@ export type Database = {
           reviewed_at?: string | null
           reviewed_by?: string | null
           status?: Database["public"]["Enums"]["claim_status"]
+          submitter_user_id?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -1753,6 +1756,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      accept_invitation_by_token: {
+        Args: { _token: string }
+        Returns: undefined
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
@@ -1769,6 +1776,14 @@ export type Database = {
           review_notes: string
           reviewed_at: string
           status: string
+        }[]
+      }
+      get_invitation_by_token: {
+        Args: { _token: string }
+        Returns: {
+          accepted_at: string
+          expires_at: string
+          org_id: string
         }[]
       }
       has_active_subscription: {
