@@ -129,6 +129,23 @@ export default function AdminVideos() {
     await load();
   };
 
+  const saveSource = async (course: Course) => {
+    const e = edits[course.id] ?? { name: "", website: "", youtube: "" };
+    setSavingId(course.id);
+    const { error } = await supabase
+      .from("courses")
+      .update({
+        video_source_name: e.name.trim() || null,
+        video_source_website: e.website.trim() || null,
+        video_source_youtube: e.youtube.trim() || null,
+      })
+      .eq("id", course.id);
+    setSavingId(null);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Source saved");
+    await load();
+  };
+
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
