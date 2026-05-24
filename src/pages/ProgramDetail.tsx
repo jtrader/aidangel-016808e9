@@ -10,10 +10,13 @@ import { useAuth } from "@/hooks/useAuth";
 import CoursesHeader from "@/components/CoursesHeader";
 import NetworkFooter from "@/components/NetworkFooter";
 import { toast } from "sonner";
+import { useSubscription } from "@/hooks/useSubscription";
+import { Lock, Sparkles } from "lucide-react";
 
 export default function ProgramDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { user } = useAuth();
+  const { hasProgramAccess, loading: subLoading } = useSubscription();
   const navigate = useNavigate();
   const [program, setProgram] = useState<any>(null);
   const [topics, setTopics] = useState<any[]>([]);
@@ -60,6 +63,7 @@ export default function ProgramDetail() {
 
   const enroll = async () => {
     if (!user) { navigate(`/auth?redirect=/programs/${slug}`); return; }
+    if (!hasProgramAccess) { navigate("/personal"); return; }
     const { error } = await supabase.from("program_enrollments").insert({ user_id: user.id, program_id: program.id });
     if (error && !error.message.includes("duplicate")) { toast.error(error.message); return; }
     setEnrolled(true);
@@ -158,9 +162,20 @@ export default function ProgramDetail() {
 
                 <div className="flex gap-3 flex-wrap">
                   {!enrolled ? (
-                    <Button size="lg" onClick={enroll}>
-                      <Play className="h-4 w-4 mr-2" /> {user ? "Start program" : "Sign in to start"}
-                    </Button>
+                    user && !subLoading && !hasProgramAccess ? (
+                      <>
+                        <Button size="lg" onClick={() => navigate("/personal")}>
+                          <Sparkles className="h-4 w-4 mr-2" /> Unlock with a plan
+                        </Button>
+                        <Button size="lg" variant="outline" onClick={() => navigate("/employer")}>
+                          <Lock className="h-4 w-4 mr-2" /> Employer plans
+                        </Button>
+                      </>
+                    ) : (
+                      <Button size="lg" onClick={enroll}>
+                        <Play className="h-4 w-4 mr-2" /> {user ? "Start program" : "Sign in to start"}
+                      </Button>
+                    )
                   ) : hasCert ? (
                     <Button size="lg" onClick={() => navigate(`/programs/${slug}/certificate`)}>
                       <Award className="h-4 w-4 mr-2" /> View program certificate

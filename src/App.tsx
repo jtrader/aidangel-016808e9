@@ -75,6 +75,7 @@ import JoinCodeEntry from "./pages/JoinCodeEntry";
 import JoinOrg from "./pages/JoinOrg";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 import { PaymentTestModeBanner } from "./components/PaymentTestModeBanner";
+import RequireProgramAccess from "./components/RequireProgramAccess";
 
 const queryClient = new QueryClient();
 
@@ -155,8 +156,8 @@ const App = forwardRef(function App(_props, _ref) {
                 
                 <Route path="/programs" element={<Programs />} />
                 <Route path="/programs/:slug" element={<ProgramDetail />} />
-                <Route path="/programs/:slug/quiz" element={<RequireAuth><ProgramQuiz /></RequireAuth>} />
-                <Route path="/programs/:slug/certificate" element={<RequireAuth><ProgramCertificate /></RequireAuth>} />
+                <Route path="/programs/:slug/quiz" element={<RequireAuth><RequireProgramAccess><ProgramQuiz /></RequireProgramAccess></RequireAuth>} />
+                <Route path="/programs/:slug/certificate" element={<RequireAuth><RequireProgramAccess><ProgramCertificate /></RequireProgramAccess></RequireAuth>} />
                 <Route path="/my-learning" element={<RequireAuth><MyLearning /></RequireAuth>} />
                 <Route path="/verify/:number" element={<CertificateVerify />} />
 
