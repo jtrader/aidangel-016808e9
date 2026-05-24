@@ -152,12 +152,12 @@ export default function TopicsSidebar() {
                             const lessonActive = l.slug === lessonSlug;
                             return (
                               <SidebarMenuSubItem key={l.id}>
-                                <SidebarMenuSubButton asChild isActive={lessonActive}>
+                                <SidebarMenuSubButton asChild isActive={lessonActive} className="data-[active=true]:bg-primary/10 data-[active=true]:text-primary">
                                   <NavLink to={`/courses/${c.slug}/lesson/${l.slug}`} className="flex items-center gap-2">
                                     {done ? (
-                                      <CheckCircle2 className="h-3.5 w-3.5 text-primary shrink-0" />
+                                      <CheckCircle2 className="h-3.5 w-3.5 text-primary shrink-1" />
                                     ) : (
-                                      <BookOpen className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                      <BookOpen className={`h-3.5 w-3.5 shrink-0 ${lessonActive ? "text-primary" : "text-muted-foreground"}`} />
                                     )}
                                     <span className="truncate">{l.title}</span>
                                   </NavLink>
