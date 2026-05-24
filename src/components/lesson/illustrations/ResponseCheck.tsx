@@ -1,14 +1,22 @@
 interface ResponseCheckProps {
   className?: string;
+  /** Accessible label — translate via your i18n layer. */
   title?: string;
+  /** Speech-bubble prompt. Pass a translated string from your locale. */
+  promptLabel?: string;
 }
 
 /**
- * ResponseCheck — first aider shaking a patient's shoulders with motion lines.
+ * ResponseCheck — first aider gently shaking a patient's shoulders with
+ * motion lines to indicate checking for responsiveness.
+ *
+ * Translation-safe: the only visible text (the speech bubble) is rendered
+ * via a `promptLabel` prop using a semantic <text> node, not a baked path.
  */
 export default function ResponseCheck({
   className,
   title = "Check for response: gently shake the patient's shoulders",
+  promptLabel = "CAN YOU HEAR ME?",
 }: ResponseCheckProps) {
   const STROKE = "#333333";
   const SILVER = "#E5E7EB";
@@ -30,7 +38,7 @@ export default function ResponseCheck({
       {/* Ground line */}
       <line x1={20} y1={220} x2={380} y2={220} stroke={STROKE} strokeWidth={3} />
 
-      {/* Patient lying down — body */}
+      {/* Patient body */}
       <rect
         x={70}
         y={190}
@@ -42,19 +50,11 @@ export default function ResponseCheck({
         strokeWidth={4}
       />
       {/* Patient head */}
-      <circle
-        cx={310}
-        cy={200}
-        r={22}
-        fill={SILVER}
-        stroke={STROKE}
-        strokeWidth={4}
-      />
-      {/* Closed eyes */}
+      <circle cx={310} cy={200} r={22} fill={SILVER} stroke={STROKE} strokeWidth={4} />
       <line x1={300} y1={196} x2={308} y2={196} stroke={STROKE} strokeWidth={2.5} strokeLinecap="round" />
       <line x1={314} y1={196} x2={322} y2={196} stroke={STROKE} strokeWidth={2.5} strokeLinecap="round" />
 
-      {/* First aider — kneeling torso */}
+      {/* First aider torso */}
       <path
         d="M110 180 Q120 120 160 120 L200 120 Q220 120 222 150 L218 190 Z"
         fill={SILVER}
@@ -66,43 +66,19 @@ export default function ResponseCheck({
       <circle cx={150} cy={95} r={22} fill={SILVER} stroke={STROKE} strokeWidth={4} />
 
       {/* Arms reaching to patient's shoulders */}
-      <path
-        d="M200 140 Q250 150 280 195"
-        fill="none"
-        stroke={STROKE}
-        strokeWidth={10}
-        strokeLinecap="round"
-      />
-      <path
-        d="M200 140 Q250 150 280 195"
-        fill="none"
-        stroke={SILVER}
-        strokeWidth={5}
-        strokeLinecap="round"
-      />
-      <path
-        d="M210 160 Q255 170 285 205"
-        fill="none"
-        stroke={STROKE}
-        strokeWidth={10}
-        strokeLinecap="round"
-      />
-      <path
-        d="M210 160 Q255 170 285 205"
-        fill="none"
-        stroke={SILVER}
-        strokeWidth={5}
-        strokeLinecap="round"
-      />
+      <path d="M200 140 Q250 150 280 195" fill="none" stroke={STROKE} strokeWidth={10} strokeLinecap="round" />
+      <path d="M200 140 Q250 150 280 195" fill="none" stroke={SILVER} strokeWidth={5} strokeLinecap="round" />
+      <path d="M210 160 Q255 170 285 205" fill="none" stroke={STROKE} strokeWidth={10} strokeLinecap="round" />
+      <path d="M210 160 Q255 170 285 205" fill="none" stroke={SILVER} strokeWidth={5} strokeLinecap="round" />
 
-      {/* Motion lines on patient's shoulder area */}
+      {/* Motion lines on patient's shoulder */}
       <g stroke={RED} strokeWidth={4} strokeLinecap="round">
         <line x1={255} y1={170} x2={275} y2={160} />
         <line x1={250} y1={185} x2={272} y2={182} />
         <line x1={258} y1={200} x2={278} y2={205} />
       </g>
 
-      {/* "Can you hear me?" speech bubble */}
+      {/* Speech bubble — text comes from a prop, not a path */}
       <g>
         <rect
           x={40}
@@ -125,13 +101,14 @@ export default function ResponseCheck({
           x={110}
           y={56}
           textAnchor="middle"
+          dominantBaseline="middle"
           fontFamily="ui-sans-serif, system-ui, sans-serif"
           fontSize={14}
           fontWeight={700}
           fill="#FFFFFF"
           letterSpacing={0.5}
         >
-          CAN YOU HEAR ME?
+          {promptLabel}
         </text>
       </g>
     </svg>
