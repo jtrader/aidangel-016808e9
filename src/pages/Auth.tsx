@@ -81,9 +81,12 @@ export default function Auth() {
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
       <SeoHead lang="en" basePath="/auth" title={`${mode === "signin" ? "Sign in" : "Create account"} — First Aid Angel Learning`} description="Sign in to track your first aid course progress and earn certificates." />
       <Card className="w-full max-w-md p-8 rounded-2xl">
-        <Link to="/" className="flex items-center gap-2 mb-6 text-primary">
-          <ShieldPlus className="h-6 w-6" />
-          <span className="font-display font-bold text-lg">First Aid Angel Learning</span>
+        <Link to="/" className="flex items-center gap-2 mb-6">
+          <img src={aidAngelLogo} alt="First Aid Angel" className="h-7 w-7" />
+          <span className="font-display font-bold text-lg">
+            <span className="text-foreground">First Aid Angel </span>
+            <span className="text-primary">Learning</span>
+          </span>
         </Link>
         <h1 className="text-2xl font-display font-bold mb-2">
           {mode === "signin" ? "Welcome back" : "Create your account"}
