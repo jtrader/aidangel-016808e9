@@ -26,7 +26,7 @@ export default function CourseDetail() {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
   const [enrolled, setEnrolled] = useState(false);
-  const [hasCert, setHasCert] = useState(false);
+  const [passed, setPassed] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -41,8 +41,8 @@ export default function CourseDetail() {
         setEnrolled(!!enr);
         const { data: prog } = await supabase.from("lesson_progress").select("lesson_id").eq("user_id", user.id).eq("course_id", c.id);
         setCompletedIds(new Set((prog ?? []).map(p => p.lesson_id)));
-        const { data: cert } = await supabase.from("certificates").select("id").eq("user_id", user.id).eq("course_id", c.id).maybeSingle();
-        setHasCert(!!cert);
+        const { data: attempt } = await supabase.from("quiz_attempts").select("id").eq("user_id", user.id).eq("course_id", c.id).eq("passed", true).limit(1).maybeSingle();
+        setPassed(!!attempt);
       }
       setLoading(false);
     })();
@@ -70,7 +70,7 @@ export default function CourseDetail() {
         lang="en"
         basePath="/courses"
         title={`${course.title} — Free Online Course | First Aid Angel`}
-        description={course.summary ?? `Free self-paced ${course.title} course with quiz and PDF certificate.`}
+        description={course.summary ?? `Free self-paced ${course.title} course with quiz.`}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Course",
@@ -120,9 +120,9 @@ export default function CourseDetail() {
                 <Button size="lg" onClick={enroll}>
                   <Play className="h-4 w-4 mr-2" /> {user ? t("courseStart") : t("courseSignInToStart")}
                 </Button>
-              ) : hasCert ? (
-                <Button size="lg" onClick={() => navigate(`/courses/${slug}/certificate`)}>
-                  <Award className="h-4 w-4 mr-2" /> {t("courseViewCert")}
+              ) : passed ? (
+                <Button size="lg" variant="outline" disabled>
+                  <CheckCircle2 className="h-4 w-4 mr-2" /> Topic completed
                 </Button>
               ) : allDone ? (
                 <Button size="lg" onClick={() => navigate(`/courses/${slug}/quiz`)}>

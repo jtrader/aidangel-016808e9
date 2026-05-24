@@ -15,7 +15,7 @@ export default function MyLearning() {
   const { t } = useLanguage();
   const { user } = useAuth();
   const [rows, setRows] = useState<any[]>([]);
-  const [certs, setCerts] = useState<any[]>([]);
+  const certs: any[] = [];
   const [programs, setPrograms] = useState<any[]>([]);
   const [programCerts, setProgramCerts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,11 +41,6 @@ export default function MyLearning() {
         completed: progressByCourse[e.course_id] ?? 0,
         total: lessonsByCourse[e.course_id] ?? 0,
       })));
-      const { data: cs } = await supabase
-        .from("certificates")
-        .select("certificate_number, issued_at, course:courses(slug,title)")
-        .eq("user_id", user.id).order("issued_at", { ascending: false });
-      setCerts(cs ?? []);
 
       const { data: pEnrolls } = await supabase
         .from("program_enrollments")
@@ -163,24 +158,6 @@ export default function MyLearning() {
                         <Award className="h-8 w-8 text-primary" />
                         <div className="flex-1 min-w-0">
                           <div className="font-medium truncate">{c.program.title}</div>
-                          <div className="text-xs text-muted-foreground">{c.certificate_number} · {new Date(c.issued_at).toLocaleDateString()}</div>
-                        </div>
-                      </Card>
-                    </Link>
-                  ))}
-                </div>
-              </>
-            )}
-            {certs.length > 0 && (
-              <>
-                <h2 className="font-display text-xl font-bold mb-3">{t("myLearningCertificates")}</h2>
-                <div className="grid sm:grid-cols-2 gap-3">
-                  {certs.map((c) => (
-                    <Link to={`/courses/${c.course.slug}/certificate`} key={c.certificate_number}>
-                      <Card className="p-4 hover:shadow-md transition flex items-center gap-3">
-                        <Award className="h-8 w-8 text-primary" />
-                        <div className="flex-1 min-w-0">
-                          <div className="font-medium truncate">{c.course.title}</div>
                           <div className="text-xs text-muted-foreground">{c.certificate_number} · {new Date(c.issued_at).toLocaleDateString()}</div>
                         </div>
                       </Card>
