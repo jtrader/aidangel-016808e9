@@ -3,7 +3,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Upload, Trash2, Video as VideoIcon, CheckCircle2, ArrowLeft } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Loader2, Upload, Trash2, Video as VideoIcon, CheckCircle2, ArrowLeft, Save } from "lucide-react";
 import CoursesHeader from "@/components/CoursesHeader";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
@@ -15,6 +17,9 @@ interface Course {
   video_url: string | null;
   video_duration_seconds: number | null;
   sort_order: number;
+  video_source_name: string | null;
+  video_source_website: string | null;
+  video_source_youtube: string | null;
 }
 
 function formatDuration(sec: number | null | undefined): string {
@@ -42,16 +47,24 @@ export default function AdminVideos() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploadingId, setUploadingId] = useState<string | null>(null);
+  const [savingId, setSavingId] = useState<string | null>(null);
+  const [edits, setEdits] = useState<Record<string, { name: string; website: string; youtube: string }>>({});
   const [progress, setProgress] = useState<Record<string, number>>({});
   const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const load = async () => {
     const { data, error } = await supabase
       .from("courses")
-      .select("id,slug,title,video_url,video_duration_seconds,sort_order")
+      .select("id,slug,title,video_url,video_duration_seconds,sort_order,video_source_name,video_source_website,video_source_youtube")
       .order("sort_order");
     if (error) toast.error(error.message);
-    setCourses((data ?? []) as Course[]);
+    const list = (data ?? []) as Course[];
+    setCourses(list);
+    setEdits(Object.fromEntries(list.map(c => [c.id, {
+      name: c.video_source_name ?? "",
+      website: c.video_source_website ?? "",
+      youtube: c.video_source_youtube ?? "",
+    }])));
     setLoading(false);
   };
 
@@ -116,6 +129,23 @@ export default function AdminVideos() {
     await load();
   };
 
+  const saveSource = async (course: Course) => {
+    const e = edits[course.id] ?? { name: "", website: "", youtube: "" };
+    setSavingId(course.id);
+    const { error } = await supabase
+      .from("courses")
+      .update({
+        video_source_name: e.name.trim() || null,
+        video_source_website: e.website.trim() || null,
+        video_source_youtube: e.youtube.trim() || null,
+      })
+      .eq("id", course.id);
+    setSavingId(null);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Source saved");
+    await load();
+  };
+
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -150,61 +180,100 @@ export default function AdminVideos() {
             const hasVideo = !!c.video_url;
             const isUploading = uploadingId === c.id;
             return (
-              <Card key={c.id} className="p-4 flex items-center gap-4 flex-wrap">
-                <div className={`flex items-center justify-center w-10 h-10 rounded-full ${hasVideo ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
-                  {hasVideo ? <CheckCircle2 className="h-5 w-5" /> : <VideoIcon className="h-5 w-5" />}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="font-medium truncate">{c.title}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">
-                    {hasVideo
-                      ? <>Video uploaded · {formatDuration(c.video_duration_seconds)}</>
-                      : <>No video yet</>}
+              <Card key={c.id} className="p-4">
+                <div className="flex items-center gap-4 flex-wrap">
+                  <div className={`flex items-center justify-center w-10 h-10 rounded-full ${hasVideo ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
+                    {hasVideo ? <CheckCircle2 className="h-5 w-5" /> : <VideoIcon className="h-5 w-5" />}
                   </div>
-                </div>
-                {hasVideo && (
-                  <a
-                    href={c.video_url!}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-sm text-primary hover:underline"
-                  >
-                    Preview
-                  </a>
-                )}
-                <input
-                  ref={(el) => { fileRefs.current[c.id] = el; }}
-                  type="file"
-                  accept="video/mp4,video/*"
-                  className="hidden"
-                  onChange={(e) => {
-                    const f = e.target.files?.[0];
-                    if (f) handleFile(c, f);
-                    e.target.value = "";
-                  }}
-                />
-                <Button
-                  size="sm"
-                  variant={hasVideo ? "outline" : "default"}
-                  disabled={isUploading}
-                  onClick={() => fileRefs.current[c.id]?.click()}
-                >
-                  {isUploading ? (
-                    <><Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> Uploading…</>
-                  ) : (
-                    <><Upload className="h-4 w-4 mr-1.5" /> {hasVideo ? "Replace" : "Upload"}</>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium truncate">{c.title}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                      {hasVideo
+                        ? <>Video uploaded · {formatDuration(c.video_duration_seconds)}</>
+                        : <>No video yet</>}
+                    </div>
+                  </div>
+                  {hasVideo && (
+                    <a
+                      href={c.video_url!}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm text-primary hover:underline"
+                    >
+                      Preview
+                    </a>
                   )}
-                </Button>
-                {hasVideo && !isUploading && (
+                  <input
+                    ref={(el) => { fileRefs.current[c.id] = el; }}
+                    type="file"
+                    accept="video/mp4,video/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) handleFile(c, f);
+                      e.target.value = "";
+                    }}
+                  />
                   <Button
                     size="sm"
-                    variant="ghost"
-                    onClick={() => removeVideo(c)}
-                    className="text-destructive hover:text-destructive"
+                    variant={hasVideo ? "outline" : "default"}
+                    disabled={isUploading}
+                    onClick={() => fileRefs.current[c.id]?.click()}
                   >
-                    <Trash2 className="h-4 w-4" />
+                    {isUploading ? (
+                      <><Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> Uploading…</>
+                    ) : (
+                      <><Upload className="h-4 w-4 mr-1.5" /> {hasVideo ? "Replace" : "Upload"}</>
+                    )}
                   </Button>
-                )}
+                  {hasVideo && !isUploading && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => removeVideo(c)}
+                      className="text-destructive hover:text-destructive"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+
+                <div className="mt-4 pt-4 border-t grid gap-3 sm:grid-cols-3">
+                  <div className="space-y-1">
+                    <Label htmlFor={`src-name-${c.id}`} className="text-xs">Source name</Label>
+                    <Input
+                      id={`src-name-${c.id}`}
+                      placeholder="e.g. British Red Cross"
+                      value={edits[c.id]?.name ?? ""}
+                      onChange={(e) => setEdits(p => ({ ...p, [c.id]: { ...(p[c.id] ?? { name: "", website: "", youtube: "" }), name: e.target.value } }))}
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor={`src-web-${c.id}`} className="text-xs">Website</Label>
+                    <Input
+                      id={`src-web-${c.id}`}
+                      placeholder="https://…"
+                      value={edits[c.id]?.website ?? ""}
+                      onChange={(e) => setEdits(p => ({ ...p, [c.id]: { ...(p[c.id] ?? { name: "", website: "", youtube: "" }), website: e.target.value } }))}
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor={`src-yt-${c.id}`} className="text-xs">YouTube URL</Label>
+                    <Input
+                      id={`src-yt-${c.id}`}
+                      placeholder="https://youtube.com/…"
+                      value={edits[c.id]?.youtube ?? ""}
+                      onChange={(e) => setEdits(p => ({ ...p, [c.id]: { ...(p[c.id] ?? { name: "", website: "", youtube: "" }), youtube: e.target.value } }))}
+                    />
+                  </div>
+                  <div className="sm:col-span-3 flex justify-end">
+                    <Button size="sm" variant="outline" disabled={savingId === c.id} onClick={() => saveSource(c)}>
+                      {savingId === c.id
+                        ? <><Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> Saving…</>
+                        : <><Save className="h-4 w-4 mr-1.5" /> Save source</>}
+                    </Button>
+                  </div>
+                </div>
               </Card>
             );
           })}
