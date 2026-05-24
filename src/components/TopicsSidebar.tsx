@@ -174,12 +174,27 @@ export default function TopicsSidebar() {
                 })}
                 {program && (
                   <SidebarMenuItem>
-                    <SidebarMenuButton asChild tooltip="Program Final Quiz">
-                      <NavLink to={`/programs/${program.slug}/quiz`} className="flex items-center gap-2">
-                        <ClipboardCheck className="h-4 w-4 text-primary shrink-1" />
-                        {!collapsed && <span className="font-semibold">Program Final Quiz</span>}
-                      </NavLink>
-                    </SidebarMenuButton>
+                    {allTopicsPassed ? (
+                      <SidebarMenuButton asChild tooltip="Program Final Quiz">
+                        <NavLink to={`/programs/${program.slug}/quiz`} className="flex items-center gap-2">
+                          <ClipboardCheck className="h-4 w-4 text-primary shrink-1" />
+                          {!collapsed && <span className="font-semibold">Program Final Quiz</span>}
+                        </NavLink>
+                      </SidebarMenuButton>
+                    ) : (
+                      <SidebarMenuButton
+                        tooltip={`Complete all ${programCourseIds.length} topic quizzes to unlock (${passedCourseIds.size}/${programCourseIds.length} passed)`}
+                        className="opacity-60 cursor-not-allowed"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        <Lock className="h-4 w-4 text-muted-foreground shrink-1" />
+                        {!collapsed && (
+                          <span className="font-semibold text-muted-foreground">
+                            Program Final Quiz ({passedCourseIds.size}/{programCourseIds.length})
+                          </span>
+                        )}
+                      </SidebarMenuButton>
+                    )}
                   </SidebarMenuItem>
                 )}
               </SidebarMenu>
