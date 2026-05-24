@@ -104,6 +104,54 @@ export default function LessonRenderer() {
   const isCorrect = picked === CORRECT;
   const isWrong = picked !== null && !isCorrect;
 
+  // Build inline JSON-LD: MedicalWebPage + HowTo/FirstAidInstructions +
+  // MedicalCondition, plus MedicalWarning entries from the warning rail.
+  const lessonTitle = "Using an AED";
+  const lessonDescription =
+    "Follow these steps to safely deliver a shock with an Automated External Defibrillator.";
+  const lessonUrl =
+    typeof window !== "undefined"
+      ? window.location.origin + window.location.pathname
+      : "https://firstaidangel.org/topics/cpr/lesson/using-an-aed";
+
+  const schemaJson = useMemo(() => {
+    const actionSteps: LessonSchemaStep[] = actions.map((a) => ({
+      name: a.title,
+      text: a.title,
+      image: a.image
+        ? new URL(a.image, lessonUrl).toString()
+        : undefined,
+    }));
+    return JSON.stringify(
+      buildLessonSchema({
+        title: lessonTitle,
+        description: lessonDescription,
+        url: lessonUrl,
+        inLanguage: "en-AU",
+        condition: "Cardiac arrest",
+        body: LESSON_BODY,
+        // Append the interactive action items as additional ordered steps.
+        steps: [
+          ...actionSteps,
+          ...(LESSON_BODY ? [] : []),
+        ].length
+          ? undefined // prefer markdown extraction + warnings; keep actions inline below
+          : undefined,
+        warnings: [
+          {
+            name: "Look for the pictures",
+            text: "The AED pads will have clear pictures showing where to stick them.",
+          },
+          {
+            name: "Stand clear during analysis and shock",
+            text: "Anyone touching the person could be shocked or interfere with the heart-rhythm analysis.",
+          },
+        ],
+        provider: { name: "First Aid Angel", url: "https://firstaidangel.org" },
+      }),
+    );
+  }, [lessonUrl]);
+
   return (
     <div className="min-h-screen bg-muted/40 py-8 px-4">
       <article className="mx-auto max-w-2xl space-y-6">
