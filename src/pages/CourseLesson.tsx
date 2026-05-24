@@ -9,6 +9,7 @@ import { useAuth } from "@/hooks/useAuth";
 import CoursesHeader from "@/components/CoursesHeader";
 import CourseLayout from "@/components/CourseLayout";
 import { SeoHead } from "@/components/SeoHead";
+import { buildLessonSeo } from "@/lib/lessonSeo";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 
