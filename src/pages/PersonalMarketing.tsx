@@ -212,7 +212,8 @@ export default function PersonalMarketing() {
                     </div>
                   </Card>
                 </Link>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
