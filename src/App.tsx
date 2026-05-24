@@ -8,6 +8,15 @@ import { HelmetProvider } from "react-helmet-async";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { LangParamSync } from "@/components/LangParamSync";
 import { LANGS } from "@/lib/i18n";
+
+function RedirectCourseToTopic({ suffix }: { suffix?: "lesson" | "quiz" }) {
+  const params = useParams();
+  const slug = params.slug;
+  if (!slug) return <Navigate to="/topics" replace />;
+  if (suffix === "lesson") return <Navigate to={`/topics/${slug}/lesson/${params.lessonSlug}`} replace />;
+  if (suffix === "quiz") return <Navigate to={`/topics/${slug}/quiz`} replace />;
+  return <Navigate to={`/topics/${slug}`} replace />;
+}
 import Index from "./pages/Index";
 import KbIndex from "./pages/KbIndex";
 import KbTopic from "./pages/KbTopic";
