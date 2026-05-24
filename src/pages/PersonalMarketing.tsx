@@ -18,10 +18,13 @@ import CoursesHeader from "@/components/CoursesHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { optimizeSupabaseImage } from "@/lib/imageOptimization";
+import { usePaddleCheckout } from "@/hooks/usePaddleCheckout";
+import { useNavigate } from "react-router-dom";
 
 const TIERS = [
   {
     name: "Single Licence",
+    priceId: "personal_individual_annual",
     price: "AU$25",
     unit: "/ licence / year",
     seats: "1 learner",
@@ -35,6 +38,7 @@ const TIERS = [
   },
   {
     name: "Household 3-Pack",
+    priceId: "personal_family_annual",
     price: "AU$60",
     unit: "/ year",
     seats: "3 licences",
@@ -48,6 +52,7 @@ const TIERS = [
   },
   {
     name: "Family 5-Pack",
+    priceId: "personal_family_plus_annual",
     price: "AU$90",
     unit: "/ year",
     seats: "5 licences",
