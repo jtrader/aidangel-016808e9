@@ -7,6 +7,7 @@ import Steps from "./Steps";
 import Checklist from "./Checklist";
 import KnowledgeCheck from "./KnowledgeCheck";
 import Scenario from "./Scenario";
+import Illustration from "./Illustration";
 
 interface Props {
   children: string;
