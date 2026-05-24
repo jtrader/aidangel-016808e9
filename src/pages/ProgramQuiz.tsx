@@ -55,6 +55,9 @@ export default function ProgramQuiz() {
     <div className="min-h-screen bg-background">
       <CoursesHeader />
       <main className="container max-w-3xl mx-auto px-4 py-10">
+        <button onClick={() => navigate(`/programs/${slug}`)} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors">
+          <ArrowLeft className="h-4 w-4" /> Back to program
+        </button>
         <h1 className="font-display text-3xl font-bold mb-2">{program.title} — Final quiz</h1>
         <p className="text-muted-foreground mb-6">Pass mark: {program.pass_mark}%</p>
 
