@@ -9,6 +9,7 @@ interface Props {
   videoUrl: string;
   storedDuration?: number | null;
   onCompleted?: () => void;
+  trackProgress?: boolean;
 }
 
 const COMPLETION_RATIO = 0.9;
@@ -16,7 +17,7 @@ const SAVE_INTERVAL_SEC = 5;
 // Allow small forward jumps (e.g. browser buffering) but block real skip-ahead.
 const FORWARD_SEEK_TOLERANCE_SEC = 2;
 
-export default function CourseVideoPlayer({ courseId, videoUrl, storedDuration, onCompleted }: Props) {
+export default function CourseVideoPlayer({ courseId, videoUrl, storedDuration, onCompleted, trackProgress = true }: Props) {
   const { user } = useAuth();
   const videoRef = useRef<HTMLVideoElement>(null);
   const maxWatchedRef = useRef(0);
