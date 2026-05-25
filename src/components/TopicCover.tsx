@@ -23,6 +23,7 @@ export const COVERS = new Set([
   "heat-emergencies",
   "mental-health-first-aid",
   "nosebleed",
+  "poisoning",
   "recovery-drsabcd",
   "severe-bleeding",
   "shock",
