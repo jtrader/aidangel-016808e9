@@ -229,10 +229,10 @@ export default function TopicsSidebar() {
                 {program && (
                   <SidebarMenuItem>
                     {allTopicsPassed ? (
-                      <SidebarMenuButton asChild tooltip="Program Final Quiz">
+                      <SidebarMenuButton asChild tooltip="Course Final Quiz">
                         <NavLink to={`/programs/${program.slug}/quiz`} className="flex items-center gap-2">
                           <ClipboardCheck className="h-4 w-4 text-primary shrink-1" />
-                          {!collapsed && <span className="font-semibold">Program Final Quiz</span>}
+                          {!collapsed && <span className="font-semibold">Course Final Quiz</span>}
                         </NavLink>
                       </SidebarMenuButton>
                     ) : (
