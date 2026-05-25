@@ -12,14 +12,12 @@ import { optimizeSupabaseImage } from "@/lib/imageOptimization";
 import { usePaddleCheckout } from "@/hooks/usePaddleCheckout";
 import { useNavigate } from "react-router-dom";
 
-type TopicCard = {
+type CourseCard = {
   id: string;
   slug: string;
   title: string;
   summary: string | null;
   cover_url: string | null;
-  level: string;
-  duration_minutes: number;
 };
 
 const TIERS = [
