@@ -37,8 +37,9 @@ export interface LessonSeoMeta {
    *  generates hreflang alternates for every supported locale. */
   basePath: string;
   canonicalPath: string;
-  jsonLd: Record<string, unknown>;
+  jsonLd: Array<Record<string, unknown>>;
 }
+
 
 const BRAND = "First Aid Angel";
 const MAX_DESC = 158; // <160 incl. ellipsis
