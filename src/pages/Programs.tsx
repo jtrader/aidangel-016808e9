@@ -90,7 +90,7 @@ export default function Programs() {
                       </div>
                       <h2 className="font-display font-bold text-2xl md:text-3xl mb-2 group-hover:text-primary transition-colors">{featured.title}</h2>
                       <p className="text-muted-foreground mb-5">{featured.summary}</p>
-                      <Button className="w-fit gap-2">Start the Core Program <ArrowRight className="h-4 w-4" /></Button>
+                      <Button className="w-fit gap-2">Start the Core Course <ArrowRight className="h-4 w-4" /></Button>
                     </div>
                   </div>
                 </Card>
