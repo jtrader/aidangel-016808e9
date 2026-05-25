@@ -100,7 +100,7 @@ export default function Programs() {
             {niches.length > 0 && (
               <section>
                 <div className="text-center mb-6">
-                  <h2 className="font-display text-2xl md:text-3xl font-bold mb-2">Specialised Programs</h2>
+                  <h2 className="font-display text-2xl md:text-3xl font-bold mb-2">Specialised Courses</h2>
                   <p className="text-muted-foreground">Same trusted guidelines, tailored to your audience.</p>
                 </div>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6">
