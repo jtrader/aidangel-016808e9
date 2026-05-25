@@ -3,7 +3,14 @@
 // existing inline SVG TopicIllustration continues to handle visual context.
 
 export const COVERS = new Set([
+  "aed-use",
+  "anaphylaxis-allergies",
   "asthma",
+  "bites-and-stings",
+  "burns-scalds",
+  "choking",
+  "cold-emergencies",
+  "cpr-essentials",
   "dehydration",
   "dental-injury",
   "diabetes",
@@ -12,11 +19,16 @@ export const COVERS = new Set([
   "eye-injuries",
   "fainting",
   "fractures",
+  "head-injuries-seizures",
+  "heat-emergencies",
   "mental-health-first-aid",
   "nosebleed",
+  "recovery-drsabcd",
+  "severe-bleeding",
   "shock",
   "spinal-injury",
   "sprains-strains",
+  "stroke-heart-attack",
   "sunburn",
 ]);
 
