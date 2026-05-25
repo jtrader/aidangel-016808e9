@@ -109,7 +109,7 @@ const Index = () => {
         lang={language}
         basePath="/"
         title="First Aid Angel — AI First Aid Assistant"
-        description="AI first aid assistant for Australia. Plain-language steps for CPR, choking, burns, bleeding and anaphylaxis — Australian First Aid 5th Ed."
+        description="AI first aid assistant for Australia. Plain-language steps for CPR, choking, burns, bleeding and anaphylaxis — St John Australian First Aid 5th Ed."
         jsonLd={[
           {
             "@context": "https://schema.org",
