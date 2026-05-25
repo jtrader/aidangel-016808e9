@@ -21,7 +21,8 @@ type Lesson = { id: string; slug: string; title: string; duration_minutes: numbe
 export default function CourseDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { user } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+
   const navigate = useNavigate();
   const [course, setCourse] = useState<Course | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
