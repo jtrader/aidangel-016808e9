@@ -186,13 +186,13 @@ export default function EmployerAssignments() {
                   <Select value={kind} onValueChange={(v) => { setKind(v as any); setSelectedItem(""); }}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="topic">Topic (single course)</SelectItem>
-                      <SelectItem value="program">Program (bundle of topics)</SelectItem>
+                      <SelectItem value="topic">Topic (single subject)</SelectItem>
+                      <SelectItem value="program">Course (bundle of topics)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <Label>{kind === "topic" ? "Topic" : "Program"}</Label>
+                  <Label>{kind === "topic" ? "Topic" : "Course"}</Label>
                   <Select value={selectedItem} onValueChange={setSelectedItem}>
                     <SelectTrigger><SelectValue placeholder={`Pick a ${kind}…`} /></SelectTrigger>
                     <SelectContent>
