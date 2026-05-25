@@ -4,6 +4,7 @@
 
 const COVERS = new Set([
   "asthma",
+  "dehydration",
   "dental-injury",
   "diabetes",
   "drowning",
@@ -11,7 +12,12 @@ const COVERS = new Set([
   "eye-injuries",
   "fainting",
   "fractures",
+  "mental-health-first-aid",
   "nosebleed",
+  "shock",
+  "spinal-injury",
+  "sprains-strains",
+  "sunburn",
 ]);
 
 type Props = { slug: string; title: string; className?: string };
