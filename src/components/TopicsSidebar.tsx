@@ -244,7 +244,7 @@ export default function TopicsSidebar() {
                         <Lock className="h-4 w-4 text-muted-foreground shrink-1" />
                         {!collapsed && (
                           <span className="font-semibold text-muted-foreground">
-                            Program Final Quiz ({passedCourseIds.size}/{programCourseIds.length})
+                            Course Final Quiz ({passedCourseIds.size}/{programCourseIds.length})
                           </span>
                         )}
                       </SidebarMenuButton>
