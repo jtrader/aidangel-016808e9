@@ -123,7 +123,7 @@ export default function MyLearning() {
             )}
             {programs.length > 0 && (
               <>
-                <h2 className="font-display text-xl font-bold mb-3 flex items-center gap-2"><GraduationCap className="h-5 w-5 text-primary" /> Programs</h2>
+                <h2 className="font-display text-xl font-bold mb-3 flex items-center gap-2"><GraduationCap className="h-5 w-5 text-primary" /> Courses</h2>
                 <div className="grid gap-3 mb-10">
                   {programs.map((p) => {
                     const pct = p.total ? (p.passed / p.total) * 100 : 0;
