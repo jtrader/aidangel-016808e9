@@ -72,7 +72,7 @@ export default function ProgramDetail() {
   };
 
   if (loading) return <div className="flex h-screen items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
-  if (!program) return <div className="min-h-screen flex items-center justify-center">Program not found</div>;
+  if (!program) return <div className="min-h-screen flex items-center justify-center">Course not found</div>;
 
   const passedCount = topics.filter(t => passedCourseIds.has(t.course_id)).length;
   const topicsDone = topics.length > 0 && passedCount === topics.length;
