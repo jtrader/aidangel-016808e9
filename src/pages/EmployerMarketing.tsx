@@ -12,14 +12,12 @@ import { optimizeSupabaseImage } from "@/lib/imageOptimization";
 import { usePaddleCheckout } from "@/hooks/usePaddleCheckout";
 import { useNavigate } from "react-router-dom";
 
-type TopicCard = {
+type CourseCard = {
   id: string;
   slug: string;
   title: string;
   summary: string | null;
   cover_url: string | null;
-  level: string;
-  duration_minutes: number;
 };
 
 const TIERS = [
@@ -43,7 +41,7 @@ export default function EmployerMarketing() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
-  const [topics, setTopics] = useState<TopicCard[]>([]);
+  const [courses, setCourses] = useState<CourseCard[]>([]);
 
   const handleBuy = (tier: (typeof TIERS)[number]) => {
     if (!user) {
@@ -70,15 +68,15 @@ export default function EmployerMarketing() {
 
   useEffect(() => {
     supabase
-      .from("courses")
-      .select("id,slug,title,summary,cover_url,level,duration_minutes")
+      .from("programs")
+      .select("id,slug,title,summary,cover_url")
       .eq("is_published", true)
       .order("sort_order", { ascending: true })
-      .then(({ data }) => setTopics((data as TopicCard[]) ?? []));
+      .then(({ data }) => setCourses((data as CourseCard[]) ?? []));
   }, []);
 
   const marqueeTrack =
-    topics.length > 0 ? [...topics, ...topics, ...topics] : [];
+    courses.length > 0 ? [...courses, ...courses, ...courses] : [];
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -145,7 +143,7 @@ export default function EmployerMarketing() {
                 return (
                 <Link
                   key={`${c.id}-${i}`}
-                  to={`/topics/${c.slug}`}
+                  to={`/programs/${c.slug}`}
                   className="block group shrink-0 w-64"
                 >
                   <Card className="overflow-hidden rounded-2xl h-full hover:shadow-lg transition-shadow bg-card">
@@ -169,17 +167,14 @@ export default function EmployerMarketing() {
                     </div>
                     <div className="p-4 text-left">
                       <div className="flex gap-1.5 mb-2 flex-wrap">
-                        <Badge variant="secondary" className="capitalize text-[10px]">
-                          {c.level}
-                        </Badge>
-                        <Badge variant="outline" className="gap-1 text-[10px]">
-                          <Clock className="h-3 w-3" />
-                          {c.duration_minutes}m
-                        </Badge>
+                        <Badge variant="secondary" className="text-[10px]">Course</Badge>
                       </div>
                       <h3 className="font-display font-bold text-sm leading-snug group-hover:text-primary line-clamp-2">
                         {c.title}
                       </h3>
+                      {c.summary && (
+                        <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{c.summary}</p>
+                      )}
                     </div>
                   </Card>
                 </Link>
