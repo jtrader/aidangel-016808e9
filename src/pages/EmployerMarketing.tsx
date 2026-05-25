@@ -41,7 +41,7 @@ export default function EmployerMarketing() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
-  const [topics, setTopics] = useState<TopicCard[]>([]);
+  const [courses, setCourses] = useState<CourseCard[]>([]);
 
   const handleBuy = (tier: (typeof TIERS)[number]) => {
     if (!user) {
@@ -68,15 +68,15 @@ export default function EmployerMarketing() {
 
   useEffect(() => {
     supabase
-      .from("courses")
-      .select("id,slug,title,summary,cover_url,level,duration_minutes")
+      .from("programs")
+      .select("id,slug,title,summary,cover_url")
       .eq("is_published", true)
       .order("sort_order", { ascending: true })
-      .then(({ data }) => setTopics((data as TopicCard[]) ?? []));
+      .then(({ data }) => setCourses((data as CourseCard[]) ?? []));
   }, []);
 
   const marqueeTrack =
-    topics.length > 0 ? [...topics, ...topics, ...topics] : [];
+    courses.length > 0 ? [...courses, ...courses, ...courses] : [];
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
