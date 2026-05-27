@@ -45,7 +45,7 @@ const TIERS = [
     popular: true,
     features: [
       "Everything in Single Licence",
-      "Share with family or housemates",
+      "Share with colleagues, friends or family",
       "Save $15 vs. individual licences",
       "Individual CPD-certified certificates for each learner",
     ],
