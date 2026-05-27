@@ -20,6 +20,39 @@ import { Badge } from "@/components/ui/badge";
 import { optimizeSupabaseImage } from "@/lib/imageOptimization";
 import { usePaddleCheckout } from "@/hooks/usePaddleCheckout";
 import { useNavigate } from "react-router-dom";
+import TopicIllustration, { hasIllustration } from "@/components/TopicIllustration";
+
+// Map LMS course slug → KB topic slug for illustration fallback
+const COURSE_TO_KB: Record<string, string> = {
+  "aed-use": "aed",
+  "anaphylaxis-allergies": "anaphylaxis",
+  asthma: "asthma",
+  "severe-bleeding": "bleeding",
+  "burns-scalds": "burns",
+  choking: "choking",
+  "cpr-essentials": "cpr",
+  dehydration: "dehydration",
+  "dental-injury": "dental-injury",
+  diabetes: "diabetes",
+  drowning: "drowning",
+  "recovery-drsabcd": "drsabcd",
+  "electric-shock": "electric-shock",
+  "eye-injuries": "eye-injuries",
+  fainting: "fainting",
+  fractures: "fractures",
+  "head-injuries-seizures": "head-injury",
+  "stroke-heart-attack": "stroke",
+  "heat-emergencies": "heat-illness",
+  "cold-emergencies": "hypothermia",
+  "bites-and-stings": "snake-bite",
+  "mental-health-first-aid": "mental-health-first-aid",
+  nosebleed: "nosebleed",
+  poisoning: "poisoning",
+  shock: "shock",
+  "spinal-injury": "spinal-injury",
+  "sprains-strains": "sprains-strains",
+  sunburn: "sunburn",
+};
 
 const TIERS = [
   {
