@@ -330,15 +330,23 @@ export default function CprGuide() {
             {step.detail}
           </p>
 
+          {step.key === "D" && <Illustration name="danger-check" />}
+          {step.key === "R" && <Illustration name="response-check" />}
           {step.key === "S" && (
-            <a
-              href={`tel:${emergency}`}
-              className="block w-full text-center py-4 rounded-xl bg-destructive text-destructive-foreground font-bold text-lg hover:bg-destructive/90 mb-3"
-            >
-              <Phone className="inline h-5 w-5 mr-2 -mt-0.5" />
-              Call {emergency} now
-            </a>
+            <>
+              <Illustration name="send-for-help" />
+              <a
+                href={`tel:${emergency}`}
+                className="block w-full text-center py-4 rounded-xl bg-destructive text-destructive-foreground font-bold text-lg hover:bg-destructive/90 mb-3"
+              >
+                <Phone className="inline h-5 w-5 mr-2 -mt-0.5" />
+                Call {emergency} now
+              </a>
+            </>
           )}
+          {step.key === "A" && <Illustration name="airway-open" />}
+          {step.key === "B" && <Illustration name="breathing-check" />}
+          {step.key === "AED" && <Illustration name="defib-pads" />}
 
           {isCpr && (
             <div className="space-y-4" id="start-cpr">
