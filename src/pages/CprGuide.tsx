@@ -497,7 +497,7 @@ export default function CprGuide() {
                   </ol>
                 </div>
 
-                <div>
+                <div id="infant-cpr">
                   <h4 className="font-semibold text-foreground mb-1">Infant (under 1 year)</h4>
                   <Illustration name="infant-cpr-essentials" />
                   <ol className="list-decimal pl-5 space-y-1">
