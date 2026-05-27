@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
 import { CprExplainerVideo } from "@/components/CprExplainerVideo";
+import Illustration from "@/components/lesson/Illustration";
 
 import EmergencyCallButton from "@/components/EmergencyCallButton";
 import { useCountry } from "@/hooks/useCountry";
