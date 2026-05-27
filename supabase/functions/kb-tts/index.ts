@@ -3,7 +3,7 @@
 // Returns MP3 audio bytes. On rate-limit / upstream failure, returns
 // JSON { fallback: true } with 200 so the client falls back to
 // the browser SpeechSynthesis API.
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+// Public endpoint: no auth required (KB articles are public).
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -38,25 +38,7 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader?.startsWith("Bearer ")) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-    const authClient = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_ANON_KEY")!,
-      { global: { headers: { Authorization: authHeader } } },
-    );
-    const token = authHeader.replace("Bearer ", "");
-    const { data: claimsData, error: claimsErr } = await authClient.auth.getClaims(token);
-    if (claimsErr || !claimsData?.claims) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
+    // Public endpoint — KB articles are accessible without an account.
     const apiKey = Deno.env.get("ELEVENLABS_API_KEY");
     if (!apiKey) return fallbackResponse("missing_api_key");
 
