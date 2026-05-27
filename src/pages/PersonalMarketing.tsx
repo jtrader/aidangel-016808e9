@@ -179,6 +179,17 @@ export default function PersonalMarketing() {
             personal certificate and tools like the Live CPR Guide and AED
             Finder — all in one place.
           </p>
+          <div className="max-w-2xl mx-auto mb-8 rounded-xl border border-amber-200 bg-amber-50/80 p-4 text-left">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+              <div className="text-sm text-amber-900">
+                <p className="font-semibold mb-1">Not a substitute for accredited hands-on training</p>
+                <p>
+                  These short courses are designed for essential general knowledge, continuing professional development (CPD), and as a study guide for accredited in-person training. They do not replace official hands-on training accreditation.
+                </p>
+              </div>
+            </div>
+          </div>
           <div className="flex flex-wrap gap-3 justify-center">
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
               <Link to={startHref}>
