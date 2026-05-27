@@ -205,21 +205,15 @@ export default function PersonalMarketing() {
                     <div className="aspect-video bg-muted relative">
                       {c.cover_url ? (
                         <img
-                          src={optimizeSupabaseImage(c.cover_url, 512)}
+                          src={c.cover_url}
                           alt={c.title}
-                          width={512}
-                          height={288}
                           className="w-full h-full object-cover"
                           loading={isEager ? "eager" : "lazy"}
                           decoding="async"
-                          fetchPriority={i === 0 ? "high" : isEager ? "auto" : "low"}
                         />
                       ) : (
-                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/5 to-primary/10 text-primary p-4">
-                          <TopicIllustration
-                            slug={COURSE_TO_KB[c.slug] ?? c.slug}
-                            className="!my-0 !p-0 !border-0 !bg-transparent w-full"
-                          />
+                        <div className="absolute inset-0 flex items-center justify-center bg-primary/10">
+                          <BookOpen className="h-12 w-12 text-primary/40" />
                         </div>
                       )}
                     </div>
