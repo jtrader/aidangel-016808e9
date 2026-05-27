@@ -279,7 +279,7 @@ export default function CprGuide() {
                   {s.label}
                 </span>
               </button>
-            </li>
+          </li>
           ))}
         </ol>
 
@@ -446,6 +446,22 @@ export default function CprGuide() {
                   </Link>
                 </div>
 
+                {/* Quick Action Buttons */}
+                <div className="flex items-center gap-3">
+                  <a
+                    href="#adult-cpr"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-destructive text-destructive-foreground font-semibold text-sm shadow-sm hover:bg-destructive/90 transition-colors"
+                  >
+                    <HeartPulse className="h-4 w-4" /> Adult CPR
+                  </a>
+                  <a
+                    href="#infant-cpr"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow-sm hover:bg-primary/90 transition-colors"
+                  >
+                    <HeartPulse className="h-4 w-4" /> Infant CPR
+                  </a>
+                </div>
+
                 <div>
                   <h4 className="font-semibold text-foreground mb-1">When to start CPR</h4>
                   <p>
@@ -455,7 +471,7 @@ export default function CprGuide() {
                   </p>
                 </div>
 
-                <div>
+                <div id="adult-cpr">
                   <h4 className="font-semibold text-foreground mb-1">Adult &amp; child (over 1 year)</h4>
                   <Illustration name="cpr-essentials" />
                   <ol className="list-decimal pl-5 space-y-1">
@@ -481,7 +497,7 @@ export default function CprGuide() {
                   </ol>
                 </div>
 
-                <div>
+                <div id="infant-cpr">
                   <h4 className="font-semibold text-foreground mb-1">Infant (under 1 year)</h4>
                   <Illustration name="infant-cpr-essentials" />
                   <ol className="list-decimal pl-5 space-y-1">
