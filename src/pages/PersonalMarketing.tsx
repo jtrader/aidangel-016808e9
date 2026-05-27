@@ -157,7 +157,7 @@ export default function PersonalMarketing() {
       <SeoHead
         lang="en"
         basePath="/personal"
-        title="Personal First Aid Training Licences | First Aid Angel"
+        title="Personal First Aid Training Licences | First Aid Angel "
         description="St John Australian First Aid 5th Edition training for individuals and families. Personal licences from AU$25/year with certificates, quizzes and lifetime updates."
       />
       <CoursesHeader />
@@ -166,7 +166,7 @@ export default function PersonalMarketing() {
       <section className="relative bg-gradient-to-br from-[#F7F7F7] to-card border-b">
         <div className="container max-w-6xl mx-auto px-4 pt-20 pb-10 text-center">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold mb-6">
-            <User className="h-4 w-4" /> First Aid Angel Training for Individuals
+            <User className="h-4 w-4" /> First Aid Angel  Training for Individuals
           </div>
           <h1 className="font-display text-4xl md:text-6xl font-bold mb-6 leading-tight">
             First aid training,{" "}
