@@ -75,8 +75,11 @@ export default function EmployerMarketing() {
       .then(({ data }) => setCourses((data as CourseCard[]) ?? []));
   }, []);
 
+  const coursesWithCovers = courses.filter((c) => !!c.cover_url);
   const marqueeTrack =
-    courses.length > 0 ? [...courses, ...courses, ...courses] : [];
+    coursesWithCovers.length > 0
+      ? [...coursesWithCovers, ...coursesWithCovers, ...coursesWithCovers]
+      : [];
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
