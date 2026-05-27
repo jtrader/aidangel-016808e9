@@ -157,10 +157,13 @@ export default function PersonalMarketing() {
       .then(({ data }) => setTopics((data as TopicCard[]) ?? []));
   }, []);
 
-  const topicsWithCovers = topics.filter((t) => !!t.cover_url);
+  // Include topics with a cover image OR a matching KB illustration in the registry
+  const topicsWithVisual = topics.filter(
+    (t) => !!t.cover_url || hasIllustration(COURSE_TO_KB[t.slug] ?? t.slug),
+  );
   const marqueeTrack =
-    topicsWithCovers.length > 0
-      ? [...topicsWithCovers, ...topicsWithCovers, ...topicsWithCovers]
+    topicsWithVisual.length > 0
+      ? [...topicsWithVisual, ...topicsWithVisual, ...topicsWithVisual]
       : [];
 
   return (
