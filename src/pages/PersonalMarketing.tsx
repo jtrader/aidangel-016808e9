@@ -45,7 +45,7 @@ const TIERS = [
     popular: true,
     features: [
       "Everything in Single Licence",
-      "Share with family or housemates",
+      "Share with colleagues, friends or family",
       "Save $15 vs. individual licences",
       "Individual CPD-certified certificates for each learner",
     ],
@@ -363,7 +363,7 @@ export default function PersonalMarketing() {
           Ready to start learning?
         </h2>
         <p className="text-muted-foreground mb-6">
-          Join thousands of Australians building life-saving skills with First
+          Join thousands of people building life-saving skills with First
           Aid Angel.
         </p>
         <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
