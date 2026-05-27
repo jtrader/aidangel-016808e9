@@ -283,22 +283,6 @@ export default function CprGuide() {
           ))}
         </ol>
 
-        {/* Quick Action Buttons */}
-        <div className="flex items-center justify-center gap-3 mb-5">
-          <a
-            href="#adult-cpr"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-destructive text-destructive-foreground font-semibold text-sm shadow-sm hover:bg-destructive/90 transition-colors"
-          >
-            <HeartPulse className="h-4 w-4" /> Adult CPR
-          </a>
-          <a
-            href="#infant-cpr"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow-sm hover:bg-primary/90 transition-colors"
-          >
-            <HeartPulse className="h-4 w-4" /> Infant CPR
-          </a>
-        </div>
-
         <section
           aria-live="polite"
           className="rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-sm"
