@@ -17,42 +17,8 @@ import { SeoHead } from "@/components/SeoHead";
 import CoursesHeader from "@/components/CoursesHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
-import { optimizeSupabaseImage } from "@/lib/imageOptimization";
 import { usePaddleCheckout } from "@/hooks/usePaddleCheckout";
 import { useNavigate } from "react-router-dom";
-import TopicIllustration, { hasIllustration } from "@/components/TopicIllustration";
-
-// Map LMS course slug → KB topic slug for illustration fallback
-const COURSE_TO_KB: Record<string, string> = {
-  "aed-use": "aed",
-  "anaphylaxis-allergies": "anaphylaxis",
-  asthma: "asthma",
-  "severe-bleeding": "bleeding",
-  "burns-scalds": "burns",
-  choking: "choking",
-  "cpr-essentials": "cpr",
-  dehydration: "dehydration",
-  "dental-injury": "dental-injury",
-  diabetes: "diabetes",
-  drowning: "drowning",
-  "recovery-drsabcd": "drsabcd",
-  "electric-shock": "electric-shock",
-  "eye-injuries": "eye-injuries",
-  fainting: "fainting",
-  fractures: "fractures",
-  "head-injuries-seizures": "head-injury",
-  "stroke-heart-attack": "stroke",
-  "heat-emergencies": "heat-illness",
-  "cold-emergencies": "hypothermia",
-  "bites-and-stings": "snake-bite",
-  "mental-health-first-aid": "mental-health-first-aid",
-  nosebleed: "nosebleed",
-  poisoning: "poisoning",
-  shock: "shock",
-  "spinal-injury": "spinal-injury",
-  "sprains-strains": "sprains-strains",
-  sunburn: "sunburn",
-};
 
 const TIERS = [
   {
@@ -157,13 +123,10 @@ export default function PersonalMarketing() {
       .then(({ data }) => setTopics((data as TopicCard[]) ?? []));
   }, []);
 
-  // Include topics with a cover image OR a matching KB illustration in the registry
-  const topicsWithVisual = topics.filter(
-    (t) => !!t.cover_url || hasIllustration(COURSE_TO_KB[t.slug] ?? t.slug),
-  );
+  const topicsWithCovers = topics.filter((t) => !!t.cover_url);
   const marqueeTrack =
-    topicsWithVisual.length > 0
-      ? [...topicsWithVisual, ...topicsWithVisual, ...topicsWithVisual]
+    topicsWithCovers.length > 0
+      ? [...topicsWithCovers, ...topicsWithCovers, ...topicsWithCovers]
       : [];
 
   return (
@@ -242,21 +205,15 @@ export default function PersonalMarketing() {
                     <div className="aspect-video bg-muted relative">
                       {c.cover_url ? (
                         <img
-                          src={optimizeSupabaseImage(c.cover_url, 512)}
+                          src={c.cover_url}
                           alt={c.title}
-                          width={512}
-                          height={288}
                           className="w-full h-full object-cover"
                           loading={isEager ? "eager" : "lazy"}
                           decoding="async"
-                          fetchPriority={i === 0 ? "high" : isEager ? "auto" : "low"}
                         />
                       ) : (
-                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/5 to-primary/10 text-primary p-4">
-                          <TopicIllustration
-                            slug={COURSE_TO_KB[c.slug] ?? c.slug}
-                            className="!my-0 !p-0 !border-0 !bg-transparent w-full"
-                          />
+                        <div className="absolute inset-0 flex items-center justify-center bg-primary/10">
+                          <BookOpen className="h-12 w-12 text-primary/40" />
                         </div>
                       )}
                     </div>
