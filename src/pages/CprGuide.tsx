@@ -341,7 +341,7 @@ export default function CprGuide() {
           )}
 
           {isCpr && (
-            <div className="space-y-4">
+            <div className="space-y-4" id="start-cpr">
               <div className="flex flex-col items-center py-4">
                 <div className="relative h-44 w-44 sm:h-52 sm:w-52 flex items-center justify-center">
                   <div
@@ -495,6 +495,13 @@ export default function CprGuide() {
                       you to stop, or you can't continue.
                     </li>
                   </ol>
+                  <a
+                    href="#start-cpr"
+                    onClick={() => { metronome.isRunning || startCpr(); }}
+                    className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-destructive text-destructive-foreground font-semibold text-sm shadow-sm hover:bg-destructive/90 transition-colors"
+                  >
+                    <Play className="h-4 w-4" /> Start CPR
+                  </a>
                 </div>
 
                 <div id="infant-cpr">
@@ -510,6 +517,13 @@ export default function CprGuide() {
                     </li>
                     <li>Continue 30:2.</li>
                   </ol>
+                  <a
+                    href="#start-cpr"
+                    onClick={() => { metronome.isRunning || startCpr(); }}
+                    className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow-sm hover:bg-primary/90 transition-colors"
+                  >
+                    <Play className="h-4 w-4" /> Start CPR
+                  </a>
                 </div>
 
                 <div>
