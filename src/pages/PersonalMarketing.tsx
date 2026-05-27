@@ -187,6 +187,9 @@ export default function PersonalMarketing() {
                 <p>
                   These short courses are designed for essential general knowledge, continuing professional development (CPD), and as a study guide for accredited in-person training. They do not replace official hands-on training accreditation.
                 </p>
+                <p className="mt-2">
+                  Find official accreditation education providers in our <Link to="/learn" className="underline font-medium hover:text-amber-700">Educators directory</Link>.
+                </p>
               </div>
             </div>
           </div>
