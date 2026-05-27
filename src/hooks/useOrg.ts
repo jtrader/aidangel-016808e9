@@ -15,7 +15,8 @@ export interface OrgSummary {
   primary_color: string | null;
   country_code: string | null;
   industry: string | null;
-  billing_email: string | null;
+  /** Only readable by org admins/owners via get_org_billing_email RPC. */
+  billing_email?: string | null;
   join_code: string | null;
 }
 
