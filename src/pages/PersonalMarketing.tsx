@@ -400,7 +400,7 @@ export default function PersonalMarketing() {
               Explore first aid topics
             </h2>
             <p className="text-sm text-muted-foreground">
-              Quick-reference guides included with every licence.
+              Quick-reference guides — every topic is free to study.
             </p>
           </div>
           <style>{`
