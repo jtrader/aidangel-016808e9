@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      certificate_credits: {
+        Row: {
+          balance: number
+          environment: string
+          unlimited: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          environment?: string
+          unlimited?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          environment?: string
+          unlimited?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       certificates: {
         Row: {
           certificate_number: string
@@ -1768,6 +1792,10 @@ export type Database = {
       accept_invitation_by_token: {
         Args: { _token: string }
         Returns: undefined
+      }
+      consume_certificate_credit: {
+        Args: { _env?: string; _user: string }
+        Returns: boolean
       }
       delete_email: {
         Args: { message_id: number; queue_name: string }
