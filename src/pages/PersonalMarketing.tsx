@@ -196,6 +196,13 @@ export default function PersonalMarketing() {
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
               <Link to={startHref}>
                 Start learning free <ArrowRight className="h-4 w-4 ml-2" />
+              </Link>
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground mt-4">
+            No subscription. No paywall on lessons. Pay AU$29 per certificate, or save with a credit pack.
+          </p>
+        </div>
 
 
         {/* Auto-scrolling courses marquee (programs) */}
