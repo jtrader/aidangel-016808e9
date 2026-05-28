@@ -24,17 +24,17 @@ import { useNavigate } from "react-router-dom";
 
 const TIERS = [
   {
-    name: "Single Licence",
+    name: "Single Credit",
     priceId: "personal_individual_annual",
     price: "AU$25",
-    unit: "/ licence / year",
-    seats: "1 learner",
+    unit: "/ year",
+    seats: "1 certificate credit (save $4)",
     popular: false,
     features: [
-      "Full St John Australian First Aid 5th Ed. course library",
-      "Interactive quizzes & progress tracking",
-      "CPD-certified personal completion certificate",
-      "Lifetime access to updates for the year",
+      "1 CPD-certified certificate credit",
+      "Use it on any course once you pass the quiz",
+      "Cheaper than buying a single certificate on its own",
+      "Credit valid for 12 months",
     ],
   },
   {
@@ -42,13 +42,13 @@ const TIERS = [
     priceId: "personal_family_annual",
     price: "AU$60",
     unit: "/ year",
-    seats: "3 licences",
+    seats: "3 certificate credits ($20 ea)",
     popular: true,
     features: [
-      "Everything in Single Licence",
+      "3 CPD-certified certificate credits",
       "Share with colleagues, friends or family",
-      "Save $15 vs. individual licences",
-      "Individual CPD-certified certificates for each learner",
+      "Save $27 vs. buying single certificates",
+      "Credits valid for 12 months",
     ],
   },
   {
@@ -56,12 +56,12 @@ const TIERS = [
     priceId: "personal_family_plus_annual",
     price: "AU$90",
     unit: "/ year",
-    seats: "5 licences",
+    seats: "5 certificate credits ($18 ea)",
     popular: false,
     features: [
-      "Everything in Household 3-Pack",
+      "5 CPD-certified certificate credits",
       "Ideal for larger groups",
-      "Save AU$35 vs. individual licences",
+      "Save $55 vs. buying single certificates",
       "Priority email support",
     ],
   },
@@ -70,13 +70,13 @@ const TIERS = [
 const FEATURES = [
   {
     icon: BookOpen,
-    title: "Learn at your own pace",
-    body: "Bite-sized lessons covering CPR, choking, bleeding, burns and more. Pause and resume anytime, on any device.",
+    title: "All courses are free, forever",
+    body: "Watch the lessons, take the quizzes, and use the Live CPR Guide and AED Finder — no payment, no sign-up wall. Pay only when you want a CPD certificate.",
   },
   {
     icon: Award,
-    title: "Earn a CPD-certified certificate",
-    body: "Complete the course and quizzes to download a CPD-certified personal certificate of completion based on St John Australian First Aid 5th Edition.",
+    title: "CPD certificate on completion — AU$29",
+    body: "Pass the quiz and unlock a CPD-certified personal certificate of completion based on the St John Australian First Aid 5th Edition. Buy a single certificate or save with a credit pack below.",
   },
   {
     icon: HeartPulse,
@@ -84,6 +84,7 @@ const FEATURES = [
     body: "Practice with our Live CPR Guide, AED Finder and step-by-step emergency walkthroughs — designed for real-world moments.",
   },
 ];
+
 
 type TopicCard = {
   id: string;
@@ -157,8 +158,8 @@ export default function PersonalMarketing() {
       <SeoHead
         lang="en"
         basePath="/personal"
-        title="Personal First Aid Training Licences | First Aid Angel "
-        description="St John Australian First Aid 5th Edition training for individuals and families. Personal licences from AU$25/year with certificates, quizzes and lifetime updates."
+        title="Free First Aid Courses + CPD Certificates | First Aid Angel"
+        description="All First Aid Angel courses are free. Earn a CPD-certified personal certificate of completion for AU$29 — or save with a credit pack from AU$25."
       />
       <CoursesHeader />
 
@@ -166,18 +167,16 @@ export default function PersonalMarketing() {
       <section className="relative bg-gradient-to-br from-[#F7F7F7] to-card border-b">
         <div className="container max-w-6xl mx-auto px-4 pt-20 pb-10 text-center">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold mb-6">
-            <User className="h-4 w-4" /> First Aid Angel  Training for Individuals
+            <User className="h-4 w-4" /> First Aid Angel — Free for Everyone
           </div>
           <h1 className="font-display text-4xl md:text-6xl font-bold mb-6 leading-tight">
-            First aid training,{" "}
-            <span className="text-primary">from just $25</span>.
+            All First Aid courses are{" "}
+            <span className="text-primary">100% free</span>.
             <br />
-            Learn the skills that save lives.
+            Pay only for your CPD certificate.
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-            Self-paced St John Australian First Aid 5th Edition courses with quizzes, a
-            personal certificate and tools like the Live CPR Guide and AED
-            Finder — all in one place.
+            Watch every lesson, take every quiz and use the Live CPR Guide and AED Finder at no cost. When you pass, unlock a CPD-certified personal certificate of completion for just <strong>AU$29</strong> — or save with a credit pack below.
           </p>
           <div className="max-w-2xl mx-auto mb-8 rounded-xl border border-amber-200 bg-amber-50/80 p-4 text-left">
             <div className="flex items-start gap-3">
@@ -196,15 +195,15 @@ export default function PersonalMarketing() {
           <div className="flex flex-wrap gap-3 justify-center">
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
               <Link to={startHref}>
-                Start learning <ArrowRight className="h-4 w-4 ml-2" />
+                Start learning free <ArrowRight className="h-4 w-4 ml-2" />
               </Link>
             </Button>
           </div>
           <p className="text-xs text-muted-foreground mt-4">
-            One-off annual payment · No subscription traps · Cancel renewals
-            anytime
+            No subscription. No paywall on lessons. Pay AU$29 per certificate, or save with a credit pack.
           </p>
         </div>
+
 
         {/* Auto-scrolling courses marquee (programs) */}
         {coursesTrack.length > 0 && (
@@ -295,12 +294,13 @@ export default function PersonalMarketing() {
         <div className="container max-w-6xl mx-auto px-4 py-16">
           <div className="text-center mb-12">
             <h2 className="font-display text-3xl md:text-4xl font-bold mb-3">
-              Simple licence pricing
+              Save with certificate credit packs
             </h2>
-            <p className="text-muted-foreground">
-              All prices in AUD. One annual payment, no hidden fees.
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              All courses are free. CPD certificates are <strong>AU$29 each</strong>, or buy a pack below for a better per-certificate price.
             </p>
           </div>
+
           <div className="flex flex-wrap justify-center gap-6">
             {TIERS.map((t) => (
               <Card
@@ -338,8 +338,9 @@ export default function PersonalMarketing() {
                   disabled={checkoutLoading}
                   onClick={() => handleBuy(t.priceId)}
                 >
-                  {checkoutLoading ? "Loading…" : "Get started"}
+                  {checkoutLoading ? "Loading…" : "Buy credit pack"}
                 </Button>
+
               </Card>
             ))}
           </div>
@@ -371,22 +372,21 @@ export default function PersonalMarketing() {
           </div>
         </Card>
       </section>
-
-      {/* Final CTA */}
       <section className="container max-w-3xl mx-auto px-4 py-16 text-center">
         <h2 className="font-display text-3xl font-bold mb-4">
-          Ready to start learning?
+          Ready to start learning — for free?
         </h2>
         <p className="text-muted-foreground mb-6">
-          Join thousands of people building life-saving skills with First Aid
-          Angel .
+          All courses are 100% free. Pay only when you want your CPD-certified certificate of completion.
         </p>
         <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
           <Link to={startHref}>
-            Get your licence <ArrowRight className="h-4 w-4 ml-2" />
+            Start learning free <ArrowRight className="h-4 w-4 ml-2" />
           </Link>
         </Button>
       </section>
+
+
 
       {/* Topics marquee (moved to footer) */}
       {topicsTrack.length > 0 && (
@@ -400,7 +400,7 @@ export default function PersonalMarketing() {
               Explore first aid topics
             </h2>
             <p className="text-sm text-muted-foreground">
-              Quick-reference guides included with every licence.
+              Quick-reference guides — every topic is free to study.
             </p>
           </div>
           <style>{`

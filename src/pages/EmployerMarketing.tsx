@@ -21,21 +21,22 @@ type CourseCard = {
 };
 
 const TIERS = [
-  { name: "Starter", priceId: "employer_starter_seat_annual", perSeat: true, price: "AU$29", unit: "/ seat / year", seats: "Up to 10 seats", popular: false,
-    features: ["Bulk CSV import", "Course assignments", "Compliance dashboard", "Email invitations"] },
-  { name: "Team 25", priceId: "employer_team_25_annual", perSeat: false, price: "AU$625", unit: "flat / year", seats: "25 seats included", popular: true,
-    features: ["Everything in Starter", "CPD-certified branded certificates", "Manager roles", "CSV / PDF reports"] },
-  { name: "Team 50", priceId: "employer_team_50_annual", perSeat: false, price: "AU$1,250", unit: "flat / year", seats: "50 seats included", popular: false,
+  { name: "Starter Pack", priceId: "employer_starter_seat_annual", perSeat: true, price: "AU$29", unit: "/ credit", seats: "Per-credit pricing (1–10)", popular: false,
+    features: ["Bulk CSV import of your team", "Assign courses to anyone", "Compliance dashboard", "CPD-certified certificate per credit"] },
+  { name: "Team 25", priceId: "employer_team_25_annual", perSeat: false, price: "AU$625", unit: "flat / year", seats: "25 certificate credits ($25 ea)", popular: true,
+    features: ["Everything in Starter", "25 CPD-certified branded certificates", "Manager roles", "CSV / PDF reports"] },
+  { name: "Team 50", priceId: "employer_team_50_annual", perSeat: false, price: "AU$1,250", unit: "flat / year", seats: "50 certificate credits ($25 ea)", popular: false,
     features: ["Everything in Team 25", "Priority support", "Audit log access"] },
-  { name: "Workplace", priceId: "employer_workplace_annual", perSeat: false, price: "AU$1,500", unit: "/ year", seats: "Unlimited seats", popular: false,
-    features: ["Everything in Team 50", "SAML SSO (Okta, Azure AD)", "Custom join code"] },
+  { name: "Workplace Unlimited", priceId: "employer_workplace_annual", perSeat: false, price: "AU$1,500", unit: "/ year", seats: "Unlimited certificate credits", popular: false,
+    features: ["Everything in Team 50", "Unlimited CPD certificates for your team", "SAML SSO (Okta, Azure AD)", "Custom join code"] },
 ];
 
 const FEATURES = [
-  { icon: Upload, title: "Bulk import in minutes", body: "Upload a CSV of your team and we'll invite everyone, auto-link them when they sign up, and pre-assign their courses." },
+  { icon: Upload, title: "All courses free for your team", body: "Every learner gets free access to the full St John Australian First Aid 5th Edition library. You only pay for CPD certificates when staff complete and need proof." },
   { icon: BarChart3, title: "Live compliance tracking", body: "See who's done, who's overdue, and who needs a nudge. Export CSV/PDF for audits anytime." },
-  { icon: ShieldCheck, title: "St John Australian First Aid 5th Ed.", body: "Every learner gets the same evidence-based content used across our public courses, with a CPD-certified branded certificate." },
+  { icon: ShieldCheck, title: "CPD certificate credits in bulk", body: "Buy credit packs and assign one CPD-certified branded certificate to each learner who passes — at a much better rate than the individual AU$29 price." },
 ];
+
 
 export default function EmployerMarketing() {
   const { user } = useAuth();
@@ -50,7 +51,7 @@ export default function EmployerMarketing() {
     }
     let quantity = 1;
     if (tier.perSeat) {
-      const input = window.prompt("How many seats? (1–10)", "5");
+      const input = window.prompt("How many certificate credits? (1–10)", "5");
       if (!input) return;
       const n = Math.max(1, Math.min(10, parseInt(input, 10) || 0));
       if (!n) return;
@@ -86,23 +87,24 @@ export default function EmployerMarketing() {
       <SeoHead
         lang="en"
         basePath="/employer"
-        title="First Aid Training for Teams | First Aid Angel  for Continuing Professional Development"
-        description="Train and certify your whole workforce in evidence-based first aid. Bulk import, automatic compliance tracking, CPD-certified branded certificates. Plans from AU$29/seat."
+        title="Free Team First Aid Training + Bulk CPD Certificates | First Aid Angel"
+        description="Give your whole team free St John Australian First Aid 5th Edition training. Buy CPD-certified certificate credits in bulk — from AU$25 each in workforce packs."
       />
+
       <CoursesHeader />
 
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-[#F7F7F7] to-card border-b">
         <div className="container max-w-6xl mx-auto px-4 pt-20 pb-10 text-center">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold mb-6">
-            <Building2 className="h-4 w-4" /> First Aid Angel  for Continuing Professional Development
+            <Building2 className="h-4 w-4" /> First Aid Angel for Workforces
           </div>
           <h1 className="font-display text-4xl md:text-6xl font-bold mb-6 leading-tight">
-            Train your whole team in <span className="text-primary">first aid</span>.<br className="hidden md:inline" />
-            Prove CPD compliance in a click.
+            Free first aid training for your <span className="text-primary">whole team</span>.<br className="hidden md:inline" />
+            Buy CPD certificate credits in bulk.
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-            Bulk-invite your workforce, assign St John Australian First Aid 5th Edition aligned courses, and track completion in a single dashboard. CPD-certified branded certificates included.
+            Every learner gets free access to St John Australian First Aid 5th Edition aligned courses. You only pay for the CPD-certified certificates your staff need — buy a credit pack and assign one per completion.
           </p>
           <div className="max-w-2xl mx-auto mb-8 rounded-xl border border-amber-200 bg-amber-50/80 p-4 text-left">
             <div className="flex items-start gap-3">
@@ -121,15 +123,17 @@ export default function EmployerMarketing() {
           <div className="flex flex-wrap gap-3 justify-center">
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
               <Link to={user ? "/employer/onboarding" : "/auth?redirect=/employer/onboarding"}>
-                Start a free trial <ArrowRight className="h-4 w-4 ml-2" />
+                Start free <ArrowRight className="h-4 w-4 ml-2" />
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline">
               <Link to="/join">Have a join code?</Link>
             </Button>
           </div>
-          <p className="text-xs text-muted-foreground mt-4">1 month free trial on all employer plans</p>
+          <p className="text-xs text-muted-foreground mt-4">Courses free for everyone. Certificate credits from AU$25 in bulk.</p>
         </div>
+
+
 
         {/* Auto-scrolling topic marquee */}
         {marqueeTrack.length > 0 && (
@@ -220,8 +224,8 @@ export default function EmployerMarketing() {
       <section className="bg-[#F7F7F7] border-y">
         <div className="container max-w-6xl mx-auto px-4 py-16">
           <div className="text-center mb-12">
-            <h2 className="font-display text-3xl md:text-4xl font-bold mb-3">Simple, seat-based pricing</h2>
-            <p className="text-muted-foreground">All prices in AUD. Cancel anytime.</p>
+            <h2 className="font-display text-3xl md:text-4xl font-bold mb-3">CPD certificate credit packs</h2>
+            <p className="text-muted-foreground">All courses free. Buy credits in bulk — assign one per learner who passes.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {TIERS.map((t) => (
@@ -254,20 +258,20 @@ export default function EmployerMarketing() {
                   disabled={checkoutLoading}
                   onClick={() => handleBuy(t)}
                 >
-                  {checkoutLoading ? "Loading…" : t.perSeat ? "Buy seats" : "Get started"}
+                  {checkoutLoading ? "Loading…" : t.perSeat ? "Buy credits" : "Get pack"}
                 </Button>
               </Card>
             ))}
           </div>
           <p className="text-center text-xs text-muted-foreground mt-6">
-            Need more than 50 seats or enterprise SSO? <a href="mailto:hello@firstaidangel.org" className="underline text-primary">Get in touch</a>.
+            Need unlimited certificates or enterprise SSO? <a href="mailto:hello@firstaidangel.org" className="underline text-primary">Get in touch</a>.
           </p>
         </div>
       </section>
 
       {/* CTA */}
       <section className="container max-w-3xl mx-auto px-4 py-16 text-center">
-        <h2 className="font-display text-3xl font-bold mb-4">Ready to certify your team?</h2>
+        <h2 className="font-display text-3xl font-bold mb-4">Ready to roll out free training?</h2>
         <p className="text-muted-foreground mb-6">Set up your organisation in under two minutes.</p>
         <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
           <Link to={user ? "/employer/onboarding" : "/auth?redirect=/employer/onboarding"}>
