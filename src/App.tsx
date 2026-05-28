@@ -41,6 +41,7 @@ import AedIndex from "./pages/AedIndex";
 import AedCountry from "./pages/AedCountry";
 import AedCity from "./pages/AedCity";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
 import CourseLesson from "./pages/CourseLesson";
@@ -135,6 +136,7 @@ const App = forwardRef(function App(_props, _ref) {
                 <Route path="/workplace" element={<WorkplaceIndex />} />
                 <Route path="/workplace/:slug" element={<WorkplaceVertical />} />
 
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/admin/donations" element={<AdminDonations />} />
                 <Route path="/admin/educators" element={<AdminEducators />} />
                 <Route path="/admin/kb" element={<AdminKb />} />
