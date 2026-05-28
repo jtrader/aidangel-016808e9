@@ -294,12 +294,13 @@ export default function PersonalMarketing() {
         <div className="container max-w-6xl mx-auto px-4 py-16">
           <div className="text-center mb-12">
             <h2 className="font-display text-3xl md:text-4xl font-bold mb-3">
-              Simple licence pricing
+              Save with certificate credit packs
             </h2>
-            <p className="text-muted-foreground">
-              All prices in AUD. One annual payment, no hidden fees.
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              All courses are free. CPD certificates are <strong>AU$29 each</strong>, or buy a pack below for a better per-certificate price.
             </p>
           </div>
+
           <div className="flex flex-wrap justify-center gap-6">
             {TIERS.map((t) => (
               <Card
