@@ -133,7 +133,7 @@ export default function EmployerMarketing() {
           <p className="text-xs text-muted-foreground mt-4">Courses free for everyone. Certificate credits from AU$25 in bulk.</p>
         </div>
 
-        </div>
+
 
         {/* Auto-scrolling topic marquee */}
         {marqueeTrack.length > 0 && (
