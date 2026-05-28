@@ -158,8 +158,8 @@ export default function PersonalMarketing() {
       <SeoHead
         lang="en"
         basePath="/personal"
-        title="Personal First Aid Training Licences | First Aid Angel "
-        description="St John Australian First Aid 5th Edition training for individuals and families. Personal licences from AU$25/year with certificates, quizzes and lifetime updates."
+        title="Free First Aid Courses + CPD Certificates | First Aid Angel"
+        description="All First Aid Angel courses are free. Earn a CPD-certified personal certificate of completion for AU$29 — or save with a credit pack from AU$25."
       />
       <CoursesHeader />
 
@@ -167,18 +167,16 @@ export default function PersonalMarketing() {
       <section className="relative bg-gradient-to-br from-[#F7F7F7] to-card border-b">
         <div className="container max-w-6xl mx-auto px-4 pt-20 pb-10 text-center">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold mb-6">
-            <User className="h-4 w-4" /> First Aid Angel  Training for Individuals
+            <User className="h-4 w-4" /> First Aid Angel — Free for Everyone
           </div>
           <h1 className="font-display text-4xl md:text-6xl font-bold mb-6 leading-tight">
-            First aid training,{" "}
-            <span className="text-primary">from just $25</span>.
+            All First Aid courses are{" "}
+            <span className="text-primary">100% free</span>.
             <br />
-            Learn the skills that save lives.
+            Pay only for your CPD certificate.
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-            Self-paced St John Australian First Aid 5th Edition courses with quizzes, a
-            personal certificate and tools like the Live CPR Guide and AED
-            Finder — all in one place.
+            Watch every lesson, take every quiz and use the Live CPR Guide and AED Finder at no cost. When you pass, unlock a CPD-certified personal certificate of completion for just <strong>AU$29</strong> — or save with a credit pack below.
           </p>
           <div className="max-w-2xl mx-auto mb-8 rounded-xl border border-amber-200 bg-amber-50/80 p-4 text-left">
             <div className="flex items-start gap-3">
@@ -197,15 +195,8 @@ export default function PersonalMarketing() {
           <div className="flex flex-wrap gap-3 justify-center">
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
               <Link to={startHref}>
-                Start learning <ArrowRight className="h-4 w-4 ml-2" />
-              </Link>
-            </Button>
-          </div>
-          <p className="text-xs text-muted-foreground mt-4">
-            One-off annual payment · No subscription traps · Cancel renewals
-            anytime
-          </p>
-        </div>
+                Start learning free <ArrowRight className="h-4 w-4 ml-2" />
+
 
         {/* Auto-scrolling courses marquee (programs) */}
         {coursesTrack.length > 0 && (
