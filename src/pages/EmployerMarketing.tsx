@@ -84,11 +84,10 @@ export default function EmployerMarketing() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SeoHead
         lang="en"
         basePath="/employer"
-        title="First Aid Training for Teams | First Aid Angel  for Continuing Professional Development"
-        description="Train and certify your whole workforce in evidence-based first aid. Bulk import, automatic compliance tracking, CPD-certified branded certificates. Plans from AU$29/seat."
+        title="Free Team First Aid Training + Bulk CPD Certificates | First Aid Angel"
+        description="Give your whole team free St John Australian First Aid 5th Edition training. Buy CPD-certified certificate credits in bulk — from AU$25 each in workforce packs."
       />
       <CoursesHeader />
 
@@ -96,14 +95,14 @@ export default function EmployerMarketing() {
       <section className="relative bg-gradient-to-br from-[#F7F7F7] to-card border-b">
         <div className="container max-w-6xl mx-auto px-4 pt-20 pb-10 text-center">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold mb-6">
-            <Building2 className="h-4 w-4" /> First Aid Angel  for Continuing Professional Development
+            <Building2 className="h-4 w-4" /> First Aid Angel for Workforces
           </div>
           <h1 className="font-display text-4xl md:text-6xl font-bold mb-6 leading-tight">
-            Train your whole team in <span className="text-primary">first aid</span>.<br className="hidden md:inline" />
-            Prove CPD compliance in a click.
+            Free first aid training for your <span className="text-primary">whole team</span>.<br className="hidden md:inline" />
+            Buy CPD certificate credits in bulk.
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-            Bulk-invite your workforce, assign St John Australian First Aid 5th Edition aligned courses, and track completion in a single dashboard. CPD-certified branded certificates included.
+            Every learner gets free access to St John Australian First Aid 5th Edition aligned courses. You only pay for the CPD-certified certificates your staff need — buy a credit pack and assign one per completion.
           </p>
           <div className="max-w-2xl mx-auto mb-8 rounded-xl border border-amber-200 bg-amber-50/80 p-4 text-left">
             <div className="flex items-start gap-3">
@@ -122,14 +121,16 @@ export default function EmployerMarketing() {
           <div className="flex flex-wrap gap-3 justify-center">
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
               <Link to={user ? "/employer/onboarding" : "/auth?redirect=/employer/onboarding"}>
-                Start a free trial <ArrowRight className="h-4 w-4 ml-2" />
+                Start free <ArrowRight className="h-4 w-4 ml-2" />
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline">
               <Link to="/join">Have a join code?</Link>
             </Button>
           </div>
-          <p className="text-xs text-muted-foreground mt-4">1 month free trial on all employer plans</p>
+          <p className="text-xs text-muted-foreground mt-4">Courses free for everyone. Certificate credits from AU$25 in bulk.</p>
+        </div>
+
         </div>
 
         {/* Auto-scrolling topic marquee */}
