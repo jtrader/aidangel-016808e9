@@ -258,7 +258,7 @@ export default function EmployerMarketing() {
                   disabled={checkoutLoading}
                   onClick={() => handleBuy(t)}
                 >
-                  {checkoutLoading ? "Loading…" : t.perSeat ? "Buy seats" : "Get started"}
+                  {checkoutLoading ? "Loading…" : t.perSeat ? "Buy credits" : "Get pack"}
                 </Button>
               </Card>
             ))}
