@@ -264,14 +264,14 @@ export default function EmployerMarketing() {
             ))}
           </div>
           <p className="text-center text-xs text-muted-foreground mt-6">
-            Need more than 50 seats or enterprise SSO? <a href="mailto:hello@firstaidangel.org" className="underline text-primary">Get in touch</a>.
+            Need unlimited certificates or enterprise SSO? <a href="mailto:hello@firstaidangel.org" className="underline text-primary">Get in touch</a>.
           </p>
         </div>
       </section>
 
       {/* CTA */}
       <section className="container max-w-3xl mx-auto px-4 py-16 text-center">
-        <h2 className="font-display text-3xl font-bold mb-4">Ready to certify your team?</h2>
+        <h2 className="font-display text-3xl font-bold mb-4">Ready to roll out free training?</h2>
         <p className="text-muted-foreground mb-6">Set up your organisation in under two minutes.</p>
         <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
           <Link to={user ? "/employer/onboarding" : "/auth?redirect=/employer/onboarding"}>
