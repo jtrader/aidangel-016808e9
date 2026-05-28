@@ -136,6 +136,7 @@ const App = forwardRef(function App(_props, _ref) {
                 <Route path="/workplace" element={<WorkplaceIndex />} />
                 <Route path="/workplace/:slug" element={<WorkplaceVertical />} />
 
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/admin/donations" element={<AdminDonations />} />
                 <Route path="/admin/educators" element={<AdminEducators />} />
                 <Route path="/admin/kb" element={<AdminKb />} />
