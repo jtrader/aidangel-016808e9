@@ -1,50 +1,81 @@
-# LMS expansion: 16 new topics + 4 niche programs
+# Free Courses + Paid CPD Certificates
 
-## What you'll have when done
+All First Aid Angel courses become **free for everyone**. Users are only charged on completion when they want to download a CPD-compliant certificate. Bulk plans stay, rebranded from "licences/seats" → "certificate credits".
 
-- **28 topic courses total** (current 12 + 16 new), each with split lessons, interactive engagement directives, end-of-topic quiz, and topic certificate.
-- **5 programs total** (current 1 + 4 new niches), each curating 12 topics + final program quiz + program certificate.
+## 1. Paddle catalog
 
-## Phase 1 — 16 new topic courses
+Add one new product:
+- **`certificate_single`** — AU$29 one-off, qty 1 (the standalone post-completion purchase)
 
-Create courses for the remaining KB articles (skipping the 3 hub articles `elderly-care`, `remote-first-aid`, `workplace-first-aid`, which stay as KB hubs, not LMS courses):
+Keep all existing products at current prices, rebranded as credit packs (no price changes — Paddle entities stay valid):
 
-asthma · dehydration · dental-injury · diabetes · drowning · electric-shock · eye-injuries · fainting · fractures · mental-health-first-aid · nosebleed · poisoning · shock · spinal-injury · sprains-strains · sunburn
+| price_id | Price | Credits granted |
+|---|---|---|
+| `certificate_single` | AU$29 | 1 |
+| `personal_individual_annual` | AU$25 | 1 (intro saver) |
+| `personal_family_annual` | AU$60 | 3 |
+| `personal_family_plus_annual` | AU$90 | 5 |
+| `employer_starter_seat_annual` | AU$29/seat | quantity × 1 |
+| `employer_team_25_annual` | AU$625 | 25 |
+| `employer_team_50_annual` | AU$1,250 | 50 |
+| `employer_workplace_annual` | AU$1,500 | Unlimited (9999) |
 
-For each:
-1. Split the KB body by `##` headings into ~3–5 lessons (deterministic, no AI cost).
-2. Apply the interactive directive transforms (`:::danger`, `:::steps`, `:::tip`, `:::quiz`, `:::scenario`, `:::remember`) via a heuristic rewriter — same style as the existing 12.
-3. Generate a **5-question multiple-choice quiz** per topic via Lovable AI (google/gemini-2.5-flash, ~$0.01 each, ~$0.16 total).
-4. Insert into `courses`, `lessons`, `quiz_questions` via migration/insert tool.
+## 2. Database
 
-Defaults per course: 80% pass mark, `beginner` level, 20-minute duration, `is_published = true`.
+New table `public.certificate_credits`:
+- `user_id uuid PK references auth.users`
+- `balance int not null default 0`
+- `unlimited boolean default false` (for Workplace tier)
+- `environment text default 'live'`
+- `updated_at timestamptz`
+- RLS: user can SELECT own row; service_role manages writes
+- Helper: `consume_certificate_credit(_user uuid)` SECURITY DEFINER → returns boolean (decrements or no-op if unlimited; raises on insufficient)
 
-## Phase 2 — 4 niche programs
+Migration grants credits to existing subscribers based on their active `subscriptions` rows using the table above.
 
-Build each as a row in `programs` + 12 `program_topics` (referencing existing course IDs) + 8 final quiz questions in `program_quiz_questions`.
+## 3. Webhook (`payments-webhook`)
 
-**Parents & Childcare** (12): CPR Essentials · Choking · Recovery & DRSABCD · Anaphylaxis · Asthma · Burns · Head Injuries & Seizures · Fainting · Nosebleed · Dental Injury · Poisoning · Drowning
+In `handleSubscriptionCreated` / `transaction.completed`, derive credits from `price.importMeta.externalId` × quantity, then upsert into `certificate_credits` (add to existing balance, or flip `unlimited=true` for workplace). Both sandbox and live granted; the `environment` column scopes them.
 
-**Workplace & Trades** (12): CPR Essentials · AED Use · Severe Bleeding · Burns · Eye Injuries · Electric Shock · Fractures · Spinal Injury · Sprains & Strains · Heat Emergencies · Anaphylaxis · Mental Health First Aid
+## 4. Course completion → certificate paywall
 
-**Outdoor & Remote** (12): CPR Essentials · Recovery & DRSABCD · Severe Bleeding · Bites & Stings · Heat Emergencies · Cold Emergencies · Drowning · Dehydration · Sunburn · Fractures · Spinal Injury · Head Injuries & Seizures
+`ProgramCertificate.tsx`:
+- If `cert` already exists → show download as today
+- If not → fetch credit balance:
+  - **balance > 0 or unlimited** → "Use 1 credit & issue certificate" button → calls `consume_certificate_credit` then inserts cert
+  - **balance = 0** → "Purchase CPD certificate — AU$29" button → opens Paddle checkout for `certificate_single`, returns to same page
+- Also a "Buy a credit pack" link to `/personal`
 
-**Aged Care & Carers** (12): CPR Essentials · AED Use · Stroke & Heart Attack · Choking · Falls (Fractures + Head Injuries combined messaging via Fractures topic) · Diabetes · Fainting · Severe Bleeding · Burns & Scalds · Dehydration · Mental Health First Aid · Recovery & DRSABCD
+`CourseQuiz.tsx`: after a passing attempt, add a "Download your CPD certificate" CTA pointing to the program cert page (or single-topic cert if applicable — kept simple: links to `/programs` to find their program).
 
-## Phase 3 — Surface in UI
+## 5. Marketing copy
 
-- Update `/courses` and `/programs` pages to display the new entries (they're already query-driven, so likely automatic — I'll verify).
-- Add a small "Pick a program" hero on `/programs` grouping by audience.
+`PersonalMarketing.tsx`:
+- New hero: "All First Aid courses are free. Pay only for your CPD certificate."
+- Replace pricing intro: "Skip-ahead packs of CPD certificate credits"
+- Tier `seats` → "1 certificate credit" / "3 credits" / "5 credits"
+- Update FEATURES bullet about certificate to reflect $29 pay-on-completion
+- Top of pricing section: callout "Or pay AU$29 per certificate as you go — no plan needed."
+
+`EmployerMarketing.tsx`:
+- Hero subtitle: "All courses free for your whole team. Buy CPD certificate credits in bulk and assign them when learners pass."
+- Tier labels: "10 certificate credits", "25 credits", "50 credits", "Unlimited certificates / year"
+- Replace "seats" copy throughout
+
+## 6. Memory
+
+Update `mem://features/payments` with new model (certificate_single + credit semantics).
 
 ## Technical notes
 
-- Lesson-split heuristic: every `##` becomes one lesson; intro paragraph before first `##` becomes lesson 1 ("Overview"). Short sections (<200 chars) merge with the next.
-- Directive rewriter rules: lines starting with "Do NOT"/"Never"/"Warning" → `:::danger`; numbered procedures → `:::steps`; "Remember"/"Key" → `:::remember`; bullet warnings → `:::warning`; "If…then" advice → `:::tip`.
-- Quiz generation prompt enforces JSON schema: `{question, choices[4], correct_index, explanation}`.
-- All inserts batched per phase via `supabase--insert` (data) — schema is unchanged so no migration needed.
-- Final program quiz questions written by hand from cross-topic AFA5 content (≈8 per program).
+- No backend/types files edited (`integrations/supabase/*` auto-generated).
+- Credit consumption is atomic via SECURITY DEFINER function with row-lock to prevent double-issue.
+- Workplace `unlimited=true` short-circuits balance checks.
+- Existing subs already in `subscriptions` table get a one-time grant via migration `INSERT … SELECT` mapping the same `price_id → credits` table above.
+- Test mode: credits granted from sandbox checkouts are scoped by `environment` and only count in preview; live published app reads `environment='live'`.
 
-## Cost & time
+## Out of scope (this pass)
 
-- AI: ~$0.30 total (16 quizzes × ~$0.01 + 4 final quizzes × ~$0.02).
-- Time: ~10–15 min of tool calls. I'll checkpoint after Phase 1 so you can spot-check before I build the programs.
+- Per-language i18n strings for new copy (English only updated; other locales fall back).
+- Refactoring the `/programs` quiz flow vs `/topics` quiz flow — keep current routing.
+- Admin UI to manually grant/revoke credits.
