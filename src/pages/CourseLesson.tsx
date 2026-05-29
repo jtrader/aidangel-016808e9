@@ -8,6 +8,7 @@ import LessonContent from "@/components/lesson/LessonContent";
 import { useAuth } from "@/hooks/useAuth";
 import CoursesHeader from "@/components/CoursesHeader";
 import CourseLayout from "@/components/CourseLayout";
+import NetworkFooter from "@/components/NetworkFooter";
 import { SeoHead } from "@/components/SeoHead";
 import { buildLessonSeo } from "@/lib/lessonSeo";
 import { toast } from "sonner";
