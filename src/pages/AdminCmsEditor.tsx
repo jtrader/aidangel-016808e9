@@ -120,25 +120,57 @@ export default function AdminCmsEditor() {
 
   const [translating, setTranslating] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewLang, setPreviewLang] = useState<LanguageCode>("en");
+  const [pageTr, setPageTr] = useState<{ title: string | null; description: string | null } | null>(null);
+  const [blockTrs, setBlockTrs] = useState<Record<string, { title: string | null; body_md: string | null; cta_label: string | null }>>({});
+  const [loadingTr, setLoadingTr] = useState(false);
+
+  useEffect(() => {
+    if (!previewOpen || !page || previewLang === "en") {
+      setPageTr(null); setBlockTrs({}); return;
+    }
+    let cancelled = false;
+    (async () => {
+      setLoadingTr(true);
+      const [{ data: pt }, { data: bts }] = await Promise.all([
+        supabase.from("cms_page_translations")
+          .select("title, description").eq("page_id", page.id).eq("lang", previewLang).maybeSingle(),
+        supabase.from("cms_block_translations")
+          .select("block_id, title, body_md, cta_label").eq("lang", previewLang)
+          .in("block_id", blocks.map((b) => b.id)),
+      ]);
+      if (cancelled) return;
+      setPageTr(pt ?? null);
+      const map: Record<string, any> = {};
+      (bts ?? []).forEach((t: any) => { map[t.block_id] = t; });
+      setBlockTrs(map);
+      setLoadingTr(false);
+    })();
+    return () => { cancelled = true; };
+  }, [previewOpen, previewLang, page?.id, blocks.length]);
+
   const previewPage: CmsPage | null = page
     ? {
         id: page.id,
         slug: page.slug,
-        title: page.title,
-        description: page.description,
+        title: pageTr?.title ?? page.title,
+        description: pageTr?.description ?? page.description,
         is_published: page.is_published,
-        blocks: blocks.map((b) => ({
-          id: b.id,
-          block_key: b.block_key,
-          block_type: b.block_type,
-          sort_order: b.sort_order,
-          title: b.title,
-          body_md: b.body_md,
-          image_url: b.image_url,
-          cta_label: b.cta_label,
-          cta_url: b.cta_url,
-          data: {},
-        })),
+        blocks: blocks.map((b) => {
+          const t = blockTrs[b.id];
+          return {
+            id: b.id,
+            block_key: b.block_key,
+            block_type: b.block_type,
+            sort_order: b.sort_order,
+            title: t?.title ?? b.title,
+            body_md: t?.body_md ?? b.body_md,
+            image_url: b.image_url,
+            cta_label: t?.cta_label ?? b.cta_label,
+            cta_url: b.cta_url,
+            data: {},
+          };
+        }),
       }
     : null;
   const translateAll = async () => {
