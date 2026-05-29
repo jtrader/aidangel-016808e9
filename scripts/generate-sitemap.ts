@@ -100,6 +100,7 @@ const englishOnlyPaths: Array<{ path: string; changefreq: string; priority: stri
   { path: "/angel-action", changefreq: "monthly", priority: "0.7" },
   { path: "/learn", changefreq: "weekly", priority: "0.8" },
   { path: "/learn/submit", changefreq: "monthly", priority: "0.5" },
+  { path: "/cpr", changefreq: "monthly", priority: "0.8" },
 ];
 
 const localized = (lang: Lang, p: string) => {
@@ -217,6 +218,59 @@ async function fetchLmsPaths(): Promise<void> {
 }
 
 await fetchLmsPaths();
+
+// Educator directory — /learn/provider/:slug + /learn/:country/:city
+const citySlug = (city: string) => city.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const learnPaths: Array<{ path: string; changefreq: string; priority: string }> = [];
+
+async function fetchLearnPaths(): Promise<void> {
+  const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
+  const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    console.warn("[sitemap] Supabase env vars missing — skipping educator URLs");
+    return;
+  }
+  const headers = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` };
+  try {
+    const eRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/educators?select=slug`,
+      { headers },
+    );
+    const educators = (await eRes.json()) as Array<{ slug: string }>;
+    for (const e of educators) {
+      if (e.slug) learnPaths.push({ path: `/learn/provider/${e.slug}`, changefreq: "monthly", priority: "0.7" });
+    }
+    const lRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/educator_locations?select=country_code,city`,
+      { headers },
+    );
+    const locs = (await lRes.json()) as Array<{ country_code: string | null; city: string | null }>;
+    const seen = new Set<string>();
+    for (const l of locs) {
+      if (!l.country_code || !l.city) continue;
+      const path = `/learn/${l.country_code.toLowerCase()}/${citySlug(l.city)}`;
+      if (seen.has(path)) continue;
+      seen.add(path);
+      learnPaths.push({ path, changefreq: "monthly", priority: "0.7" });
+    }
+    console.log(`[sitemap] Educators: ${educators.length} providers, ${seen.size} cities`);
+  } catch (e) {
+    console.warn("[sitemap] Educator fetch failed:", (e as Error).message);
+  }
+}
+
+await fetchLearnPaths();
+for (const b of learnPaths) {
+  urls.push(
+    [
+      `  <url>`,
+      `    <loc>${BASE_URL}${b.path}</loc>`,
+      `    <changefreq>${b.changefreq}</changefreq>`,
+      `    <priority>${b.priority}</priority>`,
+      `  </url>`,
+    ].join("\n"),
+  );
+}
 
 for (const b of lmsPaths) {
 
