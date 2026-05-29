@@ -14,6 +14,7 @@ import SupportUsBar from "@/components/SupportUsBar";
 import KbSuggestionCard from "@/components/KbSuggestionCard";
 import EmergencyCallButton from "@/components/EmergencyCallButton";
 import HamburgerMenu from "@/components/HamburgerMenu";
+import { CmsPageRenderer } from "@/components/CmsPageRenderer";
 import { findBestTopic } from "@/lib/kb";
 
 const URGENT_SLUGS = new Set([
@@ -180,55 +181,60 @@ const Index = () => {
       <main ref={scrollRef} className="flex-1 px-4 py-6">
         <div className="max-w-3xl mx-auto space-y-6">
           {isEmpty ? (
-            <>
-              <div className="text-center space-y-3">
-                <img src={aidAngelLogo} alt="First Aid Angel" className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover mx-auto" />
-                <h2 className="font-display font-bold text-xl sm:text-2xl text-foreground px-2">
-                  {t("welcomeHeading")}
-                </h2>
-              </div>
+            <CmsPageRenderer
+              slug="home"
+              fallback={
+                <>
+                  <div className="text-center space-y-3">
+                    <img src={aidAngelLogo} alt="First Aid Angel" className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover mx-auto" />
+                    <h2 className="font-display font-bold text-xl sm:text-2xl text-foreground px-2">
+                      {t("welcomeHeading")}
+                    </h2>
+                  </div>
 
-              {/* Input directly below the welcome heading */}
-              <div className="max-w-2xl mx-auto w-full">
-                <ChatInput onSend={send} disabled={isLoading} />
-                <ChatDisclaimer />
-              </div>
+                  {/* Input directly below the welcome heading */}
+                  <div className="max-w-2xl mx-auto w-full">
+                    <ChatInput onSend={send} disabled={isLoading} />
+                    <ChatDisclaimer />
+                  </div>
 
-              <div className="text-center space-y-3">
-                <p className="text-muted-foreground text-sm max-w-md mx-auto">
-                  {t("welcomeDescription")}
-                </p>
-                <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
-                  <Link
-                    to="/cpr"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
-                    aria-label="Open live CPR guide with metronome"
-                  >
-                    <HeartPulse className="h-4 w-4" />
-                    Live CPR Guide
-                  </Link>
-                  <Link
-                    to="/aed-finder"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors border border-border"
-                    aria-label="Find nearest AED"
-                  >
-                    <MapPin className="h-4 w-4" />
-                    AED Finder
-                  </Link>
-                  <Link
-                    to="/symptoms"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors border border-border"
-                    aria-label="Find first aid by symptom"
-                  >
-                    <Search className="h-4 w-4" />
-                    Symptom Finder
-                  </Link>
-                </div>
-              </div>
+                  <div className="text-center space-y-3">
+                    <p className="text-muted-foreground text-sm max-w-md mx-auto">
+                      {t("welcomeDescription")}
+                    </p>
+                    <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+                      <Link
+                        to="/cpr"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
+                        aria-label="Open live CPR guide with metronome"
+                      >
+                        <HeartPulse className="h-4 w-4" />
+                        Live CPR Guide
+                      </Link>
+                      <Link
+                        to="/aed-finder"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors border border-border"
+                        aria-label="Find nearest AED"
+                      >
+                        <MapPin className="h-4 w-4" />
+                        AED Finder
+                      </Link>
+                      <Link
+                        to="/symptoms"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors border border-border"
+                        aria-label="Find first aid by symptom"
+                      >
+                        <Search className="h-4 w-4" />
+                        Symptom Finder
+                      </Link>
+                    </div>
+                  </div>
 
-              <QuickActions onSelect={send} />
-              <DRSABCDPanel onSelect={send} />
-            </>
+                  <QuickActions onSelect={send} />
+                  <DRSABCDPanel onSelect={send} />
+                </>
+              }
+            />
           ) : (
             <>
               <div className="space-y-4">
