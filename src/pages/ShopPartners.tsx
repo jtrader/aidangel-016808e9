@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { CmsPageRenderer } from "@/components/CmsPageRenderer";
 import { ArrowLeft, ShoppingBag, Globe, MapPin, ExternalLink, Check, Package } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
 import HamburgerMenu from "@/components/HamburgerMenu";
