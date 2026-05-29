@@ -316,6 +316,23 @@ export default function AdminCmsEditor() {
               <SheetDescription>
                 Unsaved changes shown. {page.is_published ? "Published" : "Draft — not visible to visitors yet."}
               </SheetDescription>
+              <div className="flex items-center gap-2 pt-2">
+                <Label className="text-xs text-muted-foreground">Language</Label>
+                <Select value={previewLang} onValueChange={(v) => setPreviewLang(v as LanguageCode)}>
+                  <SelectTrigger className="w-64 h-8 text-sm"><SelectValue /></SelectTrigger>
+                  <SelectContent className="max-h-80">
+                    {languages.map((l) => (
+                      <SelectItem key={l.code} value={l.code}>
+                        {l.name} {l.code !== "en" && <span className="text-muted-foreground">· {l.nativeName}</span>}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {loadingTr && <span className="text-xs text-muted-foreground">Loading…</span>}
+                {previewLang !== "en" && !loadingTr && !pageTr && Object.keys(blockTrs).length === 0 && (
+                  <span className="text-xs text-amber-600">No translation yet — showing English.</span>
+                )}
+              </div>
             </SheetHeader>
             <div className="bg-[#F7F7F7] p-6">
               <div className="max-w-4xl mx-auto bg-background rounded-2xl p-6 sm:p-8 shadow-sm">
