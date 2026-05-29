@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { SeoHead } from "@/components/SeoHead";
 import { toast } from "sonner";
-import { ArrowLeft, Plus, Trash2, ArrowUp, ArrowDown, Upload, Save } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, ArrowUp, ArrowDown, Upload, Save, Languages } from "lucide-react";
 
 type Block = {
   id: string;
@@ -113,6 +113,25 @@ export default function AdminCmsEditor() {
     toast.success("Image uploaded");
   };
 
+  const [translating, setTranslating] = useState(false);
+  const translateAll = async () => {
+    if (!page) return;
+    if (!confirm("Translate this page (title, description, and all blocks) into all 47 supported languages? This may take a minute and will overwrite existing machine translations.")) return;
+    setTranslating(true);
+    const t = toast.loading("Translating into 47 languages…");
+    const { data, error } = await supabase.functions.invoke("translate-cms", {
+      body: { slug: page.slug },
+    });
+    setTranslating(false);
+    toast.dismiss(t);
+    if (error) return toast.error(error.message);
+    const results = (data as { results?: Record<string, { ok: boolean; error?: string }> })?.results ?? {};
+    const ok = Object.values(results).filter((r) => r.ok).length;
+    const failed = Object.entries(results).filter(([, r]) => !r.ok).map(([l]) => l);
+    if (failed.length) toast.warning(`Translated ${ok}. Failed: ${failed.join(", ")}`);
+    else toast.success(`Translated into ${ok} languages`);
+  };
+
   if (loading) return <div className="p-10 text-muted-foreground">Loading…</div>;
   if (!page) return <div className="p-10">Page not found. <Link to="/admin/cms" className="text-primary underline">Back</Link></div>;
 
@@ -140,7 +159,12 @@ export default function AdminCmsEditor() {
                 <input type="checkbox" checked={page.is_published} onChange={(e) => setPage({ ...page, is_published: e.target.checked })} />
                 Published
               </label>
-              <Button onClick={savePageMeta} className="w-fit"><Save className="h-4 w-4 mr-1" /> Save page</Button>
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={savePageMeta} className="w-fit"><Save className="h-4 w-4 mr-1" /> Save page</Button>
+                <Button onClick={translateAll} variant="outline" className="w-fit" disabled={translating}>
+                  <Languages className="h-4 w-4 mr-1" /> {translating ? "Translating…" : "Translate into 47 languages"}
+                </Button>
+              </div>
             </div>
           </Card>
 
