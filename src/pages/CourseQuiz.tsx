@@ -211,6 +211,7 @@ export default function CourseQuiz() {
           </div>
         )}
       </main>
+      <NetworkFooter />
     </div>
     </CourseLayout>
   );
