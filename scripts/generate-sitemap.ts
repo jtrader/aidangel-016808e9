@@ -134,18 +134,21 @@ for (const lang of LANGS) {
   }
 }
 
-// /:lang/angel-action — mounted in App.tsx for every supported lang.
+// Per-language routes mounted in App.tsx for every supported lang.
 for (const lang of LANGS) {
-  const path = lang === "en" ? "/angel-action" : `/${lang}/angel-action`;
-  urls.push(
-    [
-      `  <url>`,
-      `    <loc>${BASE_URL}${path}</loc>`,
-      `    <changefreq>monthly</changefreq>`,
-      `    <priority>0.7</priority>`,
-      `  </url>`,
-    ].join("\n"),
-  );
+  for (const route of ["/angel-action", "/about"]) {
+    const path = lang === "en" ? route : `/${lang}${route}`;
+    if (lang === "en") continue; // English variants already in englishOnlyPaths
+    urls.push(
+      [
+        `  <url>`,
+        `    <loc>${BASE_URL}${path}</loc>`,
+        `    <changefreq>monthly</changefreq>`,
+        `    <priority>0.7</priority>`,
+        `  </url>`,
+      ].join("\n"),
+    );
+  }
 }
 
 // English-only routes
