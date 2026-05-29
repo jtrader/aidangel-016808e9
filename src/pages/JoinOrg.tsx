@@ -6,6 +6,7 @@ import { useOrg } from "@/hooks/useOrg";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { Building2 } from "lucide-react";
+import NetworkFooter from "@/components/NetworkFooter";
 
 interface OrgInfo {
   id: string;
