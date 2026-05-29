@@ -280,6 +280,7 @@ export default function EmployerMarketing() {
           </Link>
         </Button>
       </section>
+      <NetworkFooter />
     </div>
   );
 }
