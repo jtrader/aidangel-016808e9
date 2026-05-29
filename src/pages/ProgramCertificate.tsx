@@ -118,7 +118,7 @@ export default function ProgramCertificate() {
   const hasCredit = credits?.unlimited || (credits?.balance ?? 0) > 0;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <CoursesHeader />
       <main className="container max-w-2xl mx-auto px-4 py-10">
         <Card className="p-8 text-center rounded-2xl">
