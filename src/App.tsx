@@ -144,6 +144,7 @@ const App = forwardRef(function App(_props, _ref) {
                 <Route path="/admin" element={<AdminIndex />} />
                 <Route path="/admin/cms" element={<AdminCms />} />
                 <Route path="/admin/cms/:slug" element={<AdminCmsEditor />} />
+                <Route path="/cms-preview/:slug" element={<CmsPreview />} />
                 <Route path="/admin/donations" element={<AdminDonations />} />
                 <Route path="/admin/educators" element={<AdminEducators />} />
                 <Route path="/admin/kb" element={<AdminKb />} />
