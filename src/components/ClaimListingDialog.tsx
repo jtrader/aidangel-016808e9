@@ -142,14 +142,9 @@ export default function ClaimListingDialog({
     const existing = JSON.parse(localStorage.getItem("faa_claims") ?? "[]") as Array<{ educatorId: string; claimId: string; claimantEmail: string }>;
     existing.push({ educatorId, claimId, claimantEmail: parsed.data.claimant_email });
     localStorage.setItem("faa_claims", JSON.stringify(existing));
-    // Fire-and-forget confirmation email
-    supabase.functions.invoke("send-transactional-email", {
-      body: {
-        templateName: "claim-received",
-        recipientEmail: parsed.data.claimant_email,
-        idempotencyKey: `claim-received-${claimId}`,
-        templateData: { name: parsed.data.claimant_name, educatorName },
-      },
+    // Fire-and-forget confirmation email (server derives recipient + template from claim row)
+    supabase.functions.invoke("educator-claim-notify", {
+      body: { action: "submitted", claim_id: claimId },
     }).catch(() => { /* non-blocking */ });
     setDone(true);
   };

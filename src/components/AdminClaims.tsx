@@ -57,18 +57,8 @@ export default function AdminClaims() {
       .update({ is_claimed: true, claimed_at: now })
       .eq("id", c.educator_id);
     if (eErr) { toast({ title: "Educator update failed", description: eErr.message, variant: "destructive" }); return; }
-    supabase.functions.invoke("send-transactional-email", {
-      body: {
-        templateName: "claim-approved",
-        recipientEmail: c.claimant_email,
-        idempotencyKey: `claim-approved-${c.id}`,
-        templateData: {
-          name: c.claimant_name,
-          educatorName: c.educator?.name,
-          profileUrl: c.educator ? `${window.location.origin}/learn/provider/${c.educator.slug}` : undefined,
-          notes: reviewNotes ?? undefined,
-        },
-      },
+    supabase.functions.invoke("educator-claim-notify", {
+      body: { action: "approved", claim_id: c.id, origin: window.location.origin },
     }).catch(() => {});
     toast({ title: "Claim approved" });
     load();
@@ -81,17 +71,8 @@ export default function AdminClaims() {
       .update({ status: "rejected", review_notes: reviewNotes, reviewed_at: new Date().toISOString() })
       .eq("id", c.id);
     if (error) { toast({ title: "Reject failed", description: error.message, variant: "destructive" }); return; }
-    supabase.functions.invoke("send-transactional-email", {
-      body: {
-        templateName: "claim-rejected",
-        recipientEmail: c.claimant_email,
-        idempotencyKey: `claim-rejected-${c.id}`,
-        templateData: {
-          name: c.claimant_name,
-          educatorName: c.educator?.name,
-          notes: reviewNotes ?? undefined,
-        },
-      },
+    supabase.functions.invoke("educator-claim-notify", {
+      body: { action: "rejected", claim_id: c.id },
     }).catch(() => {});
     toast({ title: "Claim rejected" });
     load();
