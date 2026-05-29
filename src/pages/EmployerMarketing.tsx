@@ -98,12 +98,8 @@ export default function EmployerMarketing() {
       <CmsPageRenderer
         slug="employer"
         fallback={
-          <></>
-        }
-      />
+          <>
 
-      {/* Hardcoded marketing content (hidden when CMS page published with blocks) */}
-      <CmsAwareFallback>
 
 
       {/* Hero */}
