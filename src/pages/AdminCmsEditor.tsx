@@ -272,6 +272,30 @@ export default function AdminCmsEditor() {
             )}
           </div>
         </div>
+
+        <Sheet open={previewOpen} onOpenChange={setPreviewOpen}>
+          <SheetContent side="right" className="w-full sm:max-w-4xl overflow-y-auto p-0">
+            <SheetHeader className="px-6 py-4 border-b sticky top-0 bg-background z-10">
+              <SheetTitle className="flex items-center gap-2">
+                <Eye className="h-5 w-5" /> Preview · /{page.slug}
+              </SheetTitle>
+              <SheetDescription>
+                Unsaved changes shown. {page.is_published ? "Published" : "Draft — not visible to visitors yet."}
+              </SheetDescription>
+            </SheetHeader>
+            <div className="bg-[#F7F7F7] p-6">
+              <div className="max-w-4xl mx-auto bg-background rounded-2xl p-6 sm:p-8 shadow-sm">
+                {previewPage && previewPage.blocks.length > 0 ? (
+                  <CmsBlocksRenderer page={previewPage} />
+                ) : (
+                  <p className="text-muted-foreground text-center py-10">
+                    No blocks yet — add content to preview it.
+                  </p>
+                )}
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
     </RequireAuth>
   );
