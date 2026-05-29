@@ -9,6 +9,7 @@ import { CheckCircle2, XCircle, Loader2, Award, Lock, Play } from "lucide-react"
 import { useAuth } from "@/hooks/useAuth";
 import CoursesHeader from "@/components/CoursesHeader";
 import CourseLayout from "@/components/CourseLayout";
+import NetworkFooter from "@/components/NetworkFooter";
 import { SeoHead } from "@/components/SeoHead";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
