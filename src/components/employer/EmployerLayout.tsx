@@ -130,6 +130,7 @@ export default function EmployerLayout({ children, title }: Props) {
           {children}
         </main>
       </div>
+      <NetworkFooter />
     </div>
   );
 }
