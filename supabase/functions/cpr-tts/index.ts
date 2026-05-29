@@ -23,8 +23,14 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
-    // Public endpoint — /cpr is accessible without an account.
-    // Input is short-text validated below; ElevenLabs key stays server-side.
+    // Require a valid Supabase JWT (anon or user) — prevents non-app callers
+    // from draining ElevenLabs credits while still serving public visitors.
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     const apiKey = Deno.env.get("ELEVENLABS_API_KEY");
     if (!apiKey) return fallbackResponse("missing_api_key");
 
