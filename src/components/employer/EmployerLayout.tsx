@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
+import NetworkFooter from "@/components/NetworkFooter";
 
 interface Props {
   children: ReactNode;
