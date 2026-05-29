@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { SeoHead } from "@/components/SeoHead";
 import { toast } from "sonner";
-import { ArrowLeft, Plus, Trash2, ArrowUp, ArrowDown, Upload, Save, Languages, Eye, ExternalLink } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, ArrowUp, ArrowDown, Upload, Save, Languages, Eye, ExternalLink, Link2, QrCode } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CmsBlocksRenderer } from "@/components/CmsBlocksRenderer";
