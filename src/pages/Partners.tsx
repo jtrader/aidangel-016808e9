@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { CmsPageRenderer } from "@/components/CmsPageRenderer";
 import { Link } from "react-router-dom";
 import { ArrowLeft, HandHeart, Globe, MapPin, ExternalLink, Check } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
