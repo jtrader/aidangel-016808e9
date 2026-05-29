@@ -191,6 +191,19 @@ export default function AdminCmsEditor() {
     else toast.success(`Translated into ${ok} languages`);
   };
 
+  const previewUrl = page
+    ? `${window.location.origin}/cms-preview/${page.slug}?token=${page.preview_token}${previewLang !== "en" ? `&lang=${previewLang}` : ""}`
+    : "";
+  const copyPreviewLink = async () => {
+    if (!previewUrl) return;
+    try {
+      await navigator.clipboard.writeText(previewUrl);
+      toast.success("Preview link copied — open it on any device.");
+    } catch {
+      toast.message(previewUrl);
+    }
+  };
+
   if (loading) return <div className="p-10 text-muted-foreground">Loading…</div>;
   if (!page) return <div className="p-10">Page not found. <Link to="/admin/cms" className="text-primary underline">Back</Link></div>;
 
