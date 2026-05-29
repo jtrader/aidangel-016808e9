@@ -30,7 +30,7 @@ type Block = {
   cta_url: string | null;
 };
 
-type Page = { id: string; slug: string; title: string; description: string | null; is_published: boolean };
+type Page = { id: string; slug: string; title: string; description: string | null; is_published: boolean; preview_token: string };
 
 export default function AdminCmsEditor() {
   const { slug } = useParams<{ slug: string }>();
