@@ -467,6 +467,7 @@ export default function PersonalMarketing() {
           </div>
         </section>
       )}
+      <NetworkFooter />
     </div>
   );
 }
