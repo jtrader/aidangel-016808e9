@@ -53,7 +53,7 @@ export default function CmsPreview() {
 
   return (
     <div className="min-h-screen bg-[#F7F7F7]">
-      <SeoHead lang="en" basePath="/cms-preview" title="CMS preview" description="Tokenized preview of an unpublished CMS page." noindex />
+      <SeoHead lang="en" basePath="/cms-preview" title="CMS preview" description="Tokenized preview of an unpublished CMS page." />
       <div className="bg-amber-100 border-b border-amber-300 text-amber-900 text-sm px-4 py-2 text-center">
         Preview mode {page && !page.is_published ? "· Draft (not visible to visitors)" : page?.is_published ? "· Published" : ""}
       </div>
