@@ -353,20 +353,14 @@ function HardcodedAbout() {
 
 export default function About() {
   const { language } = useLanguage();
-  const { page, loading } = useCmsPage("about");
-
-  const seoTitle = page?.title ?? "About First Aid Angel · Sources, Purpose & FAQ";
-  const seoDesc =
-    page?.description ??
-    "Learn about First Aid Angel — our credentials, sources, mission to educate and aid in emergencies, and how an offline AI first aid app compares to traditional resources.";
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SeoHead
         lang={language}
         basePath="/about"
-        title={seoTitle}
-        description={seoDesc}
+        title="About First Aid Angel · Sources, Purpose & FAQ"
+        description="Learn about First Aid Angel — our credentials, sources, mission to educate and aid in emergencies, and how an offline AI first aid app compares to traditional resources."
       />
 
       <header className="border-b border-border bg-card">
@@ -384,11 +378,7 @@ export default function About() {
 
       <main className="flex-1 px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          {!loading && page?.is_published && page.blocks.length > 0 ? (
-            <CmsBlocksRenderer page={page} />
-          ) : (
-            <HardcodedAbout />
-          )}
+          <CmsPageRenderer slug="about" fallback={<HardcodedAbout />} />
         </div>
       </main>
 
