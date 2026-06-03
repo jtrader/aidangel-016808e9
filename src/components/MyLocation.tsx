@@ -228,7 +228,23 @@ export default function MyLocation() {
   const [busy, setBusy] = useState(false);
   const [w3w, setW3w] = useState<LoadState<string>>({ status: "idle" });
   const [address, setAddress] = useState<LoadState<string>>({ status: "idle" });
+  const [retry, setRetry] = useState<{ attempt: number; secondsLeft: number; total: number } | null>(null);
+  const attemptRef = useRef(0);
+  const countdownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
+
+  const clearCountdown = useCallback(() => {
+    if (countdownTimerRef.current) {
+      clearInterval(countdownTimerRef.current);
+      countdownTimerRef.current = null;
+    }
+  }, []);
+
+  const cancelAutoRetry = useCallback(() => {
+    clearCountdown();
+    setRetry(null);
+    attemptRef.current = MAX_AUTO_RETRIES; // prevent further auto retries until manual reset
+  }, [clearCountdown]);
 
   const runW3W = useCallback((lat: number, lng: number) => {
     setW3w({ status: "loading" });
@@ -244,7 +260,64 @@ export default function MyLocation() {
       .catch((e) => setAddress({ status: "error", message: e?.message ?? "Failed" }));
   }, []);
 
+  const requestPosition = useCallback(
+    (opts: { isAuto: boolean }) => {
+      setBusy(true);
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setBusy(false);
+          clearCountdown();
+          setRetry(null);
+          attemptRef.current = 0;
+          const c: Coords = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+            accuracy: pos.coords.accuracy,
+          };
+          setCoords(c);
+          runW3W(c.lat, c.lng);
+          runAddress(c.lat, c.lng);
+          setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+        },
+        (err) => {
+          setBusy(false);
+          setGeoError(getErrorState(err.code));
+          // Auto-retry for POSITION_UNAVAILABLE (2) and TIMEOUT (3) only
+          const retryable = err.code === 2 || err.code === 3;
+          if (retryable && attemptRef.current < MAX_AUTO_RETRIES) {
+            const nextAttempt = attemptRef.current + 1;
+            attemptRef.current = nextAttempt;
+            const delay = RETRY_DELAYS_SEC[nextAttempt - 1];
+            setRetry({ attempt: nextAttempt, secondsLeft: delay, total: MAX_AUTO_RETRIES });
+            clearCountdown();
+            countdownTimerRef.current = setInterval(() => {
+              setRetry((cur) => {
+                if (!cur) return cur;
+                if (cur.secondsLeft <= 1) {
+                  clearCountdown();
+                  // Fire the retry on next tick to let state settle
+                  setTimeout(() => requestPosition({ isAuto: true }), 0);
+                  return null;
+                }
+                return { ...cur, secondsLeft: cur.secondsLeft - 1 };
+              });
+            }, 1000);
+          } else {
+            clearCountdown();
+            setRetry(null);
+          }
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 },
+      );
+    },
+    [clearCountdown, runW3W, runAddress],
+  );
+
   const getLocation = useCallback(() => {
+    // Manual trigger resets the auto-retry counter and clears any pending countdown
+    clearCountdown();
+    setRetry(null);
+    attemptRef.current = 0;
     setGeoError(null);
     if (!("geolocation" in navigator)) {
       setGeoError({
@@ -259,27 +332,11 @@ export default function MyLocation() {
       });
       return;
     }
-    setBusy(true);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setBusy(false);
-        const c: Coords = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-          accuracy: pos.coords.accuracy,
-        };
-        setCoords(c);
-        runW3W(c.lat, c.lng);
-        runAddress(c.lat, c.lng);
-        setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
-      },
-      (err) => {
-        setBusy(false);
-        setGeoError(getErrorState(err.code));
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 },
-    );
-  }, [runW3W, runAddress]);
+    requestPosition({ isAuto: false });
+  }, [clearCountdown, requestPosition]);
+
+  // Cleanup any running countdown on unmount
+  useEffect(() => () => clearCountdown(), [clearCountdown]);
 
   const accuracyWarning = coords && coords.accuracy > 500
     ? { icon: "🔴", text: "Location is imprecise. Give your coordinates and what3words address to 000." }
