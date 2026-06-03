@@ -10,9 +10,24 @@ export function useAuth() {
   const [adminLoading, setAdminLoading] = useState(true);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, s) => {
       setSession(s);
       setUser(s?.user ?? null);
+      if (event === "SIGNED_IN" && s?.user) {
+        // One sync per browser session — ensures every signed-in user has
+        // a matching Shopify customer for seamless checkout.
+        const flag = `faa_shopify_synced_${s.user.id}`;
+        try {
+          if (!sessionStorage.getItem(flag)) {
+            sessionStorage.setItem(flag, "1");
+            setTimeout(() => {
+              supabase.functions.invoke("shopify-customer-sync", {
+                body: { full_name: s.user.user_metadata?.full_name },
+              }).catch((e) => console.warn("shopify sync deferred", e));
+            }, 0);
+          }
+        } catch { /* ignore storage errors */ }
+      }
     });
     supabase.auth.getSession().then(({ data: { session: s } }) => {
       setSession(s);
