@@ -49,7 +49,7 @@ function AdminRoutesInner() {
     setLoading(true);
     const [{ data: cat }, { data: clk }] = await Promise.all([
       supabase.from("route_catalogue").select("*").order("synced_at", { ascending: false }).limit(500),
-      supabase.from("route_clicks").select("id, route_slug, source_page, country, created_at").order("created_at", { ascending: false }).limit(50),
+      supabase.from("route_clicks").select("id, route_slug, source_page, country, timestamp").order("timestamp", { ascending: false }).limit(50),
     ]);
     setRows((cat ?? []) as Row[]);
     setClicks((clk ?? []) as ClickRow[]);
