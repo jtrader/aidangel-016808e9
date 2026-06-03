@@ -119,14 +119,18 @@ export default function ProgramCertificate() {
   };
 
   const buySingle = async () => {
-    if (!user) return;
+    if (!user || !program || !name.trim()) { toast.error(tr.enterYourName); return; }
     if (!(await verifyEligibility())) return;
-    openCheckout({
-      priceId: "certificate_single",
-      customerEmail: user.email ?? undefined,
-      customData: { userId: user.id },
-      successUrl: `${window.location.origin}/programs/${slug}/certificate?paid=1`,
-    });
+    try {
+      const { data, error } = await supabase.functions.invoke("cert-checkout", {
+        body: { programSlug: slug, learnerName: name.trim() },
+      });
+      if (error) { toast.error(error.message); return; }
+      if (!data?.checkoutUrl) { toast.error("Could not start checkout"); return; }
+      window.open(data.checkoutUrl, "_blank");
+    } catch (e: any) {
+      toast.error(e?.message ?? "Checkout failed");
+    }
   };
 
   const download = async () => {
