@@ -1726,6 +1726,42 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          marketing_opt_in: boolean
+          marketing_opt_in_at: string | null
+          shopify_customer_id: string | null
+          shopify_synced_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          marketing_opt_in?: boolean
+          marketing_opt_in_at?: string | null
+          shopify_customer_id?: string | null
+          shopify_synced_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          marketing_opt_in?: boolean
+          marketing_opt_in_at?: string | null
+          shopify_customer_id?: string | null
+          shopify_synced_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       program_certificates: {
         Row: {
           certificate_number: string

@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { useSubscription } from "@/hooks/useSubscription";
 import { Lock, Sparkles } from "lucide-react";
 import { useUiStrings } from "@/hooks/useUiStrings";
+import { PartnerRoutes } from "@/components/PartnerRoutes";
 
 export default function ProgramDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -220,6 +221,8 @@ export default function ProgramDetail() {
                 </div>
               </div>
             </Card>
+
+            <PartnerRoutes programSlug={program.slug} programCode={program.shopify_certificate_variant_id ? undefined : undefined} />
           </div>
         </div>
       </main>
