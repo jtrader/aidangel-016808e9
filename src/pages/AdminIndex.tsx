@@ -12,6 +12,7 @@ import {
   Heart,
   ShieldCheck,
   LayoutTemplate,
+  ExternalLink,
 } from "lucide-react";
 
 const sections = [
