@@ -1,5 +1,5 @@
 // Verifies a user has completed a program, mints a single-use eligibility token,
-// creates a Shopify cart with the token + program_id + user_id attached as
+// creates a Shopify cart with the token + program_slug + user_id attached as
 // cart attributes, and returns the Shopify checkout URL.
 
 import { createClient } from "npm:@supabase/supabase-js@2";
@@ -88,12 +88,12 @@ Deno.serve(async (req) => {
       if (!fa) return json({ error: "Pass the final quiz first" }, 403);
     }
 
-    // Record program_completion (idempotent)
+    // Record program_completion (idempotent on user_id+program_slug)
     await supabase.from("program_completions").upsert({
       user_id: user.id,
-      program_id: program.id,
-      completed_at: new Date().toISOString(),
-    }, { onConflict: "user_id,program_id" });
+      program_slug: program.slug,
+      passed_at: new Date().toISOString(),
+    }, { onConflict: "user_id,program_slug" });
 
     // Mint eligibility token (24h expiry)
     const token = randomToken();
@@ -101,7 +101,7 @@ Deno.serve(async (req) => {
     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
     const { error: tokErr } = await supabase.from("certificate_eligibility_tokens").insert({
       user_id: user.id,
-      program_id: program.id,
+      program_slug: program.slug,
       token_hash: tokenHash,
       expires_at: expiresAt,
       used: false,
@@ -126,7 +126,6 @@ Deno.serve(async (req) => {
               attributes: [
                 { key: "_eligibility_token", value: token },
                 { key: "_user_id", value: user.id },
-                { key: "_program_id", value: program.id },
                 { key: "_program_slug", value: program.slug },
                 { key: "learner_name", value: learnerName },
               ],
@@ -149,7 +148,7 @@ Deno.serve(async (req) => {
     url.searchParams.set("channel", "online_store");
 
     return json({ checkoutUrl: url.toString(), cartId: cart.id });
-  } catch (e) {
+  } catch (e: any) {
     console.error("cert-checkout error", e);
     return json({ error: String(e?.message ?? e) }, 500);
   }

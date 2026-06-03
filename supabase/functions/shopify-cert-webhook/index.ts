@@ -21,7 +21,6 @@ async function verifyHmac(rawBody: string, headerHmac: string): Promise<boolean>
   );
   const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(rawBody));
   const computed = btoa(String.fromCharCode(...new Uint8Array(sig)));
-  // constant-time compare
   if (computed.length !== headerHmac.length) return false;
   let diff = 0;
   for (let i = 0; i < computed.length; i++) diff |= computed.charCodeAt(i) ^ headerHmac.charCodeAt(i);
@@ -58,23 +57,26 @@ Deno.serve(async (req) => {
   // Idempotency
   if (webhookId) {
     const { data: existing } = await supabase
-      .from("webhook_events").select("id").eq("webhook_id", webhookId).maybeSingle();
-    if (existing) return new Response("Already processed", { status: 200 });
+      .from("webhook_events").select("id,processed").eq("shopify_webhook_id", webhookId).maybeSingle();
+    if (existing?.processed) return new Response("Already processed", { status: 200 });
   }
 
   let payload: any;
   try { payload = JSON.parse(rawBody); } catch { return new Response("Bad JSON", { status: 400 }); }
 
-  // Log webhook event
-  await supabase.from("webhook_events").insert({
-    webhook_id: webhookId || crypto.randomUUID(),
-    topic,
+  // Log webhook event (upsert by shopify_webhook_id)
+  const eventId = webhookId || crypto.randomUUID();
+  await supabase.from("webhook_events").upsert({
+    shopify_webhook_id: eventId,
+    shopify_topic: topic,
     shop_domain: shopDomain,
-    payload,
-    processed_at: new Date().toISOString(),
-  });
+    raw_payload: payload,
+  }, { onConflict: "shopify_webhook_id" });
 
   if (topic !== "orders/paid" && topic !== "orders/create") {
+    await supabase.from("webhook_events")
+      .update({ processed: true, processed_at: new Date().toISOString() })
+      .eq("shopify_webhook_id", eventId);
     return new Response("Ignored topic", { status: 200 });
   }
 
@@ -86,12 +88,19 @@ Deno.serve(async (req) => {
 
   const token = attrs["_eligibility_token"];
   const userId = attrs["_user_id"];
-  const programId = attrs["_program_id"];
   const programSlug = attrs["_program_slug"];
-  const learnerName = attrs["learner_name"] ?? payload?.customer?.first_name ?? "Learner";
+  const learnerName = attrs["learner_name"] || payload?.customer?.first_name || "Learner";
 
-  if (!token || !userId || !programId) {
-    console.warn("Missing required cart attributes — skipping cert issuance", attrs);
+  const finish = async (err?: string) => {
+    await supabase.from("webhook_events").update({
+      processed: true,
+      processed_at: new Date().toISOString(),
+      processing_error: err ?? null,
+    }).eq("shopify_webhook_id", eventId);
+  };
+
+  if (!token || !userId || !programSlug) {
+    await finish("Missing cart attributes");
     return new Response("Missing attributes", { status: 200 });
   }
 
@@ -99,61 +108,53 @@ Deno.serve(async (req) => {
   const tokenHash = await sha256Hex(token);
   const { data: tokenRow } = await supabase
     .from("certificate_eligibility_tokens")
-    .select("*")
-    .eq("token_hash", tokenHash)
-    .maybeSingle();
+    .select("*").eq("token_hash", tokenHash).maybeSingle();
 
-  if (!tokenRow) return new Response("Token not found", { status: 200 });
-  if (tokenRow.used) return new Response("Token already used", { status: 200 });
-  if (new Date(tokenRow.expires_at) < new Date()) return new Response("Token expired", { status: 200 });
-  if (tokenRow.user_id !== userId || tokenRow.program_id !== programId) {
-    console.warn("Token mismatch", { tokenRow, attrs });
-    return new Response("Token mismatch", { status: 200 });
+  if (!tokenRow) { await finish("Token not found"); return new Response("ok", { status: 200 }); }
+  if (tokenRow.used) { await finish("Token already used"); return new Response("ok", { status: 200 }); }
+  if (new Date(tokenRow.expires_at) < new Date()) { await finish("Token expired"); return new Response("ok", { status: 200 }); }
+  if (tokenRow.user_id !== userId || tokenRow.program_slug !== programSlug) {
+    await finish("Token mismatch"); return new Response("ok", { status: 200 });
   }
 
   // Look up program
   const { data: program } = await supabase
-    .from("programs").select("title, slug").eq("id", programId).maybeSingle();
-  if (!program) return new Response("Program not found", { status: 200 });
+    .from("programs").select("title").eq("slug", programSlug).maybeSingle();
+  if (!program) { await finish("Program not found"); return new Response("ok", { status: 200 }); }
 
   const orderId = String(payload?.id ?? payload?.admin_graphql_api_id ?? "");
-  const orderNumber = String(payload?.order_number ?? payload?.name ?? "");
-  const email = payload?.email ?? payload?.customer?.email ?? "";
 
   // Idempotency by order_id
   const { data: existingCert } = await supabase
     .from("shopify_certificates")
     .select("certificate_id").eq("shopify_order_id", orderId).maybeSingle();
-  if (existingCert) return new Response("Already issued", { status: 200 });
+  if (existingCert) { await finish(); return new Response("Already issued", { status: 200 }); }
 
   const certId = genCertId();
-  const now = new Date().toISOString();
+  const today = new Date().toISOString().slice(0, 10);
 
   const { error: insErr } = await supabase.from("shopify_certificates").insert({
     certificate_id: certId,
     user_id: userId,
-    program_id: programId,
+    program_slug: programSlug,
     program_name: program.title,
-    program_slug: program.slug ?? programSlug,
     learner_name: learnerName,
-    learner_email: email,
     shopify_order_id: orderId,
-    shopify_order_number: orderNumber,
-    issue_date: now.slice(0, 10),
-    completion_date: now.slice(0, 10),
+    issue_date: today,
+    completion_date: today,
     status: "issued",
-    paid_at: now,
-    eligibility_token_id: tokenRow.id,
   });
   if (insErr) {
     console.error("Failed to insert certificate", insErr);
+    await finish(`Insert error: ${insErr.message}`);
     return new Response("DB error", { status: 500 });
   }
 
   await supabase.from("certificate_eligibility_tokens")
-    .update({ used: true, used_at: now })
+    .update({ used: true })
     .eq("id", tokenRow.id);
 
+  await finish();
   console.log("Issued certificate", { certId, userId, programSlug });
   return new Response(JSON.stringify({ ok: true, certificate_id: certId }), {
     status: 200,
