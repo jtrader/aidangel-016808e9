@@ -1270,6 +1270,434 @@ export type Database = {
           },
         ]
       }
+      lk_audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          after_value: Json | null
+          before_value: Json | null
+          created_at: string
+          id: string
+          notes: string | null
+          record_id: string | null
+          table_name: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          after_value?: Json | null
+          before_value?: Json | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          record_id?: string | null
+          table_name: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          after_value?: Json | null
+          before_value?: Json | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          record_id?: string | null
+          table_name?: string
+        }
+        Relationships: []
+      }
+      lk_translation_status: {
+        Row: {
+          content_id: string
+          content_type: string
+          created_at: string
+          id: string
+          language_code: string
+          locale_id: string | null
+          notes: string | null
+          published_at: string | null
+          reviewed_by: string | null
+          status: string
+          translator: string | null
+          updated_at: string
+        }
+        Insert: {
+          content_id: string
+          content_type: string
+          created_at?: string
+          id?: string
+          language_code: string
+          locale_id?: string | null
+          notes?: string | null
+          published_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          translator?: string | null
+          updated_at?: string
+        }
+        Update: {
+          content_id?: string
+          content_type?: string
+          created_at?: string
+          id?: string
+          language_code?: string
+          locale_id?: string | null
+          notes?: string | null
+          published_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          translator?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lk_translation_status_locale_id_fkey"
+            columns: ["locale_id"]
+            isOneToOne: false
+            referencedRelation: "locale_packs"
+            referencedColumns: ["locale_id"]
+          },
+        ]
+      }
+      locale_crisis_lines: {
+        Row: {
+          audience: string | null
+          availability: string | null
+          confidence: string
+          cost: string | null
+          created_at: string
+          description: string | null
+          id: string
+          last_checked_at: string | null
+          locale_id: string
+          name: string
+          phone: string | null
+          service_slug: string | null
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          audience?: string | null
+          availability?: string | null
+          confidence?: string
+          cost?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_checked_at?: string | null
+          locale_id: string
+          name: string
+          phone?: string | null
+          service_slug?: string | null
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          audience?: string | null
+          availability?: string | null
+          confidence?: string
+          cost?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_checked_at?: string | null
+          locale_id?: string
+          name?: string
+          phone?: string | null
+          service_slug?: string | null
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "locale_crisis_lines_locale_id_fkey"
+            columns: ["locale_id"]
+            isOneToOne: false
+            referencedRelation: "locale_packs"
+            referencedColumns: ["locale_id"]
+          },
+        ]
+      }
+      locale_emergency_contacts: {
+        Row: {
+          confidence: string
+          created_at: string
+          id: string
+          label: string | null
+          last_checked_at: string | null
+          locale_id: string
+          notes: string | null
+          number: string
+          service_type: string
+          updated_at: string
+        }
+        Insert: {
+          confidence?: string
+          created_at?: string
+          id?: string
+          label?: string | null
+          last_checked_at?: string | null
+          locale_id: string
+          notes?: string | null
+          number: string
+          service_type: string
+          updated_at?: string
+        }
+        Update: {
+          confidence?: string
+          created_at?: string
+          id?: string
+          label?: string | null
+          last_checked_at?: string | null
+          locale_id?: string
+          notes?: string | null
+          number?: string
+          service_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "locale_emergency_contacts_locale_id_fkey"
+            columns: ["locale_id"]
+            isOneToOne: false
+            referencedRelation: "locale_packs"
+            referencedColumns: ["locale_id"]
+          },
+        ]
+      }
+      locale_packs: {
+        Row: {
+          confidence: string
+          country_code: string
+          created_at: string
+          currency: string | null
+          id: string
+          last_reviewed_at: string | null
+          locale_id: string
+          locale_name: string
+          locale_type: string
+          parent_locale_id: string | null
+          primary_language: string | null
+          secondary_languages: string[] | null
+          status: string
+          timezone: string | null
+          updated_at: string
+        }
+        Insert: {
+          confidence?: string
+          country_code: string
+          created_at?: string
+          currency?: string | null
+          id?: string
+          last_reviewed_at?: string | null
+          locale_id: string
+          locale_name: string
+          locale_type: string
+          parent_locale_id?: string | null
+          primary_language?: string | null
+          secondary_languages?: string[] | null
+          status?: string
+          timezone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          confidence?: string
+          country_code?: string
+          created_at?: string
+          currency?: string | null
+          id?: string
+          last_reviewed_at?: string | null
+          locale_id?: string
+          locale_name?: string
+          locale_type?: string
+          parent_locale_id?: string | null
+          primary_language?: string | null
+          secondary_languages?: string[] | null
+          status?: string
+          timezone?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "locale_packs_parent_locale_id_fkey"
+            columns: ["parent_locale_id"]
+            isOneToOne: false
+            referencedRelation: "locale_packs"
+            referencedColumns: ["locale_id"]
+          },
+        ]
+      }
+      locale_recovery_programs: {
+        Row: {
+          application_url: string | null
+          confidence: string
+          created_at: string
+          disaster_types: string[] | null
+          eligibility_disclaimer: string | null
+          eligibility_summary: string | null
+          id: string
+          last_checked_at: string | null
+          locale_id: string
+          name: string
+          notes: string | null
+          provider: string | null
+          support_categories: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          application_url?: string | null
+          confidence?: string
+          created_at?: string
+          disaster_types?: string[] | null
+          eligibility_disclaimer?: string | null
+          eligibility_summary?: string | null
+          id?: string
+          last_checked_at?: string | null
+          locale_id: string
+          name: string
+          notes?: string | null
+          provider?: string | null
+          support_categories?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          application_url?: string | null
+          confidence?: string
+          created_at?: string
+          disaster_types?: string[] | null
+          eligibility_disclaimer?: string | null
+          eligibility_summary?: string | null
+          id?: string
+          last_checked_at?: string | null
+          locale_id?: string
+          name?: string
+          notes?: string | null
+          provider?: string | null
+          support_categories?: string[] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "locale_recovery_programs_locale_id_fkey"
+            columns: ["locale_id"]
+            isOneToOne: false
+            referencedRelation: "locale_packs"
+            referencedColumns: ["locale_id"]
+          },
+        ]
+      }
+      locale_trusted_entities: {
+        Row: {
+          created_at: string
+          entity_type: string | null
+          id: string
+          last_checked_at: string | null
+          locale_id: string
+          name: string
+          notes: string | null
+          official_website: string | null
+          recovery_url: string | null
+          shop_url: string | null
+          status: string
+          training_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          entity_type?: string | null
+          id?: string
+          last_checked_at?: string | null
+          locale_id: string
+          name: string
+          notes?: string | null
+          official_website?: string | null
+          recovery_url?: string | null
+          shop_url?: string | null
+          status?: string
+          training_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          entity_type?: string | null
+          id?: string
+          last_checked_at?: string | null
+          locale_id?: string
+          name?: string
+          notes?: string | null
+          official_website?: string | null
+          recovery_url?: string | null
+          shop_url?: string | null
+          status?: string
+          training_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "locale_trusted_entities_locale_id_fkey"
+            columns: ["locale_id"]
+            isOneToOne: false
+            referencedRelation: "locale_packs"
+            referencedColumns: ["locale_id"]
+          },
+        ]
+      }
+      locale_warning_sources: {
+        Row: {
+          authority_level: string | null
+          confidence: string
+          created_at: string
+          crisis_types: string[] | null
+          id: string
+          last_checked_at: string | null
+          locale_id: string
+          name: string
+          notes: string | null
+          region: string | null
+          source_type: string | null
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          authority_level?: string | null
+          confidence?: string
+          created_at?: string
+          crisis_types?: string[] | null
+          id?: string
+          last_checked_at?: string | null
+          locale_id: string
+          name: string
+          notes?: string | null
+          region?: string | null
+          source_type?: string | null
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          authority_level?: string | null
+          confidence?: string
+          created_at?: string
+          crisis_types?: string[] | null
+          id?: string
+          last_checked_at?: string | null
+          locale_id?: string
+          name?: string
+          notes?: string | null
+          region?: string | null
+          source_type?: string | null
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "locale_warning_sources_locale_id_fkey"
+            columns: ["locale_id"]
+            isOneToOne: false
+            referencedRelation: "locale_packs"
+            referencedColumns: ["locale_id"]
+          },
+        ]
+      }
       org_audit_log: {
         Row: {
           action: string
@@ -2280,6 +2708,53 @@ export type Database = {
         }
         Relationships: []
       }
+      route_disclosures: {
+        Row: {
+          active: boolean
+          applies_to_route_types: string[] | null
+          created_at: string
+          disclosure_id: string
+          disclosure_type: string | null
+          full_text: string | null
+          id: string
+          locale_id: string | null
+          short_text: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          applies_to_route_types?: string[] | null
+          created_at?: string
+          disclosure_id: string
+          disclosure_type?: string | null
+          full_text?: string | null
+          id?: string
+          locale_id?: string | null
+          short_text: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          applies_to_route_types?: string[] | null
+          created_at?: string
+          disclosure_id?: string
+          disclosure_type?: string | null
+          full_text?: string | null
+          id?: string
+          locale_id?: string | null
+          short_text?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "route_disclosures_locale_id_fkey"
+            columns: ["locale_id"]
+            isOneToOne: false
+            referencedRelation: "locale_packs"
+            referencedColumns: ["locale_id"]
+          },
+        ]
+      }
       shopify_certificate_jobs: {
         Row: {
           certificate_id: string | null
@@ -2419,6 +2894,65 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "shopify_certificate_jobs"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      source_registry: {
+        Row: {
+          authority_level: string | null
+          check_frequency: string | null
+          confidence: string
+          created_at: string
+          id: string
+          last_checked_at: string | null
+          locale_id: string | null
+          name: string
+          notes: string | null
+          related_help_stage: string | null
+          source_id: string
+          source_type: string | null
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          authority_level?: string | null
+          check_frequency?: string | null
+          confidence?: string
+          created_at?: string
+          id?: string
+          last_checked_at?: string | null
+          locale_id?: string | null
+          name: string
+          notes?: string | null
+          related_help_stage?: string | null
+          source_id: string
+          source_type?: string | null
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          authority_level?: string | null
+          check_frequency?: string | null
+          confidence?: string
+          created_at?: string
+          id?: string
+          last_checked_at?: string | null
+          locale_id?: string | null
+          name?: string
+          notes?: string | null
+          related_help_stage?: string | null
+          source_id?: string
+          source_type?: string | null
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "source_registry_locale_id_fkey"
+            columns: ["locale_id"]
+            isOneToOne: false
+            referencedRelation: "locale_packs"
+            referencedColumns: ["locale_id"]
           },
         ]
       }
