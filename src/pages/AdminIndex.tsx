@@ -12,6 +12,7 @@ import {
   Heart,
   ShieldCheck,
   LayoutTemplate,
+  ExternalLink,
 } from "lucide-react";
 
 const sections = [
@@ -36,6 +37,7 @@ const sections = [
     group: "Give",
     items: [
       { to: "/admin/donations", title: "Donations", desc: "Charity referrals & analytics", icon: Heart },
+      { to: "/admin/routes", title: "Route Catalogue", desc: "Partner courses & products from Shopify", icon: ExternalLink },
     ],
   },
 ];
