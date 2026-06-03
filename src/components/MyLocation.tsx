@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Copy, MapPin, Phone, RefreshCw, Share2, AlertTriangle, Check, Settings, ChevronRight } from "lucide-react";
+import { Copy, MapPin, Phone, RefreshCw, Share2, AlertTriangle, Check, Settings, ChevronRight, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+
+const MAX_AUTO_RETRIES = 3;
+// Exponential backoff: 2s, 4s, 8s
+const RETRY_DELAYS_SEC = [2, 4, 8];
 
 interface Coords { lat: number; lng: number; accuracy: number; }
 
@@ -66,7 +70,18 @@ function CopyButton({ value, label }: { value: string; label?: string }) {
   );
 }
 
-function ErrorCard({ error, onRetry }: { error: GeoErrorState; onRetry: () => void }) {
+function ErrorCard({
+  error,
+  onRetry,
+  retry,
+  onCancelRetry,
+}: {
+  error: GeoErrorState;
+  onRetry: () => void;
+  retry: { attempt: number; secondsLeft: number; total: number } | null;
+  onCancelRetry: () => void;
+}) {
+  const isAutoRetrying = retry !== null;
   return (
     <div className="mt-5 rounded-2xl border border-primary/20 bg-primary/5 p-5">
       <div className="flex items-start gap-3">
@@ -88,13 +103,55 @@ function ErrorCard({ error, onRetry }: { error: GeoErrorState; onRetry: () => vo
             ))}
           </ol>
 
+          {isAutoRetrying && (
+            <div
+              role="status"
+              aria-live="polite"
+              className="mt-4 rounded-xl border border-primary/30 bg-background p-3"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                  <RefreshCw className="h-4 w-4 text-primary animate-spin" aria-hidden />
+                  Retrying in {retry.secondsLeft}s
+                  <span className="text-muted-foreground font-normal">
+                    (attempt {retry.attempt} of {retry.total})
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={onCancelRetry}
+                  className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1.5 rounded-md border border-border hover:bg-accent"
+                  aria-label="Cancel automatic retry"
+                >
+                  <X className="h-3.5 w-3.5" /> Stop
+                </button>
+              </div>
+              <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                <div
+                  className="h-full bg-primary transition-[width] duration-1000 ease-linear"
+                  style={{
+                    width: `${Math.max(
+                      0,
+                      Math.min(
+                        100,
+                        ((RETRY_DELAYS_SEC[retry.attempt - 1] - retry.secondsLeft) /
+                          Math.max(1, RETRY_DELAYS_SEC[retry.attempt - 1])) *
+                          100,
+                      ),
+                    )}%`,
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
           <button
             type="button"
             onClick={onRetry}
             className="mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground shadow-sm hover:bg-primary/90 active:scale-[0.99] transition"
           >
             <RefreshCw className="h-4 w-4" />
-            {error.actionLabel}
+            {isAutoRetrying ? "Retry now" : error.actionLabel}
           </button>
 
           <p className="mt-4 text-xs text-muted-foreground border-t border-border pt-3">
@@ -171,7 +228,23 @@ export default function MyLocation() {
   const [busy, setBusy] = useState(false);
   const [w3w, setW3w] = useState<LoadState<string>>({ status: "idle" });
   const [address, setAddress] = useState<LoadState<string>>({ status: "idle" });
+  const [retry, setRetry] = useState<{ attempt: number; secondsLeft: number; total: number } | null>(null);
+  const attemptRef = useRef(0);
+  const countdownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
+
+  const clearCountdown = useCallback(() => {
+    if (countdownTimerRef.current) {
+      clearInterval(countdownTimerRef.current);
+      countdownTimerRef.current = null;
+    }
+  }, []);
+
+  const cancelAutoRetry = useCallback(() => {
+    clearCountdown();
+    setRetry(null);
+    attemptRef.current = MAX_AUTO_RETRIES; // prevent further auto retries until manual reset
+  }, [clearCountdown]);
 
   const runW3W = useCallback((lat: number, lng: number) => {
     setW3w({ status: "loading" });
@@ -187,7 +260,64 @@ export default function MyLocation() {
       .catch((e) => setAddress({ status: "error", message: e?.message ?? "Failed" }));
   }, []);
 
+  const requestPosition = useCallback(
+    (opts: { isAuto: boolean }) => {
+      setBusy(true);
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setBusy(false);
+          clearCountdown();
+          setRetry(null);
+          attemptRef.current = 0;
+          const c: Coords = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+            accuracy: pos.coords.accuracy,
+          };
+          setCoords(c);
+          runW3W(c.lat, c.lng);
+          runAddress(c.lat, c.lng);
+          setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+        },
+        (err) => {
+          setBusy(false);
+          setGeoError(getErrorState(err.code));
+          // Auto-retry for POSITION_UNAVAILABLE (2) and TIMEOUT (3) only
+          const retryable = err.code === 2 || err.code === 3;
+          if (retryable && attemptRef.current < MAX_AUTO_RETRIES) {
+            const nextAttempt = attemptRef.current + 1;
+            attemptRef.current = nextAttempt;
+            const delay = RETRY_DELAYS_SEC[nextAttempt - 1];
+            setRetry({ attempt: nextAttempt, secondsLeft: delay, total: MAX_AUTO_RETRIES });
+            clearCountdown();
+            countdownTimerRef.current = setInterval(() => {
+              setRetry((cur) => {
+                if (!cur) return cur;
+                if (cur.secondsLeft <= 1) {
+                  clearCountdown();
+                  // Fire the retry on next tick to let state settle
+                  setTimeout(() => requestPosition({ isAuto: true }), 0);
+                  return null;
+                }
+                return { ...cur, secondsLeft: cur.secondsLeft - 1 };
+              });
+            }, 1000);
+          } else {
+            clearCountdown();
+            setRetry(null);
+          }
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 },
+      );
+    },
+    [clearCountdown, runW3W, runAddress],
+  );
+
   const getLocation = useCallback(() => {
+    // Manual trigger resets the auto-retry counter and clears any pending countdown
+    clearCountdown();
+    setRetry(null);
+    attemptRef.current = 0;
     setGeoError(null);
     if (!("geolocation" in navigator)) {
       setGeoError({
@@ -202,27 +332,11 @@ export default function MyLocation() {
       });
       return;
     }
-    setBusy(true);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setBusy(false);
-        const c: Coords = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-          accuracy: pos.coords.accuracy,
-        };
-        setCoords(c);
-        runW3W(c.lat, c.lng);
-        runAddress(c.lat, c.lng);
-        setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
-      },
-      (err) => {
-        setBusy(false);
-        setGeoError(getErrorState(err.code));
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 },
-    );
-  }, [runW3W, runAddress]);
+    requestPosition({ isAuto: false });
+  }, [clearCountdown, requestPosition]);
+
+  // Cleanup any running countdown on unmount
+  useEffect(() => () => clearCountdown(), [clearCountdown]);
 
   const accuracyWarning = coords && coords.accuracy > 500
     ? { icon: "🔴", text: "Location is imprecise. Give your coordinates and what3words address to 000." }
@@ -295,7 +409,14 @@ export default function MyLocation() {
         In Australia, call 000 for police, fire or ambulance.
       </p>
 
-      {geoError && <ErrorCard error={geoError} onRetry={getLocation} />}
+      {geoError && (
+        <ErrorCard
+          error={geoError}
+          onRetry={getLocation}
+          retry={retry}
+          onCancelRetry={cancelAutoRetry}
+        />
+      )}
 
       {coords && (
         <div ref={resultsRef} className="mt-6 space-y-4">
