@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -257,6 +259,9 @@ export default function AdminDonations() {
       <div className="max-w-6xl mx-auto space-y-4">
         <header className="flex items-start justify-between gap-3 flex-wrap">
           <div>
+            <Link to="/admin" className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-1 mb-1">
+              <ArrowLeft className="h-3.5 w-3.5" /> Admin
+            </Link>
             <h1 className="text-2xl font-bold">Referral Analytics</h1>
             <p className="text-sm text-muted-foreground">
               Track outbound referrals to Educators (Learn), Donations (Give) and Shop partners — ready for affiliate reporting.

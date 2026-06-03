@@ -9,7 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Plus, Trash2, Save, Loader2, Copy, Eye, EyeOff, Users, Award, BarChart3, BookOpen, HelpCircle } from "lucide-react";
+import { Plus, Trash2, Save, Loader2, Copy, Eye, EyeOff, Users, Award, BarChart3, BookOpen, HelpCircle, ArrowLeft } from "lucide-react";
 import CoursesHeader from "@/components/CoursesHeader";
 import { SortableList } from "@/components/admin/Sortable";
 import { toast } from "sonner";
@@ -195,7 +195,12 @@ export default function AdminPrograms() {
       <CoursesHeader />
       <main className="flex-1 container max-w-7xl mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="font-display text-2xl font-bold">Courses</h1>
+          <div className="flex items-center gap-3">
+            <Link to="/admin" className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-1">
+              <ArrowLeft className="h-3.5 w-3.5" /> Admin
+            </Link>
+            <h1 className="font-display text-2xl font-bold">Programs</h1>
+          </div>
           <Link to="/admin/courses" className="text-sm text-muted-foreground hover:text-primary">→ Manage topics</Link>
         </div>
 
