@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      assessment_attempts: {
+        Row: {
+          attempted_at: string | null
+          id: string
+          passed: boolean
+          program_slug: string
+          score: number | null
+          user_id: string
+        }
+        Insert: {
+          attempted_at?: string | null
+          id?: string
+          passed: boolean
+          program_slug: string
+          score?: number | null
+          user_id: string
+        }
+        Update: {
+          attempted_at?: string | null
+          id?: string
+          passed?: boolean
+          program_slug?: string
+          score?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       blog_categories: {
         Row: {
           created_at: string
@@ -197,6 +224,36 @@ export type Database = {
           environment?: string
           unlimited?: boolean
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      certificate_eligibility_tokens: {
+        Row: {
+          created_at: string | null
+          expires_at: string
+          id: string
+          program_slug: string
+          token_hash: string
+          used: boolean | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          expires_at: string
+          id?: string
+          program_slug: string
+          token_hash: string
+          used?: boolean | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          expires_at?: string
+          id?: string
+          program_slug?: string
+          token_hash?: string
+          used?: boolean | null
           user_id?: string
         }
         Relationships: []
@@ -1704,6 +1761,30 @@ export type Database = {
           },
         ]
       }
+      program_completions: {
+        Row: {
+          id: string
+          passed_at: string | null
+          program_slug: string
+          score: number | null
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          passed_at?: string | null
+          program_slug: string
+          score?: number | null
+          user_id: string
+        }
+        Update: {
+          id?: string
+          passed_at?: string | null
+          program_slug?: string
+          score?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       program_enrollments: {
         Row: {
           id: string
@@ -2025,6 +2106,250 @@ export type Database = {
           },
         ]
       }
+      route_catalogue: {
+        Row: {
+          availability_status: string | null
+          confidence: string | null
+          country: string | null
+          cta_label: string | null
+          description: string | null
+          destination_url: string | null
+          id: string
+          image_url: string | null
+          last_checked_at: string | null
+          partner_entity: string | null
+          referral_code: string | null
+          related_program: string | null
+          route_slug: string
+          route_type: string | null
+          synced_at: string | null
+          title: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          vendor: string | null
+        }
+        Insert: {
+          availability_status?: string | null
+          confidence?: string | null
+          country?: string | null
+          cta_label?: string | null
+          description?: string | null
+          destination_url?: string | null
+          id: string
+          image_url?: string | null
+          last_checked_at?: string | null
+          partner_entity?: string | null
+          referral_code?: string | null
+          related_program?: string | null
+          route_slug: string
+          route_type?: string | null
+          synced_at?: string | null
+          title?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          vendor?: string | null
+        }
+        Update: {
+          availability_status?: string | null
+          confidence?: string | null
+          country?: string | null
+          cta_label?: string | null
+          description?: string | null
+          destination_url?: string | null
+          id?: string
+          image_url?: string | null
+          last_checked_at?: string | null
+          partner_entity?: string | null
+          referral_code?: string | null
+          related_program?: string | null
+          route_slug?: string
+          route_type?: string | null
+          synced_at?: string | null
+          title?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          vendor?: string | null
+        }
+        Relationships: []
+      }
+      route_clicks: {
+        Row: {
+          click_id: string
+          country: string | null
+          destination_url: string | null
+          id: string
+          partner_slug: string | null
+          route_slug: string
+          session_id: string | null
+          source_page: string | null
+          timestamp: string | null
+        }
+        Insert: {
+          click_id: string
+          country?: string | null
+          destination_url?: string | null
+          id?: string
+          partner_slug?: string | null
+          route_slug: string
+          session_id?: string | null
+          source_page?: string | null
+          timestamp?: string | null
+        }
+        Update: {
+          click_id?: string
+          country?: string | null
+          destination_url?: string | null
+          id?: string
+          partner_slug?: string | null
+          route_slug?: string
+          session_id?: string | null
+          source_page?: string | null
+          timestamp?: string | null
+        }
+        Relationships: []
+      }
+      shopify_certificate_jobs: {
+        Row: {
+          certificate_id: string | null
+          completed_at: string | null
+          created_at: string | null
+          customer_email: string
+          customer_first_name: string | null
+          customer_last_name: string | null
+          eligibility_verified: boolean | null
+          error_message: string | null
+          id: string
+          pdf_url: string | null
+          program_name: string | null
+          program_slug: string
+          shopify_line_item_id: string
+          shopify_order_id: string
+          shopify_webhook_id: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          certificate_id?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          customer_email: string
+          customer_first_name?: string | null
+          customer_last_name?: string | null
+          eligibility_verified?: boolean | null
+          error_message?: string | null
+          id?: string
+          pdf_url?: string | null
+          program_name?: string | null
+          program_slug: string
+          shopify_line_item_id: string
+          shopify_order_id: string
+          shopify_webhook_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          certificate_id?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          customer_email?: string
+          customer_first_name?: string | null
+          customer_last_name?: string | null
+          eligibility_verified?: boolean | null
+          error_message?: string | null
+          id?: string
+          pdf_url?: string | null
+          program_name?: string | null
+          program_slug?: string
+          shopify_line_item_id?: string
+          shopify_order_id?: string
+          shopify_webhook_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shopify_certificate_jobs_shopify_webhook_id_fkey"
+            columns: ["shopify_webhook_id"]
+            isOneToOne: false
+            referencedRelation: "webhook_events"
+            referencedColumns: ["shopify_webhook_id"]
+          },
+        ]
+      }
+      shopify_certificates: {
+        Row: {
+          certificate_id: string
+          certificate_template_version: string | null
+          completion_date: string
+          cpd_disclaimer_version: string | null
+          cpd_hours: number | null
+          created_at: string | null
+          expires_at: string | null
+          issue_date: string
+          job_id: string | null
+          learner_name: string
+          pdf_url: string | null
+          program_name: string
+          program_slug: string
+          program_version: string | null
+          revocation_reason: string | null
+          shopify_order_id: string
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          certificate_id: string
+          certificate_template_version?: string | null
+          completion_date: string
+          cpd_disclaimer_version?: string | null
+          cpd_hours?: number | null
+          created_at?: string | null
+          expires_at?: string | null
+          issue_date: string
+          job_id?: string | null
+          learner_name: string
+          pdf_url?: string | null
+          program_name: string
+          program_slug: string
+          program_version?: string | null
+          revocation_reason?: string | null
+          shopify_order_id: string
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          certificate_id?: string
+          certificate_template_version?: string | null
+          completion_date?: string
+          cpd_disclaimer_version?: string | null
+          cpd_hours?: number | null
+          created_at?: string | null
+          expires_at?: string | null
+          issue_date?: string
+          job_id?: string | null
+          learner_name?: string
+          pdf_url?: string | null
+          program_name?: string
+          program_slug?: string
+          program_version?: string | null
+          revocation_reason?: string | null
+          shopify_order_id?: string
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shopify_certificates_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "shopify_certificate_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscriptions: {
         Row: {
           cancel_at_period_end: boolean | null
@@ -2118,9 +2443,101 @@ export type Database = {
         }
         Relationships: []
       }
+      webhook_events: {
+        Row: {
+          created_at: string | null
+          id: string
+          processed: boolean | null
+          processed_at: string | null
+          processing_error: string | null
+          raw_payload: Json | null
+          shop_domain: string
+          shopify_event_id: string | null
+          shopify_topic: string
+          shopify_webhook_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          processed?: boolean | null
+          processed_at?: string | null
+          processing_error?: string | null
+          raw_payload?: Json | null
+          shop_domain: string
+          shopify_event_id?: string | null
+          shopify_topic: string
+          shopify_webhook_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          processed?: boolean | null
+          processed_at?: string | null
+          processing_error?: string | null
+          raw_payload?: Json | null
+          shop_domain?: string
+          shopify_event_id?: string | null
+          shopify_topic?: string
+          shopify_webhook_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      public_route_catalogue: {
+        Row: {
+          availability_status: string | null
+          confidence: string | null
+          country: string | null
+          cta_label: string | null
+          description: string | null
+          id: string | null
+          image_url: string | null
+          last_checked_at: string | null
+          partner_entity: string | null
+          related_program: string | null
+          route_slug: string | null
+          route_type: string | null
+          synced_at: string | null
+          title: string | null
+          vendor: string | null
+        }
+        Insert: {
+          availability_status?: string | null
+          confidence?: string | null
+          country?: string | null
+          cta_label?: string | null
+          description?: string | null
+          id?: string | null
+          image_url?: string | null
+          last_checked_at?: string | null
+          partner_entity?: string | null
+          related_program?: string | null
+          route_slug?: string | null
+          route_type?: string | null
+          synced_at?: string | null
+          title?: string | null
+          vendor?: string | null
+        }
+        Update: {
+          availability_status?: string | null
+          confidence?: string | null
+          country?: string | null
+          cta_label?: string | null
+          description?: string | null
+          id?: string | null
+          image_url?: string | null
+          last_checked_at?: string | null
+          partner_entity?: string | null
+          related_program?: string | null
+          route_slug?: string | null
+          route_type?: string | null
+          synced_at?: string | null
+          title?: string | null
+          vendor?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       accept_invitation_by_token: {
@@ -2223,6 +2640,17 @@ export type Database = {
           course_title: string
           issued_at: string
           learner_initial: string
+        }[]
+      }
+      verify_shopify_certificate: {
+        Args: { _certificate_id: string }
+        Returns: {
+          certificate_id: string
+          completion_date: string
+          issue_date: string
+          learner_initial: string
+          program_name: string
+          status: string
         }[]
       }
     }
