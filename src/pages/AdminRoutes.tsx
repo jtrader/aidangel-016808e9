@@ -172,7 +172,7 @@ function AdminRoutesInner() {
                 <TableRow><TableCell colSpan={4} className="text-center py-6 text-muted-foreground">No clicks yet.</TableCell></TableRow>
               ) : clicks.map((c) => (
                 <TableRow key={c.id}>
-                  <TableCell className="text-xs">{new Date(c.created_at).toLocaleString()}</TableCell>
+                  <TableCell className="text-xs">{c.timestamp ? new Date(c.timestamp).toLocaleString() : "—"}</TableCell>
                   <TableCell className="font-mono text-xs">{c.route_slug}</TableCell>
                   <TableCell className="text-xs">{c.source_page ?? "—"}</TableCell>
                   <TableCell className="text-xs">{c.country ?? "—"}</TableCell>
