@@ -38,6 +38,15 @@ type ClickRow = {
   timestamp: string | null;
 };
 
+type SyncRun = {
+  id: string;
+  started_at: string;
+  finished_at: string | null;
+  status: string;
+  synced_count: number;
+  error: string | null;
+};
+
 function AdminRoutesInner() {
   const [rows, setRows] = useState<Row[]>([]);
   const [clicks, setClicks] = useState<ClickRow[]>([]);
