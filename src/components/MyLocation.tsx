@@ -409,7 +409,14 @@ export default function MyLocation() {
         In Australia, call 000 for police, fire or ambulance.
       </p>
 
-      {geoError && <ErrorCard error={geoError} onRetry={getLocation} />}
+      {geoError && (
+        <ErrorCard
+          error={geoError}
+          onRetry={getLocation}
+          retry={retry}
+          onCancelRetry={cancelAutoRetry}
+        />
+      )}
 
       {coords && (
         <div ref={resultsRef} className="mt-6 space-y-4">
