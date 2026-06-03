@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Loader2, ShieldPlus } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { SeoHead } from "@/components/SeoHead";
 import { z } from "zod";
 
@@ -23,6 +24,7 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [marketingOptIn, setMarketingOptIn] = useState(true);
   const [busy, setBusy] = useState(false);
   const [params] = useSearchParams();
   const redirect = params.get("redirect") || "/my-learning";
@@ -44,15 +46,21 @@ export default function Auth() {
     setBusy(true);
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
+        const { data: signUpData, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
             emailRedirectTo: `${window.location.origin}${redirect}`,
-            data: { full_name: name },
+            data: { full_name: name, marketing_opt_in: marketingOptIn },
           },
         });
         if (error) throw error;
+        // Fire-and-forget: create matching Shopify customer for seamless checkout.
+        if (signUpData.session) {
+          supabase.functions.invoke("shopify-customer-sync", {
+            body: { full_name: name, marketing_opt_in: marketingOptIn },
+          }).catch((e) => console.warn("shopify sync deferred", e));
+        }
         toast.success("Check your email to confirm your account.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
