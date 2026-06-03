@@ -12,21 +12,16 @@ type LoadState<T> =
   | { status: "error"; message: string };
 
 async function fetchW3W(lat: number, lng: number): Promise<string> {
-  const { data, error } = await supabase.functions.invoke("what3words-convert", {
-    method: "GET" as never,
-    // edge fn reads from query string — use direct fetch via supabase client URL
-  } as never).catch(() => ({ data: null, error: { message: "invoke_failed" } } as never));
-  // Fallback: call directly since supabase-js invoke doesn't pass query params easily
-  if (!data || error) {
-    const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/what3words-convert?lat=${lat}&lng=${lng}`;
-    const r = await fetch(url, {
-      headers: { Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}` },
-    });
-    const j = await r.json();
-    if (!r.ok || j.error) throw new Error(j.error ?? `http_${r.status}`);
-    return j.words as string;
-  }
-  return (data as { words: string }).words;
+  const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/what3words-convert?lat=${lat}&lng=${lng}`;
+  const r = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+      apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+    },
+  });
+  const j = await r.json();
+  if (!r.ok || j.error) throw new Error(j.error ?? `http_${r.status}`);
+  return j.words as string;
 }
 
 async function reverseGeocode(lat: number, lng: number): Promise<string> {
