@@ -41,18 +41,21 @@ type ClickRow = {
 function AdminRoutesInner() {
   const [rows, setRows] = useState<Row[]>([]);
   const [clicks, setClicks] = useState<ClickRow[]>([]);
+  const [runs, setRuns] = useState<SyncRun[]>([]);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
   const [q, setQ] = useState("");
 
   async function load() {
     setLoading(true);
-    const [{ data: cat }, { data: clk }] = await Promise.all([
+    const [{ data: cat }, { data: clk }, { data: rn }] = await Promise.all([
       supabase.from("route_catalogue").select("*").order("synced_at", { ascending: false }).limit(500),
       supabase.from("route_clicks").select("id, route_slug, source_page, country, timestamp").order("timestamp", { ascending: false }).limit(50),
+      supabase.from("route_catalogue_sync_runs").select("id, started_at, finished_at, status, synced_count, error").order("started_at", { ascending: false }).limit(10),
     ]);
     setRows((cat ?? []) as Row[]);
     setClicks((clk ?? []) as ClickRow[]);
+    setRuns((rn ?? []) as SyncRun[]);
     setLoading(false);
   }
 
@@ -67,9 +70,17 @@ function AdminRoutesInner() {
       await load();
     } catch (e: any) {
       toast.error("Sync failed", { description: e?.message ?? String(e) });
+      await load();
     } finally {
       setSyncing(false);
     }
+  }
+
+  const lastRun = runs[0];
+  function fmtDuration(a: string, b: string | null) {
+    if (!b) return "—";
+    const ms = new Date(b).getTime() - new Date(a).getTime();
+    return ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed(1)}s`;
   }
 
   const filtered = rows.filter((r) => {
