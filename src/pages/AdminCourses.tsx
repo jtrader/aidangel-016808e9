@@ -9,7 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Plus, Trash2, Save, Loader2, Copy, Eye, EyeOff, Users, Award, GraduationCap, BarChart3 } from "lucide-react";
+import { Plus, Trash2, Save, Loader2, Copy, Eye, EyeOff, Users, Award, GraduationCap, BarChart3, ArrowLeft } from "lucide-react";
 import CoursesHeader from "@/components/CoursesHeader";
 import LessonSourcesEditor from "@/components/admin/LessonSourcesEditor";
 import { SortableList } from "@/components/admin/Sortable";
