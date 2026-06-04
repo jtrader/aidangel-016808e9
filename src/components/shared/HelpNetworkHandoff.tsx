@@ -36,7 +36,7 @@ const NETWORK_SITES: NetworkSite[] = [
     stage: "Heal",
   },
   {
-    key: "loveKeyLink",
+    key: "lovekey",
     label: "LoveKey",
     description: "Connect with the full HELP Network",
     stage: "Coordinate",

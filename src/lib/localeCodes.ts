@@ -274,7 +274,8 @@ export const TARGETS = {
   guardianguide: 'https://guardianguide.org',
   crisiscompass: 'https://crisis-compass.org',
   aidangel: 'https://aidangel.app',
-  loveKeyLink: 'https://lovekeyring.org',
+  firstaidangel: 'https://firstaidangel.org',
+  lovekey: 'https://lovekeyring.org',
 } as const
 export type SisterSite = keyof typeof TARGETS
 
