@@ -15,6 +15,7 @@ import NearbyEducators from "@/components/NearbyEducators";
 import AngelActionDownload from "@/components/AngelActionDownload";
 import EmergencyCallButton from "@/components/EmergencyCallButton";
 import HamburgerMenu from "@/components/HamburgerMenu";
+import KBHandoffCard from "@/components/kb/KBHandoffCard";
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCountry } from "@/hooks/useCountry";
