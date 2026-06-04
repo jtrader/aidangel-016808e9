@@ -161,6 +161,9 @@ export default function NetworkFooter({ currentApp = "First Aid Angel" }: Networ
             )}
           </ul>
         </div>
+        <div className="w-full pt-3">
+          <HelpNetworkHandoff />
+        </div>
         <nav className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 pt-3 text-[11px] text-muted-foreground">
           <a href="/availability" className="hover:text-foreground hover:underline transition-colors">Availability</a>
           <span aria-hidden>·</span>
