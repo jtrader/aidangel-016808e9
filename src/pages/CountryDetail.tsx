@@ -61,7 +61,7 @@ export default function CountryDetail() {
   );
 
   const [packs, setPacks] = useState<LocalePackRow[]>([]);
-  const [contacts, setContacts] = useState<EmergencyContact[]>([]);
+  const [contacts, setContacts] = useState<EmergencyContactRow[]>([]);
   const [crisis, setCrisis] = useState<CrisisLine[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -86,7 +86,7 @@ export default function CountryDetail() {
               .select("*")
               .in("locale_id", ids)
               .order("service_type")
-          : Promise.resolve({ data: [] as EmergencyContact[] }),
+          : Promise.resolve({ data: [] as EmergencyContactRow[] }),
         ids.length
           ? supabase
               .from("locale_crisis_lines")
@@ -98,7 +98,7 @@ export default function CountryDetail() {
 
       if (cancelled) return;
       setPacks((lps ?? []) as LocalePackRow[]);
-      setContacts((ecs ?? []) as EmergencyContact[]);
+      setContacts((ecs ?? []) as EmergencyContactRow[]);
       setCrisis((cls ?? []) as CrisisLine[]);
       setLoading(false);
     })();
@@ -127,7 +127,7 @@ export default function CountryDetail() {
   );
 
   const secondaryContacts = useMemo(() => {
-    const map = new Map<string, EmergencyContact[]>();
+    const map = new Map<string, EmergencyContactRow[]>();
     for (const c of contacts) {
       if (primaryContact && c.id === primaryContact.id) continue;
       if (!map.has(c.service_type)) map.set(c.service_type, []);
