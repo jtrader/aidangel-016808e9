@@ -42,7 +42,7 @@ export const KB_HANDOFF_COPY: Record<
     body: "Aid Angel helps you find financial, housing, and recovery support after a crisis.",
     cta: "Find recovery support",
   },
-  loveKeyLink: {
+  lovekey: {
     heading: "Explore the HELP Network",
     body: "Connect with the full LoveKey HELP Network.",
     cta: "Learn more",
