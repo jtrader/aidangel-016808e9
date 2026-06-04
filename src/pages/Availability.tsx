@@ -162,11 +162,16 @@ export default function Availability() {
                 const number = emergencyNumberForCountry(c.code);
                 const langs =
                   COUNTRY_LANGUAGES_RANKED[c.code] ?? ["en"];
-                return (
-                  <article
-                    key={c.code}
-                    className="bg-card border border-border rounded-xl p-4 flex flex-col gap-2"
-                  >
+                const hasDetail = !!pack;
+                const detailHref = localizedPath(
+                  language,
+                  `/availability/${c.code.toLowerCase()}`,
+                );
+                const cardClass =
+                  "bg-card border border-border rounded-xl p-4 flex flex-col gap-2 transition-colors" +
+                  (hasDetail ? " hover:border-primary hover:bg-accent/30" : "");
+                const inner = (
+                  <>
                     <header className="flex items-start justify-between gap-3">
                       <div className="flex items-center gap-2 min-w-0">
                         <span className="text-2xl leading-none" aria-hidden>
@@ -181,12 +186,9 @@ export default function Availability() {
                           </p>
                         </div>
                       </div>
-                      <a
-                        href={`tel:${number}`}
-                        className="shrink-0 inline-flex items-center gap-1 rounded-full bg-primary/10 text-primary text-xs font-bold px-2.5 py-1"
-                      >
+                      <span className="shrink-0 inline-flex items-center gap-1 rounded-full bg-primary/10 text-primary text-xs font-bold px-2.5 py-1">
                         {number}
-                      </a>
+                      </span>
                     </header>
 
                     <div className="flex flex-wrap gap-1.5">
@@ -212,6 +214,21 @@ export default function Availability() {
                         </span>
                       ))}
                     </div>
+
+                    {hasDetail && (
+                      <p className="text-[11px] font-semibold text-primary pt-1">
+                        View country details →
+                      </p>
+                    )}
+                  </>
+                );
+                return hasDetail ? (
+                  <Link key={c.code} to={detailHref} className={cardClass}>
+                    {inner}
+                  </Link>
+                ) : (
+                  <article key={c.code} className={cardClass}>
+                    {inner}
                   </article>
                 );
               })}

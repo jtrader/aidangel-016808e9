@@ -72,6 +72,7 @@ import Partners from "./pages/Partners";
 import ShopPartners from "./pages/ShopPartners";
 import About from "./pages/About";
 import Availability from "./pages/Availability";
+import CountryDetail from "./pages/CountryDetail";
 import PrivacyPolicy from "./pages/Privacy";
 import RefundPolicy from "./pages/Refund";
 import Terms from "./pages/Terms";
@@ -170,6 +171,9 @@ const App = forwardRef(function App(_props, _ref) {
                 <Route path="/:lang/about" element={<About />} />
                 <Route path="/availability" element={<Availability />} />
                 <Route path="/:lang/availability" element={<Availability />} />
+                <Route path="/availability/:code" element={<CountryDetail />} />
+                <Route path="/:lang/availability/:code" element={<CountryDetail />} />
+
                 <Route path="/workplace" element={<WorkplaceIndex />} />
                 <Route path="/workplace/:slug" element={<WorkplaceVertical />} />
 
