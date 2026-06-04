@@ -25,6 +25,8 @@ import type {
   CrisisLine,
 } from "@/lib/localePack";
 
+type EmergencyContactRow = EmergencyContact & { last_checked_at: string | null };
+
 type LocalePackRow = {
   locale_id: string;
   locale_name: string;
