@@ -42,6 +42,11 @@ export const KB_HANDOFF_COPY: Record<
     body: "Aid Angel helps you find financial, housing, and recovery support after a crisis.",
     cta: "Find recovery support",
   },
+  firstaidangel: {
+    heading: "First aid when you need it",
+    body: "First Aid Angel gives you step-by-step first aid guidance for emergencies.",
+    cta: "Get first aid help",
+  },
   lovekey: {
     heading: "Explore the HELP Network",
     body: "Connect with the full LoveKey HELP Network.",
