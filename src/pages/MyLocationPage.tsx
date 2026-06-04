@@ -24,7 +24,7 @@ export default function MyLocationPage() {
           </div>
         </header>
         <main>
-          <MyLocation />
+          <MyLocationPanel />
         </main>
         <NetworkFooter />
       </div>
