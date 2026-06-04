@@ -270,6 +270,14 @@ export const LANGUAGE_CODE_MAP: Record<string, string> = {
   'x-yolngu': 'x-yolngu', 'yolngu': 'x-yolngu', 'x-yol': 'x-yolngu',
 }
 
+export const TARGETS = {
+  guardianguide: 'https://guardianguide.org',
+  crisiscompass: 'https://crisis-compass.org',
+  aidangel: 'https://aidangel.app',
+  loveKeyLink: 'https://lovekeyring.org',
+} as const
+export type SisterSite = keyof typeof TARGETS
+
 export function normaliseLanguageCode(
   raw: string | null | undefined
 ): string | null {
