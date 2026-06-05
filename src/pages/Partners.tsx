@@ -27,15 +27,13 @@ import {
 } from "@/components/ui/select";
 
 const NGO_DESCRIPTIONS: Record<NgoId, string> = {
-  redcross:
-    "The world's largest humanitarian network. National Red Cross and Red Crescent societies deliver first aid training, disaster response and emergency relief in nearly every country.",
   msf:
     "An international medical humanitarian organisation that provides emergency medical care to people affected by conflict, epidemics, disasters and exclusion from healthcare.",
   stjohn:
     "A global first aid charity that trains millions of people each year and provides volunteer ambulance and event medical services across the Commonwealth and beyond.",
 };
 
-const NGO_ORDER: NgoId[] = ["redcross", "msf", "stjohn"];
+const NGO_ORDER: NgoId[] = ["msf", "stjohn"];
 
 export default function Partners() {
   const { country, setCountry } = useCountry();
