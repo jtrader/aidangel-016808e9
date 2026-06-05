@@ -154,12 +154,12 @@ Deno.serve(async (req) => {
       return json({ error: "Shopify Admin API not configured" }, 500);
     }
 
-    const [mfFaa, mfCustom, collections, certs, routes, disclosure] = await Promise.all([
+    const [mfFaa, mfCustom, collections, certs, routeNodes, disclosure] = await Promise.all([
       adminGraphQL(Q_METAFIELDS_FAA),
       adminGraphQL(Q_METAFIELDS_CUSTOM).catch(() => ({ metafieldDefinitions: { edges: [] } })),
       adminGraphQL(Q_COLLECTIONS),
       adminGraphQL(Q_CERT_PRODUCTS),
-      adminGraphQL(Q_ROUTE_PRODUCTS),
+      fetchAllRouteProducts(),
       adminGraphQL(Q_DISCLOSURE),
     ]);
 
@@ -216,8 +216,7 @@ Deno.serve(async (req) => {
       rows: certRows, duplicates,
     };
 
-    // --- Section 4: route cards ---
-    const routeNodes = routes.products.edges.map((e: any) => e.node);
+    // --- Section 4: route cards (paginated across all pages) ---
     const byCountry: Record<string, number> = {};
     const byStatus: Record<string, number> = {};
     const missingFields: Array<{ title: string; missing: string[] }> = [];
@@ -243,7 +242,7 @@ Deno.serve(async (req) => {
       total: totalRoutes,
       expected: EXPECTED_ROUTE_TOTAL,
       byCountry, byStatus, missingFields,
-      hasNextPage: routes.products.pageInfo?.hasNextPage ?? false,
+      hasNextPage: false,
     };
 
     // --- Section 5: disclosure metaobject ---
