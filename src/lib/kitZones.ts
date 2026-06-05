@@ -45,8 +45,32 @@ const CURRENCY_SYMBOL: Record<string, string> = {
   CAD: "C$",
 };
 
-export function formatPrice(price: number | null, currency: string | null): string {
-  if (price == null || !currency) return "";
-  const sym = CURRENCY_SYMBOL[currency] ?? `${currency} `;
+// The currency a visitor will actually be charged is determined by the host
+// shop, not by the visitor's country (e.g. a French shopper checking out on
+// shop.sja.org.uk pays in GBP). Use this to override stored `currency` when a
+// destination_url is known.
+const HOST_CURRENCY: Record<string, string> = {
+  "shop.stjohn.org.au": "AUD",
+  "shop.sja.org.uk": "GBP",
+};
+
+export function currencyForHost(destinationUrl: string | null | undefined): string | null {
+  if (!destinationUrl) return null;
+  try {
+    return HOST_CURRENCY[new URL(destinationUrl).hostname] ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export function formatPrice(
+  price: number | null,
+  currency: string | null,
+  destinationUrl?: string | null,
+): string {
+  if (price == null) return "";
+  const resolved = currencyForHost(destinationUrl) ?? currency;
+  if (!resolved) return "";
+  const sym = CURRENCY_SYMBOL[resolved] ?? `${resolved} `;
   return `${sym}${price.toFixed(2)}`;
 }

@@ -41,7 +41,7 @@ export function KitCard({
           {kit.title}
         </h3>
         <p className="text-lg font-bold text-foreground">
-          {formatPrice(kit.price, kit.currency)}
+          {formatPrice(kit.price, kit.currency, kit.destination_url)}
         </p>
         {shipsFromLabel && (
           <p className="text-[11px] text-muted-foreground">{shipsFromLabel}</p>
