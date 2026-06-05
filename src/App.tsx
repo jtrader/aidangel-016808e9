@@ -110,6 +110,7 @@ const queryClient = new QueryClient();
 
 function CartSyncMount() {
   useCartSync();
+  useRSPAdapter();
   return null;
 }
 
