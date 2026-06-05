@@ -58,7 +58,7 @@ export default function Partners() {
         lang={language}
         basePath="/partners"
         title="Donation Partners · Support First Aid Worldwide"
-        description={`Donate to trusted first aid and humanitarian organisations in ${country.name} — Red Cross / Red Crescent, Doctors Without Borders and St John Ambulance.`}
+        description={`Donate to trusted first aid and humanitarian organisations in ${country.name} — Doctors Without Borders and St John Ambulance.`}
       />
 
       <header className="border-b border-border bg-card">
@@ -108,7 +108,7 @@ export default function Partners() {
                       </p>
                       <p className="text-xs text-muted-foreground mt-0.5">
                         {nationalCount > 0
-                          ? `${nationalCount} of 3 partners have a local fundraising site here.`
+                          ? `${nationalCount} of ${NGO_ORDER.length} partners have a local fundraising site here.`
                           : "No local fundraising sites — international donation links shown."}
                       </p>
                     </div>

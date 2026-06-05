@@ -38,7 +38,7 @@ export default function ShopPartners() {
         lang={language}
         basePath="/shop"
         title="First Aid Kit & Supplies Partners · Shop Locally"
-        description={`Buy first aid kits, refills and emergency supplies in ${country.name} from trusted partners — St John Ambulance, Red Cross and national first aid shops.`}
+        description={`Buy first aid kits, refills and emergency supplies in ${country.name} from trusted partners — St John Ambulance and local first aid shops.`}
       />
 
       <header className="border-b border-border bg-card">
