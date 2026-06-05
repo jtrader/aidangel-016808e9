@@ -23,10 +23,6 @@ import {
 const SHOP_DESCRIPTIONS: Record<ShopId, string> = {
   stjohn:
     "Official St John Ambulance first aid shop — workplace-compliant kits, refills, defibrillators, and training supplies trusted by schools, businesses, and families.",
-  redcross:
-    "Red Cross / Red Crescent first aid shop — quality kits and refills where every purchase helps fund the humanitarian work of the world's largest first aid charity.",
-  national:
-    "A reputable national supplier of first aid kits, refills, and emergency supplies that ships within your country with fast local delivery.",
 };
 
 export default function ShopPartners() {
@@ -42,7 +38,7 @@ export default function ShopPartners() {
         lang={language}
         basePath="/shop"
         title="First Aid Kit & Supplies Partners · Shop Locally"
-        description={`Buy first aid kits, refills and emergency supplies in ${country.name} from trusted partners — St John Ambulance, Red Cross and national first aid shops.`}
+        description={`Buy first aid kits, refills and emergency supplies in ${country.name} from trusted partners — St John Ambulance and local first aid shops.`}
       />
 
       <header className="border-b border-border bg-card">

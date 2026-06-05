@@ -27,15 +27,13 @@ import {
 } from "@/components/ui/select";
 
 const NGO_DESCRIPTIONS: Record<NgoId, string> = {
-  redcross:
-    "The world's largest humanitarian network. National Red Cross and Red Crescent societies deliver first aid training, disaster response and emergency relief in nearly every country.",
   msf:
     "An international medical humanitarian organisation that provides emergency medical care to people affected by conflict, epidemics, disasters and exclusion from healthcare.",
   stjohn:
     "A global first aid charity that trains millions of people each year and provides volunteer ambulance and event medical services across the Commonwealth and beyond.",
 };
 
-const NGO_ORDER: NgoId[] = ["redcross", "msf", "stjohn"];
+const NGO_ORDER: NgoId[] = ["msf", "stjohn"];
 
 export default function Partners() {
   const { country, setCountry } = useCountry();
@@ -60,7 +58,7 @@ export default function Partners() {
         lang={language}
         basePath="/partners"
         title="Donation Partners · Support First Aid Worldwide"
-        description={`Donate to trusted first aid and humanitarian organisations in ${country.name} — Red Cross / Red Crescent, Doctors Without Borders and St John Ambulance.`}
+        description={`Donate to trusted first aid and humanitarian organisations in ${country.name} — Doctors Without Borders and St John Ambulance.`}
       />
 
       <header className="border-b border-border bg-card">
@@ -110,7 +108,7 @@ export default function Partners() {
                       </p>
                       <p className="text-xs text-muted-foreground mt-0.5">
                         {nationalCount > 0
-                          ? `${nationalCount} of 3 partners have a local fundraising site here.`
+                          ? `${nationalCount} of ${NGO_ORDER.length} partners have a local fundraising site here.`
                           : "No local fundraising sites — international donation links shown."}
                       </p>
                     </div>
