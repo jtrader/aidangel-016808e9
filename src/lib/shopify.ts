@@ -38,6 +38,10 @@ export async function storefrontApiRequest<T = any>(
   query: string,
   variables: Record<string, unknown> = {},
 ): Promise<{ data?: T; errors?: Array<{ message: string }> } | undefined> {
+  if (!SHOPIFY_CONFIGURED) {
+    console.warn("Shopify not configured: missing VITE_SHOPIFY_STORE_DOMAIN / VITE_SHOPIFY_STOREFRONT_TOKEN");
+    return;
+  }
   const response = await fetch(SHOPIFY_STOREFRONT_URL, {
     method: "POST",
     headers: {
