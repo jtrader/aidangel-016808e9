@@ -4,13 +4,14 @@
 
 import { useEffect, useState } from "react";
 import { Check, Globe, HandHeart, ExternalLink } from "lucide-react";
-import { Favicon } from "@/components/Favicon";
+import stJohnIcon from "@/assets/stjohn-icon.png";
 import { COUNTRIES, CountryCode, type Country } from "@/lib/donations";
 import { currencyFor, type Frequency } from "@/lib/donationAmount";
 import { trackGiveClick } from "@/lib/giveAnalytics";
 import { cn } from "@/lib/utils";
 
-const ST_JOHN_URL = "https://appeal.stjohnvic.com.au/";
+const ST_JOHN_BASE = "https://appeal.stjohnvic.com.au";
+const ST_JOHN_DONATE_URL = `${ST_JOHN_BASE}/donate`;
 const ST_JOHN_NAME = "St John Ambulance";
 
 interface DonateDialogContentProps {
@@ -32,10 +33,10 @@ interface DonateDialogContentProps {
 }
 
 function buildStJohnUrl(amount: number, frequency: Frequency) {
-  const url = new URL(ST_JOHN_URL);
+  // Raisely-powered campaign: /donate accepts ?amount=<dollars>&frequency=MONTHLY|ONE_OFF
+  const url = new URL(ST_JOHN_DONATE_URL);
   if (amount > 0) url.searchParams.set("amount", String(amount));
-  url.searchParams.set("frequency", frequency);
-  if (frequency === "monthly") url.searchParams.set("recurring", "true");
+  url.searchParams.set("frequency", frequency === "monthly" ? "MONTHLY" : "ONE_OFF");
   url.searchParams.set("utm_source", "firstaidangel");
   url.searchParams.set("utm_medium", "donate_dialog");
   url.searchParams.set("utm_campaign", "give");
@@ -98,7 +99,14 @@ export function DonateDialogContent({
 
       {/* St John card */}
       <div className="flex items-center gap-3 p-3 rounded-xl border-2 border-primary/30 bg-primary/5">
-        <Favicon url={ST_JOHN_URL} alt="" size={32} className="flex-shrink-0" />
+        <img
+          src={stJohnIcon}
+          alt={`${ST_JOHN_NAME} logo`}
+          width={32}
+          height={32}
+          loading="lazy"
+          className="flex-shrink-0 w-8 h-8 rounded-md bg-white object-contain p-0.5 ring-1 ring-border"
+        />
         <div className="flex-1 min-w-0">
           <div className="text-sm font-semibold text-foreground truncate">
             {ST_JOHN_NAME}
