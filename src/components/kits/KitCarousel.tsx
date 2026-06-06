@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Loader2 } from "lucide-react";
 import {
@@ -24,11 +24,28 @@ interface KitCarouselProps {
  * Horizontally scrollable carousel of affiliate first-aid kits for the
  * visitor's region. Drops onto /shop above the in-house product grid.
  */
-export function KitCarousel({ countryCode, zone, limit = 12, heading }: KitCarouselProps) {
+export function KitCarousel({ countryCode, zone, limit = 12, heading, autoplay = false }: KitCarouselProps & { autoplay?: boolean }) {
   const { country } = useCountry();
   const code = countryCode ?? country.code;
   const resolvedZone = useMemo<KitZone>(() => zone ?? zoneForCountry(code), [zone, code]);
   const { kits, loading } = useKitsForZone(resolvedZone, { limit, preferCountry: code });
+  const [api, setApi] = useState<import("@/components/ui/carousel").CarouselApi | null>(null);
+
+  // Autoplay: advance the embla carousel every few seconds if enabled
+  useEffect(() => {
+    if (!autoplay || !api) return;
+    let mounted = true;
+    const id = setInterval(() => {
+      if (!mounted || !api) return;
+      try {
+        api.scrollNext();
+      } catch {}
+    }, 3500);
+    return () => {
+      mounted = false;
+      clearInterval(id);
+    };
+  }, [autoplay, api]);
 
   return (
     <section aria-labelledby="kit-carousel-heading" className="mb-10">
@@ -58,7 +75,7 @@ export function KitCarousel({ countryCode, zone, limit = 12, heading }: KitCarou
           No kits available for this region yet.
         </p>
       ) : (
-        <Carousel opts={{ align: "start", loop: false }} className="w-full">
+        <Carousel opts={{ align: "start", loop: false }} setApi={setApi} className="w-full">
           <CarouselContent className="-ml-3">
             {kits.map((kit) => (
               <CarouselItem
@@ -75,10 +92,7 @@ export function KitCarousel({ countryCode, zone, limit = 12, heading }: KitCarou
       )}
 
       <div className="sm:hidden mt-4 text-center">
-        <Link
-          to="/shop/kits"
-          className="inline-flex items-center gap-1 text-sm font-medium text-primary"
-        >
+        <Link to="/shop/kits" className="inline-flex items-center gap-1 text-sm font-medium text-primary">
           See all kits <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       </div>

@@ -107,6 +107,8 @@ const englishOnlyPaths: Array<{ path: string; changefreq: string; priority: stri
   { path: "/personal", changefreq: "monthly", priority: "0.7" },
   { path: "/partners", changefreq: "monthly", priority: "0.6" },
   { path: "/shop", changefreq: "monthly", priority: "0.6" },
+  // Owned Shopify store pages are under /store
+  { path: "/store", changefreq: "monthly", priority: "0.6" },
   { path: "/privacy", changefreq: "yearly", priority: "0.4" },
   { path: "/terms", changefreq: "yearly", priority: "0.4" },
   { path: "/refund", changefreq: "yearly", priority: "0.4" },
@@ -388,8 +390,8 @@ for (const b of blogPaths) {
 
 // Shopify products — fetch handles from the Storefront API so /product/:handle
 // pages are discoverable. Hardcoded creds live in src/lib/shopify.ts.
-const SHOPIFY_STOREFRONT_URL = process.env.SHOPIFY_STOREFRONT_URL ?? "https://ty3mn0-c3.myshopify.com/api/2025-07/graphql.json";
-const SHOPIFY_STOREFRONT_TOKEN = process.env.SHOPIFY_STOREFRONT_TOKEN ?? (() => { throw new Error('SHOPIFY_STOREFRONT_TOKEN env var is required for scripts/generate-sitemap'); })();
+const SHOPIFY_STOREFRONT_URL = process.env.VITE_SHOPIFY_STORE_DOMAIN ?? "https://ty3mn0-c3.myshopify.com/api/2025-07/graphql.json";
+const SHOPIFY_STOREFRONT_TOKEN = process.env.VITE_SHOPIFY_STOREFRONT_TOKEN ?? (() => { throw new Error('VITE_SHOPIFY_STOREFRONT_TOKEN env var is required for scripts/generate-sitemap'); })();
 async function fetchProductPaths(): Promise<string[]> {
   try {
     const res = await fetch(SHOPIFY_STOREFRONT_URL, {
@@ -416,15 +418,15 @@ async function fetchProductPaths(): Promise<string[]> {
 }
 const productHandles = await fetchProductPaths();
 for (const h of productHandles) {
-  urls.push(
-    [
-      `  <url>`,
-      `    <loc>${BASE_URL}/product/${h}</loc>`,
-      `    <changefreq>weekly</changefreq>`,
-      `    <priority>0.6</priority>`,
-      `  </url>`,
-    ].join("\n"),
-  );
+   urls.push(
+     [
+       `  <url>`,
+       `    <loc>${BASE_URL}/product/${h}</loc>`,
+       `    <changefreq>weekly</changefreq>`,
+       `    <priority>0.6</priority>`,
+       `  </url>`,
+     ].join("\n"),
+   );
 }
 
 const xml = [

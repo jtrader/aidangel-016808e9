@@ -1,5 +1,119 @@
 project_id = "luocpjawdzwreskitrqj"
 
+# Webhooks / public endpoints (no JWT verification)
+[functions.payments-webhook]
+verify_jwt = false
+
+[functions.get-paddle-price]
+verify_jwt = false
+
+[functions.handle-email-unsubscribe]
+verify_jwt = false
+
+[functions.handle-email-suppression]
+verify_jwt = false
+
+[functions.what3words-convert]
+verify_jwt = false
+
+[functions.go-redirect]
+verify_jwt = false
+
+[functions.shopify-cert-webhook]
+verify_jwt = false
+
+# Client-invoked functions that require an authenticated user (JWT required)
+[functions.create-credit-checkout]
+verify_jwt = true
+
+[functions.cert-checkout]
+verify_jwt = true
+
+[functions.first-aid-chat]
+verify_jwt = true
+
+# Admin / internal functions (JWT required)
+[functions.admin-credits]
+verify_jwt = true
+
+[functions.admin-learners]
+verify_jwt = true
+
+[functions.admin-stats]
+verify_jwt = true
+
+[functions.admin-users]
+verify_jwt = true
+
+[functions.apply-lesson-rewrites]
+verify_jwt = true
+
+[functions.approve-educator]
+verify_jwt = true
+
+[functions.crawl-educators]
+verify_jwt = true
+
+[functions.generate-educator-profile]
+verify_jwt = true
+
+[functions.org-import-process]
+verify_jwt = true
+
+[functions.org-overdue-sweep]
+verify_jwt = true
+
+[functions.process-email-queue]
+verify_jwt = true
+
+[functions.route-catalogue-sync]
+verify_jwt = true
+
+[functions.shopify-customer-sync]
+verify_jwt = true
+
+[functions.shopify-setup-status]
+verify_jwt = true
+
+[functions.update-educator-listing]
+verify_jwt = true
+
+# Translation and preview / email functions (protected)
+[functions.send-transactional-email]
+verify_jwt = true
+
+[functions.preview-transactional-email]
+verify_jwt = true
+
+[functions.translate-cms]
+verify_jwt = true
+
+[functions.translate-kb]
+verify_jwt = true
+
+[functions.translate-ui]
+verify_jwt = true
+
+# Public utilities / TTS / mapping
+[functions.cpr-tts]
+verify_jwt = false
+
+[functions.kb-tts]
+verify_jwt = false
+
+[functions.get-mapbox-token]
+verify_jwt = false
+
+[functions.reverse-geocode]
+verify_jwt = false
+
+[functions.embed-kb]
+verify_jwt = false
+
+[functions.go-redirect]
+verify_jwt = false
+
+# Existing entries kept for compatibility
 [functions.payments-webhook]
 verify_jwt = false
 

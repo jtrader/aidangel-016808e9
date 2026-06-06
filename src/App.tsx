@@ -151,8 +151,8 @@ const App = forwardRef(function App(_props, _ref) {
                 <Route path="/kb" element={<KbIndex />} />
                 <Route path="/kb/:slug" element={<KbTopic />} />
                 <Route path="/style-guide" element={<StyleGuide />} />
-                <Route path="/shop" element={<Shop />} />
-                <Route path="/shop/kits" element={<ShopKits />} />
+                <Route path="/store" element={<Shop />} />
+                <Route path="/store/kits" element={<ShopKits />} />
                 <Route path="/product/:handle" element={<ProductDetail />} />
                 <Route path="/angel-action" element={<AngelActionIndex />} />
                 <Route path="/:lang/angel-action" element={<AngelActionIndex />} />
