@@ -30,7 +30,7 @@ function clampDesc(s?: string): string | undefined {
   return (lastSpace > 100 ? cut.slice(0, lastSpace) : cut) + "…";
 }
 
-export function SeoHead({ lang, basePath, title, description, ogImage, ogType, jsonLd }: Props) {
+export function SeoHead({ lang, basePath, title, description, ogImage, ogType, jsonLd, noindex }: Props) {
   const canonical = canonicalUrl(lang, basePath);
   const alts = alternates(basePath);
   const ogLocale = HREFLANG[lang].replace("-", "_");
