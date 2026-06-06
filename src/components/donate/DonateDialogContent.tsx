@@ -4,13 +4,14 @@
 
 import { useEffect, useState } from "react";
 import { Check, Globe, HandHeart, ExternalLink } from "lucide-react";
-import { Favicon } from "@/components/Favicon";
+import stJohnIcon from "@/assets/stjohn-icon.png";
 import { COUNTRIES, CountryCode, type Country } from "@/lib/donations";
 import { currencyFor, type Frequency } from "@/lib/donationAmount";
 import { trackGiveClick } from "@/lib/giveAnalytics";
 import { cn } from "@/lib/utils";
 
-const ST_JOHN_URL = "https://appeal.stjohnvic.com.au/";
+const ST_JOHN_BASE = "https://appeal.stjohnvic.com.au";
+const ST_JOHN_DONATE_URL = `${ST_JOHN_BASE}/donate`;
 const ST_JOHN_NAME = "St John Ambulance";
 
 interface DonateDialogContentProps {
