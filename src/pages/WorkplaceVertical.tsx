@@ -38,6 +38,8 @@ import NetworkFooter from "@/components/NetworkFooter";
 import MentalHealthCallout from "@/components/MentalHealthCallout";
 import { SeoHead } from "@/components/SeoHead";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCountry } from "@/hooks/useCountry";
+import { emergencyNumberForCountry } from "@/lib/donations";
 import { Button } from "@/components/ui/button";
 import { getVertical, VERTICALS } from "@/data/workplaceVerticals";
 import { speak, stopSpeaking, isSpeechSupported } from "@/lib/speech";
