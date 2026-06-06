@@ -204,5 +204,10 @@
   "drsBlurbDanger": "确认现场环境安全",
   "drsShortSend": "呼救 (Send)",
   "drsBlurbResponse": "呼唤并轻拍——有反应吗？",
-  "drsShortDefib": "除颤 (Defib)"
+  "drsShortDefib": "除颤 (Defib)",
+  "shopDialogTagline": "值得信赖的急救箱与培训包，送货至您身边。",
+  "shopDialogBrowseKits": "浏览急救包",
+  "shopDialogClose": "关闭",
+  "shopDialogOpenStore": "打开完整商城",
+  "shopDialogTitle": "First Aid Angel 商店"
 }

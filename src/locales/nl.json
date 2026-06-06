@@ -204,5 +204,10 @@
   "drsBlurbSend": "Bel direct 000",
   "drsBlurbDefib": "Sluit AED aan en volg de instructies",
   "drsLabelSend": "Hulp inschakelen",
-  "drsLabelDanger": "Gevaar"
+  "drsLabelDanger": "Gevaar",
+  "shopDialogClose": "Sluiten",
+  "shopDialogBrowseKits": "Blader door sets",
+  "shopDialogTitle": "First Aid Angel Shop",
+  "shopDialogOpenStore": "Volledige winkel openen",
+  "shopDialogTagline": "Betrouwbare EHBO-koffers & trainingspakketten, bij u in de buurt bezorgd."
 }

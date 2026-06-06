@@ -204,5 +204,10 @@
   "drsCta": "Alusta täispikka juhendit",
   "drsBlurbSend": "Helista kohe 000",
   "drsLabelCpr": "Elustamine (CPR)",
-  "drsBlurbDanger": "Veendu, et ümbrus on ohutu"
+  "drsBlurbDanger": "Veendu, et ümbrus on ohutu",
+  "shopDialogBrowseKits": "Sirvi komplekte",
+  "shopDialogClose": "Sulge",
+  "shopDialogTagline": "Usaldusväärsed esmaabikomplektid ja õppepaketid, saadaval Sinu lähedal.",
+  "shopDialogOpenStore": "Ava täispikk pood",
+  "shopDialogTitle": "First Aid Angel pood"
 }

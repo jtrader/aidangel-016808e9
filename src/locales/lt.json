@@ -204,5 +204,10 @@
   "drsLabelSend": "Kvieskite pagalbą",
   "drsBlurbDefib": "Prijunkite AED ir sekite nurodymus",
   "drsLabelAirway": "Kvėpavimo takai",
-  "drsSubtitle": "Bakstelėkite bet kurią raidę, kad pamatytumėte instrukcijas"
+  "drsSubtitle": "Bakstelėkite bet kurią raidę, kad pamatytumėte instrukcijas",
+  "shopDialogTagline": "Patikimi pirmosios pagalbos rinkiniai ir mokomieji paketai, siunčiami šalia jūsų.",
+  "shopDialogTitle": "„First Aid Angel“ parduotuvė",
+  "shopDialogClose": "Uždaryti",
+  "shopDialogBrowseKits": "Naršyti rinkinius",
+  "shopDialogOpenStore": "Atidaryti pilną parduotuvę"
 }

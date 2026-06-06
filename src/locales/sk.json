@@ -204,5 +204,10 @@
   "drsLabelResponse": "Reakcia",
   "drsBlurbDanger": "Skontrolujte, či je situácia bezpečná",
   "drsBlurbBreathing": "Pozrite, počúvajte, cíťte",
-  "drsLabelAirway": "Dýchacie cesty"
+  "drsLabelAirway": "Dýchacie cesty",
+  "shopDialogBrowseKits": "Prehliadať súpravy",
+  "shopDialogTitle": "Obchod First Aid Angel Shop",
+  "shopDialogOpenStore": "Otvoriť celý obchod",
+  "shopDialogTagline": "Dôveryhodné lekárničky a školiace balíčky, doručené priamo k vám.",
+  "shopDialogClose": "Zavrieť"
 }

@@ -204,5 +204,10 @@
   "drsLabelBreathing": "Andning (Breathing)",
   "drsSubtitle": "Tryck på valfri bokstav för en guidad genomgång",
   "drsShortDefib": "Defib",
-  "drsShortSend": "Larma"
+  "drsShortSend": "Larma",
+  "shopDialogTagline": "Betrodda förstahjälpen-kit och utbildningspaket, fraktas nära dig.",
+  "shopDialogTitle": "First Aid Angel Shop",
+  "shopDialogBrowseKits": "Bläddra bland kit",
+  "shopDialogOpenStore": "Öppna hela butiken",
+  "shopDialogClose": "Stäng"
 }

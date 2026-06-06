@@ -204,5 +204,10 @@
   "drsShortDefib": "Defib.",
   "drsLabelCpr": "Atdzīvināšana (CPR)",
   "drsBlurbDanger": "Pārbaudiet, vai apkārtne ir droša",
-  "drsBlurbSend": "Nekavējoties zvaniet 000"
+  "drsBlurbSend": "Nekavējoties zvaniet 000",
+  "shopDialogClose": "Aizvērt",
+  "shopDialogTitle": "First Aid Angel veikals",
+  "shopDialogOpenStore": "Atvērt pilnu veikalu",
+  "shopDialogBrowseKits": "Pārlūkot komplektus",
+  "shopDialogTagline": "Uzticami pirmās palīdzības komplekti un mācību pakas ar piegādi Jums tuvākajā vietā."
 }

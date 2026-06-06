@@ -204,5 +204,10 @@
   "drsLabelAirway": "Vie aeree (Airway)",
   "drsLabelSend": "Chiamare i soccorsi (Send)",
   "drsShortSend": "Chiamata",
-  "drsCta": "Inizia la procedura guidata completa"
+  "drsCta": "Inizia la procedura guidata completa",
+  "shopDialogTitle": "First Aid Angel Shop",
+  "shopDialogTagline": "Kit di pronto soccorso e pacchetti di formazione affidabili, spediti vicino a te.",
+  "shopDialogClose": "Chiudi",
+  "shopDialogOpenStore": "Apri lo store completo",
+  "shopDialogBrowseKits": "Sfoglia i kit"
 }

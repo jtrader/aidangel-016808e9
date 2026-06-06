@@ -204,5 +204,10 @@
   "drsBlurbCpr": "30 натискань : 2 вдихи",
   "drsLabelResponse": "Реакція",
   "drsShortDefib": "Дефіб.",
-  "drsBlurbAirway": "Відкрийте та очистьте дихальні шляхи"
+  "drsBlurbAirway": "Відкрийте та очистьте дихальні шляхи",
+  "shopDialogClose": "Закрити",
+  "shopDialogBrowseKits": "Переглянути набори",
+  "shopDialogOpenStore": "Відкрити повний магазин",
+  "shopDialogTagline": "Надійні аптечки та навчальні набори з доставкою до вас.",
+  "shopDialogTitle": "Магазин First Aid Angel"
 }

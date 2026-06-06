@@ -204,5 +204,10 @@
   "drsLabelAirway": "ශ්වසන මාර්ගය (Airway)",
   "drsBlurbDefib": "AED යන්ත්‍රය සම්බන්ධ කර උපදෙස් අනුගමනය කරන්න",
   "drsLabelDefib": "ඩෙෆයිබ්‍රිලේටරය (Defibrillator)",
-  "drsBlurbResponse": "කතා කර තට්ටු කරන්න — ප්‍රතිචාරයක් තිබේද?"
+  "drsBlurbResponse": "කතා කර තට්ටු කරන්න — ප්‍රතිචාරයක් තිබේද?",
+  "shopDialogTagline": "විශ්වාසදායක ප්‍රථමාධාර කට්ටල සහ පුහුණු පැකේජ, ඔබ අසලටම ගෙන්වා ගන්න.",
+  "shopDialogTitle": "First Aid Angel සාප්පුව",
+  "shopDialogClose": "වසා දමන්න",
+  "shopDialogOpenStore": "සම්පූර්ණ වෙළඳසැල වෙත පිවිසෙන්න",
+  "shopDialogBrowseKits": "කට්ටල පිරික්සන්න (Browse kits)"
 }

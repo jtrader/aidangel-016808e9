@@ -204,5 +204,10 @@
   "drsBlurbResponse": "تحدث والمس — هل هناك أي استجابة؟",
   "drsBlurbCpr": "30 ضغطة : نَفَسَان",
   "drsBlurbBreathing": "انظر، استمع، اشعر",
-  "drsLabelDefib": "جهاز إزالة الرجفان (Defibrillator)"
+  "drsLabelDefib": "جهاز إزالة الرجفان (Defibrillator)",
+  "shopDialogTagline": "حقائب إسعافات أولية وحزم تدريبية موثوقة، يتم شحنها بالقرب منك.",
+  "shopDialogBrowseKits": "تصفح الحقائب الإسعافية",
+  "shopDialogClose": "إغلاق",
+  "shopDialogOpenStore": "فتح المتجر الكامل",
+  "shopDialogTitle": "متجر First Aid Angel Shop"
 }

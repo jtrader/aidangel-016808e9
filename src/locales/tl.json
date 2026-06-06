@@ -204,5 +204,10 @@
   "drsSubtitle": "I-tap ang anumang titik para sa gabay na hakbang-hakbang",
   "drsBlurbBreathing": "Tumingin, makinig, at pakiramdaman",
   "drsCta": "Simulan ang buong gabay (walk-through)",
-  "drsBlurbResponse": "Kausapin at hawakan — may sagot ba?"
+  "drsBlurbResponse": "Kausapin at hawakan — may sagot ba?",
+  "shopDialogTitle": "First Aid Angel Shop",
+  "shopDialogTagline": "Mga pinagkakatiwalaang first aid kit at training pack, ipapadala malapit sa iyo.",
+  "shopDialogClose": "Isara",
+  "shopDialogBrowseKits": "Mag-browse ng mga kit",
+  "shopDialogOpenStore": "Buksan ang buong store"
 }

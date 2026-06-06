@@ -204,5 +204,10 @@
   "drsBlurbCpr": "30 kompressioner : 2 indblæsninger",
   "drsLabelBreathing": "Vejrtrækning",
   "drsShortDefib": "AED",
-  "drsLabelDefib": "Hjertestarter (AED)"
+  "drsLabelDefib": "Hjertestarter (AED)",
+  "shopDialogTagline": "Pålidelige førstehjælpskasser og træningspakker, sendt tæt på dig.",
+  "shopDialogBrowseKits": "Gennemse sæt",
+  "shopDialogOpenStore": "Åbn hele butikken",
+  "shopDialogClose": "Luk",
+  "shopDialogTitle": "First Aid Angel Shop"
 }

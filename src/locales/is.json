@@ -204,5 +204,10 @@
   "drsBlurbCpr": "30 hnoð : 2 blástrar",
   "drsSubtitle": "Snertu hvaða bókstaf sem er til að fá leiðsögn skref fyrir skref",
   "drsLabelAirway": "Öndunarvegur",
-  "drsTitle": "DRSABCD aðgerðaráætlun"
+  "drsTitle": "DRSABCD aðgerðaráætlun",
+  "shopDialogClose": "Loka",
+  "shopDialogOpenStore": "Opna alla verslunina",
+  "shopDialogBrowseKits": "Skoða búningssett",
+  "shopDialogTitle": "First Aid Angel verslunin",
+  "shopDialogTagline": "Traust sjúkrakassa- og þjálfunarsett, send til þín."
 }

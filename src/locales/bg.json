@@ -204,5 +204,10 @@
   "drsBlurbDanger": "Проверете дали мястото е безопасно",
   "drsTitle": "DRSABCD План за действие",
   "drsLabelBreathing": "Дишане",
-  "drsLabelCpr": "KPR (Сърдечен масаж)"
+  "drsLabelCpr": "KPR (Сърдечен масаж)",
+  "shopDialogTitle": "Магазин First Aid Angel Shop",
+  "shopDialogBrowseKits": "Разгледай комплекти",
+  "shopDialogOpenStore": "Отвори целия магазин",
+  "shopDialogTagline": "Доверени комплекти за първа помощ и обучителни пакети, доставени до вас.",
+  "shopDialogClose": "Затвори"
 }

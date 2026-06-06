@@ -204,5 +204,10 @@
   "drsShortSend": "Pedir ayuda",
   "drsLabelSend": "Pida ayuda",
   "drsBlurbSend": "Llame al 000 de inmediato",
-  "drsLabelCpr": "RCP"
+  "drsLabelCpr": "RCP",
+  "shopDialogClose": "Cerrar",
+  "shopDialogBrowseKits": "Explorar botiquines",
+  "shopDialogOpenStore": "Abrir tienda completa",
+  "shopDialogTagline": "Botiquines de primeros auxilios y packs de formación de confianza, enviados cerca de usted.",
+  "shopDialogTitle": "Tienda de First Aid Angel"
 }

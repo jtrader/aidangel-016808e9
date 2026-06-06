@@ -204,5 +204,10 @@
   "drsLabelCpr": "Újraélesztés (CPR)",
   "drsBlurbSend": "Hívja a 000-t azonnal",
   "drsBlurbBreathing": "Nézze, hallgassa, érezze",
-  "drsSubtitle": "Érintse meg bármelyik betűt a részletes útmutatóért"
+  "drsSubtitle": "Érintse meg bármelyik betűt a részletes útmutatóért",
+  "shopDialogTitle": "First Aid Angel Shop",
+  "shopDialogOpenStore": "Teljes áruház megnyitása",
+  "shopDialogBrowseKits": "Készletek böngészése",
+  "shopDialogClose": "Bezárás",
+  "shopDialogTagline": "Megbízható elsősegélycsomagok és oktatókészletek közvetlenül Önhöz szállítva."
 }
