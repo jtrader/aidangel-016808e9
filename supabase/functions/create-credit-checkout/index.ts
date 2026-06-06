@@ -1,7 +1,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
-const SHOPIFY_DOMAIN = Deno.env.get("SHOPIFY_DOMAIN")!;
+const SHOPIFY_DOMAIN = Deno.env.get("SHOPIFY_DOMAIN") ?? "ty3mn0-c3.myshopify.com";
 
 // Internal priceId → Shopify variant GID + credit metadata
 const PRICE_MAP: Record<string, {
@@ -112,6 +112,8 @@ Deno.serve(async (req) => {
     const variantNumericId = entry.variantGid.split("/").pop();
 
     // Build direct checkout URL — quantity always 1 (credit count is in the variant)
+    // `channel=online_store` is REQUIRED so the cart permalink bypasses the
+    // storefront password / channel gate (matches cert-checkout behaviour).
     const params = new URLSearchParams({
       "checkout[email]": user.email ?? "",
       "attributes[_user_id]": user.id,
@@ -119,6 +121,7 @@ Deno.serve(async (req) => {
       "attributes[_sku]": entry.sku,
       "attributes[_credits]": String(entry.credits),
       "attributes[_unlimited]": String(entry.unlimited),
+      channel: "online_store",
     });
 
     const checkoutUrl =
