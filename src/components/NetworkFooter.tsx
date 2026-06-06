@@ -143,7 +143,7 @@ export default function NetworkFooter() {
               <img
                 src={rspLogo.url}
                 alt="Respectful Synchronised Protocol"
-                className="w-full h-auto max-h-[70vh] rounded-2xl object-contain shadow-[0_0_48px_rgba(220,38,38,0.5)] ring-1 ring-primary/40"
+                className="w-full h-auto max-h-[70vh] rounded-2xl object-contain ring-1 ring-primary/40"
               />
               <DialogClose asChild>
                 <button
