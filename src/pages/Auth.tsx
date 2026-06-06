@@ -19,8 +19,17 @@ const schema = z.object({
   name: z.string().trim().min(1, "Enter your name").max(100).optional(),
 });
 
+const RETURNING_FLAG = "faa_returning_member";
+
 export default function Auth() {
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup">(() => {
+    if (typeof window === "undefined") return "signup";
+    try {
+      return localStorage.getItem(RETURNING_FLAG) === "1" ? "signin" : "signup";
+    } catch {
+      return "signup";
+    }
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -68,9 +77,11 @@ export default function Auth() {
           }).catch((e) => console.warn("shopify sync deferred", e));
         }
         toast.success("Check your email to confirm your account.");
+        try { localStorage.setItem(RETURNING_FLAG, "1"); } catch {}
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        try { localStorage.setItem(RETURNING_FLAG, "1"); } catch {}
         navigate(redirect, { replace: true });
       }
     } catch (err: any) {
@@ -80,14 +91,15 @@ export default function Auth() {
     }
   };
 
-  const google = async () => {
+  const oauth = async (provider: "google" | "apple") => {
     setBusy(true);
-    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: `${window.location.origin}${redirect}` });
+    const result = await lovable.auth.signInWithOAuth(provider, { redirect_uri: `${window.location.origin}${redirect}` });
     if (result.error) {
-      toast.error(result.error.message ?? "Google sign-in failed");
+      toast.error(result.error.message ?? `${provider === "google" ? "Google" : "Apple"} sign-in failed`);
       setBusy(false);
       return;
     }
+    try { localStorage.setItem(RETURNING_FLAG, "1"); } catch {}
     if (result.redirected) return;
     navigate(redirect, { replace: true });
   };
@@ -110,9 +122,14 @@ export default function Auth() {
           {mode === "signin" ? "Sign in to continue your courses." : "Track progress and earn certificates."}
         </p>
 
-        <Button type="button" variant="outline" onClick={google} disabled={busy} className="w-full mb-4">
-          Continue with Google
-        </Button>
+        <div className="space-y-2 mb-4">
+          <Button type="button" variant="outline" onClick={() => oauth("google")} disabled={busy} className="w-full">
+            Continue with Google
+          </Button>
+          <Button type="button" variant="outline" onClick={() => oauth("apple")} disabled={busy} className="w-full">
+            Continue with Apple
+          </Button>
+        </div>
         <div className="relative my-4">
           <div className="absolute inset-0 flex items-center"><span className="w-full border-t" /></div>
           <span className="relative bg-card px-2 text-xs text-muted-foreground mx-auto block w-fit">or</span>
