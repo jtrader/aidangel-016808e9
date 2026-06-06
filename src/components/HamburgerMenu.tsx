@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, MessageCircle, BookOpen, Search, HeartPulse, MapPin, FileText, GraduationCap, HandHeart, ShoppingBag, School, Info, Briefcase } from "lucide-react";
+import { Menu, MessageCircle, BookOpen, Search, HeartPulse, MapPin, FileText, GraduationCap, HandHeart, ShoppingBag, School, Info, Briefcase } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -10,31 +10,33 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { useLanguage, type TranslationKey } from "@/contexts/LanguageContext";
 
 interface NavItem {
-  label: string;
+  labelKey: TranslationKey;
   href: string;
   icon: React.ElementType;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Chat", href: "/", icon: MessageCircle },
-  { label: "Knowledge Base", href: "/kb", icon: BookOpen },
-  { label: "Symptom Finder", href: "/symptoms", icon: Search },
-  { label: "CPR Guide", href: "/cpr", icon: HeartPulse },
-  { label: "AED Finder", href: "/aed-finder", icon: MapPin },
-  { label: "Workplace First Aid", href: "/workplace", icon: Briefcase },
-  { label: "Angel Action PDFs", href: "/angel-action", icon: FileText },
-  { label: "First Aid Training", href: "/personal", icon: GraduationCap },
-  { label: "Education Partners", href: "/learn", icon: School },
-  { label: "Donation Partners", href: "/partners", icon: HandHeart },
-  { label: "First Aid Kit Shop", href: "/shop", icon: ShoppingBag },
-  { label: "About", href: "/about", icon: Info },
+  { labelKey: "navChat", href: "/", icon: MessageCircle },
+  { labelKey: "navKnowledgeBase", href: "/kb", icon: BookOpen },
+  { labelKey: "navSymptomFinder", href: "/symptoms", icon: Search },
+  { labelKey: "navCprGuide", href: "/cpr", icon: HeartPulse },
+  { labelKey: "navAedFinder", href: "/aed-finder", icon: MapPin },
+  { labelKey: "navWorkplaceFirstAid", href: "/workplace", icon: Briefcase },
+  { labelKey: "navAngelActionPdfs", href: "/angel-action", icon: FileText },
+  { labelKey: "navFirstAidTraining", href: "/personal", icon: GraduationCap },
+  { labelKey: "navEducationPartners", href: "/learn", icon: School },
+  { labelKey: "navDonationPartners", href: "/partners", icon: HandHeart },
+  { labelKey: "navFirstAidKitShop", href: "/shop", icon: ShoppingBag },
+  { labelKey: "navAbout", href: "/about", icon: Info },
 ];
 
 export default function HamburgerMenu() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
+  const { t } = useLanguage();
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -47,7 +49,7 @@ export default function HamburgerMenu() {
         <button
           type="button"
           className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors self-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          aria-label="Open navigation menu"
+          aria-label={t("menuOpen")}
         >
           <Menu className="h-5 w-5" />
         </button>
@@ -56,7 +58,7 @@ export default function HamburgerMenu() {
         <div className="flex flex-col h-full">
           <SheetHeader className="px-6 py-5 border-b border-border">
             <SheetTitle className="text-left font-display font-bold text-xl">
-              Menu
+              {t("menuTitle")}
             </SheetTitle>
           </SheetHeader>
 
@@ -78,7 +80,7 @@ export default function HamburgerMenu() {
                         aria-current={active ? "page" : undefined}
                       >
                         <item.icon className={cn("h-5 w-5 flex-shrink-0", active ? "text-primary" : "text-muted-foreground")} />
-                        <span>{item.label}</span>
+                        <span>{t(item.labelKey)}</span>
                         {active && (
                           <span className="ml-auto w-2 h-2 rounded-full bg-primary" aria-hidden="true" />
                         )}
@@ -92,7 +94,7 @@ export default function HamburgerMenu() {
 
           <div className="px-6 py-4 border-t border-border bg-muted/30">
             <p className="text-xs text-muted-foreground text-center">
-              First Aid Angel — St John Australian First Aid 5th Edition
+              {t("menuFooter")}
             </p>
           </div>
         </div>

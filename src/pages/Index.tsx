@@ -145,7 +145,7 @@ const Index = () => {
               <button
                 onClick={() => setMessages([])}
                 className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                aria-label="Back to home"
+                aria-label={t("chatBackHome")}
               >
                 <RotateCcw className="h-5 w-5" />
               </button>
@@ -206,26 +206,26 @@ const Index = () => {
                       <Link
                         to="/cpr"
                         className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
-                        aria-label="Open live CPR guide with metronome"
+                        aria-label={t("homePillLiveCprAria")}
                       >
                         <HeartPulse className="h-4 w-4" />
-                        Live CPR Guide
+                        {t("homePillLiveCpr")}
                       </Link>
                       <Link
                         to="/aed-finder"
                         className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors border border-border"
-                        aria-label="Find nearest AED"
+                        aria-label={t("homePillAedFinderAria")}
                       >
                         <MapPin className="h-4 w-4" />
-                        AED Finder
+                        {t("homePillAedFinder")}
                       </Link>
                       <Link
                         to="/symptoms"
                         className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors border border-border"
-                        aria-label="Find first aid by symptom"
+                        aria-label={t("homePillSymptomFinderAria")}
                       >
                         <Search className="h-4 w-4" />
-                        Symptom Finder
+                        {t("homePillSymptomFinder")}
                       </Link>
                     </div>
                   </div>
@@ -266,7 +266,7 @@ const Index = () => {
                             <div className="space-y-1 max-w-sm">
                               <div className="flex items-center justify-between text-xs">
                                 <span className="font-semibold text-foreground">
-                                  Step {sx} of {sy}
+                                  {t("walkStepOf").replace("{n}", String(sx)).replace("{total}", String(sy))}
                                 </span>
                                 <span className="text-muted-foreground">{sp}%</span>
                               </div>
@@ -276,7 +276,7 @@ const Index = () => {
                                 aria-valuemin={0}
                                 aria-valuemax={sy}
                                 aria-valuenow={sx}
-                                aria-label={`Step ${sx} of ${sy}`}
+                                aria-label={t("walkStepOf").replace("{n}", String(sx)).replace("{total}", String(sy))}
                               >
                                 <div
                                   className="h-full bg-primary transition-all duration-300 ease-out"
@@ -292,7 +292,7 @@ const Index = () => {
                               disabled={isLoading}
                               className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
                             >
-                              Next →
+                              {t("walkNext")}
                             </button>
                             <button
                               type="button"
@@ -300,7 +300,7 @@ const Index = () => {
                               disabled={isLoading}
                               className="px-3 py-1.5 rounded-full bg-muted text-foreground text-xs font-medium hover:bg-muted/80 transition-colors disabled:opacity-50"
                             >
-                              Repeat
+                              {t("walkRepeat")}
                             </button>
                             <button
                               type="button"
@@ -308,7 +308,7 @@ const Index = () => {
                               disabled={isLoading}
                               className="px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground text-xs font-medium hover:bg-secondary/80 transition-colors disabled:opacity-50"
                             >
-                              Done ✓
+                              {t("walkDone")}
                             </button>
                             <button
                               type="button"
@@ -316,7 +316,7 @@ const Index = () => {
                               disabled={isLoading}
                               className="px-3 py-1.5 rounded-full border border-border text-muted-foreground text-xs font-medium hover:bg-muted transition-colors disabled:opacity-50"
                             >
-                              Stop
+                              {t("walkStop")}
                             </button>
                           </div>
                         </div>
@@ -331,7 +331,7 @@ const Index = () => {
                     className="flex gap-3 justify-start animate-fade-in"
                     role="status"
                     aria-live="polite"
-                    aria-label={status === "guiding" ? "First Aid Angel is guiding you" : "First Aid Angel is thinking"}
+                    aria-label={status === "guiding" ? t("chatGuiding") : t("chatThinking")}
                   >
                     <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
                       <Loader2 className="h-4 w-4 text-primary-foreground animate-spin" />
@@ -343,7 +343,7 @@ const Index = () => {
                         <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
                       </div>
                       <span className="text-xs text-muted-foreground font-medium">
-                        {status === "guiding" ? "Guiding you…" : "Thinking…"}
+                        {status === "guiding" ? t("chatGuiding") : t("chatThinking")}
                       </span>
                     </div>
                   </div>
@@ -352,21 +352,21 @@ const Index = () => {
 
               {!isLoading && messages[messages.length - 1]?.role === "assistant" && !inWalkthrough && (
                 <div className="text-center space-y-2 animate-fade-in">
-                  <p className="text-sm font-medium text-muted-foreground">Am I helping?</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t("walkAmIHelping")}</p>
                   <div className="flex items-center justify-center gap-2">
                     <button
                       type="button"
                       onClick={() => send("Yes, that's helpful — keep going.")}
                       className="px-4 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors"
                     >
-                      Yes
+                      {t("walkYes")}
                     </button>
                     <button
                       type="button"
                       onClick={() => send("Not quite — can you try a different approach?")}
                       className="px-4 py-1.5 rounded-full border border-border text-foreground text-xs font-semibold hover:bg-muted transition-colors"
                     >
-                      No
+                      {t("walkNo")}
                     </button>
                   </div>
                 </div>

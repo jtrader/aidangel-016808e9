@@ -38,6 +38,8 @@ import NetworkFooter from "@/components/NetworkFooter";
 import MentalHealthCallout from "@/components/MentalHealthCallout";
 import { SeoHead } from "@/components/SeoHead";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCountry } from "@/hooks/useCountry";
+import { emergencyNumberForCountry } from "@/lib/donations";
 import { Button } from "@/components/ui/button";
 import { getVertical, VERTICALS } from "@/data/workplaceVerticals";
 import { speak, stopSpeaking, isSpeechSupported } from "@/lib/speech";
@@ -51,6 +53,9 @@ const ICONS: Record<string, React.ElementType> = {
 export default function WorkplaceVertical() {
   const { slug } = useParams<{ slug: string }>();
   const { language } = useLanguage();
+  const { code: countryCode } = useCountry();
+  const emergencyNumber = emergencyNumberForCountry(countryCode);
+  const emergencyLabel = countryCode === "AU" ? "Triple Zero (000)" : emergencyNumber;
   const vertical = slug ? getVertical(slug) : undefined;
   const [speaking, setSpeaking] = useState(false);
 
@@ -155,10 +160,10 @@ export default function WorkplaceVertical() {
                     {speaking ? "Stop" : "Listen to overview"}
                   </Button>
                 )}
-                <a href="tel:000">
+                <a href={`tel:${emergencyNumber}`}>
                   <Button variant="destructive" size="sm">
                     <Phone className="h-4 w-4" />
-                    Call Triple Zero (000)
+                    Call {emergencyLabel}
                   </Button>
                 </a>
                 <Link to="/">
