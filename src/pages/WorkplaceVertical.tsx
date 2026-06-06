@@ -53,6 +53,9 @@ const ICONS: Record<string, React.ElementType> = {
 export default function WorkplaceVertical() {
   const { slug } = useParams<{ slug: string }>();
   const { language } = useLanguage();
+  const { code: countryCode } = useCountry();
+  const emergencyNumber = emergencyNumberForCountry(countryCode);
+  const emergencyLabel = countryCode === "AU" ? "Triple Zero (000)" : emergencyNumber;
   const vertical = slug ? getVertical(slug) : undefined;
   const [speaking, setSpeaking] = useState(false);
 
