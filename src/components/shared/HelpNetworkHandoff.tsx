@@ -50,6 +50,12 @@ const NETWORK_SITES: NetworkSite[] = [
     descKey: "helpNetworkLoveKeyDesc",
     stageKey: "helpNetworkLoveKeyStage",
   },
+  {
+    key: "lovekeynfcqr",
+    label: "Love Key NFC QR",
+    descKey: "helpNetworkLoveKeyNfcQrDesc",
+    stageKey: "helpNetworkLoveKeyNfcQrStage",
+  },
 ];
 
 export function HelpNetworkHandoff({ immediateDanger = false }: HelpNetworkHandoffProps) {
