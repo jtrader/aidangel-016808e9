@@ -124,27 +124,14 @@ export default function ShopMenu({ variant = "footer" }: ShopMenuProps) {
         language={language}
         autoplay={open}
       />
-      <div className="mt-5 flex flex-col-reverse sm:flex-row sm:justify-end gap-2">
-        <Link
-          to="/shop/kits"
-          onClick={() => {
-            fireCtaAnalytics("secondary");
-            setOpen(false);
-          }}
-          className="inline-flex items-center justify-center h-11 px-4 rounded-full border border-border bg-card text-foreground text-sm font-medium hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 transition-colors"
+      <div className="mt-5 flex justify-center">
+        <button
+          type="button"
+          onClick={() => setOpen(false)}
+          className="inline-flex items-center justify-center h-11 px-8 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 transition-colors"
         >
-          {t("shopDialogBrowseKits")}
-        </Link>
-        <Link
-          to="/store"
-          onClick={() => {
-            fireCtaAnalytics("primary");
-            setOpen(false);
-          }}
-          className="inline-flex items-center justify-center h-11 px-5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 transition-colors"
-        >
-          {t("shopDialogOpenStore")}
-        </Link>
+          {t("shopDialogClose")}
+        </button>
       </div>
     </>
   );
