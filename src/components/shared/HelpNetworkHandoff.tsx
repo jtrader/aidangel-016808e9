@@ -64,16 +64,21 @@ export function HelpNetworkHandoff({ immediateDanger = false }: HelpNetworkHando
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {NETWORK_SITES.map((site) => {
           const isFirstAidAngel = site.key === "firstaidangel";
+          const isAidAngel = site.key === "aidangel";
           const rawHref = isFirstAidAngel
             ? "https://firstaidangel.org"
+            : isAidAngel
+            ? "https://aidangel.app"
             : buildHandoffUrl(TARGETS[site.key], null, language, "");
+          const targetBlank = isFirstAidAngel ? undefined : "_blank";
+          const relNoopener = isFirstAidAngel ? undefined : "noopener noreferrer";
           const href = rawHref.replace(/\/en\/$/, "/");
           return (
             <li key={site.key}>
               <a
                 href={href}
-                target={isFirstAidAngel ? undefined : "_blank"}
-                rel={isFirstAidAngel ? undefined : "noopener noreferrer"}
+                target={targetBlank}
+                rel={relNoopener}
                 className={[
                   "block rounded-md border px-3 py-2 transition-colors",
                   isFirstAidAngel
