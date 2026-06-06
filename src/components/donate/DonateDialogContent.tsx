@@ -1,30 +1,22 @@
-// Donate dialogue body: amount presets + custom, frequency toggle, NGO picker,
-// country switcher. Deep-links to the selected NGO with amount/frequency hints.
+// Donate dialogue body: amount presets + custom, frequency toggle.
+// Hardcoded to St John Ambulance (appeal.stjohnvic.com.au).
+// Country switcher remains to localize currency presets.
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Check, Globe, HandHeart, ExternalLink } from "lucide-react";
 import { Favicon } from "@/components/Favicon";
-import {
-  COUNTRIES,
-  CountryCode,
-  NGOS,
-  NgoId,
-  donationUrl,
-  type Country,
-} from "@/lib/donations";
-import {
-  buildDonateUrl,
-  currencyFor,
-  type Frequency,
-} from "@/lib/donationAmount";
+import { COUNTRIES, CountryCode, type Country } from "@/lib/donations";
+import { currencyFor, type Frequency } from "@/lib/donationAmount";
 import { trackGiveClick } from "@/lib/giveAnalytics";
 import { cn } from "@/lib/utils";
+
+const ST_JOHN_URL = "https://appeal.stjohnvic.com.au/";
+const ST_JOHN_NAME = "St John Ambulance";
 
 interface DonateDialogContentProps {
   country: Country;
   onCountryChange: (code: CountryCode) => void;
   language: string;
-  ngos?: NgoId[];
   variant?: "header" | "footer";
   labels: {
     heading: string;
@@ -33,34 +25,38 @@ interface DonateDialogContentProps {
     custom: string;
     once: string;
     monthly: string;
-    chooseNgo: string;
     donateCta: string;
-    nationalSite: string;
-    internationalSite: string;
     changeCountry: string;
     showing: string;
   };
+}
+
+function buildStJohnUrl(amount: number, frequency: Frequency) {
+  const url = new URL(ST_JOHN_URL);
+  if (amount > 0) url.searchParams.set("amount", String(amount));
+  url.searchParams.set("frequency", frequency);
+  if (frequency === "monthly") url.searchParams.set("recurring", "true");
+  url.searchParams.set("utm_source", "firstaidangel");
+  url.searchParams.set("utm_medium", "donate_dialog");
+  url.searchParams.set("utm_campaign", "give");
+  return url.toString();
 }
 
 export function DonateDialogContent({
   country,
   onCountryChange,
   language,
-  ngos,
   variant = "header",
   labels,
 }: DonateDialogContentProps) {
-  const list = ngos ?? (Object.keys(NGOS) as NgoId[]);
-  const currency = useMemo(() => currencyFor(country), [country]);
+  const currency = currencyFor(country);
 
   const [amount, setAmount] = useState<number>(currency.presets[1] ?? currency.presets[0]);
   const [customMode, setCustomMode] = useState(false);
   const [customValue, setCustomValue] = useState<string>("");
   const [frequency, setFrequency] = useState<Frequency>("once");
-  const [selectedNgo, setSelectedNgo] = useState<NgoId>(list[0]);
   const [showCountryPicker, setShowCountryPicker] = useState(false);
 
-  // Reset amount when country/currency changes
   const currencyKey = currency.code;
   useEffect(() => {
     setAmount(currency.presets[1] ?? currency.presets[0]);
@@ -71,19 +67,15 @@ export function DonateDialogContent({
 
   const finalAmount = customMode ? Math.max(1, Math.floor(Number(customValue) || 0)) : amount;
   const canDonate = finalAmount > 0;
-  const ngo = NGOS[selectedNgo];
-  const isNational = !!country.donations[selectedNgo];
-  const href = canDonate
-    ? buildDonateUrl(country, selectedNgo, finalAmount, frequency)
-    : donationUrl(country, selectedNgo);
+  const href = buildStJohnUrl(finalAmount, frequency);
 
   const handleDonate = () => {
     trackGiveClick({
-      ngoId: selectedNgo,
+      ngoId: "stjohn" as never,
       countryCode: country.code,
       countryName: country.name,
       destinationUrl: href,
-      isNational,
+      isNational: country.code === "AU",
       language,
       variant,
     });
@@ -102,6 +94,19 @@ export function DonateDialogContent({
         <p className="text-sm text-muted-foreground">
           {labels.subhead}
         </p>
+      </div>
+
+      {/* St John card */}
+      <div className="flex items-center gap-3 p-3 rounded-xl border-2 border-primary/30 bg-primary/5">
+        <Favicon url={ST_JOHN_URL} alt="" size={32} className="flex-shrink-0" />
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-semibold text-foreground truncate">
+            {ST_JOHN_NAME}
+          </div>
+          <div className="text-[11px] text-muted-foreground truncate">
+            appeal.stjohnvic.com.au
+          </div>
+        </div>
       </div>
 
       {/* Frequency toggle */}
@@ -181,62 +186,6 @@ export function DonateDialogContent({
         </div>
       </div>
 
-      {/* NGO picker */}
-      <div className="space-y-2">
-        <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          {labels.chooseNgo}
-        </div>
-        <div className="space-y-2">
-          {list.map((id) => {
-            const meta = NGOS[id];
-            const national = !!country.donations[id];
-            const previewUrl = donationUrl(country, id);
-            const active = selectedNgo === id;
-            return (
-              <button
-                key={id}
-                type="button"
-                onClick={() => setSelectedNgo(id)}
-                aria-pressed={active}
-                className={cn(
-                  "w-full flex items-center gap-3 p-3 rounded-xl border-2 text-left transition-all",
-                  active
-                    ? "border-primary bg-primary/5"
-                    : "border-border bg-card hover:border-primary/50"
-                )}
-              >
-                <Favicon url={previewUrl} alt="" size={28} className="flex-shrink-0" />
-                <span className="flex-1 min-w-0">
-                  <span className="block text-sm font-semibold text-foreground truncate">
-                    {meta.short}
-                  </span>
-                  <span className="text-[11px] text-muted-foreground inline-flex items-center gap-1">
-                    {national ? (
-                      `${country.flag} ${country.name} site`
-                    ) : (
-                      <>
-                        <Globe className="h-3 w-3" /> {labels.internationalSite}
-                      </>
-                    )}
-                  </span>
-                </span>
-                <span
-                  className={cn(
-                    "flex-shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full border-2",
-                    active
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-border"
-                  )}
-                  aria-hidden="true"
-                >
-                  {active && <Check className="h-3 w-3" />}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
       {/* CTA */}
       <a
         href={href}
@@ -244,7 +193,7 @@ export function DonateDialogContent({
         rel="noopener noreferrer"
         onClick={handleDonate}
         data-analytics-event="give_click"
-        data-analytics-ngo={selectedNgo}
+        data-analytics-ngo="stjohn"
         data-analytics-country={country.code}
         aria-disabled={!canDonate}
         className={cn(
@@ -260,24 +209,26 @@ export function DonateDialogContent({
         <ExternalLink className="h-4 w-4 opacity-80" aria-hidden="true" />
       </a>
       <p className="text-[11px] text-center text-muted-foreground -mt-2">
-        {ngo.short} · {isNational ? `${country.name} site` : labels.internationalSite}
+        {ST_JOHN_NAME} · appeal.stjohnvic.com.au
       </p>
 
-      {/* Country switcher */}
+      {/* Country switcher (currency localization) */}
       <div className="border-t border-border pt-3">
         <button
           type="button"
           onClick={() => setShowCountryPicker((v) => !v)}
           className="w-full flex items-center justify-between text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
-          <span className="inline-flex items-center gap-1.5">
-            <Globe className="h-3.5 w-3.5" />
-            {labels.showing}{" "}
-            <span className="font-semibold text-foreground">
-              {country.flag} {country.name}
+          <span className="inline-flex items-center gap-1.5 min-w-0">
+            <Globe className="h-3.5 w-3.5 flex-shrink-0" />
+            <span className="truncate">
+              {labels.showing}{" "}
+              <span className="font-semibold text-foreground">
+                {country.flag} {country.name}
+              </span>
             </span>
           </span>
-          <span className="underline">{labels.changeCountry}</span>
+          <span className="underline flex-shrink-0 ml-2">{labels.changeCountry}</span>
         </button>
         {showCountryPicker && (
           <div className="mt-3 max-h-56 overflow-y-auto rounded-xl border border-border bg-background">
