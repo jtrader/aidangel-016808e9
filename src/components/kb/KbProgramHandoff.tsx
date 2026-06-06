@@ -66,7 +66,7 @@ export default function KbProgramHandoff({ kbSlug, lang }: Props) {
       setProgramTitle(program.title);
 
       if (user) {
-        const { data: enrol } = await supabase.from("program_enrolments").select("id").eq("user_id", user.id).eq("program_id", program.id).limit(1).maybeSingle();
+        const { data: enrol } = await supabase.from("program_enrollments").select("id").eq("user_id", user.id).eq("program_id", program.id).limit(1).maybeSingle();
         setEnrolled(!!enrol);
       }
       setLoading(false);

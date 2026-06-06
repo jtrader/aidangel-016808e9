@@ -42,7 +42,7 @@ export default function TopicsSidebar() {
       // Determine which program context to show:
       // 1. localStorage (set when visiting a program page)
       // 2. first published program that contains the current course
-      // 3. fall back to emergency-response-program
+      // 3. fall back to emergency-response-essentials
       let targetSlug: string | null = null;
       try { targetSlug = localStorage.getItem("currentProgramSlug"); } catch {}
 
@@ -64,7 +64,7 @@ export default function TopicsSidebar() {
           if (!targetSlug && published[0]) targetSlug = published[0].slug;
         }
       }
-      if (!targetSlug) targetSlug = "emergency-response-program";
+      if (!targetSlug) targetSlug = "emergency-response-essentials";
 
       const { data: prog } = await supabase
         .from("programs")

@@ -11,7 +11,7 @@ import { SeoHead } from "@/components/SeoHead";
 import { useUiStrings } from "@/hooks/useUiStrings";
 
 const AUDIENCE: Record<string, { label: string; tag: string }> = {
-  "emergency-response-program": { label: "Core program", tag: "All Australians" },
+  "emergency-response-essentials": { label: "Core program", tag: "All Australians" },
   "parents-childcare-essentials": { label: "Family", tag: "Parents & Childcare" },
   "workplace-trades-essentials": { label: "Workplace", tag: "Workplace & Trades" },
   "outdoor-remote-essentials": { label: "Outdoor", tag: "Outdoor & Remote" },
@@ -71,8 +71,8 @@ export default function Programs() {
     })();
   }, []);
 
-  const featured = programs.find(p => p.slug === "emergency-response-program");
-  const niches = programs.filter(p => p.slug !== "emergency-response-program");
+  const featured = programs.find(p => p.slug === "emergency-response-essentials");
+  const niches = programs.filter(p => p.slug !== "emergency-response-essentials");
 
   return (
     <div className="min-h-screen bg-background flex flex-col">

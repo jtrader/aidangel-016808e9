@@ -164,7 +164,7 @@ export default function ProgramDetail() {
               <div className="p-6 md:p-8">
                 <div className="flex gap-2 mb-3 flex-wrap">
                   <Badge variant="secondary" className="gap-1"><Layers className="h-3 w-3" />{topics.length} {tr.topics}</Badge>
-                  <Badge variant="outline" className="gap-1"><Clock className="h-3 w-3" />{program.slug === "emergency-response-program" ? "60-90 min" : `${program.duration_minutes} min`}</Badge>
+                  <Badge variant="outline" className="gap-1"><Clock className="h-3 w-3" />{program.slug === "emergency-response-essentials" ? "60-90 min" : `${program.duration_minutes} min`}</Badge>
                   <Badge variant="outline" className="gap-1"><Award className="h-3 w-3" />{tr.pass} {program.pass_mark}%</Badge>
                   {hasFinalQuiz && <Badge variant="outline">{tr.finalQuiz}</Badge>}
                 </div>

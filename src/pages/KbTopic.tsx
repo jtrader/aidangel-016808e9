@@ -17,6 +17,7 @@ import EmergencyCallButton from "@/components/EmergencyCallButton";
 import HamburgerMenu from "@/components/HamburgerMenu";
 import KBHandoffCard from "@/components/kb/KBHandoffCard";
 import KbCourseHandoff from "@/components/kb/KbCourseHandoff";
+import KbProgramHandoff from "@/components/kb/KbProgramHandoff";
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCountry } from "@/hooks/useCountry";
@@ -427,6 +428,7 @@ const KbTopic = () => {
           <AngelActionDownload slug={topicEn.slug} title={translated.title} />
 
           <KbCourseHandoff kbSlug={topicEn.slug} lang={language} />
+          <KbProgramHandoff kbSlug={topicEn.slug} lang={language} />
 
           {qa.length > 0 && (
             <section className="mt-12 pt-8 border-t border-border">

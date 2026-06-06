@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GraduationCap, ArrowRight, CheckCircle2 } from "lucide-react";
+import { GraduationCap, Heart, ArrowRight, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCountry } from "@/hooks/useCountry";
-import { courseSlugForKbTopic } from "@/lib/kbCourseMap";
+import { courseSlugForKbTopic, SENSITIVE_KB_SLUGS } from "@/lib/kbCourseMap";
 import { fireKbCourseConversion } from "@/lib/rsp/faaAdapter";
 import { translateStrings } from "@/lib/uiTranslate";
 
@@ -18,50 +18,51 @@ interface Props {
 
 export function KbCourseHandoff({ kbSlug, lang }: Props) {
   const courseSlug = courseSlugForKbTopic(kbSlug);
+  const isSensitive = SENSITIVE_KB_SLUGS.has(kbSlug);
+  
   const { user } = useAuth();
   const { language } = useLanguage();
   const { code: countryCode } = useCountry();
   const navigate = useNavigate();
 
+  const defaultLabels = isSensitive
+    ? {
+        eyebrow: "Free online course",
+        heading: "Learn the ALGEE framework",
+        body: "A free self-paced course on the Australian Mental Health First Aid approach — how to approach, listen and connect someone in distress with the right support.",
+        cta: "Start the free course",
+        passed: "You've completed this course",
+        passedSub: "Well done for building your mental health first aid skills.",
+      }
+    : {
+        eyebrow: "Test your knowledge",
+        heading: "Ready to put this into practice?",
+        body: "Take the free quiz for this topic and see how much you've retained.",
+        cta: "Start the quiz",
+        passed: "You've passed this topic",
+        passedSub: "Well done — you've already completed this quiz.",
+      };
+
+  const [labels, setLabels] = useState(defaultLabels);
   const [courseTitle, setCourseTitle] = useState<string | null>(null);
   const [alreadyPassed, setAlreadyPassed] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // UI strings with auto-translation support
-  const [labels, setLabels] = useState({
-    eyebrow: "Test your knowledge",
-    heading: "Ready to put this into practice?",
-    body: "Take the free quiz for this topic and see how much you've retained.",
-    cta: "Start the quiz",
-    passed: "You've passed this topic",
-    passedSub: "Well done — you've already completed this quiz.",
-  });
-
   useEffect(() => {
     if (language === "en") return;
     let cancelled = false;
-    translateStrings(language, [
-      "Test your knowledge",
-      "Ready to put this into practice?",
-      "Take the free quiz for this topic and see how much you've retained.",
-      "Start the quiz",
-      "You've passed this topic",
-      "Well done — you've already completed this quiz.",
-    ]).then((s) => {
+    const values = Object.values(defaultLabels);
+    const keys = Object.keys(defaultLabels) as (keyof typeof defaultLabels)[];
+    translateStrings(language, values).then((s) => {
       if (!cancelled) {
-        setLabels({
-          eyebrow: s[0],
-          heading: s[1],
-          body: s[2],
-          cta: s[3],
-          passed: s[4],
-          passedSub: s[5],
-        });
+        const next = {} as typeof defaultLabels;
+        keys.forEach((k, i) => { next[k] = s[i]; });
+        setLabels(next);
       }
     });
     return () => { cancelled = true; };
-  }, [language]);
-
+  }, [language, kbSlug]);
+  
   useEffect(() => {
     if (!courseSlug) {
       setLoading(false);
@@ -136,7 +137,7 @@ export function KbCourseHandoff({ kbSlug, lang }: Props) {
     <aside className="mt-8 rounded-2xl border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10 p-5 sm:p-6">
       <div className="flex items-start gap-4">
         <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shadow-sm">
-          <GraduationCap className="h-6 w-6" />
+          {isSensitive ? <Heart className="h-6 w-6" /> : <GraduationCap className="h-6 w-6" />}
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-[11px] font-bold uppercase tracking-wider text-primary">
