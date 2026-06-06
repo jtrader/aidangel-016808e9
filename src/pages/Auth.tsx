@@ -19,8 +19,17 @@ const schema = z.object({
   name: z.string().trim().min(1, "Enter your name").max(100).optional(),
 });
 
+const RETURNING_FLAG = "faa_returning_member";
+
 export default function Auth() {
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup">(() => {
+    if (typeof window === "undefined") return "signup";
+    try {
+      return localStorage.getItem(RETURNING_FLAG) === "1" ? "signin" : "signup";
+    } catch {
+      return "signup";
+    }
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
