@@ -165,10 +165,10 @@ export default function ShopMenu({ variant = "footer" }: ShopMenuProps) {
           </button>
         </DrawerTrigger>
         <DrawerContent
-          className="max-h-[85vh] bg-card border-border focus:outline-none motion-reduce:transition-none"
+          className="max-h-[90vh] bg-card border-border focus:outline-none motion-reduce:transition-none overflow-hidden"
           lang={language}
         >
-          <DrawerHeader className="px-4 pb-2 text-left">
+          <DrawerHeader className="px-4 pb-2 pr-14 text-left">
             <DrawerTitle className="font-display text-lg text-foreground">
               {title}
             </DrawerTitle>
@@ -176,7 +176,9 @@ export default function ShopMenu({ variant = "footer" }: ShopMenuProps) {
               {tagline}
             </DrawerDescription>
           </DrawerHeader>
-          <div className="px-4 pb-6 overflow-y-auto">{Body}</div>
+          <div className="px-4 pb-[max(env(safe-area-inset-bottom),1.25rem)] overflow-y-auto overflow-x-hidden">
+            {Body}
+          </div>
           <DrawerClose asChild>
             <button
               type="button"
