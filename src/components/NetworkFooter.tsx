@@ -120,9 +120,17 @@ export default function NetworkFooter() {
           <span aria-hidden>·</span>
           <a href="/medical-disclaimer" className="hover:text-foreground hover:underline transition-colors">Medical Disclaimer</a>
         </nav>
-        <p className="text-[11px] text-muted-foreground flex items-center justify-center gap-1 mt-2">
-          {tr.copyright} <Heart className="h-3 w-3 inline" />
-        </p>
+        <div className="flex flex-col items-center gap-3 mt-2">
+          <img
+            src={rspLogo.url}
+            alt="Respectful Synchronised Protocol"
+            className="h-16 w-16 rounded-full object-cover shadow-[0_0_24px_rgba(220,38,38,0.65)] ring-1 ring-primary/40"
+            loading="lazy"
+          />
+          <p className="text-[11px] text-muted-foreground text-center whitespace-pre-line">
+            {"© 2026 LoveKey. All rights reserved.\n\nLoveKey RSP-aligned — Ethical, privacy-conscious help routing under the Respectful Synchronised Protocol."}
+          </p>
+        </div>
       </div>
     </footer>
   );
