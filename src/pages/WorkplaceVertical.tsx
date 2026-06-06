@@ -160,10 +160,10 @@ export default function WorkplaceVertical() {
                     {speaking ? "Stop" : "Listen to overview"}
                   </Button>
                 )}
-                <a href="tel:000">
+                <a href={`tel:${emergencyNumber}`}>
                   <Button variant="destructive" size="sm">
                     <Phone className="h-4 w-4" />
-                    Call Triple Zero (000)
+                    Call {emergencyLabel}
                   </Button>
                 </a>
                 <Link to="/">
