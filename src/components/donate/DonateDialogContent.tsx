@@ -142,7 +142,7 @@ export function DonateDialogContent({
           width={32}
           height={32}
           loading="lazy"
-          className="flex-shrink-0 w-8 h-8 rounded-md bg-white object-contain p-0.5 ring-1 ring-border"
+          className="flex-shrink-0 w-9 h-9 rounded-md object-cover ring-1 ring-border"
         />
         <div className="flex-1 min-w-0">
           <div className="text-sm font-semibold text-foreground truncate">
