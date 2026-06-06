@@ -71,10 +71,13 @@ export function HelpNetworkHandoff({ immediateDanger = false }: HelpNetworkHando
         {NETWORK_SITES.map((site) => {
           const isFirstAidAngel = site.key === "firstaidangel";
           const isAidAngel = site.key === "aidangel";
+          const isLoveKeyNfcQr = site.key === "lovekeynfcqr";
           const rawHref = isFirstAidAngel
             ? "https://firstaidangel.org"
             : isAidAngel
             ? "https://aidangel.app"
+            : isLoveKeyNfcQr
+            ? "https://lovekey.com.au"
             : buildHandoffUrl(TARGETS[site.key], null, language, "");
           const targetBlank = isFirstAidAngel ? undefined : "_blank";
           const relNoopener = isFirstAidAngel ? undefined : "noopener noreferrer";
