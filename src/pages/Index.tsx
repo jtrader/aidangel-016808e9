@@ -266,7 +266,7 @@ const Index = () => {
                             <div className="space-y-1 max-w-sm">
                               <div className="flex items-center justify-between text-xs">
                                 <span className="font-semibold text-foreground">
-                                  Step {sx} of {sy}
+                                  {t("walkStepOf").replace("{n}", String(sx)).replace("{total}", String(sy))}
                                 </span>
                                 <span className="text-muted-foreground">{sp}%</span>
                               </div>
@@ -276,7 +276,7 @@ const Index = () => {
                                 aria-valuemin={0}
                                 aria-valuemax={sy}
                                 aria-valuenow={sx}
-                                aria-label={`Step ${sx} of ${sy}`}
+                                aria-label={t("walkStepOf").replace("{n}", String(sx)).replace("{total}", String(sy))}
                               >
                                 <div
                                   className="h-full bg-primary transition-all duration-300 ease-out"
@@ -292,7 +292,7 @@ const Index = () => {
                               disabled={isLoading}
                               className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
                             >
-                              Next →
+                              {t("walkNext")}
                             </button>
                             <button
                               type="button"
@@ -300,7 +300,7 @@ const Index = () => {
                               disabled={isLoading}
                               className="px-3 py-1.5 rounded-full bg-muted text-foreground text-xs font-medium hover:bg-muted/80 transition-colors disabled:opacity-50"
                             >
-                              Repeat
+                              {t("walkRepeat")}
                             </button>
                             <button
                               type="button"
@@ -308,7 +308,7 @@ const Index = () => {
                               disabled={isLoading}
                               className="px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground text-xs font-medium hover:bg-secondary/80 transition-colors disabled:opacity-50"
                             >
-                              Done ✓
+                              {t("walkDone")}
                             </button>
                             <button
                               type="button"
@@ -316,7 +316,7 @@ const Index = () => {
                               disabled={isLoading}
                               className="px-3 py-1.5 rounded-full border border-border text-muted-foreground text-xs font-medium hover:bg-muted transition-colors disabled:opacity-50"
                             >
-                              Stop
+                              {t("walkStop")}
                             </button>
                           </div>
                         </div>
