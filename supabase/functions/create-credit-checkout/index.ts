@@ -1,7 +1,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
-const SHOPIFY_DOMAIN = Deno.env.get("SHOPIFY_DOMAIN")!;
+const SHOPIFY_DOMAIN = Deno.env.get("SHOPIFY_DOMAIN") ?? "ty3mn0-c3.myshopify.com";
 
 // Internal priceId → Shopify variant GID + credit metadata
 const PRICE_MAP: Record<string, {
