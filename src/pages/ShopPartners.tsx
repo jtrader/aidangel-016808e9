@@ -9,6 +9,7 @@ import { useCountry } from "@/hooks/useCountry";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { COUNTRIES, CountryCode } from "@/lib/donations";
 import { SHOPS, ShopId, shopsForCountry } from "@/lib/shops";
+import { ShopDialogContent } from "@/components/shop/ShopDialogContent";
 import { trackShopClick } from "@/lib/giveAnalytics";
 import { Favicon } from "@/components/Favicon";
 import { localizedPath } from "@/lib/i18n";
@@ -112,6 +113,20 @@ export default function ShopPartners() {
                     </Select>
                   </div>
                 </div>
+
+
+                {/* Embedded country-aware kit carousel */}
+                <section
+                  aria-label="Featured first aid kits"
+                  className="mb-8 rounded-2xl bg-card border border-border shadow-sm ring-1 ring-border/50 p-3 sm:p-5 lg:p-6 overflow-hidden"
+                >
+                  <ShopDialogContent
+                    surface="shop_dialog"
+                    country={country}
+                    language={language}
+                    autoplay
+                  />
+                </section>
 
                 {/* Shop cards */}
                 {shops.length === 0 ? (
