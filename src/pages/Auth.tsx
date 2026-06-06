@@ -77,9 +77,11 @@ export default function Auth() {
           }).catch((e) => console.warn("shopify sync deferred", e));
         }
         toast.success("Check your email to confirm your account.");
+        try { localStorage.setItem(RETURNING_FLAG, "1"); } catch {}
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        try { localStorage.setItem(RETURNING_FLAG, "1"); } catch {}
         navigate(redirect, { replace: true });
       }
     } catch (err: any) {
