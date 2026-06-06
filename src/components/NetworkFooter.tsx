@@ -132,8 +132,9 @@ export default function NetworkFooter() {
             className="h-16 w-16 rounded-full object-cover shadow-[0_0_24px_rgba(220,38,38,0.65)] ring-1 ring-primary/40"
             loading="lazy"
           />
-          <p className="text-[11px] text-primary underline text-center">
-            LoveKey RSP-aligned — Ethical, privacy-conscious help routing under the Respectful Synchronised Protocol.
+          <p className="text-[11px] text-center">
+            <span className="text-primary underline">LoveKey RSP-aligned</span>
+            <span className="text-muted-foreground"> — Ethical, privacy-conscious help routing under the Respectful Synchronised Protocol.</span>
           </p>
         </a>
         <p className="text-[11px] text-muted-foreground text-center">
