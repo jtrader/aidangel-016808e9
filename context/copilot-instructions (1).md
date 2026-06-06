@@ -213,7 +213,8 @@ Latest migrations are in the `20260606` range.
 
 Unless a task explicitly mentions these areas, do not modify:
 
-- Anything in `src/components/kb/`, `src/pages/KbIndex.tsx`, `src/pages/KbTopic.tsx`
+- `src/pages/KbIndex.tsx`
+- `src/pages/KbTopic.tsx` — except to insert `<KbCourseHandoff>` per the funnel spec below
 - Anything in `src/pages/AedFinder.tsx`, `src/pages/AedIndex.tsx`, `src/pages/AedCity.tsx`, `src/pages/AedCountry.tsx`
 - Anything in `src/components/kits/`, `src/hooks/useKits.ts`, `src/lib/kitZones.ts`
 - Anything in `src/pages/Employer*.tsx` (employer dashboard pages — distinct from EmployerMarketing)
@@ -223,7 +224,8 @@ Unless a task explicitly mentions these areas, do not modify:
 - `src/pages/CertificateVerify.tsx` — public verification page
 - `supabase/functions/cert-checkout/index.ts` — single cert Shopify flow
 - `src/lib/i18n.ts` and `src/locales/` — i18n infrastructure
-- `kb/` directory contents
+- `kb/` directory Markdown content files — editorial content, never programmatically modified
+- `src/lib/kbHandoffMap.ts` and `src/components/kb/KBHandoffCard.tsx` — separate sister-site handoff, not the course funnel
 
 ---
 
@@ -270,3 +272,114 @@ User clicks "Purchase certificate — AU$29"
   → shopify_certificates row inserted, token marked used
   → User downloads PDF
 ```
+
+---
+
+## KB → Course funnel
+
+### Overview
+KB topic pages (`/kb/cpr`, `/kb/aed`, etc.) embed a `KbCourseHandoff` card
+that links readers directly into the matching course topic. This is the primary
+organic conversion path from the knowledge base to the learning platform.
+
+### Key files
+| File | Purpose |
+|---|---|
+| `src/lib/kbCourseMap.ts` | Static map of KB slug → course slug |
+| `src/components/kb/KbCourseHandoff.tsx` | "Test your knowledge" card rendered on KB topic pages |
+| `kb/_meta.json` | Has `course_slug` field on 33 of 37 topics |
+
+### The `?from=kb&kbSlug=<slug>` query parameter
+This parameter is the funnel context carrier. It is set by `KbCourseHandoff`
+when the user clicks through, and must be preserved at every navigation step
+through the course so the "Back to article" link works at the end.
+
+**How it flows:**
+```
+/kb/cpr  (user clicks "Test your knowledge")
+  → KbCourseHandoff fires fireKbCourseConversion() RSP signal
+  → navigate to /topics/cpr?from=kb&kbSlug=cpr
+  → CourseDetail detects from=kb, auto-enrolls, navigates to first lesson:
+      /topics/cpr/lesson/<first-lesson-slug>?from=kb&kbSlug=cpr
+  → CourseLesson passes param forward to every next-lesson link:
+      /topics/cpr/lesson/<next-slug>?from=kb&kbSlug=cpr
+  → On last lesson or after mark-complete, shows "Back to cpr article" link
+  → → /kb/cpr
+```
+
+**Rules for this parameter:**
+- Always carry `?from=kb&kbSlug=<slug>` forward when building next-lesson hrefs
+  inside `CourseLesson` if the param is present in the current URL
+- `CourseDetail` uses it to skip the overview page and auto-enrol + deep-link
+  to the first lesson — only when `user` is authenticated (the `KbCourseHandoff`
+  component redirects unauthenticated users to `/auth` before they reach here)
+- Never strip or ignore this parameter when navigating within the course flow
+- Do not use this parameter for any purpose other than the KB funnel context
+
+### `KbCourseHandoff` rendering rules
+- Renders only when `courseSlugForKbTopic(kbSlug)` returns a non-null value
+- Renders only when the course exists and `is_published = true` in the DB
+- Shows a quiet "already passed" state (green checkmark) when the user has a
+  passing `quiz_attempts` row for this course — no CTA in that state
+- Positioned in `KbTopic.tsx` immediately after `<AngelActionDownload>`,
+  before the Q&A section and `<NearbyEducators>`
+- The four KB topics with no `course_slug` (`workplace-first-aid`,
+  `remote-first-aid`, `elderly-care`, `mental-health-first-aid`) render nothing
+
+### What NOT to do
+- Do not merge `KbCourseHandoff` with `KBHandoffCard` — they are different
+  components serving different purposes (course funnel vs sister-site handoff)
+- Do not add `?from=kb` handling to `ProgramDetail` — programs are separate
+  from individual topic courses; the funnel targets courses (`/topics/`) only
+- Do not make `CourseDetail`'s auto-enrol behaviour permanent state — it only
+  fires when `from=kb` is present in the URL, not on every visit
+
+---
+
+## RSP (Real-time Signal Pipeline)
+
+### Overview
+The RSP captures anonymised behavioural signals from key user journeys and
+writes them to the `rsp_signals` table in Supabase. These signals power
+downstream marketing retargeting and engagement analytics.
+
+### Key files
+| File | Purpose |
+|---|---|
+| `src/lib/rsp/types.ts` | `FAAEventType` union + `FAASignal` interface |
+| `src/lib/rsp/faaAdapter.ts` | URL classifier (`classifyPath`) + `fireSignal` + named helpers |
+| `src/lib/rsp/signalStore.ts` | `writeSignal()` — writes to `rsp_signals`, always silent-fails |
+| `src/lib/rsp/session.ts` | `getSessionId()` — stable session UUID from sessionStorage |
+| `src/hooks/useRSPAdapter.ts` | Fires a signal on every route change via `useLocation` |
+
+### Signal types (current)
+| Event type | Fired when |
+|---|---|
+| `kb_article_viewed` | User views any KB topic page |
+| `kb_course_conversion` | User clicks "Test your knowledge" on a KB topic page |
+| `course_viewed` | User views a `/topics/` or `/courses/` page |
+| `symptom_lookup` | User views a `/symptoms/<slug>` page |
+| `aed_location_search` | User views an `/aed/<country>` page |
+| `workplace_vertical_viewed` | User views a `/workplace/<sector>` page |
+| `angel_action_viewed` | User views the Angel Action page |
+
+### Sensitivity tiers
+Signals carry a `sensitivity_tier` (1–3) that controls downstream suppression:
+- **Tier 1** — low sensitivity (sprains, sunburn, nosebleed) — always retargetable
+- **Tier 2** — moderate (CPR, bleeding, cardiac) — retargetable with care
+- **Tier 3** — high sensitivity (mental health) — `suppression_active: true`,
+  never used for retargeting
+
+The tier map lives in `faaAdapter.ts` as `KB_TOPIC_TIERS`. When adding new KB
+topics, add them to this map with an appropriate tier before firing signals.
+
+### Rules
+- Signal writes always use fire-and-forget (`void writeSignal(...)`) —
+  never `await` them in a user interaction path
+- `writeSignal` catches and silently logs all errors — never surface RSP
+  errors to the user or let them block navigation
+- Never send PII (name, email, user ID) in an RSP signal — session ID only
+- `suppression_active: true` must be set for any tier-3 topic signal
+- When adding a new `FAAEventType`, add it to the union in `types.ts` first,
+  then add the corresponding helper function in `faaAdapter.ts`, then wire
+  it up at the call site

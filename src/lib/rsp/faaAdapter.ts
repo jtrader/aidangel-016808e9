@@ -138,6 +138,18 @@ export function classifyPath(pathname: string): FAASignal | null {
     };
   }
 
+  // /topics/{slug} (same signal as /courses/{slug})
+  if (segments[0] === "topics" && segments[1]) {
+    return {
+      ...base,
+      location_language: "en",
+      source_event_type: "course_viewed",
+      theme: segments[1],
+      sensitivity_tier: 1,
+      suppression_active: false,
+    };
+  }
+
   return null;
 }
 
@@ -145,4 +157,30 @@ export async function fireSignal(pathname: string): Promise<void> {
   const signal = classifyPath(pathname);
   if (!signal) return;
   await writeSignal(signal);
+}
+
+/**
+ * Fires when a user clicks "Test your knowledge" on a KB topic page.
+ * Measures KB → course conversion per topic.
+ */
+export async function fireKbCourseConversion(
+  kbSlug: string,
+  courseSlug: string,
+  lang: string,
+  country: string | null,
+): Promise<void> {
+  const tier = KB_TOPIC_TIERS[kbSlug] ?? 2;
+  await writeSignal({
+    site: "firstaidangel",
+    help_stage: "prepare",
+    source_event_type: "kb_course_conversion",
+    theme: kbSlug,
+    location_language: lang,
+    location_country: country,
+    sensitivity_tier: tier,
+    urgency: "unknown",
+    suppression_active: false,
+    session_id: getSessionId(),
+    created_at: new Date().toISOString(),
+  });
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -19,6 +19,9 @@ export default function CourseLesson() {
   const { user } = useAuth();
   const { t, language } = useLanguage();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const fromKb = searchParams.get("from") === "kb";
+  const kbSlug = searchParams.get("kbSlug") ?? "";
   const [course, setCourse] = useState<any>(null);
   const [lesson, setLesson] = useState<any>(null);
   const [lessons, setLessons] = useState<any[]>([]);
@@ -153,14 +156,34 @@ export default function CourseLesson() {
           </Button>
           <Button onClick={async () => {
             await markComplete();
-            if (next) navigate(`/topics/${slug}/lesson/${next.slug}`);
-            else navigate(`/topics/${slug}/quiz`);
+            if (next) {
+              const nextHref = fromKb && kbSlug
+                ? `/topics/${slug}/lesson/${next.slug}?from=kb&kbSlug=${kbSlug}`
+                : `/topics/${slug}/lesson/${next.slug}`;
+              navigate(nextHref);
+            } else {
+              const quizHref = fromKb && kbSlug
+                ? `/topics/${slug}/quiz?from=kb&kbSlug=${kbSlug}`
+                : `/topics/${slug}/quiz`;
+              navigate(quizHref);
+            }
           }}>
             {done ? <CheckCircle2 className="h-4 w-4 mr-1" /> : null}
             {isLast ? t("lessonCompleteStartQuiz") : (done ? t("lessonNextLesson") : t("lessonMarkCompleteNext"))}
             <ChevronRight className="h-4 w-4 ml-1" />
           </Button>
         </div>
+        {/* Back to KB article link when arrived via KB and this is last or just completed */}
+        {fromKb && kbSlug && (done || isLast) && (
+          <div className="mt-4">
+            <Link
+              to={`/kb/${kbSlug}`}
+              className="inline-flex items-center gap-2 rounded-full border border-primary text-primary px-5 py-2.5 text-sm font-semibold hover:bg-primary/5 transition-colors"
+            >
+              ← Back to {kbSlug.replace(/-/g, " ")} article
+            </Link>
+          </div>
+        )}
       </main>
       <NetworkFooter />
     </div>

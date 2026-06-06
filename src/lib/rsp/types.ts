@@ -4,7 +4,8 @@ export type FAAEventType =
   | "aed_location_search"
   | "workplace_vertical_viewed"
   | "course_viewed"
-  | "angel_action_viewed";
+  | "angel_action_viewed"
+  | "kb_course_conversion";
 
 export interface FAASignal {
   site: "firstaidangel";

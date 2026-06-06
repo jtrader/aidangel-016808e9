@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -24,6 +24,10 @@ export default function CourseDetail() {
   const { t, language } = useLanguage();
 
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const fromKb = searchParams.get("from") === "kb";
+  const kbSlug = searchParams.get("kbSlug") ?? "";
+
   const [course, setCourse] = useState<Course | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
@@ -50,6 +54,24 @@ export default function CourseDetail() {
         setVideoCompleted(!!vp?.completed);
       }
       setLoading(false);
+      // Deep-link from KB: auto-enrol and jump straight to first lesson
+      if (fromKb && !cancelled) {
+        const isEnrolled = !!enr;
+        if (!isEnrolled && user && c) {
+          await supabase
+            .from("course_enrollments")
+            .insert({ user_id: user.id, course_id: c.id })
+            .throwOnError();
+        }
+        const firstLesson = (ls ?? [])[0];
+        if (firstLesson) {
+          // Carry kbSlug forward so the lesson page can show "Back to article"
+          navigate(
+            `/topics/${c.slug}/lesson/${firstLesson.slug}?from=kb&kbSlug=${kbSlug}`,
+            { replace: true },
+          );
+        }
+      }
     })();
   }, [slug, user]);
 
