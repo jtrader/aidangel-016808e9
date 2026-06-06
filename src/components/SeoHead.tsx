@@ -15,6 +15,8 @@ type Props = {
   /** og:type — defaults to "website". Use "article" for blog/KB pages. */
   ogType?: string;
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+  /** When true, emit <meta name="robots" content="noindex,nofollow"> for admin/private routes. */
+  noindex?: boolean;
 };
 
 const DEFAULT_OG_IMAGE = "https://firstaidangel.org/og-image.png";
@@ -28,7 +30,7 @@ function clampDesc(s?: string): string | undefined {
   return (lastSpace > 100 ? cut.slice(0, lastSpace) : cut) + "…";
 }
 
-export function SeoHead({ lang, basePath, title, description, ogImage, ogType, jsonLd }: Props) {
+export function SeoHead({ lang, basePath, title, description, ogImage, ogType, jsonLd, noindex }: Props) {
   const canonical = canonicalUrl(lang, basePath);
   const alts = alternates(basePath);
   const ogLocale = HREFLANG[lang].replace("-", "_");
@@ -40,6 +42,7 @@ export function SeoHead({ lang, basePath, title, description, ogImage, ogType, j
       <html lang={HREFLANG[lang]} dir={dirFor(lang)} />
       <title>{title}</title>
       {desc ? <meta name="description" content={desc} /> : null}
+      {noindex ? <meta name="robots" content="noindex,nofollow" /> : null}
       <link rel="canonical" href={canonical} />
       {alts.map((a) => (
         <link key={a.hreflang} rel="alternate" hrefLang={a.hreflang} href={a.href} />

@@ -6,7 +6,8 @@ export type FAAEventType =
   | "course_viewed"
   | "course_enrolment"
   | "kb_course_conversion"
-  | "kb_program_conversion";
+  | "kb_program_conversion"
+  | "workplace_vertical_viewed";
 
 export interface FAASignal {
   site: string;
