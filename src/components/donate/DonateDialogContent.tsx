@@ -62,7 +62,7 @@ export function DonateDialogContent({
 
   // Reset amount when country/currency changes
   const currencyKey = currency.code;
-  useMemo(() => {
+  useEffect(() => {
     setAmount(currency.presets[1] ?? currency.presets[0]);
     setCustomMode(false);
     setCustomValue("");
