@@ -204,5 +204,10 @@
   "drsShortSend": "Κλήση (Send)",
   "drsLabelResponse": "Απόκριση (Response)",
   "drsShortDefib": "Απινιδ. (Defib)",
-  "drsLabelDanger": "Κίνδυνος (Danger)"
+  "drsLabelDanger": "Κίνδυνος (Danger)",
+  "shopDialogBrowseKits": "Περιήγηση σε κιτ πρώτων βοηθειών",
+  "shopDialogTitle": "First Aid Angel Shop",
+  "shopDialogClose": "Κλείσιμο",
+  "shopDialogOpenStore": "Άνοιγμα πλήρους καταστήματος",
+  "shopDialogTagline": "Αξιόπιστα κιτ πρώτων βοηθειών & πακέτα εκπαίδευσης, με αποστολή κοντά σας."
 }

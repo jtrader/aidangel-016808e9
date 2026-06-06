@@ -204,5 +204,10 @@
   "drsShortDefib": "Defib",
   "drsBlurbDanger": "Provjerite je li mjesto sigurno",
   "drsLabelCpr": "KPR",
-  "drsBlurbSend": "Odmah nazovite 000"
+  "drsBlurbSend": "Odmah nazovite 000",
+  "shopDialogOpenStore": "Otvori cijelu trgovinu",
+  "shopDialogBrowseKits": "Pregledaj komplete",
+  "shopDialogClose": "Zatvori",
+  "shopDialogTagline": "Pouzdani kompleti prve pomoći i paketi za obuku, isporučeni u vašu blizinu.",
+  "shopDialogTitle": "First Aid Angel trgovina"
 }

@@ -204,5 +204,10 @@
   "drsLabelBreathing": "Dýchání",
   "drsLabelAirway": "Dýchací cesty",
   "drsBlurbSend": "Ihned volejte 000",
-  "drsBlurbAirway": "Zprůchodněte a vyčistěte dýchací cesty"
+  "drsBlurbAirway": "Zprůchodněte a vyčistěte dýchací cesty",
+  "shopDialogTagline": "Prověřené lékárničky a tréninkové sady, doručované až k vám.",
+  "shopDialogTitle": "Obchod First Aid Angel",
+  "shopDialogClose": "Zavřít",
+  "shopDialogOpenStore": "Otevřít celý obchod",
+  "shopDialogBrowseKits": "Prohlédnout sady"
 }

@@ -204,5 +204,10 @@
   "drsLabelAirway": "氣道 (Airway)",
   "drsLabelResponse": "反應 (Response)",
   "drsLabelDefib": "除顫器 (Defibrillator)",
-  "drsLabelDanger": "危險 (Danger)"
+  "drsLabelDanger": "危險 (Danger)",
+  "shopDialogTagline": "值得信賴的急救箱與培訓套裝，送到您手上。",
+  "shopDialogTitle": "First Aid Angel 商店",
+  "shopDialogBrowseKits": "瀏覽急救包",
+  "shopDialogOpenStore": "開啟完整商店",
+  "shopDialogClose": "關閉"
 }

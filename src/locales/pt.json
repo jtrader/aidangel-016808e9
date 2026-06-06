@@ -204,5 +204,10 @@
   "drsShortSend": "Socorro",
   "drsLabelSend": "Socorro (Send for help)",
   "drsLabelCpr": "RCP (CPR)",
-  "drsBlurbSend": "Ligue para 000 imediatamente"
+  "drsBlurbSend": "Ligue para 000 imediatamente",
+  "shopDialogOpenStore": "Abrir loja completa",
+  "shopDialogBrowseKits": "Explorar kits",
+  "shopDialogClose": "Fechar",
+  "shopDialogTitle": "Loja First Aid Angel",
+  "shopDialogTagline": "Kits de primeiros socorros e pacotes de treinamento de confiança, enviados para perto de você."
 }

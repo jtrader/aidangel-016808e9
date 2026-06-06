@@ -204,5 +204,10 @@
   "drsBlurbAirway": "เปิดและเคลียร์ทางเดินหายใจ",
   "drsBlurbBreathing": "ดู ฟัง และสัมผัสการหายใจ",
   "drsTitle": "แผนปฏิบัติการ DRSABCD",
-  "drsShortSend": "ขอความช่วยเหลือ"
+  "drsShortSend": "ขอความช่วยเหลือ",
+  "shopDialogClose": "ปิด",
+  "shopDialogTitle": "ร้านค้า First Aid Angel Shop",
+  "shopDialogTagline": "ชุดปฐมพยาบาลและชุดอุปกรณ์ฝึกอบรมที่เชื่อถือได้ พร้อมจัดส่งใกล้คุณ",
+  "shopDialogBrowseKits": "เลือกดูชุดปฐมพยาบาล",
+  "shopDialogOpenStore": "เปิดร้านค้าเต็มรูปแบบ"
 }

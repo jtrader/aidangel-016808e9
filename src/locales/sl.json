@@ -204,5 +204,10 @@
   "drsShortSend": "Pomoč",
   "drsLabelSend": "Pokličite na pomoč",
   "drsBlurbCpr": "30 stisov : 2 vpiha",
-  "drsTitle": "Akcijski načrt DRSABCD"
+  "drsTitle": "Akcijski načrt DRSABCD",
+  "shopDialogTitle": "Trgovina First Aid Angel Shop",
+  "shopDialogTagline": "Zaupanja vredni kompleti prve pomoči in paketi za usposabljanje, dostavljeni v vaši bližini.",
+  "shopDialogClose": "Zapri",
+  "shopDialogOpenStore": "Odpri celotno trgovino",
+  "shopDialogBrowseKits": "Prebrskaj komplete"
 }

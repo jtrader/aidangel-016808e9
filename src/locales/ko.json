@@ -204,5 +204,10 @@
   "drsLabelSend": "도움 요청 (Send for help)",
   "drsBlurbSend": "즉시 000으로 전화 호술",
   "drsBlurbDanger": "주변 상황이 안전한지 확인",
-  "drsLabelCpr": "심폐소생술 (CPR)"
+  "drsLabelCpr": "심폐소생술 (CPR)",
+  "shopDialogTagline": "신뢰할 수 있는 구급함 및 교육용 팩을 가까운 지역으로 배송해 드립니다.",
+  "shopDialogBrowseKits": "구급함 둘러보기",
+  "shopDialogTitle": "First Aid Angel Shop",
+  "shopDialogClose": "닫기",
+  "shopDialogOpenStore": "전체 상점 열기"
 }

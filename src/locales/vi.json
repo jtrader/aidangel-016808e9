@@ -204,5 +204,10 @@
   "drsBlurbCpr": "30 lần ép tim : 2 lần thổi ngạt",
   "drsCta": "Bắt đầu hướng dẫn đầy đủ",
   "drsBlurbDefib": "Gắn máy AED và làm theo hướng dẫn",
-  "drsLabelDanger": "Nguy hiểm (Danger)"
+  "drsLabelDanger": "Nguy hiểm (Danger)",
+  "shopDialogTitle": "Cửa hàng First Aid Angel",
+  "shopDialogClose": "Đóng",
+  "shopDialogOpenStore": "Mở toàn bộ cửa hàng",
+  "shopDialogBrowseKits": "Duyệt qua các bộ dụng cụ",
+  "shopDialogTagline": "Bộ sơ cứu và gói đào tạo đáng tin cậy, được vận chuyển đến gần bạn."
 }

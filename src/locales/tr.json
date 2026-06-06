@@ -204,5 +204,10 @@
   "drsLabelSend": "Yardım Çağırın (Send)",
   "drsSubtitle": "Rehberli anlatım için herhangi bir harfe dokunun",
   "drsBlurbDefib": "OED'yi bağlayın ve komutları izleyin",
-  "drsLabelAirway": "Hava Yolu (Airway)"
+  "drsLabelAirway": "Hava Yolu (Airway)",
+  "shopDialogTitle": "First Aid Angel Mağazası",
+  "shopDialogOpenStore": "Mağazanın tamamını aç",
+  "shopDialogClose": "Kapat",
+  "shopDialogBrowseKits": "Kitlere göz at",
+  "shopDialogTagline": "Güvenilir ilk yardım kitleri ve eğitim paketleri, yakınınızda kargolanır."
 }

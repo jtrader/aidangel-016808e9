@@ -204,5 +204,10 @@
   "drsBlurbCpr": "30 uciśnięć : 2 oddechy",
   "drsBlurbResponse": "Mów i dotknij — czy reaguje?",
   "drsBlurbBreathing": "Patrz, słuchaj, wyczuj",
-  "drsCta": "Rozpocznij pełny instruktaż"
+  "drsCta": "Rozpocznij pełny instruktaż",
+  "shopDialogClose": "Zamknij",
+  "shopDialogTagline": "Zaufane apteczki i pakiety szkoleniowe, wysyłane blisko Ciebie.",
+  "shopDialogTitle": "Sklep First Aid Angel",
+  "shopDialogBrowseKits": "Przeglądaj zestawy",
+  "shopDialogOpenStore": "Otwórz pełny sklep"
 }

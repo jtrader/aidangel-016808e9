@@ -204,5 +204,10 @@
   "drsLabelSend": "Hilfe rufen",
   "drsBlurbSend": "Sofort 000 anrufen",
   "drsBlurbAirway": "Atemwege öffnen & freimachen",
-  "drsTitle": "DRSABCD Notfallplan"
+  "drsTitle": "DRSABCD Notfallplan",
+  "shopDialogBrowseKits": "Sets durchsuchen",
+  "shopDialogOpenStore": "Vollständigen Shop öffnen",
+  "shopDialogClose": "Schließen",
+  "shopDialogTagline": "Bewährte Erste-Hilfe-Sets & Trainingspakete, direkt zu Ihnen geliefert.",
+  "shopDialogTitle": "First Aid Angel Shop"
 }

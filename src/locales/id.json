@@ -204,5 +204,10 @@
   "drsBlurbDanger": "Pastikan situasi sekitar aman",
   "drsBlurbSend": "Segera hubungi 000",
   "drsBlurbAirway": "Buka & bersihkan jalan napas",
-  "drsBlurbDefib": "Pasang AED & ikuti instruksi"
+  "drsBlurbDefib": "Pasang AED & ikuti instruksi",
+  "shopDialogOpenStore": "Buka toko selengkapnya",
+  "shopDialogTitle": "First Aid Angel Shop",
+  "shopDialogTagline": "Kotak P3K & paket pelatihan tepercaya, dikirim ke dekat Anda.",
+  "shopDialogClose": "Tutup",
+  "shopDialogBrowseKits": "Telusuri kotak P3K"
 }

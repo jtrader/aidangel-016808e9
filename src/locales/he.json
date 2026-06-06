@@ -204,5 +204,10 @@
   "drsBlurbDanger": "בדיקה שהזירה בטוחה",
   "drsShortDefib": "דפיברילטור",
   "drsBlurbAirway": "פתיחת וניקוי נתיב האוויר",
-  "drsLabelAirway": "נתיב אוויר (Airway)"
+  "drsLabelAirway": "נתיב אוויר (Airway)",
+  "shopDialogTitle": "First Aid Angel Shop",
+  "shopDialogTagline": "ערכות עזרה ראשונה וחבילות הדרכה מהימנות, במשלוח עד אליך.",
+  "shopDialogClose": "סגירה",
+  "shopDialogOpenStore": "פתיחת החנות המלאה",
+  "shopDialogBrowseKits": "עיון בערכות"
 }

@@ -204,5 +204,10 @@
   "drsBlurbCpr": "30 ਵਾਰ ਛਾਤੀ ਦਬਾਓ : 2 ਵਾਰ ਸਾਹ ਦਿਓ",
   "drsCta": "ਪੂਰਾ ਮਾਰਗਦਰਸ਼ਨ ਸ਼ੁਰੂ ਕਰੋ",
   "drsBlurbDefib": "AED ਲਗਾਓ ਅਤੇ ਨਿਰਦੇਸ਼ਾਂ ਦੀ ਪਾਲਣਾ ਕਰੋ",
-  "drsLabelDanger": "Danger (ਖਤਰਾ)"
+  "drsLabelDanger": "Danger (ਖਤਰਾ)",
+  "shopDialogClose": "ਬੰਦ ਕਰੋ",
+  "shopDialogBrowseKits": "ਕਿੱਟਾਂ ਵੇਖੋ (Browse kits)",
+  "shopDialogOpenStore": "ਪੂਰਾ ਸਟੋਰ ਖੋਲ੍ਹੋ",
+  "shopDialogTagline": "ਭਰੋਸੇਮੰਦ ਫਸਟ ਏਡ ਕਿੱਟਾਂ ਅਤੇ ਸਿਖਲਾਈ ਪੈਕ, ਤੁਹਾਡੇ ਨੇੜੇ ਭੇਜੇ ਗਏ।",
+  "shopDialogTitle": "First Aid Angel Shop"
 }

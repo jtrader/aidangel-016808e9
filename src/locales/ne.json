@@ -204,5 +204,10 @@
   "drsLabelSend": "मद्दतको लागि खबर गर्नुहोस् (Send for help)",
   "drsSubtitle": "निर्देशनात्मक जानकारीको लागि कुनै पनि अक्षरमा थिच्नुहोस्",
   "drsBlurbDefib": "AED मेसिन जोड्नुहोस् र निर्देशनहरू पालना गर्नुहोस्",
-  "drsLabelAirway": "श्वासनली (Airway)"
+  "drsLabelAirway": "श्वासनली (Airway)",
+  "shopDialogTagline": "भरोसेमंद प्राथमिक उपचार किट र तालिम प्याकहरू, तपाईंको नजिकै ढुवानी गरिन्छ।",
+  "shopDialogBrowseKits": "किटहरू हेर्नुहोस्",
+  "shopDialogOpenStore": "पूरा स्टोर खोल्नुहोस्",
+  "shopDialogTitle": "First Aid Angel पसल",
+  "shopDialogClose": "बन्द गर्नुहोस्"
 }

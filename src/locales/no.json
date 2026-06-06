@@ -204,5 +204,10 @@
   "drsBlurbResponse": "Snakk og rør — får du svar?",
   "drsBlurbSend": "Ring 000 umiddelbart",
   "drsSubtitle": "Trykk på en bokstav for å få hjelp steg-for-steg",
-  "drsBlurbAirway": "Åpne og sikre frie luftveier"
+  "drsBlurbAirway": "Åpne og sikre frie luftveier",
+  "shopDialogTitle": "First Aid Angel Shop",
+  "shopDialogTagline": "Pålitelige førstehjelpsskrin og opplæringspakker, sendt fra i nærheten av deg.",
+  "shopDialogClose": "Lukk",
+  "shopDialogOpenStore": "Åpne hele nettbutikken",
+  "shopDialogBrowseKits": "Se utstyrspakker"
 }

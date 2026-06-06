@@ -204,5 +204,10 @@
   "drsLabelAirway": "Disajni putevi (Airway)",
   "drsCta": "Pokreni kompletno uputstvo",
   "drsLabelSend": "Tražite pomoć (Send)",
-  "drsBlurbBreathing": "Gledaj, slušaj, oseti"
+  "drsBlurbBreathing": "Gledaj, slušaj, oseti",
+  "shopDialogTitle": "First Aid Angel prodavnica",
+  "shopDialogOpenStore": "Otvori prodavnicu u celosti",
+  "shopDialogBrowseKits": "Pretražite komplete",
+  "shopDialogClose": "Zatvori",
+  "shopDialogTagline": "Poverljivi kompleti prve pomoći i setovi za obuku, isporučeni na vašu adresu."
 }

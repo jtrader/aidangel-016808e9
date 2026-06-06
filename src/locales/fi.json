@@ -204,5 +204,10 @@
   "drsBlurbCpr": "30 painelua : 2 puhallusta",
   "drsTitle": "DRSABCD-toimintasuunnitelma",
   "drsBlurbBreathing": "Katso, kuuntele, tunne",
-  "drsSubtitle": "Napauta kirjainta saadaksesi opastetun läpikäynnin"
+  "drsSubtitle": "Napauta kirjainta saadaksesi opastetun läpikäynnin",
+  "shopDialogClose": "Sulje",
+  "shopDialogOpenStore": "Avaa koko kauppa",
+  "shopDialogBrowseKits": "Selaa pakkauksia",
+  "shopDialogTitle": "First Aid Angel Shop",
+  "shopDialogTagline": "Luotettavat ensiapulaukut ja harjoituspaketit lähelläsi."
 }

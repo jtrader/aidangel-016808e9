@@ -204,5 +204,10 @@
   "drsBlurbCpr": "30 compressions : 2 insufflations",
   "drsLabelDanger": "Danger",
   "drsLabelCpr": "RCR (CPR)",
-  "drsSubtitle": "Appuyez sur une lettre pour un guide étape par étape"
+  "drsSubtitle": "Appuyez sur une lettre pour un guide étape par étape",
+  "shopDialogTagline": "Trousses de premiers secours et packs de formation de confiance, expédiés près de chez vous.",
+  "shopDialogBrowseKits": "Parcourir les trousses",
+  "shopDialogClose": "Fermer",
+  "shopDialogTitle": "Boutique First Aid Angel",
+  "shopDialogOpenStore": "Ouvrir la boutique complète"
 }

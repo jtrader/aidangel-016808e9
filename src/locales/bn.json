@@ -204,5 +204,10 @@
   "drsLabelBreathing": "শ্বাসপ্রশ্বাস (Breathing)",
   "drsLabelDanger": "বিপদ (Danger)",
   "drsBlurbDanger": "চারপাশ নিরাপদ কি না যাচাই করুন",
-  "drsTitle": "DRSABCD অ্যাকশন প্ল্যান"
+  "drsTitle": "DRSABCD অ্যাকশন প্ল্যান",
+  "shopDialogTagline": "নির্ভরযোগ্য প্রাথমিক চিকিৎসা কিট এবং ট্রেনিং প্যাক, আপনার কাছেই পৌঁছে দেওয়া হচ্ছে।",
+  "shopDialogOpenStore": "পুরো স্টোরটি দেখুন",
+  "shopDialogBrowseKits": "কিটগুলো দেখুন",
+  "shopDialogClose": "বন্ধ করুন",
+  "shopDialogTitle": "ফার্স্ট এইড অ্যাঞ্জেল শপ"
 }

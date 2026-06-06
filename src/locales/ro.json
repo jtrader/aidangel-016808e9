@@ -204,5 +204,10 @@
   "drsLabelBreathing": "Respirație (Breathing)",
   "drsLabelCpr": "RCP (CPR)",
   "drsCta": "Începe ghidul complet",
-  "drsLabelSend": "Solicită ajutor (Send)"
+  "drsLabelSend": "Solicită ajutor (Send)",
+  "shopDialogTitle": "Magazin First Aid Angel",
+  "shopDialogTagline": "Truse de prim ajutor și pachete de instruire de încredere, livrate aproape de tine.",
+  "shopDialogClose": "Închide",
+  "shopDialogOpenStore": "Deschide magazinul complet",
+  "shopDialogBrowseKits": "Răsfoiește kituri"
 }

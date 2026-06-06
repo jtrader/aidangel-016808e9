@@ -204,5 +204,10 @@
   "drsBlurbResponse": "Bercakap & sentuh — ada tindak balas?",
   "drsTitle": "Pelan Tindakan DRSABCD",
   "drsLabelResponse": "Tindak Balas (Response)",
-  "drsBlurbDanger": "Pastikan kawasan persekitaran selamat"
+  "drsBlurbDanger": "Pastikan kawasan persekitaran selamat",
+  "shopDialogTagline": "Kit pertolongan cemas & pek latihan yang dipercayai, dihantar berhampiran anda.",
+  "shopDialogClose": "Tutup",
+  "shopDialogBrowseKits": "Semak imbas kit",
+  "shopDialogOpenStore": "Buka kedai penuh",
+  "shopDialogTitle": "Kedai First Aid Angel"
 }

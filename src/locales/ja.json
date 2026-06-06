@@ -204,5 +204,10 @@
   "drsSubtitle": "各項目をタップすると詳細な手順が表示されます",
   "drsShortDefib": "除細動器",
   "drsBlurbResponse": "呼びかけと刺激に反応はありますか？",
-  "drsCta": "ガイドを開始する"
+  "drsCta": "ガイドを開始する",
+  "shopDialogOpenStore": "ストアを開く",
+  "shopDialogTagline": "信頼の救急セットとトレーニングパックをお近くへお届けします。",
+  "shopDialogTitle": "First Aid Angel ショップ",
+  "shopDialogClose": "閉じる",
+  "shopDialogBrowseKits": "キットを見る"
 }

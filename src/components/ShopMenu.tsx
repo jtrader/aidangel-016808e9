@@ -1,124 +1,232 @@
-// Header/footer "Shop" pill. Navigates directly to the in-house shop page
-// (/shop) where the visitor sees a regional kit carousel and our store grid.
+// Header/footer "Shop" pill. On tap, opens a responsive Shop dialogue:
+// - mobile (< 768px): bottom sheet via vaul Drawer
+// - tablet/desktop (>= 768px): centered Dialog
+// The dialog body is rendered by <ShopDialogContent />, which is the
+// integration point for the future marketing/audience routing layer.
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, X } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { translateStrings } from "@/lib/uiTranslate";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { KitCarousel } from "@/components/kits/KitCarousel";
+import { useCountry } from "@/hooks/useCountry";
+import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerTrigger,
+  DrawerClose,
+} from "@/components/ui/drawer";
+import { ShopDialogContent } from "@/components/shop/ShopDialogContent";
 import { trackShopClick } from "@/lib/giveAnalytics";
 import { fetchProducts } from "@/lib/shopify";
-import { useCountry } from "@/hooks/useCountry";
 
 interface ShopMenuProps {
   variant?: "header" | "footer";
 }
 
 export default function ShopMenu({ variant = "footer" }: ShopMenuProps) {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const { country } = useCountry();
-  const [label, setLabel] = useState("Shop");
-  const [prefetching, setPrefetching] = useState(false);
-  const [prefetched, setPrefetched] = useState(false);
+  const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
+  const [prefetched, setPrefetched] = useState(false);
 
+  const label = t("navShop");
+  const title = t("shopDialogTitle");
+  const tagline = t("shopDialogTagline");
+
+  const triggerClasses =
+    variant === "header"
+      ? "inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 transition-colors"
+      : "inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 transition-colors";
+
+  const fireOpenAnalytics = () => {
+    try {
+      trackShopClick({
+        ngoId: "faa-store",
+        countryCode: country?.code ?? "",
+        countryName: country?.name ?? "",
+        destinationUrl: "/store",
+        isNational: false,
+        language: language ?? "en",
+        variant: variant === "header" ? "header" : "footer",
+      });
+    } catch {
+      /* noop */
+    }
+  };
+
+  const fireCtaAnalytics = (kind: "primary" | "secondary") => {
+    try {
+      trackShopClick({
+        ngoId: "faa-store",
+        countryCode: country?.code ?? "",
+        countryName: country?.name ?? "",
+        destinationUrl: kind === "primary" ? "/store" : "/shop/kits",
+        isNational: false,
+        language: language ?? "en",
+        variant: kind === "primary" ? "dialog_cta_primary" : "dialog_cta_secondary",
+      });
+    } catch {
+      /* noop */
+    }
+  };
+
+  // Prefetch products + cart drawer on first open for snappy UX.
   useEffect(() => {
-    if (language === "en") {
-      setLabel("Shop");
-      return;
-    }
+    if (!open || prefetched) return;
     let cancelled = false;
-    translateStrings(language, ["Shop"]).then((s) => {
-      if (!cancelled) setLabel(s[0] ?? "Shop");
-    });
-    return () => { cancelled = true; };
-  }, [language]);
-
-  const classes = variant === "header"
-    ? "inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
-    : "inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors";
-
-  const handleOpen = async () => {
-    setOpen(true);
-    // analytics: record a shop dialog open with real country/language
-    try {
-      trackShopClick({
-        ngoId: "faa-store",
-        countryCode: country?.code ?? "",
-        countryName: country?.name ?? "",
-        destinationUrl: "/store",
-        isNational: false,
-        language: language ?? "en",
-        variant: "footer",
-      });
-    } catch {}
-
-    if (prefetched) return;
-    setPrefetching(true);
-    try {
-      // prefetch a few products for faster UX in the dialog and warm images
-      const products = await fetchProducts(6);
-      for (const p of products) {
-        const url = p.node.images?.edges?.[0]?.node?.url;
-        if (url) {
-          const img = new Image();
-          img.src = url;
+    (async () => {
+      try {
+        const products = await fetchProducts(6);
+        if (cancelled) return;
+        for (const p of products) {
+          const url = p.node.images?.edges?.[0]?.node?.url;
+          if (url) {
+            const img = new Image();
+            img.src = url;
+          }
         }
+        void import("@/components/shop/CartDrawer");
+        setPrefetched(true);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn("ShopMenu prefetch failed", e);
       }
-      // pre-import the cart drawer module so the cart UI is cached
-      void import("@/components/shop/CartDrawer");
-      setPrefetched(true);
-    } catch (e) {
-      // ignore prefetch errors
-      // eslint-disable-next-line no-console
-      console.warn("prefetch products failed", e);
-    } finally {
-      setPrefetching(false);
-    }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [open, prefetched]);
+
+  const handleTriggerClick = () => {
+    setOpen(true);
+    fireOpenAnalytics();
   };
 
-  const handleCtaClick = () => {
-    try {
-      trackShopClick({
-        ngoId: "faa-store",
-        countryCode: country?.code ?? "",
-        countryName: country?.name ?? "",
-        destinationUrl: "/store",
-        isNational: false,
-        language: language ?? "en",
-        variant: "dialog_cta",
-      });
-    } catch {}
-  };
+  const Body = (
+    <>
+      <ShopDialogContent
+        surface="shop_dialog"
+        country={country}
+        language={language}
+        autoplay={open}
+      />
+      <div className="mt-5 flex flex-col-reverse sm:flex-row sm:justify-end gap-2">
+        <Link
+          to="/shop/kits"
+          onClick={() => {
+            fireCtaAnalytics("secondary");
+            setOpen(false);
+          }}
+          className="inline-flex items-center justify-center h-11 px-4 rounded-full border border-border bg-card text-foreground text-sm font-medium hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 transition-colors"
+        >
+          {t("shopDialogBrowseKits")}
+        </Link>
+        <Link
+          to="/store"
+          onClick={() => {
+            fireCtaAnalytics("primary");
+            setOpen(false);
+          }}
+          className="inline-flex items-center justify-center h-11 px-5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 transition-colors"
+        >
+          {t("shopDialogOpenStore")}
+        </Link>
+      </div>
+    </>
+  );
 
-  const closeDialog = () => {
-    setOpen(false);
-  };
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>
+          <button
+            type="button"
+            onClick={handleTriggerClick}
+            className={triggerClasses}
+            aria-label={label}
+            data-analytics-event="shop_pill_click"
+          >
+            <ShoppingBag className="h-4 w-4" aria-hidden="true" />
+            <span>{label}</span>
+          </button>
+        </DrawerTrigger>
+        <DrawerContent
+          className="max-h-[85vh] bg-card border-border focus:outline-none motion-reduce:transition-none"
+          lang={language}
+        >
+          <DrawerHeader className="px-4 pb-2 text-left">
+            <DrawerTitle className="font-display text-lg text-foreground">
+              {title}
+            </DrawerTitle>
+            <DrawerDescription className="text-sm text-muted-foreground">
+              {tagline}
+            </DrawerDescription>
+          </DrawerHeader>
+          <div className="px-4 pb-6 overflow-y-auto">{Body}</div>
+          <DrawerClose asChild>
+            <button
+              type="button"
+              aria-label={t("shopDialogClose")}
+              className="absolute top-3 right-3 inline-flex items-center justify-center w-11 h-11 rounded-full text-muted-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+            >
+              <X className="h-5 w-5" aria-hidden="true" />
+            </button>
+          </DrawerClose>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button type="button" onClick={handleOpen} className={classes} aria-label={label} data-analytics-event="shop_pill_click">
+        <button
+          type="button"
+          onClick={handleTriggerClick}
+          className={triggerClasses}
+          aria-label={label}
+          data-analytics-event="shop_pill_click"
+        >
           <ShoppingBag className="h-4 w-4" aria-hidden="true" />
           <span>{label}</span>
         </button>
       </DialogTrigger>
-
-      <DialogContent className="w-full max-w-3xl sm:max-w-2xl">
+      <DialogContent
+        className="w-full max-w-xl lg:max-w-3xl rounded-2xl bg-card border border-border shadow-xl ring-1 ring-border/50 p-6 lg:p-8 motion-reduce:animate-none"
+        lang={language}
+      >
         <DialogHeader>
-          <DialogTitle>{label}</DialogTitle>
+          <DialogTitle className="font-display text-lg lg:text-xl text-foreground">
+            {title}
+          </DialogTitle>
+          <DialogDescription className="text-sm text-muted-foreground">
+            {tagline}
+          </DialogDescription>
         </DialogHeader>
-        <div className="mt-4">
-          {/* limit carousel on mobile by relying on KitCarousel's limit prop; autoplay when dialog open */}
-          <KitCarousel limit={6} autoplay={open} />
-        </div>
-        <div className="mt-4 flex justify-end">
-          <Link to="/store" onClick={handleCtaClick} className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90">
-            Open full store
-          </Link>
-        </div>
+        <div className="mt-4">{Body}</div>
+        <DialogClose asChild>
+          <button
+            type="button"
+            aria-label={t("shopDialogClose")}
+            className="absolute top-3 right-3 inline-flex items-center justify-center w-11 h-11 rounded-full text-muted-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+          >
+            <X className="h-5 w-5" aria-hidden="true" />
+          </button>
+        </DialogClose>
       </DialogContent>
     </Dialog>
   );
