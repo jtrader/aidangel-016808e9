@@ -206,26 +206,26 @@ const Index = () => {
                       <Link
                         to="/cpr"
                         className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
-                        aria-label="Open live CPR guide with metronome"
+                        aria-label={t("homePillLiveCprAria")}
                       >
                         <HeartPulse className="h-4 w-4" />
-                        Live CPR Guide
+                        {t("homePillLiveCpr")}
                       </Link>
                       <Link
                         to="/aed-finder"
                         className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors border border-border"
-                        aria-label="Find nearest AED"
+                        aria-label={t("homePillAedFinderAria")}
                       >
                         <MapPin className="h-4 w-4" />
-                        AED Finder
+                        {t("homePillAedFinder")}
                       </Link>
                       <Link
                         to="/symptoms"
                         className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors border border-border"
-                        aria-label="Find first aid by symptom"
+                        aria-label={t("homePillSymptomFinderAria")}
                       >
                         <Search className="h-4 w-4" />
-                        Symptom Finder
+                        {t("homePillSymptomFinder")}
                       </Link>
                     </div>
                   </div>
