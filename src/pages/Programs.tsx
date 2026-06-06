@@ -12,10 +12,10 @@ import { useUiStrings } from "@/hooks/useUiStrings";
 
 const AUDIENCE: Record<string, { label: string; tag: string }> = {
   "emergency-response-program": { label: "Core program", tag: "All Australians" },
-  "parents-childcare": { label: "Family", tag: "Parents & Childcare" },
-  "workplace-trades": { label: "Workplace", tag: "Workplace & Trades" },
-  "outdoor-remote": { label: "Outdoor", tag: "Outdoor & Remote" },
-  "aged-care": { label: "Carers", tag: "Aged Care & Carers" },
+  "parents-childcare-essentials": { label: "Family", tag: "Parents & Childcare" },
+  "workplace-trades-essentials": { label: "Workplace", tag: "Workplace & Trades" },
+  "outdoor-remote-essentials": { label: "Outdoor", tag: "Outdoor & Remote" },
+  "aged-care-essentials": { label: "Carers", tag: "Aged Care & Carers" },
 };
 
 export default function Programs() {

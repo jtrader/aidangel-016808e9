@@ -1,22 +1,23 @@
 export type FAAEventType =
   | "kb_article_viewed"
+  | "angel_action_viewed"
   | "symptom_lookup"
   | "aed_location_search"
-  | "workplace_vertical_viewed"
   | "course_viewed"
-  | "angel_action_viewed"
-  | "kb_course_conversion";
+  | "course_enrolment"
+  | "kb_course_conversion"
+  | "kb_program_conversion";
 
 export interface FAASignal {
-  site: "firstaidangel";
-  help_stage: "prepare";
+  site: string;
+  help_stage: string;
   source_event_type: FAAEventType;
   theme: string | null;
+  urgency: string;
+  sensitivity_tier: number;
+  suppression_active: boolean;
   location_language: string;
   location_country: string | null;
-  sensitivity_tier: 1 | 2 | 3;
-  urgency: "unknown";
-  suppression_active: boolean;
   session_id: string;
   created_at: string;
 }

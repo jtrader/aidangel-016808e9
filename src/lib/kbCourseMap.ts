@@ -1,40 +1,51 @@
 // Static map of KB topic slug → course slug.
 // Only topics with a matching course are included.
-// Derived from the course_slug fields in kb/_meta.json.
+// Authoritative map derived from src/components/TopicCover.tsx KB_TO_COURSE
 export const KB_COURSE_MAP: Record<string, string> = {
-  drsabcd: "drsabcd",
-  cpr: "cpr",
   aed: "aed-use",
-  "recovery-position": "recovery-position",
-  choking: "choking",
-  bleeding: "bleeding",
-  burns: "burns",
-  shock: "shock",
+  "allergic-reactions": "anaphylaxis-allergies",
+  anaphylaxis: "anaphylaxis-allergies",
   asthma: "asthma",
-  anaphylaxis: "anaphylaxis",
-  "allergic-reactions": "allergic-reactions",
-  "heart-attack": "heart-attack",
-  stroke: "stroke",
-  seizures: "seizures",
-  diabetes: "diabetes",
-  "head-injury": "head-injury",
-  "spinal-injury": "spinal-injury",
-  fractures: "fractures",
-  "sprains-strains": "sprains-strains",
-  "snake-bite": "snake-bite",
-  "spider-bite": "spider-bite",
-  "jellyfish-stings": "jellyfish-stings",
-  "heat-illness": "heat-illness",
-  hypothermia: "hypothermia",
-  poisoning: "poisoning",
-  drowning: "drowning",
-  nosebleed: "nosebleed",
-  fainting: "fainting",
+  bleeding: "severe-bleeding",
+  burns: "burns-scalds",
+  choking: "choking",
+  cpr: "cpr-essentials",
   dehydration: "dehydration",
-  sunburn: "sunburn",
   "dental-injury": "dental-injury",
-  "eye-injuries": "eye-injuries",
+  diabetes: "diabetes",
+  drowning: "drowning",
+  drsabcd: "recovery-drsabcd",
   "electric-shock": "electric-shock",
+  "eye-injuries": "eye-injuries",
+  fainting: "fainting",
+  fractures: "fractures",
+  "head-injury": "head-injuries-seizures",
+  "heart-attack": "stroke-heart-attack",
+  "heat-illness": "heat-emergencies",
+  hypothermia: "cold-emergencies",
+  "jellyfish-stings": "bites-and-stings",
+  "mental-health-first-aid": "mental-health-first-aid",
+  nosebleed: "nosebleed",
+  poisoning: "poisoning",
+  "recovery-position": "recovery-drsabcd",
+  seizures: "head-injuries-seizures",
+  shock: "shock",
+  "snake-bite": "bites-and-stings",
+  "spider-bite": "bites-and-stings",
+  "spinal-injury": "spinal-injury",
+  "sprains-strains": "sprains-strains",
+  stroke: "stroke-heart-attack",
+  sunburn: "sunburn",
+};
+
+// Sensitive KB slugs set
+export const SENSITIVE_KB_SLUGS = new Set<string>(["mental-health-first-aid"]);
+
+// KB topic → program mapping (only three topics map to programs)
+export const KB_PROGRAM_MAP: Record<string, { programSlug: string; tone: "workplace" | "remote" | "aged" }> = {
+  "workplace-first-aid": { programSlug: "workplace-trades-essentials", tone: "workplace" },
+  "remote-first-aid": { programSlug: "outdoor-remote-essentials", tone: "remote" },
+  "elderly-care": { programSlug: "aged-care-essentials", tone: "aged" },
 };
 
 /**
@@ -43,4 +54,15 @@ export const KB_COURSE_MAP: Record<string, string> = {
  */
 export function courseSlugForKbTopic(kbSlug: string): string | null {
   return KB_COURSE_MAP[kbSlug] ?? null;
+}
+
+/**
+ * Returns program config for a KB topic if it maps to a program
+ */
+export function programConfigForKbTopic(kbSlug: string): { programSlug: string; tone: "workplace" | "remote" | "aged" } | null {
+  return KB_PROGRAM_MAP[kbSlug] ?? null;
+}
+
+export function hasHandoff(kbSlug: string): boolean {
+  return !!KB_COURSE_MAP[kbSlug] || !!KB_PROGRAM_MAP[kbSlug];
 }

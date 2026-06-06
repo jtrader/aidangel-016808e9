@@ -15,7 +15,8 @@
       "cpr",
       "aed",
       "recovery-position"
-    ]
+    ],
+    "course_slug": "recovery-drsabcd"
   },
   {
     "slug": "cpr",
@@ -35,7 +36,8 @@
       "aed",
       "choking",
       "drowning"
-    ]
+    ],
+    "course_slug": "cpr-essentials"
   },
   {
     "slug": "aed",
@@ -54,7 +56,8 @@
       "cpr",
       "drsabcd",
       "cardiac-arrest"
-    ]
+    ],
+    "course_slug": "aed-use"
   },
   {
     "slug": "recovery-position",
@@ -72,7 +75,8 @@
       "drsabcd",
       "head-injury",
       "seizures"
-    ]
+    ],
+    "course_slug": "recovery-drsabcd"
   },
   {
     "slug": "choking",
@@ -90,7 +94,8 @@
     "related": [
       "cpr",
       "drsabcd"
-    ]
+    ],
+    "course_slug": "choking"
   },
   {
     "slug": "bleeding",
@@ -109,7 +114,8 @@
       "shock",
       "drsabcd",
       "fractures"
-    ]
+    ],
+    "course_slug": "severe-bleeding"
   },
   {
     "slug": "burns",
@@ -128,7 +134,8 @@
       "sunburn",
       "electric-shock",
       "shock"
-    ]
+    ],
+    "course_slug": "burns-scalds"
   },
   {
     "slug": "shock",
@@ -147,7 +154,8 @@
       "burns",
       "anaphylaxis",
       "drsabcd"
-    ]
+    ],
+    "course_slug": "shock"
   },
   {
     "slug": "asthma",
@@ -165,7 +173,8 @@
     "related": [
       "anaphylaxis",
       "allergic-reactions"
-    ]
+    ],
+    "course_slug": "asthma"
   },
   {
     "slug": "anaphylaxis",
@@ -184,7 +193,8 @@
       "allergic-reactions",
       "asthma",
       "shock"
-    ]
+    ],
+    "course_slug": "anaphylaxis-allergies"
   },
   {
     "slug": "allergic-reactions",
@@ -202,7 +212,8 @@
     "related": [
       "anaphylaxis",
       "asthma"
-    ]
+    ],
+    "course_slug": "anaphylaxis-allergies"
   },
   {
     "slug": "heart-attack",
@@ -221,7 +232,8 @@
       "cpr",
       "aed",
       "stroke"
-    ]
+    ],
+    "course_slug": "stroke-heart-attack"
   },
   {
     "slug": "stroke",
@@ -239,7 +251,8 @@
     "related": [
       "heart-attack",
       "seizures"
-    ]
+    ],
+    "course_slug": "stroke-heart-attack"
   },
   {
     "slug": "seizures",
@@ -257,7 +270,8 @@
     "related": [
       "recovery-position",
       "head-injury"
-    ]
+    ],
+    "course_slug": "head-injuries-seizures"
   },
   {
     "slug": "diabetes",
@@ -275,7 +289,8 @@
     "related": [
       "drsabcd",
       "recovery-position"
-    ]
+    ],
+    "course_slug": "diabetes"
   },
   {
     "slug": "head-injury",
@@ -293,7 +308,8 @@
       "spinal-injury",
       "recovery-position",
       "seizures"
-    ]
+    ],
+    "course_slug": "head-injuries-seizures"
   },
   {
     "slug": "spinal-injury",
@@ -312,7 +328,8 @@
       "head-injury",
       "drsabcd",
       "recovery-position"
-    ]
+    ],
+    "course_slug": "spinal-injury"
   },
   {
     "slug": "fractures",
@@ -330,7 +347,8 @@
       "sprains-strains",
       "bleeding",
       "shock"
-    ]
+    ],
+    "course_slug": "fractures"
   },
   {
     "slug": "sprains-strains",
@@ -348,7 +366,8 @@
     ],
     "related": [
       "fractures"
-    ]
+    ],
+    "course_slug": "sprains-strains"
   },
   {
     "slug": "snake-bite",
@@ -366,7 +385,8 @@
       "spider-bite",
       "jellyfish-stings",
       "shock"
-    ]
+    ],
+    "course_slug": "bites-and-stings"
   },
   {
     "slug": "spider-bite",
@@ -382,7 +402,8 @@
     ],
     "related": [
       "snake-bite"
-    ]
+    ],
+    "course_slug": "bites-and-stings"
   },
   {
     "slug": "jellyfish-stings",
@@ -399,7 +420,8 @@
     ],
     "related": [
       "snake-bite"
-    ]
+    ],
+    "course_slug": "bites-and-stings"
   },
   {
     "slug": "heat-illness",
@@ -417,7 +439,8 @@
       "dehydration",
       "sunburn",
       "hypothermia"
-    ]
+    ],
+    "course_slug": "heat-emergencies"
   },
   {
     "slug": "hypothermia",
@@ -434,7 +457,8 @@
     "related": [
       "heat-illness",
       "drowning"
-    ]
+    ],
+    "course_slug": "cold-emergencies"
   },
   {
     "slug": "poisoning",
@@ -452,7 +476,8 @@
     "related": [
       "drsabcd",
       "recovery-position"
-    ]
+    ],
+    "course_slug": "poisoning"
   },
   {
     "slug": "drowning",
@@ -470,7 +495,8 @@
       "cpr",
       "drsabcd",
       "hypothermia"
-    ]
+    ],
+    "course_slug": "drowning"
   },
   {
     "slug": "nosebleed",
@@ -485,7 +511,8 @@
     ],
     "related": [
       "head-injury"
-    ]
+    ],
+    "course_slug": "nosebleed"
   },
   {
     "slug": "fainting",
@@ -502,7 +529,8 @@
     "related": [
       "shock",
       "recovery-position"
-    ]
+    ],
+    "course_slug": "fainting"
   },
   {
     "slug": "dehydration",
@@ -519,7 +547,8 @@
     "related": [
       "heat-illness",
       "diabetes"
-    ]
+    ],
+    "course_slug": "dehydration"
   },
   {
     "slug": "sunburn",
@@ -537,7 +566,8 @@
       "burns",
       "dehydration",
       "heat-illness"
-    ]
+    ],
+    "course_slug": "sunburn"
   },
   {
     "slug": "dental-injury",
@@ -553,7 +583,8 @@
     ],
     "related": [
       "bleeding"
-    ]
+    ],
+    "course_slug": "dental-injury"
   },
   {
     "slug": "eye-injuries",
@@ -569,7 +600,8 @@
     ],
     "related": [
       "bleeding"
-    ]
+    ],
+    "course_slug": "eye-injuries"
   },
   {
     "slug": "electric-shock",
@@ -586,7 +618,8 @@
       "burns",
       "cpr",
       "shock"
-    ]
+    ],
+    "course_slug": "electric-shock"
   },
   {
     "slug": "workplace-first-aid",
@@ -682,6 +715,7 @@
       "recovery-position",
       "bleeding",
       "heart-attack"
-    ]
+    ],
+    "course_slug": "mental-health-first-aid"
   }
 ]

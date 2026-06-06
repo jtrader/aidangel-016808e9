@@ -184,3 +184,27 @@ export async function fireKbCourseConversion(
     created_at: new Date().toISOString(),
   });
 }
+
+// New helper: fire when a user is handed off from a KB topic to a full program
+export async function fireKbProgramConversion(
+  kbSlug: string,
+  programSlug: string,
+  lang: string,
+  country: string | null,
+): Promise<void> {
+  const tier = KB_TOPIC_TIERS[kbSlug] ?? 2;
+  await writeSignal({
+    site: "firstaidangel",
+    help_stage: "prepare",
+    source_event_type: "kb_program_conversion",
+    theme: kbSlug,
+    location_language: lang,
+    location_country: country,
+    sensitivity_tier: tier,
+    urgency: "unknown",
+    // For tier-3 topics (mental health) we keep suppression active
+    suppression_active: tier === 3,
+    session_id: getSessionId(),
+    created_at: new Date().toISOString(),
+  });
+}
