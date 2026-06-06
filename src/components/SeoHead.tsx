@@ -15,6 +15,8 @@ type Props = {
   /** og:type — defaults to "website". Use "article" for blog/KB pages. */
   ogType?: string;
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+  /** When true, emit <meta name="robots" content="noindex,nofollow"> for admin/private routes. */
+  noindex?: boolean;
 };
 
 const DEFAULT_OG_IMAGE = "https://firstaidangel.org/og-image.png";
