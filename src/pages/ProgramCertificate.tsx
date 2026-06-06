@@ -17,7 +17,7 @@ export default function ProgramCertificate() {
   const { slug } = useParams<{ slug: string }>();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { openCheckout, loading: checkoutLoading } = usePaddleCheckout();
+  const checkoutLoading = false;
   const tr = useUiStrings({
     heading: "CPD Certificate",
     courseNotFound: "Course not found",
