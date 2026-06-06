@@ -64,7 +64,7 @@ interface DonateDialogContentProps {
   };
 }
 
-function buildDonateUrl(site: StJohnSite, amount: number, frequency: Frequency) {
+export function buildDonateUrl(site: StJohnSite, amount: number, frequency: Frequency) {
   const url = new URL(site.base + site.donatePath);
   if (amount > 0) url.searchParams.set("amount", String(amount));
   if (site.raisely) {
