@@ -40,7 +40,7 @@ const KbSuggestionCard = ({ slug, urgent = false }: Props) => {
   return (
     <Link
       to={href}
-      className={`ml-11 mt-2 flex items-start gap-3 rounded-2xl border p-3 transition-all hover:shadow-md ${
+      className={`ml-11 mt-2 max-w-[80%] flex items-start gap-3 rounded-2xl border p-3 transition-all hover:shadow-md ${
         urgent
           ? "border-destructive/40 bg-destructive/5 hover:border-destructive"
           : "border-primary/30 bg-primary/5 hover:border-primary"
