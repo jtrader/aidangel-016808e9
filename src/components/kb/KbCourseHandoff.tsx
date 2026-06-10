@@ -122,7 +122,7 @@ export function KbCourseHandoff({ kbSlug, lang }: Props) {
 
     // Navigate — carry kbSlug so the lesson page can offer "Back to article"
     // If not signed in, go to auth with full redirect target preserved
-    const target = `/topics/${courseSlug}?from=kb&kbSlug=${kbSlug}`;
+    const target = `/personal`;
     if (!user) {
       navigate(`/auth?redirect=${encodeURIComponent(target)}`);
       return;
