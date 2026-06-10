@@ -7,6 +7,7 @@ import { emergencyNumberForCountry } from "@/lib/donations";
 import { Button } from "@/components/ui/button";
 import { loadMapboxToken, mapboxgl, reverseGeocodeCountry } from "@/lib/mapboxLoader";
 import EmergencyCallButton from "@/components/EmergencyCallButton";
+import EmergencyNumberLink from "@/components/shared/EmergencyNumberLink";
 import SiteHeader from "@/components/SiteHeader";
 import {
   Aed,
@@ -98,7 +99,6 @@ export default function AedFinder() {
         markersRef.current.set(aed.id, marker);
       });
 
-      // Remove markers outside the current view.
       markersRef.current.forEach((m, id) => {
         if (!seen.has(id)) {
           const ll = m.getLngLat();
@@ -206,7 +206,7 @@ export default function AedFinder() {
             <div className="flex-1">
               <h1 className="font-heading font-bold text-lg leading-tight">AED Finder</h1>
               <p className="text-xs text-muted-foreground">
-                In an emergency, call <a href={`tel:${emergency}`} className="text-primary font-semibold">{emergency}</a> first.
+                In an emergency, call <EmergencyNumberLink number={emergency} className="text-primary font-semibold">{emergency}</EmergencyNumberLink> first.
               </p>
             </div>
             <a
