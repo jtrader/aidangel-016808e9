@@ -13,8 +13,8 @@ export interface MyLocationPanelProps {
   embedded?: boolean;
 }
 
-export function MyLocationPanel({ embedded }: MyLocationPanelProps = {}) {
-  return <LegacyMyLocation embedded={embedded} />;
+export function MyLocationPanel(_props: MyLocationPanelProps = {}) {
+  return <LegacyMyLocation />;
 }
 
 export default MyLocationPanel;

@@ -69,7 +69,7 @@ export default function CallConfirmDialog({
         </a>
 
         <div className="mt-4">
-          <MyLocationPanel embedded />
+          <MyLocationPanel />
         </div>
 
         <button
