@@ -357,27 +357,6 @@ const Index = () => {
                 )}
               </div>
 
-              {!isLoading && messages[messages.length - 1]?.role === "assistant" && !inWalkthrough && (
-                <div className="text-center space-y-2 animate-fade-in">
-                  <p className="text-sm font-medium text-muted-foreground">{t("walkAmIHelping")}</p>
-                  <div className="flex items-center justify-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => send("Yes, that's helpful — keep going.")}
-                      className="px-4 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors"
-                    >
-                      {t("walkYes")}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => send("Not quite — can you try a different approach?")}
-                      className="px-4 py-1.5 rounded-full border border-border text-foreground text-xs font-semibold hover:bg-muted transition-colors"
-                    >
-                      {t("walkNo")}
-                    </button>
-                  </div>
-                </div>
-              )}
 
 
               <div className="max-w-2xl mx-auto w-full">
