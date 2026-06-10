@@ -3,9 +3,7 @@ import { Phone } from "lucide-react";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogTitle,
-  DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useCountry } from "@/hooks/useCountry";
@@ -35,7 +33,6 @@ export interface CallConfirmDialogProps {
 export default function CallConfirmDialog({
   children,
   number: numberOverride,
-  serviceLabel,
 }: CallConfirmDialogProps) {
   const [open, setOpen] = useState(false);
   const { code } = useCountry();
@@ -46,18 +43,8 @@ export default function CallConfirmDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-primary">
-            <Phone className="w-5 h-5" />
-            Calling {number}
-          </DialogTitle>
-          <DialogDescription>
-            {serviceLabel ? `${serviceLabel}. ` : ""}
-            Confirm your location below, then tap{" "}
-            <span className="font-semibold">Call {number} now</span>. Read the
-            details to the operator.
-          </DialogDescription>
-        </DialogHeader>
+        {/* Visible header removed by request; sr-only title retained for accessibility. */}
+        <DialogTitle className="sr-only">Calling {number}</DialogTitle>
 
         <a
           href={telHref}
@@ -69,7 +56,7 @@ export default function CallConfirmDialog({
         </a>
 
         <div className="mt-4">
-          <MyLocationPanel />
+          <MyLocationPanel embedded />
         </div>
 
         <button
