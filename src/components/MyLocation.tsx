@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Copy, MapPin, Phone, RefreshCw, Share2, AlertTriangle, Check, X, HeartPulse, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useCountry } from "@/hooks/useCountry";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { emergencyNumberForCountry } from "@/lib/donations";
 import AedMiniMap from "@/components/AedMiniMap";
 
@@ -235,7 +236,16 @@ function getErrorState(code: number): GeoErrorState {
 
 export default function MyLocation() {
   const { code, country } = useCountry();
+  const { language } = useLanguage();
   const countryIso = code.toUpperCase();
+
+  const countryDisplayName = useMemo(() => {
+    try {
+      return new Intl.DisplayNames([language], { type: "region" }).of(countryIso) || country.name;
+    } catch {
+      return country.name;
+    }
+  }, [countryIso, country.name, language]);
   const emergencyNumber = emergencyNumberForCountry(code);
   const telHref = `tel:${emergencyNumber}`;
   const [coords, setCoords] = useState<Coords | null>(null);
@@ -422,7 +432,7 @@ export default function MyLocation() {
         <Phone className="h-5 w-5" aria-hidden /> Call {emergencyNumber} Now
       </a>
       <p className="hidden sm:block text-xs text-muted-foreground text-center mt-1">
-        In {country.name}, <a href={telHref} className="text-primary font-semibold underline-offset-2 hover:underline">Call {emergencyNumber}</a> for emergency services.
+        In {countryDisplayName}, <a href={telHref} className="text-primary font-semibold underline-offset-2 hover:underline">Call {emergencyNumber}</a> for emergency services.
       </p>
 
       {/* AED near me — click to reveal */}
