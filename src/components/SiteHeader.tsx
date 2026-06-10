@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import HamburgerMenu from "@/components/HamburgerMenu";
+import DonateMenu from "@/components/DonateMenu";
+import ShopMenu from "@/components/ShopMenu";
+import LearnMenu from "@/components/LearnMenu";
 import { useLanguage } from "@/contexts/LanguageContext";
 import aidAngelLogo from "@/assets/aidangel-logo.png";
 
@@ -38,6 +41,11 @@ export default function SiteHeader({ backTo, backLabel }: SiteHeaderProps) {
         <div className="flex items-center justify-end flex-shrink-0">
           <HamburgerMenu />
         </div>
+      </div>
+      <div className="max-w-4xl mx-auto mt-3 flex items-center justify-center gap-2">
+        <DonateMenu variant="header" />
+        <ShopMenu variant="header" />
+        <LearnMenu variant="header" />
       </div>
       {backTo && (
         <div className="max-w-4xl mx-auto mt-3">
