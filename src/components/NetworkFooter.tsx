@@ -169,7 +169,7 @@ export default function NetworkFooter() {
           </p>
         </div>
         <p className="text-[11px] text-muted-foreground text-center">
-          © 2026 LoveKey. All rights reserved.
+          © 2026 Love Key. All rights reserved.
         </p>
       </div>
     </footer>
