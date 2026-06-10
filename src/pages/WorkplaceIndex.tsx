@@ -56,7 +56,7 @@ export default function WorkplaceIndex() {
           fallback={
             <>
               {/* Hero */}
-              <section className="bg-gradient-to-br from-primary/10 via-background to-background border-b border-border">
+              <section className="bg-background border-b border-border">
                 <div className="max-w-5xl mx-auto px-4 py-10 md:py-14">
                   <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold mb-4">
                     <Briefcase className="h-3.5 w-3.5" />
@@ -105,7 +105,7 @@ export default function WorkplaceIndex() {
                               />
                             </div>
                           ) : (
-                            <div className={`aspect-[16/9] bg-gradient-to-br ${v.gradient}`} aria-hidden />
+                            <div className="aspect-[16/9] bg-muted" aria-hidden />
                           )}
                           <div className="p-4">
                             <div className="flex items-start justify-between gap-3">
