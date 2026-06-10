@@ -350,7 +350,7 @@ const SymptomFinder = () => {
                         <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{q.subtext}</p>
                       )}
                     </div>
-                    <ul className="space-y-2">
+                    <ul className={q.id === "root" ? "grid grid-cols-2 gap-2" : "space-y-2"}>
                       {q.options.map((opt, i) => (
                         <li key={i}>
                           <button
