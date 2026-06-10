@@ -163,7 +163,7 @@ export default function NetworkFooter() {
               rel="noopener noreferrer"
               className="text-primary underline hover:opacity-90 transition-opacity"
             >
-              LoveKey RSP-aligned
+              Love Key RSP-aligned
             </a>
             <span className="text-muted-foreground"> — Ethical, privacy-conscious help routing under the Respectful Synchronised Protocol.</span>
           </p>
