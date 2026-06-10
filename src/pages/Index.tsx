@@ -260,6 +260,9 @@ const Index = () => {
             />
           ) : (
             <>
+              <h2 className="font-display font-bold text-xl sm:text-2xl text-foreground text-center">
+                {t("welcomeHeading")}
+              </h2>
               <div className="space-y-4">
                 {messages.map((msg, i) => {
                   const isLast = i === messages.length - 1;
