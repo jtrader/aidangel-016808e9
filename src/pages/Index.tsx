@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Loader2, RotateCcw, MapPin, Phone, HeartPulse, Stethoscope, FlaskConical, Search } from "lucide-react";
+import { Loader2, RotateCcw, MapPin, Phone, HeartPulse, Stethoscope, FlaskConical, Search, LocateFixed } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { EmergencyBanner } from "@/components/shared";
@@ -176,7 +176,6 @@ const Index = () => {
 
 
 
-
       {/* Main content */}
       <main ref={scrollRef} className="flex-1 px-4 py-6 overflow-y-auto min-h-0">
         <div className="max-w-3xl mx-auto space-y-6">
@@ -213,7 +212,7 @@ const Index = () => {
                       </Link>
                       <Link
                         to="/aed-finder"
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors border border-border"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
                         aria-label={t("homePillAedFinderAria")}
                       >
                         <MapPin className="h-4 w-4" />
@@ -221,11 +220,19 @@ const Index = () => {
                       </Link>
                       <Link
                         to="/symptoms"
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors border border-border"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
                         aria-label={t("homePillSymptomFinderAria")}
                       >
                         <Search className="h-4 w-4" />
                         {t("homePillSymptomFinder")}
+                      </Link>
+                      <Link
+                        to="/my-location"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
+                        aria-label={t("homePillMyLocationAria")}
+                      >
+                        <LocateFixed className="h-4 w-4" />
+                        {t("homePillMyLocation")}
                       </Link>
                     </div>
                   </div>
