@@ -17,9 +17,9 @@ import {
 } from "@/lib/openAedMap";
 
 export default function AedFinder() {
-  const { country } = useCountry();
+  const { code: countryCode, country } = useCountry();
   const { language } = useLanguage();
-  const emergency = emergencyNumberForCountry(country as unknown as string);
+  const emergency = emergencyNumberForCountry(countryCode);
 
   const mapEl = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);

@@ -439,25 +439,33 @@ export default function MyLocation() {
         </button>
 
         {aedOpen && (
-          <div className="mt-2 rounded-2xl overflow-hidden border border-border bg-muted aspect-square animate-fade-in">
-            <iframe
-              key={coords ? `aed-${coords.lat}-${coords.lng}` : "aed-default"}
-              title="AED near me"
-              className="w-full h-full"
-              src={
-                coords
-                  ? `https://openaedmap.org/#15/${coords.lat.toFixed(5)}/${coords.lng.toFixed(5)}`
-                  : "https://openaedmap.org/#4/-25.3/133.8"
-              }
-              loading="lazy"
-              allow="geolocation"
-            />
+          <div className="mt-2 space-y-2 animate-fade-in">
+            <div className="rounded-2xl overflow-hidden border border-border bg-muted aspect-square">
+              <iframe
+                key={coords ? `aed-${coords.lat}-${coords.lng}` : "aed-default"}
+                title="AED near me"
+                className="w-full h-full"
+                src={
+                  coords
+                    ? `https://www.openstreetmap.org/export/embed.html?bbox=${coords.lng - 0.008},${coords.lat - 0.008},${coords.lng + 0.008},${coords.lat + 0.008}&layer=mapnik&marker=${coords.lat},${coords.lng}`
+                    : "https://www.openstreetmap.org/export/embed.html?bbox=112.9,-43.6,153.6,-10.7&layer=mapnik"
+                }
+                loading="lazy"
+              />
+            </div>
+            {!coords && (
+              <p className="text-xs text-muted-foreground text-center">
+                Get your location above to centre the map on you.
+              </p>
+            )}
+            <a
+              href="/aed-finder"
+              className="flex items-center justify-center gap-2 w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-accent transition-colors"
+            >
+              <HeartPulse className="h-4 w-4 text-destructive" />
+              View full AED map with markers →
+            </a>
           </div>
-        )}
-        {aedOpen && !coords && (
-          <p className="text-xs text-muted-foreground mt-1.5 text-center">
-            Get your location above to centre the map on you.
-          </p>
         )}
       </div>
 
