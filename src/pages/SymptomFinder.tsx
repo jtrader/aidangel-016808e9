@@ -1,7 +1,18 @@
 import { useMemo, useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import { Link } from "react-router-dom";
-import { Search, Phone, AlertTriangle } from "lucide-react";
+import {
+  Search,
+  Phone,
+  AlertTriangle,
+  ChevronLeft,
+  RotateCcw,
+  BookOpen,
+  CheckCircle2,
+  XCircle,
+  Eye,
+  List,
+} from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCountry } from "@/hooks/useCountry";
@@ -10,9 +21,17 @@ import { localizedPath, SITE_ORIGIN, HREFLANG } from "@/lib/i18n";
 import { getTopic } from "@/lib/kb";
 import { SYMPTOM_LANDERS } from "@/data/symptomLanders";
 import NetworkFooter from "@/components/NetworkFooter";
-
 import EmergencyCallButton from "@/components/EmergencyCallButton";
 import EmergencyNumberLink from "@/components/shared/EmergencyNumberLink";
+import {
+  getQuestion,
+  getResult,
+  SEVERITY_CONFIG,
+  FLOW_QUESTIONS,
+  type FlowResult,
+} from "@/data/symptomFlow";
+
+/* ─── Browse-all data ──────────────────────────────────────────── */
 
 type Symptom = {
   label: string;
@@ -55,10 +74,146 @@ const SYMPTOMS: Symptom[] = [
   { label: "Dehydrated", slug: "dehydration", keywords: ["thirsty", "dry mouth"] },
 ];
 
+/* ─── Flow state ───────────────────────────────────────────────── */
+
+type FlowStep =
+  | { type: "question"; id: string }
+  | { type: "result"; id: string };
+
+/* ─── Result panel ─────────────────────────────────────────────── */
+
+function ResultPanel({
+  result,
+  emergencyNumber,
+  language,
+  onReset,
+}: {
+  result: FlowResult;
+  emergencyNumber: string;
+  language: string;
+  onReset: () => void;
+}) {
+  const cfg = SEVERITY_CONFIG[result.severity];
+  const kbHref = result.kbSlug ? localizedPath(language, `/kb/${result.kbSlug}`) : null;
+
+  return (
+    <div className="animate-fade-in space-y-4">
+      {/* Severity badge + title */}
+      <div className="flex flex-wrap items-start gap-3">
+        <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${cfg.className}`}>
+          {cfg.label}
+        </span>
+        <h2 className="text-xl font-bold text-foreground leading-snug">{result.title}</h2>
+      </div>
+
+      {result.lead && (
+        <p className="text-sm text-muted-foreground leading-relaxed">{result.lead}</p>
+      )}
+
+      {/* Emergency call CTA */}
+      {result.callEmergency && (
+        <EmergencyNumberLink
+          number={emergencyNumber}
+          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-destructive px-4 py-3.5 text-destructive-foreground font-bold text-base shadow-md hover:opacity-95 transition"
+        >
+          <Phone className="h-5 w-5 flex-shrink-0" />
+          <span>{result.callReason?.replace(/000/g, emergencyNumber) ?? `Call ${emergencyNumber} now`}</span>
+        </EmergencyNumberLink>
+      )}
+
+      {/* Steps */}
+      <div className="rounded-2xl border border-border bg-card p-4 space-y-3">
+        <h3 className="flex items-center gap-2 text-sm font-bold text-foreground uppercase tracking-wider">
+          <List className="h-4 w-4 text-primary" /> Steps
+        </h3>
+        <ol className="space-y-2.5">
+          {result.steps.map((step, i) => (
+            <li key={i} className="flex items-start gap-3">
+              <span className="flex-shrink-0 mt-0.5 w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">
+                {i + 1}
+              </span>
+              <p className="text-sm text-foreground leading-relaxed">{step}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      {/* Do not */}
+      {result.doNot && result.doNot.length > 0 && (
+        <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-4 space-y-2">
+          <h3 className="flex items-center gap-2 text-sm font-bold text-destructive uppercase tracking-wider">
+            <XCircle className="h-4 w-4" /> Do NOT
+          </h3>
+          <ul className="space-y-1.5">
+            {result.doNot.map((item, i) => (
+              <li key={i} className="flex items-start gap-2">
+                <XCircle className="h-3.5 w-3.5 flex-shrink-0 mt-0.5 text-destructive" />
+                <p className="text-sm text-foreground">{item}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Watch for */}
+      {result.watchFor && result.watchFor.length > 0 && (
+        <div className="rounded-2xl border border-orange-300/40 bg-orange-50 dark:bg-orange-950/20 p-4 space-y-2">
+          <h3 className="flex items-center gap-2 text-sm font-bold text-orange-600 uppercase tracking-wider">
+            <Eye className="h-4 w-4" /> Watch for — escalate if you see these
+          </h3>
+          <ul className="space-y-1.5">
+            {result.watchFor.map((item, i) => (
+              <li key={i} className="flex items-start gap-2">
+                <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0 mt-0.5 text-orange-500" />
+                <p className="text-sm text-foreground">{item}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Full guide link */}
+      {kbHref && (
+        <Link
+          to={kbHref}
+          className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-3.5 hover:border-primary hover:shadow-sm transition-all"
+        >
+          <div className="flex-shrink-0 w-9 h-9 rounded-full bg-primary/15 text-primary flex items-center justify-center">
+            <BookOpen className="h-4 w-4" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-bold uppercase tracking-wider text-primary">Open full guide</p>
+            <p className="text-sm font-semibold text-foreground truncate mt-0.5">
+              {(getTopic(result.kbSlug!, language) ?? getTopic(result.kbSlug!, "en"))?.title ?? result.title}
+            </p>
+          </div>
+        </Link>
+      )}
+
+      {/* Restart */}
+      <button
+        onClick={onReset}
+        className="flex w-full items-center justify-center gap-2 rounded-full border border-border bg-card px-4 py-2.5 text-sm font-semibold text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+      >
+        <RotateCcw className="h-4 w-4" /> Start again
+      </button>
+    </div>
+  );
+}
+
+/* ─── Main page ────────────────────────────────────────────────── */
+
 const SymptomFinder = () => {
   const { language } = useLanguage();
   const { code: countryCode } = useCountry();
   const emergencyNumber = emergencyNumberForCountry(countryCode);
+
+  /* Flow state */
+  const [history, setHistory] = useState<FlowStep[]>([{ type: "question", id: "root" }]);
+  const current = history[history.length - 1];
+
+  /* Browse-all state */
+  const [showBrowse, setShowBrowse] = useState(false);
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
@@ -87,8 +242,29 @@ const SymptomFinder = () => {
     return lander ? `/symptoms/${lander}` : localizedPath(language, `/kb/${kbSlug}`);
   };
 
+  /* Navigation helpers */
+  const goBack = () => setHistory((h) => (h.length > 1 ? h.slice(0, -1) : h));
+  const reset = () => setHistory([{ type: "question", id: "root" }]);
+
+  const choose = (next: string | null, resultId?: string) => {
+    if (next) {
+      setHistory((h) => [...h, { type: "question", id: next }]);
+    } else if (resultId) {
+      setHistory((h) => [...h, { type: "result", id: resultId }]);
+    }
+  };
+
   const homePath = localizedPath(language, "/");
   const pageUrl = `${SITE_ORIGIN}/symptoms`;
+  const isRoot = history.length === 1 && current.type === "question" && current.id === "root";
+
+  /* Breadcrumb labels */
+  const breadcrumbs = history.slice(0, -1).map((step) => {
+    if (step.type === "question") {
+      return getQuestion(step.id)?.question ?? step.id;
+    }
+    return getResult(step.id)?.title ?? step.id;
+  });
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -121,19 +297,19 @@ const SymptomFinder = () => {
       <SiteHeader backTo={homePath} backLabel="Home" />
 
       <main className="flex-1 px-4 py-8">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
+        <div className="max-w-2xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-1">
             What's happening right now?
           </h1>
-          <p className="text-muted-foreground mb-4">
-            Tap the symptom that best matches the emergency for step-by-step first aid.
-            For any life-threatening emergency, call{" "}
+          <p className="text-muted-foreground mb-5 text-sm">
+            Answer a few quick questions for tailored first-aid steps. For any life-threatening emergency,{" "}
             <EmergencyNumberLink number={emergencyNumber} className="text-primary font-semibold underline">
-              {emergencyNumber}
+              call {emergencyNumber}
             </EmergencyNumberLink>{" "}
             first.
           </p>
 
+          {/* Persistent emergency call button */}
           <EmergencyNumberLink
             number={emergencyNumber}
             className="mb-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-destructive px-4 py-3 text-destructive-foreground font-bold text-base shadow-md hover:opacity-95 transition"
@@ -142,74 +318,163 @@ const SymptomFinder = () => {
             Emergency — call {emergencyNumber}
           </EmergencyNumberLink>
 
-          <div className="relative mb-6">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input
-              type="search"
-              aria-label="Search symptoms"
-              placeholder="Type a symptom (e.g. bleeding, choking, chest pain)…"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="w-full rounded-full border border-border bg-card pl-10 pr-4 py-3 text-sm focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
-            />
-          </div>
+          {/* ── Guided flow ──────────────────────────────────────────── */}
+          {!showBrowse && (
+            <div className="space-y-4">
+              {/* Back + breadcrumb */}
+              {!isRoot && (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={goBack}
+                    className="flex items-center gap-1 rounded-full border border-border bg-card px-3 py-1.5 text-sm font-medium text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+                  >
+                    <ChevronLeft className="h-4 w-4" /> Back
+                  </button>
+                  {breadcrumbs.length > 0 && (
+                    <p className="text-xs text-muted-foreground truncate">
+                      {breadcrumbs[breadcrumbs.length - 1]}
+                    </p>
+                  )}
+                </div>
+              )}
 
-          {urgentList.length > 0 && (
-            <section className="mb-8">
-              <h2 className="text-sm font-bold uppercase tracking-wider text-destructive mb-3 inline-flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4" /> Life-threatening — act fast
-              </h2>
-              <ul className="grid sm:grid-cols-2 gap-2">
-                {urgentList.map((s) => {
-                  const t = getTopic(s.slug, language) ?? getTopic(s.slug, "en");
-                  return (
-                    <li key={s.slug}>
-                      <Link
-                        to={linkFor(s.slug)}
-                        className="block p-3 rounded-xl border-2 border-destructive/30 bg-destructive/5 hover:border-destructive transition-all"
-                      >
-                        <p className="font-semibold text-foreground text-sm">{s.label}</p>
-                        {t && <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{t.title}</p>}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </section>
+              {/* Question card */}
+              {current.type === "question" && (() => {
+                const q = getQuestion(current.id);
+                if (!q) return null;
+                return (
+                  <div className="animate-fade-in">
+                    <div className="mb-4">
+                      <p className="text-lg font-bold text-foreground leading-snug">{q.question}</p>
+                      {q.subtext && (
+                        <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{q.subtext}</p>
+                      )}
+                    </div>
+                    <ul className="space-y-2">
+                      {q.options.map((opt, i) => (
+                        <li key={i}>
+                          <button
+                            onClick={() => choose(opt.next, opt.resultId)}
+                            className="w-full text-left rounded-2xl border-2 border-border bg-card px-4 py-3.5 text-sm font-semibold text-foreground hover:border-primary hover:bg-primary/5 active:bg-primary/10 transition-all"
+                          >
+                            {opt.label}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })()}
+
+              {/* Result */}
+              {current.type === "result" && (() => {
+                const r = getResult(current.id);
+                if (!r) return null;
+                return (
+                  <ResultPanel
+                    result={r}
+                    emergencyNumber={emergencyNumber}
+                    language={language}
+                    onReset={reset}
+                  />
+                );
+              })()}
+
+              {/* Browse-all toggle */}
+              <div className="pt-2 border-t border-border">
+                <button
+                  onClick={() => setShowBrowse(true)}
+                  className="w-full text-sm text-muted-foreground hover:text-primary transition-colors py-2"
+                >
+                  Browse all symptoms instead →
+                </button>
+              </div>
+            </div>
           )}
 
-          {otherList.length > 0 && (
-            <section>
-              <h2 className="text-sm font-bold uppercase tracking-wider text-primary mb-3">
-                Other symptoms
-              </h2>
-              <ul className="grid sm:grid-cols-2 gap-2">
-                {otherList.map((s) => {
-                  const t = getTopic(s.slug, language) ?? getTopic(s.slug, "en");
-                  return (
-                    <li key={s.slug}>
-                      <Link
-                        to={linkFor(s.slug)}
-                        className="block p-3 rounded-xl border border-border bg-card hover:border-primary transition-all"
-                      >
-                        <p className="font-semibold text-foreground text-sm">{s.label}</p>
-                        {t && <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{t.title}</p>}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </section>
-          )}
+          {/* ── Browse all ───────────────────────────────────────────── */}
+          {showBrowse && (
+            <div className="animate-fade-in space-y-5">
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setShowBrowse(false)}
+                  className="flex items-center gap-1 rounded-full border border-border bg-card px-3 py-1.5 text-sm font-medium text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+                >
+                  <ChevronLeft className="h-4 w-4" /> Guided finder
+                </button>
+                <span className="text-sm text-muted-foreground">Browse all symptoms</span>
+              </div>
 
-          {filtered.length === 0 && (
-            <p className="text-center text-muted-foreground py-8">
-              No symptoms matched. Try the{" "}
-              <Link to={localizedPath(language, "/kb")} className="text-primary underline font-semibold">
-                full knowledge base
-              </Link>
-              .
-            </p>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <input
+                  type="search"
+                  aria-label="Search symptoms"
+                  placeholder="Type a symptom (e.g. bleeding, choking, chest pain)…"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  className="w-full rounded-full border border-border bg-card pl-10 pr-4 py-3 text-sm focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+                />
+              </div>
+
+              {urgentList.length > 0 && (
+                <section>
+                  <h2 className="text-sm font-bold uppercase tracking-wider text-destructive mb-3 inline-flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4" /> Life-threatening — act fast
+                  </h2>
+                  <ul className="grid sm:grid-cols-2 gap-2">
+                    {urgentList.map((s) => {
+                      const t = getTopic(s.slug, language) ?? getTopic(s.slug, "en");
+                      return (
+                        <li key={s.slug}>
+                          <Link
+                            to={linkFor(s.slug)}
+                            className="block p-3 rounded-xl border-2 border-destructive/30 bg-destructive/5 hover:border-destructive transition-all"
+                          >
+                            <p className="font-semibold text-foreground text-sm">{s.label}</p>
+                            {t && <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{t.title}</p>}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
+              )}
+
+              {otherList.length > 0 && (
+                <section>
+                  <h2 className="text-sm font-bold uppercase tracking-wider text-primary mb-3">
+                    Other symptoms
+                  </h2>
+                  <ul className="grid sm:grid-cols-2 gap-2">
+                    {otherList.map((s) => {
+                      const t = getTopic(s.slug, language) ?? getTopic(s.slug, "en");
+                      return (
+                        <li key={s.slug}>
+                          <Link
+                            to={linkFor(s.slug)}
+                            className="block p-3 rounded-xl border border-border bg-card hover:border-primary transition-all"
+                          >
+                            <p className="font-semibold text-foreground text-sm">{s.label}</p>
+                            {t && <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{t.title}</p>}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
+              )}
+
+              {filtered.length === 0 && (
+                <p className="text-center text-muted-foreground py-8">
+                  No symptoms matched. Try the{" "}
+                  <Link to={localizedPath(language, "/kb")} className="text-primary underline font-semibold">
+                    full knowledge base
+                  </Link>
+                  .
+                </p>
+              )}
+            </div>
           )}
         </div>
       </main>
