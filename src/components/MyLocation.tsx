@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Copy, MapPin, Phone, RefreshCw, Share2, AlertTriangle, Check, Settings, ChevronRight, X } from "lucide-react";
+import { Copy, MapPin, Phone, RefreshCw, Share2, AlertTriangle, Check, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { useCountry } from "@/hooks/useCountry";
+import { emergencyNumberForCountry } from "@/lib/donations";
 
 const MAX_AUTO_RETRIES = 3;
 // Exponential backoff: 2s, 4s, 8s
@@ -81,11 +83,13 @@ function ErrorCard({
   onRetry,
   retry,
   onCancelRetry,
+  emergencyNumber,
 }: {
   error: GeoErrorState;
   onRetry: () => void;
   retry: { attempt: number; secondsLeft: number; total: number } | null;
   onCancelRetry: () => void;
+  emergencyNumber: string;
 }) {
   const isAutoRetrying = retry !== null;
   return (
@@ -157,13 +161,13 @@ function ErrorCard({
             className="mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground shadow-sm hover:bg-primary/90 active:scale-[0.99] transition"
           >
             <RefreshCw className="h-4 w-4" />
-            {isAutoRetrying ? "Retry now" : error.actionLabel}
+            {isAutoRetrying ? "Retry Now" : error.actionLabel}
           </button>
 
           <p className="mt-4 text-xs text-muted-foreground border-t border-border pt-3">
             Still not working? Tell the{" "}
-            <a href="tel:000" className="text-primary font-semibold underline-offset-2 hover:underline">
-              000
+            <a href={`tel:${emergencyNumber}`} className="text-primary font-semibold underline-offset-2 hover:underline">
+              {emergencyNumber}
             </a>{" "}
             operator your street address, nearest intersection, suburb, and any nearby landmarks.
           </p>
@@ -186,7 +190,7 @@ function getErrorState(code: number): GeoErrorState {
           "On Android: Settings → Apps → Browser → Permissions → Location → Allow.",
           "Reload this page and tap Get My Location again.",
         ],
-        actionLabel: "Try again",
+        actionLabel: "Try Again",
       };
     case 2: // POSITION_UNAVAILABLE
       return {
@@ -197,9 +201,9 @@ function getErrorState(code: number): GeoErrorState {
           "Move outdoors or closer to a window.",
           "Make sure Wi-Fi and mobile data are turned on (they help locate you faster).",
           "Check that your device's Location/GPS setting is turned on in system settings.",
-          "Tap Try again below.",
+          "Tap Try Again below.",
         ],
-        actionLabel: "Try again",
+        actionLabel: "Try Again",
       };
     case 3: // TIMEOUT
       return {
@@ -209,9 +213,9 @@ function getErrorState(code: number): GeoErrorState {
         steps: [
           "Move to an open area away from tall buildings or heavy tree cover.",
           "Ensure mobile data or Wi-Fi is enabled to assist positioning.",
-          "Wait a few seconds, then tap Try again below.",
+          "Wait a few seconds, then tap Try Again below.",
         ],
-        actionLabel: "Try again",
+        actionLabel: "Try Again",
       };
     default:
       return {
@@ -223,12 +227,15 @@ function getErrorState(code: number): GeoErrorState {
           "Make sure Location/GPS is enabled in your device settings.",
           "Refresh the page and try again.",
         ],
-        actionLabel: "Try again",
+        actionLabel: "Try Again",
       };
   }
 }
 
 export default function MyLocation() {
+  const { code, country } = useCountry();
+  const emergencyNumber = emergencyNumberForCountry(code);
+  const telHref = `tel:${emergencyNumber}`;
   const [coords, setCoords] = useState<Coords | null>(null);
   const [geoError, setGeoError] = useState<GeoErrorState | null>(null);
   const [busy, setBusy] = useState(false);
@@ -345,7 +352,7 @@ export default function MyLocation() {
   useEffect(() => () => clearCountdown(), [clearCountdown]);
 
   const accuracyWarning = coords && coords.accuracy > 500
-    ? { icon: "🔴", text: "Location is imprecise. Give your coordinates and what3words address to 000." }
+    ? { icon: "🔴", text: `Location is imprecise. Give your coordinates and what3words address to ${emergencyNumber}.` }
     : coords && coords.accuracy > 100
     ? { icon: "⚠️", text: "Location may be approximate. Move outdoors for better GPS signal." }
     : null;
@@ -382,7 +389,7 @@ export default function MyLocation() {
           <MapPin className="h-7 w-7 text-primary" aria-hidden /> My Location
         </h1>
         <p className="text-sm sm:text-base text-muted-foreground mt-1">
-          Get your exact location to share with <a href="tel:000" className="text-primary font-semibold underline-offset-2 hover:underline">000</a> emergency services.
+          Get your exact location to share with <a href={telHref} className="text-primary font-semibold underline-offset-2 hover:underline">{emergencyNumber}</a> emergency services.
         </p>
         <p className="text-xs text-muted-foreground mt-1">
           Tap the button, then read your what3words address or coordinates to the operator.
@@ -401,18 +408,18 @@ export default function MyLocation() {
             Getting your location…
           </>
         ) : (
-          <>📍 {coords ? "Update location" : "Get My Location"}</>
+          <>📍 {coords ? "Update Location" : "Get My Location"}</>
         )}
       </button>
 
       <a
-        href="tel:000"
+        href={telHref}
         className="mt-3 w-full min-h-[56px] rounded-xl bg-primary text-primary-foreground font-bold text-lg sm:text-xl shadow-md hover:bg-primary/90 inline-flex items-center justify-center gap-2"
       >
-        <Phone className="h-5 w-5" aria-hidden /> Call 000
+        <Phone className="h-5 w-5" aria-hidden /> Call {emergencyNumber} Now
       </a>
       <p className="hidden sm:block text-xs text-muted-foreground text-center mt-1">
-        In Australia, call 000 for police, fire or ambulance.
+        In {country.name}, call {emergencyNumber} for emergency services.
       </p>
 
       {geoError && (
@@ -421,13 +428,14 @@ export default function MyLocation() {
           onRetry={getLocation}
           retry={retry}
           onCancelRetry={cancelAutoRetry}
+          emergencyNumber={emergencyNumber}
         />
       )}
 
       {coords && (
         <div ref={resultsRef} className="mt-6 space-y-4">
           <p className="text-sm text-muted-foreground">
-            Read these to the <a href="tel:000" className="text-primary font-semibold">000</a> operator, or tap to copy and share.
+            Read these to the <a href={telHref} className="text-primary font-semibold">{emergencyNumber}</a> operator, or tap to copy and share.
           </p>
 
           {/* what3words */}
@@ -457,7 +465,7 @@ export default function MyLocation() {
                   <span className="text-foreground">{w3w.data}</span>
                 </p>
                 <p className="text-sm text-muted-foreground mt-2">
-                  Say <span className="font-medium text-foreground">"what3words: {w3w.data.split(".").join(" dot ")}"</span> to the 000 operator.
+                  Say <span className="font-medium text-foreground">"what3words: {w3w.data.split(".").join(" dot ")}"</span> to the {emergencyNumber} operator.
                 </p>
                 <a
                   href={`https://w3w.co/${w3w.data}`}
@@ -467,7 +475,7 @@ export default function MyLocation() {
                   Open on what3words map →
                 </a>
                 <p className="text-[11px] text-muted-foreground mt-2">
-                  what3words is accepted by Australian ambulance, police and SES services. Each address refers to a unique 3m × 3m square.
+                  what3words may be useful for emergency services. Each address refers to a unique 3m × 3m square.
                 </p>
               </>
             )}
@@ -535,7 +543,7 @@ export default function MyLocation() {
               onClick={getLocation}
               className="min-h-[48px] rounded-xl border border-border bg-card hover:bg-accent font-semibold inline-flex items-center justify-center gap-2"
             >
-              <RefreshCw className="h-4 w-4" /> Update location
+              <RefreshCw className="h-4 w-4" /> Update Location
             </button>
           </div>
 
@@ -561,9 +569,8 @@ export default function MyLocation() {
         <p>
           This page uses your device's GPS. The what3words address and coordinates are more reliable than the street address — especially outdoors or in unfamiliar areas. For best accuracy, use this page outdoors or near a window.
         </p>
-        <p>what3words is accepted by Australian ambulance, police and SES services.</p>
+        <p>what3words may be useful when sharing a precise location with emergency services.</p>
       </footer>
     </div>
   );
 }
-
