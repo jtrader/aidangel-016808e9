@@ -3,6 +3,7 @@ import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCountry } from "@/hooks/useCountry";
 import { emergencyNumberForCountry } from "@/lib/donations";
+import EmergencyNumberLink from "@/components/shared/EmergencyNumberLink";
 
 export default function OfflineBanner() {
   const online = useOnlineStatus();
@@ -12,7 +13,6 @@ export default function OfflineBanner() {
 
   if (online) return null;
 
-  // Substitute {number} with a clickable tel: link
   const template = t("offlineBanner");
   const parts = template.split("{number}");
 
@@ -24,7 +24,7 @@ export default function OfflineBanner() {
       <WifiOff className="h-3.5 w-3.5" />
       <span>
         {parts[0]}
-        <a href={`tel:${number}`} className="underline font-bold">{number}</a>
+        <EmergencyNumberLink number={number} className="underline font-bold">{number}</EmergencyNumberLink>
         {parts[1] ?? ""}
       </span>
     </div>
