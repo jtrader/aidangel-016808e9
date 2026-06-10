@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { useLanguage } from "@/contexts/LanguageContext";
 import SiteHeader from "@/components/SiteHeader";
+import PageBreadcrumbs from "@/components/PageBreadcrumbs";
 import HamburgerMenu from "@/components/HamburgerMenu";
 
 export default function CoursesHeader() {
@@ -17,9 +18,7 @@ export default function CoursesHeader() {
       <SiteHeader containerClassName="max-w-[1000px]" showBreadcrumbs={false} />
       <div className="border-t border-border/60 px-4 py-3">
         <div className="max-w-[1000px] mx-auto">
-          <div className="mb-3">
-            <SiteHeader.PageBreadcrumbs />
-          </div>
+          <PageBreadcrumbs className="px-0 pt-0 mb-3" />
           <div className="flex items-center justify-end gap-2">
             <Link to="/programs" className="hidden sm:flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-primary">
               <Layers className="h-4 w-4" /> {t("headerNavCourses")}
