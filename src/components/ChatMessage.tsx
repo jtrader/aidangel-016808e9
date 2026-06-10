@@ -71,8 +71,13 @@ const ChatMessage = ({ message, onAction }: ChatMessageProps) => {
                       </button>
                     );
                   }
-                  if (href?.startsWith("tel:") && isEmergencyNumber(href, emergencyNumber)) {
-                    const number = normalizePhoneNumber(href) || emergencyNumber;
+                  if (
+                    (href?.startsWith("tel:") && isEmergencyNumber(href, emergencyNumber)) ||
+                    href?.match(/^https?:\/\/(?:www\.)?firstaidangel\.org/)
+                  ) {
+                    const number = href?.startsWith("tel:")
+                      ? normalizePhoneNumber(href) || emergencyNumber
+                      : emergencyNumber;
                     return (
                       <EmergencyNumberLink number={number} className="text-primary underline font-semibold hover:text-foreground transition-colors">
                         {children}
@@ -105,7 +110,19 @@ const ChatMessage = ({ message, onAction }: ChatMessageProps) => {
                 message.content
                   .replace(/\[\[(?:STEP(?::\d+\/\d+)?(?:_END)?|URGENT)\]\]/g, "")
                   .trim()
-                  .replace(/\b000\b/g, `[${emergencyNumber}](tel:${emergencyNumber})`)
+                  // Replace any markdown link pointing to firstaidangel.org with a dynamic tel: link
+                  .replace(
+                    /\[([^\]]*)\]\(https?:\/\/(?:www\.)?firstaidangel\.org[^)]*\)/g,
+                    `[${emergencyNumber}](tel:${emergencyNumber})`,
+                  )
+                  // Replace plain-text emergency numbers (000 or the country's actual number) with tel: links
+                  .replace(
+                    new RegExp(
+                      `\\b(000${emergencyNumber !== "000" ? `|${emergencyNumber.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}` : ""})\\b`,
+                      "g",
+                    ),
+                    `[${emergencyNumber}](tel:${emergencyNumber})`,
+                  )
                   .replace(/\bDRSABCD\b/g, "[DRSABCD](#drsabcd)"),
               )}
             </ReactMarkdown>
