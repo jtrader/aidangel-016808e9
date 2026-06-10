@@ -568,4 +568,3 @@ export default function MyLocation({ embedded = false }: { embedded?: boolean } 
     </div>
   );
 }
-
