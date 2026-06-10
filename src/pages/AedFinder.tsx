@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { MapPin, AlertCircle, Loader2, Cross, LocateFixed } from "lucide-react";
+import { MapPin, AlertCircle, Loader2, Search, LocateFixed } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
 import { useCountry } from "@/hooks/useCountry";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -201,8 +201,8 @@ export default function AedFinder() {
       <main className="min-h-screen bg-[#F7F7F7] flex flex-col">
         <SiteHeader backTo="/aed" backLabel="AED directory" showBreadcrumbs={false} />
         <div className="bg-white border-b">
-          <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-3">
-            <Cross className="w-6 h-6 text-primary" />
+          <div className="max-w-[820px] mx-auto px-4 py-3 flex items-center gap-3">
+            <Search className="w-6 h-6 text-primary" />
             <div className="flex-1">
               <h1 className="font-heading font-bold text-lg leading-tight">AED Finder</h1>
               <p className="text-xs text-muted-foreground">
