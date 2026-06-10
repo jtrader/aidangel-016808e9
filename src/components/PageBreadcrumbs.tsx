@@ -26,6 +26,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   provider: "Provider",
   reset: "Reset",
   "reset-password": "Reset Password",
+  refund: "Refund Policy",
   shop: "Shop",
   store: "Shop",
   symptoms: "Symptom Finder",
@@ -90,8 +91,8 @@ export default function PageBreadcrumbs({ breadcrumbs, className = "" }: PageBre
 
   return (
     <div className={`bg-background px-4 pt-4 ${className}`}>
-      <nav aria-label="Breadcrumb" className="max-w-6xl mx-auto min-w-0">
-        <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-muted-foreground">
+      <nav aria-label="Breadcrumb" className="site-page-breadcrumb max-w-[820px] mx-auto min-w-0">
+        <ol className="flex flex-wrap items-center justify-start gap-x-1.5 gap-y-1 text-sm text-muted-foreground">
           {breadcrumbItems.map((crumb, index) => {
             const current = index === breadcrumbItems.length - 1;
             return (
