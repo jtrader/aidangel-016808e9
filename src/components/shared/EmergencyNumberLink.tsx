@@ -3,6 +3,26 @@ import CallConfirmDialog from "@/components/shared/CallConfirmDialog";
 import { useCountry } from "@/hooks/useCountry";
 import { emergencyNumberForCountry } from "@/lib/donations";
 
+const KNOWN_EMERGENCY_NUMBERS = new Set([
+  "000",
+  "911",
+  "112",
+  "999",
+  "111",
+  "999112",
+  "911112",
+]);
+
+export function normalizePhoneNumber(value = "") {
+  return value.replace(/^tel:/i, "").replace(/[^0-9+]/g, "").replace(/^\+/, "");
+}
+
+export function isEmergencyNumber(value = "", localNumber?: string) {
+  const normalized = normalizePhoneNumber(value);
+  const local = normalizePhoneNumber(localNumber ?? "");
+  return normalized.length > 0 && (KNOWN_EMERGENCY_NUMBERS.has(normalized) || normalized === local);
+}
+
 interface EmergencyNumberLinkProps {
   number?: string;
   children?: ReactNode;
