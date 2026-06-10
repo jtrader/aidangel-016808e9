@@ -25,11 +25,11 @@ const STATIC_INDEX_STRINGS = [
   "Knowledge base",
   "First Aid Angel",
   "First Aid Knowledge Base",
-  "Plain-English first aid guides for everyday Australians, organised by topic and adapted from The St John of God First Aid Manual 5th Edition.",
+  "Plain-English first aid guides for everyday Australians, organised by topic and adapted from The St John Ambulance Australia First Aid Manual 5th Edition.",
   "In a real emergency, call 000 first. These guides are for learning and refresher use — not a substitute for professional medical care.",
   "Translating topics…",
   "Source:",
-  "The St John of God First Aid Manual 5th Edition (AFA5).",
+  "The St John Ambulance Australia First Aid Manual 5th Edition (AFA5).",
 ];
 
 const KbIndex = () => {
@@ -46,11 +46,11 @@ const KbIndex = () => {
     knowledgeBase: "Knowledge base",
     appName: "First Aid Angel",
     pageTitle: "First Aid Knowledge Base",
-    intro: "Plain-English first aid guides for everyday Australians, organised by topic and adapted from The St John of God First Aid Manual 5th Edition.",
+    intro: "Plain-English first aid guides for everyday Australians, organised by topic and adapted from The St John Ambulance Australia First Aid Manual 5th Edition.",
     disclaimer: "In a real emergency, call 000 first. These guides are for learning and refresher use — not a substitute for professional medical care.",
     translating: "Translating topics…",
     sourceLabel: "Source:",
-    sourceValue: "The St John of God First Aid Manual 5th Edition (AFA5).",
+    sourceValue: "The St John Ambulance Australia First Aid Manual 5th Edition (AFA5).",
   });
 
   useEffect(() => {
