@@ -23,6 +23,7 @@ import { SYMPTOM_LANDERS } from "@/data/symptomLanders";
 import NetworkFooter from "@/components/NetworkFooter";
 import EmergencyCallButton from "@/components/EmergencyCallButton";
 import EmergencyNumberLink from "@/components/shared/EmergencyNumberLink";
+import { resolveEmergency } from "@/lib/resolveEmergency";
 import {
   getQuestion,
   getResult,
@@ -107,7 +108,7 @@ function ResultPanel({
       </div>
 
       {result.lead && (
-        <p className="text-sm text-muted-foreground leading-relaxed">{result.lead}</p>
+        <p className="text-sm text-muted-foreground leading-relaxed">{resolveEmergency(result.lead, emergencyNumber)}</p>
       )}
 
       {/* Emergency call CTA */}
@@ -132,7 +133,7 @@ function ResultPanel({
               <span className="flex-shrink-0 mt-0.5 w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">
                 {i + 1}
               </span>
-              <p className="text-sm text-foreground leading-relaxed">{step}</p>
+              <p className="text-sm text-foreground leading-relaxed">{resolveEmergency(step, emergencyNumber)}</p>
             </li>
           ))}
         </ol>
@@ -148,7 +149,7 @@ function ResultPanel({
             {result.doNot.map((item, i) => (
               <li key={i} className="flex items-start gap-2">
                 <XCircle className="h-3.5 w-3.5 flex-shrink-0 mt-0.5 text-destructive" />
-                <p className="text-sm text-foreground">{item}</p>
+                <p className="text-sm text-foreground">{resolveEmergency(item, emergencyNumber)}</p>
               </li>
             ))}
           </ul>
@@ -165,7 +166,7 @@ function ResultPanel({
             {result.watchFor.map((item, i) => (
               <li key={i} className="flex items-start gap-2">
                 <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0 mt-0.5 text-orange-500" />
-                <p className="text-sm text-foreground">{item}</p>
+                <p className="text-sm text-foreground">{resolveEmergency(item, emergencyNumber)}</p>
               </li>
             ))}
           </ul>

@@ -3,13 +3,14 @@ import { GraduationCap, MapPin, Search } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SeoHead } from "@/components/SeoHead";
 import { useCountry } from "@/hooks/useCountry";
-import { COUNTRIES } from "@/lib/donations";
+import { COUNTRIES, emergencyNumberForCountry } from "@/lib/donations";
 import NetworkFooter from "@/components/NetworkFooter";
 import SiteHeader from "@/components/SiteHeader";
 
 export default function LearnIndex() {
   const { language, t } = useLanguage();
-  const { country } = useCountry();
+  const { country, code: countryCode } = useCountry();
+  const emergencyNumber = emergencyNumberForCountry(countryCode);
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SeoHead lang={language}
@@ -61,7 +62,7 @@ export default function LearnIndex() {
           <div className="text-sm">
             <div className="font-medium text-foreground mb-1">{t("learnNeedHelpNow")}</div>
             <p className="text-muted-foreground">
-              {t("learnEmergencyPrefix")} <a href="tel:000" className="font-semibold text-primary underline">000</a> {t("learnEmergencyCountry")} {t("learnOtherwise")}{" "}
+              {t("learnEmergencyPrefix")} <a href={`tel:${emergencyNumber}`} className="font-semibold text-primary underline">{emergencyNumber}</a> {t("learnEmergencyCountry")} {t("learnOtherwise")}{" "}
               <Link to="/symptoms" className="text-primary underline">{t("learnFindBySymptom")}</Link>.
             </p>
           </div>

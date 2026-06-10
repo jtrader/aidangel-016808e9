@@ -28,6 +28,7 @@ import { emergencyNumberForCountry } from "@/lib/donations";
 import { translateTopic } from "@/lib/kbTranslate";
 import { translateStrings } from "@/lib/uiTranslate";
 import { buildHowToJsonLd, buildFaqJsonLd, buildSpeakableJsonLd } from "@/lib/kbSchema";
+import { resolveEmergency } from "@/lib/resolveEmergency";
 
 // Editorial review date — bump when KB content is reviewed against the source.
 const LAST_REVIEWED_ISO = "2026-05-22";
@@ -180,13 +181,16 @@ const KbTopic = () => {
     return () => { cancelled = true; };
   }, [language, slug]);
 
-  const linkedBody = autoLinkPhones(
-    autoLinkBody(
-      translated.body,
-      topicEn.slug,
-      language,
-      (s) => localizedPath(language, `/kb/${s}`),
+  const linkedBody = resolveEmergency(
+    autoLinkPhones(
+      autoLinkBody(
+        translated.body,
+        topicEn.slug,
+        language,
+        (s) => localizedPath(language, `/kb/${s}`),
+      ),
     ),
+    emergencyNumber,
   );
 
   const kbPath = localizedPath(language, "/kb");

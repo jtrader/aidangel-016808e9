@@ -6,6 +6,8 @@ import HamburgerMenu from "@/components/HamburgerMenu";
 import NetworkFooter from "@/components/NetworkFooter";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { localizedPath } from "@/lib/i18n";
+import { useCountry } from "@/hooks/useCountry";
+import { emergencyNumberForCountry } from "@/lib/donations";
 import {
   Accordion,
   AccordionContent,
@@ -221,11 +223,10 @@ function HardcodedAbout() {
         <p className="text-xs text-muted-foreground mt-5">
           First Aid Angel is an educational tool. It is not a registered
           medical device and does not provide medical diagnosis. In any
-          emergency, call your local emergency number (in Australia,{" "}
-          <a href="tel:000" className="text-primary font-semibold">
-            Triple Zero (000)
-          </a>
-          ).
+          emergency, call your local emergency number:{" "}
+          <a href={`tel:${emergencyNumber}`} className="text-primary font-semibold">
+            {emergencyNumber}
+          </a>.
         </p>
       </section>
 
@@ -344,6 +345,8 @@ function HardcodedAbout() {
 
 export default function About() {
   const { language } = useLanguage();
+  const { code: countryCode } = useCountry();
+  const emergencyNumber = emergencyNumberForCountry(countryCode);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
