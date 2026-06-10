@@ -422,7 +422,7 @@ export default function MyLocation() {
         <Phone className="h-5 w-5" aria-hidden /> Call {emergencyNumber} Now
       </a>
       <p className="hidden sm:block text-xs text-muted-foreground text-center mt-1">
-        In {country.name}, Call {emergencyNumber} for emergency services.
+        In {country.name}, <a href={telHref} className="text-primary font-semibold underline-offset-2 hover:underline">Call {emergencyNumber}</a> for emergency services.
       </p>
 
       {/* AED near me — click to reveal */}
