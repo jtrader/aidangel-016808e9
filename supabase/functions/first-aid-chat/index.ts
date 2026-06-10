@@ -34,7 +34,7 @@ async function retrieveKbContext(query: string, apiKey: string): Promise<string>
     const { data, error } = await supabase.rpc("match_kb_chunks", {
       query_embedding: vector as unknown as string,
       match_lang: "en",
-      match_count: 5,
+      match_count: 3,
     });
     if (error) {
       console.warn("match_kb_chunks error", error.message);
@@ -617,8 +617,12 @@ serve(async (req) => {
     }
 
     // Retrieval-augmented grounding: pull top-matching KB chunks for the latest user turn.
+    // Skip for short walk-through control words and conversational acks — they don't
+    // benefit from KB context and the embedding round-trip adds unnecessary latency.
+    const SKIP_RAG_PATTERN = /^\s*(next|back|done|stop|repeat|yes|no|ok|okay|thanks|thank you|👍|👎)\s*$/i;
     const lastUser = [...messages].reverse().find((m: { role: string; content: string }) => m.role === "user");
-    if (lastUser?.content) {
+    const shouldFetchKb = lastUser?.content && !SKIP_RAG_PATTERN.test(lastUser.content) && lastUser.content.trim().length > 8;
+    if (shouldFetchKb) {
       const ctx = await retrieveKbContext(lastUser.content, LOVABLE_API_KEY);
       if (ctx) {
         systemPrompt += `\n\n## RETRIEVED AFA5 CONTEXT (use this verbatim when relevant; cite the section name in your reply)\n${ctx}`;
