@@ -6,6 +6,43 @@ import { emergencyNumberForCountry } from "@/lib/donations";
 import { isEmergencyNumber, normalizePhoneNumber } from "@/components/shared/EmergencyNumberLink";
 import MyLocationPanel from "@/components/shared/MyLocationPanel";
 
+const LEGACY_ST_JOHN_TEXT = "St John of God";
+const UPDATED_ST_JOHN_TEXT = "St John Australia";
+const TEXT_ATTRIBUTES = ["aria-label", "alt", "placeholder", "title"];
+
+function replaceLegacyText(value: string) {
+  return value.replaceAll(LEGACY_ST_JOHN_TEXT, UPDATED_ST_JOHN_TEXT);
+}
+
+function replaceLegacyTextInDom(root: ParentNode = document) {
+  if (typeof document === "undefined") return;
+
+  if (document.title.includes(LEGACY_ST_JOHN_TEXT)) {
+    document.title = replaceLegacyText(document.title);
+  }
+
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  let node = walker.nextNode();
+  while (node) {
+    if (node.nodeValue?.includes(LEGACY_ST_JOHN_TEXT)) {
+      node.nodeValue = replaceLegacyText(node.nodeValue);
+    }
+    node = walker.nextNode();
+  }
+
+  if (root instanceof Element || root instanceof Document) {
+    const elements = root instanceof Element ? [root, ...Array.from(root.querySelectorAll("*"))] : Array.from(root.querySelectorAll("*"));
+    for (const el of elements) {
+      for (const attr of TEXT_ATTRIBUTES) {
+        const value = el.getAttribute(attr);
+        if (value?.includes(LEGACY_ST_JOHN_TEXT)) {
+          el.setAttribute(attr, replaceLegacyText(value));
+        }
+      }
+    }
+  }
+}
+
 export default function EmergencyTelInterceptor() {
   const { code } = useCountry();
   const fallbackNumber = emergencyNumberForCountry(code);
@@ -15,6 +52,39 @@ export default function EmergencyTelInterceptor() {
   useEffect(() => {
     setNumber(fallbackNumber);
   }, [fallbackNumber]);
+
+  useEffect(() => {
+    replaceLegacyTextInDom(document);
+
+    let queued = false;
+    const queueReplace = () => {
+      if (queued) return;
+      queued = true;
+      window.requestAnimationFrame(() => {
+        queued = false;
+        replaceLegacyTextInDom(document);
+      });
+    };
+
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.type === "childList" || mutation.type === "characterData" || mutation.type === "attributes") {
+          queueReplace();
+          break;
+        }
+      }
+    });
+
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+      attributes: true,
+      attributeFilter: TEXT_ATTRIBUTES,
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
