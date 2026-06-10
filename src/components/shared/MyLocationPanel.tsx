@@ -7,6 +7,9 @@ import LegacyMyLocation from "@/components/MyLocation";
 
 export interface MyLocationPanelProps {
   locale?: string;
+  /** When true, hides the panel's own page header and hardcoded "Call 000"
+   *  CTA — used when the panel is shown inside CallConfirmDialog. */
+  embedded?: boolean;
 }
 
 export function MyLocationPanel(_props: MyLocationPanelProps = {}) {
