@@ -1,5 +1,4 @@
 import { useState, type ReactNode } from "react";
-import { Phone } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -26,9 +25,8 @@ export interface CallConfirmDialogProps {
  * action is a tel: link that places the actual call.
  *
  * Mirrors the Love Key HELP Network confirm-before-dial pattern used on
- * crisis-compass.org, but reuses AidAngel's own MyLocation panel (in
- * `embedded` mode) so location capture, what3words and address lookup are
- * shared with the /my-location page.
+ * crisis-compass.org, but reuses AidAngel's own MyLocation panel so location
+ * capture, what3words and address lookup are shared with the /my-location page.
  */
 export default function CallConfirmDialog({
   children,
@@ -37,27 +35,15 @@ export default function CallConfirmDialog({
   const [open, setOpen] = useState(false);
   const { code } = useCountry();
   const number = numberOverride ?? emergencyNumberForCountry(code);
-  const telHref = `tel:${number}`;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
         {/* Visible header removed by request; sr-only title retained for accessibility. */}
-        <DialogTitle className="sr-only">Calling {number}</DialogTitle>
+        <DialogTitle className="sr-only">Emergency call and location help — {number}</DialogTitle>
 
-        <a
-          href={telHref}
-          onClick={() => setOpen(false)}
-          className="mt-3 flex items-center justify-center gap-2 w-full rounded-xl bg-primary text-primary-foreground font-bold text-lg py-4 px-4 shadow-md transition-all hover:bg-primary/90 active:scale-[0.98]"
-        >
-          <Phone className="w-5 h-5" />
-          Call {number} now
-        </a>
-
-        <div className="mt-4">
-          <MyLocationPanel embedded />
-        </div>
+        <MyLocationPanel embedded />
 
         <button
           type="button"
