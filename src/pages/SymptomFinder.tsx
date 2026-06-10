@@ -13,6 +13,16 @@ import NetworkFooter from "@/components/NetworkFooter";
 
 import EmergencyCallButton from "@/components/EmergencyCallButton";
 import EmergencyNumberLink from "@/components/shared/EmergencyNumberLink";
+import { resolveEmergency } from "@/lib/resolveEmergency";
+import {
+  getQuestion,
+  getResult,
+  SEVERITY_CONFIG,
+  FLOW_QUESTIONS,
+  type FlowResult,
+} from "@/data/symptomFlow";
+
+/* ─── Browse-all data ──────────────────────────────────────────── */
 
 type Symptom = {
   label: string;
@@ -54,6 +64,135 @@ const SYMPTOMS: Symptom[] = [
   { label: "Sunburn", slug: "sunburn", keywords: ["sun"] },
   { label: "Dehydrated", slug: "dehydration", keywords: ["thirsty", "dry mouth"] },
 ];
+
+/* ─── Flow state ───────────────────────────────────────────────── */
+
+type FlowStep =
+  | { type: "question"; id: string }
+  | { type: "result"; id: string };
+
+/* ─── Result panel ─────────────────────────────────────────────── */
+
+function ResultPanel({
+  result,
+  emergencyNumber,
+  language,
+  onReset,
+}: {
+  result: FlowResult;
+  emergencyNumber: string;
+  language: string;
+  onReset: () => void;
+}) {
+  const cfg = SEVERITY_CONFIG[result.severity];
+  const kbHref = result.kbSlug ? localizedPath(language, `/kb/${result.kbSlug}`) : null;
+
+  return (
+    <div className="animate-fade-in space-y-4">
+      {/* Severity badge + title */}
+      <div className="flex flex-wrap items-start gap-3">
+        <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${cfg.className}`}>
+          {cfg.label}
+        </span>
+        <h2 className="text-xl font-bold text-foreground leading-snug">{result.title}</h2>
+      </div>
+
+      {result.lead && (
+        <p className="text-sm text-muted-foreground leading-relaxed">{resolveEmergency(result.lead, emergencyNumber)}</p>
+      )}
+
+      {/* Emergency call CTA */}
+      {result.callEmergency && (
+        <EmergencyNumberLink
+          number={emergencyNumber}
+          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-destructive px-4 py-3.5 text-destructive-foreground font-bold text-base shadow-md hover:opacity-95 transition"
+        >
+          <Phone className="h-5 w-5 flex-shrink-0" />
+          <span>{result.callReason?.replace(/000/g, emergencyNumber) ?? `Call ${emergencyNumber} now`}</span>
+        </EmergencyNumberLink>
+      )}
+
+      {/* Steps */}
+      <div className="rounded-2xl border border-border bg-card p-4 space-y-3">
+        <h3 className="flex items-center gap-2 text-sm font-bold text-foreground uppercase tracking-wider">
+          <List className="h-4 w-4 text-primary" /> Steps
+        </h3>
+        <ol className="space-y-2.5">
+          {result.steps.map((step, i) => (
+            <li key={i} className="flex items-start gap-3">
+              <span className="flex-shrink-0 mt-0.5 w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">
+                {i + 1}
+              </span>
+              <p className="text-sm text-foreground leading-relaxed">{resolveEmergency(step, emergencyNumber)}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      {/* Do not */}
+      {result.doNot && result.doNot.length > 0 && (
+        <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-4 space-y-2">
+          <h3 className="flex items-center gap-2 text-sm font-bold text-destructive uppercase tracking-wider">
+            <XCircle className="h-4 w-4" /> Do NOT
+          </h3>
+          <ul className="space-y-1.5">
+            {result.doNot.map((item, i) => (
+              <li key={i} className="flex items-start gap-2">
+                <XCircle className="h-3.5 w-3.5 flex-shrink-0 mt-0.5 text-destructive" />
+                <p className="text-sm text-foreground">{resolveEmergency(item, emergencyNumber)}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Watch for */}
+      {result.watchFor && result.watchFor.length > 0 && (
+        <div className="rounded-2xl border border-orange-300/40 bg-orange-50 dark:bg-orange-950/20 p-4 space-y-2">
+          <h3 className="flex items-center gap-2 text-sm font-bold text-orange-600 uppercase tracking-wider">
+            <Eye className="h-4 w-4" /> Watch for — escalate if you see these
+          </h3>
+          <ul className="space-y-1.5">
+            {result.watchFor.map((item, i) => (
+              <li key={i} className="flex items-start gap-2">
+                <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0 mt-0.5 text-orange-500" />
+                <p className="text-sm text-foreground">{resolveEmergency(item, emergencyNumber)}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Full guide link */}
+      {kbHref && (
+        <Link
+          to={kbHref}
+          className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-3.5 hover:border-primary hover:shadow-sm transition-all"
+        >
+          <div className="flex-shrink-0 w-9 h-9 rounded-full bg-primary/15 text-primary flex items-center justify-center">
+            <BookOpen className="h-4 w-4" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-bold uppercase tracking-wider text-primary">Open full guide</p>
+            <p className="text-sm font-semibold text-foreground truncate mt-0.5">
+              {(getTopic(result.kbSlug!, language) ?? getTopic(result.kbSlug!, "en"))?.title ?? result.title}
+            </p>
+          </div>
+        </Link>
+      )}
+
+      {/* Restart */}
+      <button
+        onClick={onReset}
+        className="flex w-full items-center justify-center gap-2 rounded-full border border-border bg-card px-4 py-2.5 text-sm font-semibold text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+      >
+        <RotateCcw className="h-4 w-4" /> Start again
+      </button>
+    </div>
+  );
+}
+
+/* ─── Main page ────────────────────────────────────────────────── */
 
 const SymptomFinder = () => {
   const { language } = useLanguage();

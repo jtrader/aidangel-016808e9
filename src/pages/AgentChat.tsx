@@ -8,6 +8,8 @@ import { EmergencyBanner } from "@/components/shared";
 import ChatMessage from "@/components/ChatMessage";
 import ChatDisclaimer from "@/components/ChatDisclaimer";
 import NetworkFooter from "@/components/NetworkFooter";
+import { useCountry } from "@/hooks/useCountry";
+import { emergencyNumberForCountry } from "@/lib/donations";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -72,6 +74,8 @@ const SUGGESTED = [
 ];
 
 export default function AgentChat() {
+  const { code: countryCode } = useCountry();
+  const emergencyNumber = emergencyNumberForCountry(countryCode);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -138,8 +142,8 @@ export default function AgentChat() {
             <div className="text-center py-8">
               <h1 className="text-2xl font-bold mb-2">Ask the First Aid Agent</h1>
               <p className="text-muted-foreground mb-6 text-sm">
-                A Gemini-powered assistant for Australian first aid. In life-threatening emergencies, call{" "}
-                <a href="tel:000" className="text-primary font-semibold underline">000</a>.
+                A Gemini-powered assistant for first aid. In life-threatening emergencies, call{" "}
+                <a href={`tel:${emergencyNumber}`} className="text-primary font-semibold underline">{emergencyNumber}</a>.
               </p>
               <div className="grid sm:grid-cols-2 gap-2 max-w-xl mx-auto">
                 {SUGGESTED.map((s) => (

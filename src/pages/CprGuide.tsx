@@ -25,6 +25,7 @@ import Illustration from "@/components/lesson/Illustration";
 import EmergencyCallButton from "@/components/EmergencyCallButton";
 import { useCountry } from "@/hooks/useCountry";
 import { emergencyNumberForCountry } from "@/lib/donations";
+import { resolveEmergency } from "@/lib/resolveEmergency";
 import { useMetronome } from "@/hooks/useMetronome";
 import DonateMenu from "@/components/DonateMenu";
 import ShopMenu from "@/components/ShopMenu";
@@ -343,7 +344,7 @@ export default function CprGuide() {
             </div>
           </div>
           <p className="text-sm sm:text-base text-card-foreground leading-relaxed mb-4">
-            {step.detail}
+            {resolveEmergency(step.detail, emergency)}
           </p>
 
           {step.key === "D" && <Illustration name="danger-check" />}

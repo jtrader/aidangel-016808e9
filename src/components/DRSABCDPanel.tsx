@@ -12,6 +12,9 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { useLanguage, type TranslationKey } from "@/contexts/LanguageContext";
+import { useCountry } from "@/hooks/useCountry";
+import { emergencyNumberForCountry } from "@/lib/donations";
+import { resolveEmergency } from "@/lib/resolveEmergency";
 
 type Step = {
   letter: string;
@@ -96,6 +99,8 @@ interface DRSABCDPanelProps {
 const DRSABCDPanel = ({ onSelect }: DRSABCDPanelProps) => {
   const [expanded, setExpanded] = useState(true);
   const { language, t } = useLanguage();
+  const { code: countryCode } = useCountry();
+  const emergencyNumber = emergencyNumberForCountry(countryCode);
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -185,7 +190,7 @@ const DRSABCDPanel = ({ onSelect }: DRSABCDPanelProps) => {
                         className="block text-xs text-muted-foreground leading-tight"
                         lang={language}
                       >
-                        {t(step.blurbKey)}
+                        {resolveEmergency(t(step.blurbKey), emergencyNumber)}
                       </span>
                     </span>
                     <Icon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
