@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { findTopicBySection } from "@/lib/kb";
 import { useCountry } from "@/hooks/useCountry";
 import { emergencyNumberForCountry } from "@/lib/donations";
+import EmergencyNumberLink, { isEmergencyNumber, normalizePhoneNumber } from "@/components/shared/EmergencyNumberLink";
 
 interface Message {
   role: "user" | "assistant";
@@ -68,6 +69,14 @@ const ChatMessage = ({ message, onAction }: ChatMessageProps) => {
                       >
                         {children}
                       </button>
+                    );
+                  }
+                  if (href?.startsWith("tel:") && isEmergencyNumber(href, emergencyNumber)) {
+                    const number = normalizePhoneNumber(href) || emergencyNumber;
+                    return (
+                      <EmergencyNumberLink number={number} className="text-primary underline font-semibold hover:text-foreground transition-colors">
+                        {children}
+                      </EmergencyNumberLink>
                     );
                   }
                   if (href?.startsWith("/")) {
