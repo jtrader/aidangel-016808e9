@@ -5,7 +5,6 @@ import DonateMenu from "@/components/DonateMenu";
 import ShopMenu from "@/components/ShopMenu";
 import LearnMenu from "@/components/LearnMenu";
 import PageBreadcrumbs from "@/components/PageBreadcrumbs";
-import { useLanguage } from "@/contexts/LanguageContext";
 import aidAngelLogo from "@/assets/aidangel-logo.png";
 
 interface SiteHeaderProps {
@@ -23,7 +22,6 @@ export default function SiteHeader({
   showBreadcrumbs = true,
   containerClassName = "max-w-[820px]",
 }: SiteHeaderProps) {
-  const { t } = useLanguage();
   const navigate = useNavigate();
   const fallbackBackTo = backTo ?? "/";
 
@@ -64,7 +62,7 @@ export default function SiteHeader({
                     </h1>
                   </div>
                   <p className="text-xs text-muted-foreground truncate">
-                    {t("appSubtitle")}
+                    First Aid Preparedness
                   </p>
                 </div>
               </Link>
