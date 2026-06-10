@@ -105,6 +105,7 @@ import AdminBlog from "./pages/AdminBlog";
 import AdminBlogEditor from "./pages/AdminBlogEditor";
 import LessonRenderer from "./components/lesson/LessonRenderer";
 import RequireProgramAccess from "./components/RequireProgramAccess";
+import SiteHeader from "./components/SiteHeader";
 import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
 import { useCartSync } from "./hooks/useCartSync";
@@ -118,6 +119,14 @@ function CartSyncMount() {
   return null;
 }
 
+function CprGuidePage() {
+  return (
+    <div className="cpr-guide-page">
+      <SiteHeader backTo="/" backLabel="Home" showBreadcrumbs={false} />
+      <CprGuide />
+    </div>
+  );
+}
 
 // Validates :lang and either renders the page (with sync) or redirects to English equivalent.
 function LangRoute({ children, to }: { children: React.ReactNode; to: (slug?: string) => string }) {
@@ -163,7 +172,7 @@ const App = forwardRef(function App(_props, _ref) {
                 <Route path="/learn/provider/:slug" element={<EducatorProfile />} />
                 <Route path="/learn/:country" element={<LearnCountry />} />
                 <Route path="/learn/:country/:city" element={<LearnCity />} />
-                <Route path="/cpr" element={<CprGuide />} />
+                <Route path="/cpr" element={<CprGuidePage />} />
                 <Route path="/aed-finder" element={<AedFinder />} />
                 <Route path="/aed" element={<AedIndex />} />
                 <Route path="/aed/:country" element={<AedCountry />} />
