@@ -9,6 +9,7 @@ import NetworkFooter from "@/components/NetworkFooter";
 import SupportUsBar from "@/components/SupportUsBar";
 
 import EmergencyCallButton from "@/components/EmergencyCallButton";
+import EmergencyNumberLink from "@/components/shared/EmergencyNumberLink";
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCountry } from "@/hooks/useCountry";
@@ -86,8 +87,6 @@ const KbIndex = () => {
     return () => { cancelled = true; };
   }, [language]);
 
-  // Runtime translation prefetch — fallback for any topic missing from the static
-  // per-language _meta.json (e.g. a topic added after the last bulk translation run).
   useEffect(() => {
     if (language === "en") {
       setMetaMap({});
@@ -123,7 +122,6 @@ const KbIndex = () => {
     };
   }, [language, enTopics]);
 
-  // Prefer static translation (already on topic); fall back to runtime cache.
   const display = (slug: string, fallbackTitle: string, fallbackSummary: string) => {
     const m = metaMap[slug];
     return {
@@ -174,7 +172,7 @@ const KbIndex = () => {
               <span key={i}>
                 {part}
                 {i < arr.length - 1 && (
-                  <a href={`tel:${emergencyNumber}`} className="underline font-semibold text-primary hover:text-foreground transition-colors">{emergencyNumber}</a>
+                  <EmergencyNumberLink number={emergencyNumber} className="underline font-semibold text-primary hover:text-foreground transition-colors">{emergencyNumber}</EmergencyNumberLink>
                 )}
               </span>
             ))}
