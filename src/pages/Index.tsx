@@ -268,9 +268,9 @@ const Index = () => {
                         <KbSuggestionCard slug={suggestion.slug} urgent={suggestion.urgent} />
                       )}
                       {showWalkNav && (
-                        <div className="ml-11 animate-fade-in space-y-2">
+                        <div className="ml-11 animate-fade-in space-y-2" style={{ maxWidth: "calc(80% - 0px)" }}>
                           {sx && sy && (
-                            <div className="space-y-1 max-w-sm">
+                            <div className="space-y-1">
                               <div className="flex items-center justify-between text-xs">
                                 <span className="font-semibold text-foreground">
                                   {t("walkStepOf").replace("{n}", String(sx)).replace("{total}", String(sy))}
@@ -381,71 +381,67 @@ const Index = () => {
 
 
               <div className="max-w-2xl mx-auto w-full">
+                <ChatInput onSend={send} disabled={isLoading} />
+                <ChatDisclaimer />
                 {(() => {
                   const last = messages[messages.length - 1];
                   if (isLoading || last?.role !== "assistant") return null;
                   const isUrgent = /\[\[URGENT\]\]/.test(last.content);
+                  if (!isUrgent) return null;
                   return (
-                    <>
-                      {isUrgent && (
-                        <div className="mb-3 rounded-2xl border border-destructive/30 bg-destructive/5 p-3 animate-fade-in">
-                          <p className="text-xs font-semibold uppercase tracking-wide text-destructive mb-2 text-center">
-                            Emergency resources
-                          </p>
-                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                            <a
-                              href={`tel:${emergencyNumber}`}
-                              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-destructive text-destructive-foreground text-xs font-semibold hover:bg-destructive/90 transition-colors"
-                            >
-                              <Phone className="h-3.5 w-3.5" />
-                              Call {emergencyNumber}
-                            </a>
-                            <Link
-                              to="/cpr"
-                              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors"
-                            >
-                              <HeartPulse className="h-3.5 w-3.5" />
-                              DRSABCD
-                            </Link>
-                            <a
-                              href="https://www.goodsamapp.org/locatorMap"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-card border border-border text-foreground text-xs font-semibold hover:bg-muted transition-colors"
-                            >
-                              <MapPin className="h-3.5 w-3.5" />
-                              Nearest AED
-                            </a>
-                            <a
-                              href="tel:131126"
-                              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-card border border-border text-foreground text-xs font-semibold hover:bg-muted transition-colors"
-                            >
-                              <FlaskConical className="h-3.5 w-3.5" />
-                              Poisons 13 11 26
-                            </a>
-                            <a
-                              href="tel:1800022222"
-                              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-card border border-border text-foreground text-xs font-semibold hover:bg-muted transition-colors"
-                            >
-                              <Stethoscope className="h-3.5 w-3.5" />
-                              Healthdirect
-                            </a>
-                            <button
-                              type="button"
-                              onClick={() => send("Talk me through this one step at a time")}
-                              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-secondary text-secondary-foreground text-xs font-semibold hover:bg-secondary/80 transition-colors"
-                            >
-                              Step-by-step
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                      {/* Walk-through panel is rendered sticky above messages — see top of layout */}
-                    </>
+                    <div className="mt-3 rounded-2xl border border-destructive/30 bg-destructive/5 p-3 animate-fade-in">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-destructive mb-2 text-center">
+                        Emergency resources
+                      </p>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        <a
+                          href={`tel:${emergencyNumber}`}
+                          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-destructive text-destructive-foreground text-xs font-semibold hover:bg-destructive/90 transition-colors"
+                        >
+                          <Phone className="h-3.5 w-3.5" />
+                          Call {emergencyNumber}
+                        </a>
+                        <Link
+                          to="/cpr"
+                          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors"
+                        >
+                          <HeartPulse className="h-3.5 w-3.5" />
+                          DRSABCD
+                        </Link>
+                        <a
+                          href="https://www.goodsamapp.org/locatorMap"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-card border border-border text-foreground text-xs font-semibold hover:bg-muted transition-colors"
+                        >
+                          <MapPin className="h-3.5 w-3.5" />
+                          Nearest AED
+                        </a>
+                        <a
+                          href="tel:131126"
+                          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-card border border-border text-foreground text-xs font-semibold hover:bg-muted transition-colors"
+                        >
+                          <FlaskConical className="h-3.5 w-3.5" />
+                          Poisons 13 11 26
+                        </a>
+                        <a
+                          href="tel:1800022222"
+                          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-card border border-border text-foreground text-xs font-semibold hover:bg-muted transition-colors"
+                        >
+                          <Stethoscope className="h-3.5 w-3.5" />
+                          Healthdirect
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => send("Talk me through this one step at a time")}
+                          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-secondary text-secondary-foreground text-xs font-semibold hover:bg-secondary/80 transition-colors"
+                        >
+                          Step-by-step
+                        </button>
+                      </div>
+                    </div>
                   );
                 })()}
-                <ChatInput onSend={send} disabled={isLoading} />
-                <ChatDisclaimer />
               </div>
             </>
           )}
