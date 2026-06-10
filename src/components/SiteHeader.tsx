@@ -13,6 +13,7 @@ interface SiteHeaderProps {
   backLabel?: string;
   showBackButton?: boolean;
   showBreadcrumbs?: boolean;
+  containerClassName?: string;
 }
 
 export default function SiteHeader({
@@ -20,6 +21,7 @@ export default function SiteHeader({
   backLabel,
   showBackButton = true,
   showBreadcrumbs = true,
+  containerClassName = "max-w-[820px]",
 }: SiteHeaderProps) {
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -39,11 +41,13 @@ export default function SiteHeader({
     navigate(fallbackBackTo);
   };
 
+  const containerClasses = `${containerClassName} mx-auto`;
+
   return (
     <>
       <header className="border-b border-border bg-card">
         <div className="px-4 py-4">
-          <div className="max-w-[820px] mx-auto flex flex-row items-center gap-3">
+          <div className={`${containerClasses} flex flex-row items-center gap-3`}>
             <div className="flex items-center gap-3 flex-1 min-w-0">
               <Link to="/" className="flex items-center gap-3 flex-1 min-w-0">
                 <img
@@ -71,7 +75,7 @@ export default function SiteHeader({
           </div>
         </div>
         <div className="border-t border-border bg-muted/40 px-4 py-3">
-          <div className="max-w-[820px] mx-auto grid grid-cols-[auto_1fr_auto] items-center gap-2">
+          <div className={`${containerClasses} grid grid-cols-[auto_1fr_auto] items-center gap-2`}>
             {showBackButton ? (
               <button
                 type="button"
