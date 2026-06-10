@@ -80,7 +80,7 @@ export default function Programs() {
         title="First Aid Courses & Certifications | First Aid Angel"
         description="Choose a curated first aid course — for parents, workplaces, outdoor adventurers or carers. Each ends with a final exam and course certificate." />
       <CoursesHeader />
-      <main className="flex-1 container max-w-6xl mx-auto px-4 py-10">
+      <main className="flex-1 w-full max-w-[1000px] mx-auto px-4 py-10">
         <header className="mb-10 text-center">
           <Badge variant="secondary" className="mb-3">{tr.eyebrow}</Badge>
           <h1 className="font-display text-4xl md:text-5xl font-bold mb-3">{tr.heading}</h1>
