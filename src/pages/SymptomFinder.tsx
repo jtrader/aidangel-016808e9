@@ -12,7 +12,7 @@ import { SYMPTOM_LANDERS } from "@/data/symptomLanders";
 import NetworkFooter from "@/components/NetworkFooter";
 
 import EmergencyCallButton from "@/components/EmergencyCallButton";
-import HamburgerMenu from "@/components/HamburgerMenu";
+import EmergencyNumberLink from "@/components/shared/EmergencyNumberLink";
 
 type Symptom = {
   label: string;
@@ -75,7 +75,6 @@ const SymptomFinder = () => {
   const urgentList = filtered.filter((s) => s.urgent);
   const otherList = filtered.filter((s) => !s.urgent);
 
-  // Map KB slug → best matching long-tail lander (if any)
   const landerByKb = useMemo(() => {
     const m = new Map<string, string>();
     for (const l of SYMPTOM_LANDERS) {
@@ -129,19 +128,19 @@ const SymptomFinder = () => {
           <p className="text-muted-foreground mb-4">
             Tap the symptom that best matches the emergency for step-by-step first aid.
             For any life-threatening emergency, call{" "}
-            <a href={`tel:${emergencyNumber}`} className="text-primary font-semibold underline">
+            <EmergencyNumberLink number={emergencyNumber} className="text-primary font-semibold underline">
               {emergencyNumber}
-            </a>{" "}
+            </EmergencyNumberLink>{" "}
             first.
           </p>
 
-          <a
-            href={`tel:${emergencyNumber}`}
-            className="mb-6 flex items-center justify-center gap-2 rounded-2xl bg-destructive px-4 py-3 text-destructive-foreground font-bold text-base shadow-md hover:opacity-95 transition"
+          <EmergencyNumberLink
+            number={emergencyNumber}
+            className="mb-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-destructive px-4 py-3 text-destructive-foreground font-bold text-base shadow-md hover:opacity-95 transition"
           >
             <Phone className="h-5 w-5" />
             Emergency — call {emergencyNumber}
-          </a>
+          </EmergencyNumberLink>
 
           <div className="relative mb-6">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
