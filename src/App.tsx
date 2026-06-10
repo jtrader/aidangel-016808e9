@@ -106,6 +106,7 @@ import AdminBlogEditor from "./pages/AdminBlogEditor";
 import LessonRenderer from "./components/lesson/LessonRenderer";
 import RequireProgramAccess from "./components/RequireProgramAccess";
 import SiteHeader from "./components/SiteHeader";
+import PageBreadcrumbs from "./components/PageBreadcrumbs";
 import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
 import { useCartSync } from "./hooks/useCartSync";
@@ -123,6 +124,7 @@ function CprGuidePage() {
   return (
     <div className="cpr-guide-page">
       <SiteHeader backTo="/" backLabel="Home" showBreadcrumbs={false} />
+      <PageBreadcrumbs />
       <CprGuide />
     </div>
   );
