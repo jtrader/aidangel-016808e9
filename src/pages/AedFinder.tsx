@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { MapPin, AlertCircle, Loader2, X, Cross, LocateFixed } from "lucide-react";
+import { MapPin, AlertCircle, Loader2, Cross, LocateFixed } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
 import { useCountry } from "@/hooks/useCountry";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -7,7 +7,7 @@ import { emergencyNumberForCountry } from "@/lib/donations";
 import { Button } from "@/components/ui/button";
 import { loadMapboxToken, mapboxgl, reverseGeocodeCountry } from "@/lib/mapboxLoader";
 import EmergencyCallButton from "@/components/EmergencyCallButton";
-import HamburgerMenu from "@/components/HamburgerMenu";
+import SiteHeader from "@/components/SiteHeader";
 import {
   Aed,
   fetchCountryAeds,
@@ -199,6 +199,7 @@ export default function AedFinder() {
         description="Locate the nearest publicly accessible AED (defibrillator) on an interactive map. Crowd-sourced data from OpenStreetMap and OpenAEDMap."
       />
       <main className="min-h-screen bg-[#F7F7F7] flex flex-col">
+        <SiteHeader backTo="/aed" backLabel="AED directory" />
         <div className="bg-white border-b">
           <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-3">
             <Cross className="w-6 h-6 text-primary" />
@@ -213,14 +214,6 @@ export default function AedFinder() {
               className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline px-2"
             >
               Browse by city
-            </a>
-            <HamburgerMenu />
-            <a
-              href="/"
-              className="p-2 rounded-full hover:bg-muted"
-              aria-label="Close"
-            >
-              <X className="w-5 h-5" />
             </a>
           </div>
         </div>
