@@ -25,11 +25,12 @@ function generateToken(): string {
     .join('')
 }
 
-// Auth note: this function uses verify_jwt = true in config.toml, so Supabase's
-// gateway validates the caller's JWT before the request reaches this code.
-// We additionally require the caller to be either the service role OR an
-// authenticated user — prevents anon-key callers from triggering arbitrary
-// emails to arbitrary recipients.
+// Auth: verify_jwt = true gates anon callers, but we additionally require
+// the caller to be the service_role. This function can send arbitrary
+// templates to arbitrary recipients, so it must only be invoked server-side
+// from other edge functions (e.g. educator-claim-notify, org-import-process,
+// process-email-queue). Regular authenticated end-users must never reach
+// this code path — see security finding "send_email_arbitrary_recipient".
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -37,7 +38,7 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders })
   }
 
-  // In-code role check: only allow service_role or authenticated users.
+  // In-code role check: only allow service_role callers.
   const authHeader = req.headers.get('Authorization')
   if (!authHeader?.startsWith('Bearer ')) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
@@ -53,7 +54,7 @@ Deno.serve(async (req) => {
   )
   const { data: claimsData, error: claimsErr } = await authClient.auth.getClaims(callerToken)
   const callerRole = claimsData?.claims?.role
-  if (claimsErr || !claimsData?.claims || (callerRole !== 'authenticated' && callerRole !== 'service_role')) {
+  if (claimsErr || !claimsData?.claims || callerRole !== 'service_role') {
     return new Response(JSON.stringify({ error: 'Forbidden' }), {
       status: 403,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
