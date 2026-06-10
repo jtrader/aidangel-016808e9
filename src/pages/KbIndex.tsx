@@ -4,12 +4,11 @@ import { Link } from "react-router-dom";
 import { Loader2, Search } from "lucide-react";
 import { topicsByCategory, topicsFor } from "@/lib/kb";
 import { SeoHead } from "@/components/SeoHead";
-import { canonicalUrl, SITE_ORIGIN, localizedPath } from "@/lib/i18n";
+import { SITE_ORIGIN, localizedPath } from "@/lib/i18n";
 import NetworkFooter from "@/components/NetworkFooter";
 import SupportUsBar from "@/components/SupportUsBar";
 
 import EmergencyCallButton from "@/components/EmergencyCallButton";
-import HamburgerMenu from "@/components/HamburgerMenu";
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCountry } from "@/hooks/useCountry";
@@ -162,12 +161,6 @@ const KbIndex = () => {
 
       <main className="flex-1 px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          <nav aria-label="Breadcrumb" className="text-xs text-muted-foreground mb-3">
-            <Link to={homePath} className="hover:text-foreground">{ui.appName}</Link>
-            <span className="mx-1">/</span>
-            <span className="text-foreground">{ui.knowledgeBase}</span>
-          </nav>
-
           <div className="flex items-center gap-2 mb-3">
             <h1 className="text-3xl sm:text-4xl font-bold text-foreground">
               {ui.pageTitle}
@@ -201,7 +194,6 @@ const KbIndex = () => {
               Not sure where to start? Find by symptom
             </Link>
           </div>
-
 
           {prefetching && language !== "en" && (
             <div className="mb-6 inline-flex items-center gap-2 text-xs text-muted-foreground">
