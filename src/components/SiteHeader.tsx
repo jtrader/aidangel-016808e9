@@ -34,7 +34,7 @@ export default function SiteHeader({ backTo, backLabel, showBackButton = true }:
 
   return (
     <header className="border-b border-border bg-card px-4 py-4">
-      <div className="max-w-6xl mx-auto flex flex-row items-center gap-3">
+      <div className="max-w-3xl mx-auto flex flex-row items-center gap-3">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <Link to="/" className="flex items-center gap-3 flex-1 min-w-0">
             <img
@@ -60,8 +60,8 @@ export default function SiteHeader({ backTo, backLabel, showBackButton = true }:
           <HamburgerMenu />
         </div>
       </div>
-      <div className="max-w-6xl mx-auto mt-3 flex flex-wrap items-center justify-center gap-2">
-        {showBackButton && (
+      <div className="max-w-3xl mx-auto mt-3 grid grid-cols-[auto_1fr_auto] items-center gap-2">
+        {showBackButton ? (
           <button
             type="button"
             onClick={handleBack}
@@ -70,10 +70,15 @@ export default function SiteHeader({ backTo, backLabel, showBackButton = true }:
           >
             <ArrowLeft className="h-5 w-5" aria-hidden="true" />
           </button>
+        ) : (
+          <span className="h-11 w-11" aria-hidden="true" />
         )}
-        <DonateMenu variant="header" />
-        <ShopMenu variant="header" />
-        <LearnMenu variant="header" />
+        <div className="flex min-w-0 flex-wrap items-center justify-center gap-2">
+          <DonateMenu variant="header" />
+          <ShopMenu variant="header" />
+          <LearnMenu variant="header" />
+        </div>
+        <span className="h-11 w-11" aria-hidden="true" />
       </div>
     </header>
   );
