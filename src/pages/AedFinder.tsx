@@ -199,7 +199,7 @@ export default function AedFinder() {
         description="Locate the nearest publicly accessible AED (defibrillator) on an interactive map. Crowd-sourced data from OpenStreetMap and OpenAEDMap."
       />
       <main className="min-h-screen bg-[#F7F7F7] flex flex-col">
-        <SiteHeader backTo="/aed" backLabel="AED directory" />
+        <SiteHeader backTo="/aed" backLabel="AED directory" showBreadcrumbs={false} />
         <div className="bg-white border-b">
           <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-3">
             <Cross className="w-6 h-6 text-primary" />
