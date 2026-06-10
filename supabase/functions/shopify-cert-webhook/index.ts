@@ -34,18 +34,63 @@ function genCertId(): string {
   return `FAA-${hex.slice(0, 4)}-${hex.slice(4, 8)}-${hex.slice(8, 12)}`;
 }
 
+// Authoritative server-side mapping from Shopify variant ID / SKU → credit
+// grant. MUST stay in sync with PRICE_MAP in create-credit-checkout so the
+// webhook can derive credits without trusting user-controllable cart
+// note_attributes (security finding: credit_checkout_param_tamper).
+const CREDIT_PRODUCT_MAP: Record<string, {
+  priceId: string;
+  credits: number;
+  unlimited: boolean;
+  sku: string;
+}> = {
+  "48633717489919": { priceId: "personal_individual_annual",     credits: 1,  unlimited: false, sku: "FAA-CERT-PREPAY-INDIVIDUAL" },
+  "48633740460287": { priceId: "personal_family_annual",         credits: 3,  unlimited: false, sku: "FAA-CERT-PREPAY-HOUSEHOLD" },
+  "48633747374335": { priceId: "personal_family_plus_annual",    credits: 5,  unlimited: false, sku: "FAA-CERT-PREPAY-FAMILY" },
+  "48633995657471": { priceId: "employer_starter_1",             credits: 1,  unlimited: false, sku: "FAA-CORP-STARTER-1" },
+  "48633995690239": { priceId: "employer_starter_2",             credits: 2,  unlimited: false, sku: "FAA-CORP-STARTER-2" },
+  "48633995723007": { priceId: "employer_starter_3",             credits: 3,  unlimited: false, sku: "FAA-CORP-STARTER-3" },
+  "48633995755775": { priceId: "employer_starter_5",             credits: 5,  unlimited: false, sku: "FAA-CORP-STARTER-5" },
+  "48633995788543": { priceId: "employer_starter_10",            credits: 10, unlimited: false, sku: "FAA-CORP-STARTER-10" },
+  "48633785942271": { priceId: "employer_team_25_annual",        credits: 25, unlimited: false, sku: "FAA-CORP-TEAM25" },
+  "48633822675199": { priceId: "employer_team_50_annual",        credits: 50, unlimited: false, sku: "FAA-CORP-TEAM50" },
+  "48633835421951": { priceId: "employer_workplace_annual",      credits: 0,  unlimited: true,  sku: "FAA-CORP-UNLIMITED" },
+};
+const SKU_TO_VARIANT: Record<string, string> = Object.fromEntries(
+  Object.entries(CREDIT_PRODUCT_MAP).map(([v, e]) => [e.sku, v]),
+);
+
 async function handleCreditPackOrder(
   payload: any,
   attrs: Record<string, string>,
   supabase: ReturnType<typeof createClient>,
 ): Promise<string | null> {
   const userId = attrs["_user_id"];
-  const priceId = attrs["_price_id"];
-  const credits = parseInt(attrs["_credits"] ?? "0", 10);
-  const unlimited = attrs["_unlimited"] === "true";
   const orderId = String(payload?.id ?? "");
+  if (!userId) return "Missing _user_id";
 
-  if (!userId || !priceId) return "Missing credit pack attributes";
+  // Derive credits authoritatively from purchased line items, NOT from
+  // user-controllable note_attributes. Sum across all matching line items
+  // (and respect quantity) so multi-pack orders grant the correct total.
+  let totalCredits = 0;
+  let anyUnlimited = false;
+  let firstPriceId: string | null = null;
+  const lineItems = Array.isArray(payload?.line_items) ? payload.line_items : [];
+  for (const li of lineItems) {
+    const variantId = li?.variant_id != null ? String(li.variant_id) : "";
+    const sku = li?.sku ? String(li.sku) : "";
+    const entry = CREDIT_PRODUCT_MAP[variantId] ??
+      (sku && SKU_TO_VARIANT[sku] ? CREDIT_PRODUCT_MAP[SKU_TO_VARIANT[sku]] : undefined);
+    if (!entry) continue;
+    const qty = Math.max(1, Number(li?.quantity ?? 1) || 1);
+    if (entry.unlimited) anyUnlimited = true;
+    else totalCredits += entry.credits * qty;
+    if (!firstPriceId) firstPriceId = entry.priceId;
+  }
+
+  if (!firstPriceId && !anyUnlimited && totalCredits === 0) {
+    return "No recognised credit-pack line items";
+  }
 
   // Idempotency — has this order already been processed?
   const { data: existing } = await supabase
@@ -62,10 +107,10 @@ async function handleCreditPackOrder(
     .eq("user_id", userId)
     .maybeSingle();
 
-  const nextBalance = unlimited
+  const nextBalance = anyUnlimited
     ? (current?.balance ?? 0)
-    : (current?.balance ?? 0) + credits;
-  const nextUnlimited = (current?.unlimited ?? false) || unlimited;
+    : (current?.balance ?? 0) + totalCredits;
+  const nextUnlimited = (current?.unlimited ?? false) || anyUnlimited;
 
   // Upsert credits — certificate_credits PK is user_id
   await supabase.from("certificate_credits").upsert(
@@ -83,15 +128,16 @@ async function handleCreditPackOrder(
   await supabase.from("shopify_credit_orders").insert({
     shopify_order_id: orderId,
     user_id: userId,
-    price_id: priceId,
-    credits_granted: credits,
-    unlimited,
+    price_id: firstPriceId ?? "unknown",
+    credits_granted: totalCredits,
+    unlimited: anyUnlimited,
     created_at: new Date().toISOString(),
   });
 
-  console.log("Granted credits", { userId, priceId, credits, unlimited, orderId });
+  console.log("Granted credits", { userId, priceId: firstPriceId, credits: totalCredits, unlimited: anyUnlimited, orderId });
   return null;
 }
+
 
 Deno.serve(async (req) => {
   if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
