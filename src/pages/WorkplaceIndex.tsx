@@ -48,7 +48,7 @@ export default function WorkplaceIndex() {
         description="Industry-specific first aid guidance for 20 Australian workplace verticals — construction, mining, healthcare, childcare, hospitality, office and more. WHS-aligned."
         jsonLd={jsonLd}
       />
-      <SiteHeader backTo="/" backLabel="Back to home" />
+      <SiteHeader backTo="/" backLabel="Back to home" containerClassName="max-w-5xl" />
 
       <main className="flex-1">
         <CmsPageRenderer
