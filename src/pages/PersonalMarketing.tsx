@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { SeoHead } from "@/components/SeoHead";
-import CoursesHeader from "@/components/CoursesHeader";
 import NetworkFooter from "@/components/NetworkFooter";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
@@ -175,7 +174,6 @@ export default function PersonalMarketing() {
         title="Free First Aid Courses + CPD Certificates | First Aid Angel"
         description="All First Aid Angel courses are free. Earn a CPD-certified personal certificate of completion for AU$29 — or save with a credit pack from AU$25."
       />
-      <CoursesHeader />
 
       <CmsPageRenderer
         slug="personal"
@@ -259,175 +257,58 @@ export default function PersonalMarketing() {
                     <div className="aspect-video bg-muted relative">
                       {c.cover_url ? (
                         <img
-                          src={optimizeSupabaseImage(c.cover_url, 512)}
+                          src={optimizeSupabaseImage(c.cover_url, 768, 432, 80)}
                           alt={c.title}
-                          width={512}
-                          height={288}
-                          className="w-full h-full object-cover"
+                          width={768}
+                          height={432}
                           loading={isEager ? "eager" : "lazy"}
-                          decoding="async"
-                          fetchPriority={i === 0 ? "high" : isEager ? "auto" : "low"}
+                          fetchPriority={isEager ? "high" : "auto"}
+                          className="w-full h-full object-cover"
                         />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center bg-primary/10">
-                          <BookOpen className="h-10 w-10 text-primary/40" />
-                        </div>
-                      )}
+                      ) : null}
                     </div>
-                    <div className="p-4 text-left">
-                      <div className="flex gap-1.5 mb-2 flex-wrap">
-                        <Badge variant="secondary" className="text-[10px]">Course</Badge>
-                      </div>
-                      <h3 className="font-display font-bold text-sm leading-snug group-hover:text-primary line-clamp-2">
-                        {c.title}
-                      </h3>
-                      {c.summary && (
-                        <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{c.summary}</p>
-                      )}
+                    <div className="p-4">
+                      <h3 className="font-semibold text-sm line-clamp-2 group-hover:text-primary">{c.title}</h3>
+                      {c.summary && <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{c.summary}</p>}
                     </div>
                   </Card>
                 </Link>
-                );
-              })}
+              )})}
             </div>
           </div>
         )}
       </section>
 
       {/* Features */}
-      <section className="container max-w-6xl mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-3 gap-6">
-          {FEATURES.map((f) => (
-            <Card key={f.title} className="p-6 rounded-2xl">
-              <f.icon className="h-8 w-8 text-primary mb-3" />
-              <h3 className="font-display font-bold text-lg mb-2">{f.title}</h3>
-              <p className="text-sm text-muted-foreground">{f.body}</p>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section className="bg-[#F7F7F7] border-y">
-        <div className="container max-w-6xl mx-auto px-4 py-16">
-          <div className="text-center mb-12">
-            <h2 className="font-display text-3xl md:text-4xl font-bold mb-3">
-              Save with certificate credit packs
-            </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              All courses are free. CPD certificates are <strong>AU$29 each</strong>, or buy a pack below for a better per-certificate price.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-6">
-            {TIERS.map((t) => (
-              <Card
-                key={t.name}
-                className={`p-6 rounded-2xl flex flex-col w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] ${
-                  t.popular ? "border-2 border-primary shadow-lg relative" : ""
-                }`}
-              >
-                {t.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
-                    BEST VALUE
-                  </div>
-                )}
-                <h3 className="font-display font-bold text-xl">{t.name}</h3>
-                <p className="text-xs text-muted-foreground mb-4">{t.seats}</p>
-                <div className="mb-4">
-                  <span className="font-display text-3xl font-bold">
-                    {t.price}
-                  </span>
-                  <span className="text-sm text-muted-foreground ml-1">
-                    {t.unit}
-                  </span>
-                </div>
-                <ul className="space-y-2 text-sm mb-6 flex-1">
-                  {t.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2">
-                      <Check className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  className="w-full"
-                  variant={t.popular ? "default" : "outline"}
-                  disabled={checkoutLoading}
-                  onClick={() => handleBuy(t.priceId)}
-                >
-                  {checkoutLoading ? "Loading…" : "Buy credit pack"}
-                </Button>
-
+      <section className="py-14 px-4">
+        <div className="container max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6">
+            {FEATURES.map((f) => (
+              <Card key={f.title} className="p-6 rounded-2xl border-border bg-card h-full">
+                <f.icon className="h-8 w-8 text-primary mb-4" />
+                <h2 className="font-display text-xl font-bold mb-2">{f.title}</h2>
+                <p className="text-muted-foreground text-sm leading-relaxed">{f.body}</p>
               </Card>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Employer cross-sell */}
-      <section className="container max-w-4xl mx-auto px-4 py-16">
-        <Card className="p-8 md:p-10 rounded-2xl bg-gradient-to-br from-primary/5 to-card border-2 border-primary/20">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-            <div className="flex-shrink-0 h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center">
-              <Building2 className="h-7 w-7 text-primary" />
-            </div>
-            <div className="flex-1">
-              <h2 className="font-display text-2xl font-bold mb-2">
-                Training a team or workforce?
-              </h2>
-              <p className="text-muted-foreground">
-                Our employer plans add bulk CSV invites, course assignments,
-                branded certificates and a live compliance dashboard — built for
-                organisations from 5 to 5,000 people.
-              </p>
-            </div>
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 flex-shrink-0">
-              <Link to="/employer">
-                See employer plans <ArrowRight className="h-4 w-4 ml-2" />
-              </Link>
-            </Button>
-          </div>
-        </Card>
-      </section>
-      <section className="container max-w-3xl mx-auto px-4 py-16 text-center">
-        <h2 className="font-display text-3xl font-bold mb-4">
-          Ready to start learning — for free?
-        </h2>
-        <p className="text-muted-foreground mb-6">
-          All courses are 100% free. Pay only when you want your CPD-certified certificate of completion.
-        </p>
-        <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
-          <Link to={startHref}>
-            Start learning free <ArrowRight className="h-4 w-4 ml-2" />
-          </Link>
-        </Button>
-      </section>
-
-
-
-      {/* Topics marquee (moved to footer) */}
+      {/* Topics */}
       {topicsTrack.length > 0 && (
-        <section
-          id="topics-marquee"
-          className="relative py-12 overflow-hidden border-t bg-[#F7F7F7] scroll-mt-24"
-          aria-label="Browse first aid topics"
-        >
+        <section className="py-12 bg-muted/30 border-y overflow-hidden">
           <div className="container max-w-6xl mx-auto px-4 mb-6 text-center">
-            <h2 className="font-display text-2xl md:text-3xl font-bold mb-2">
-              Explore first aid topics
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Quick-reference guides — every topic is free to study.
-            </p>
+            <Badge variant="secondary" className="mb-3">Free topics</Badge>
+            <h2 className="font-display text-3xl font-bold">Learn practical first aid skills</h2>
+            <p className="text-muted-foreground mt-2">Every lesson and quiz is free to access.</p>
           </div>
           <style>{`
             @keyframes topicsMarquee {
-              from { transform: translateX(0); }
-              to { transform: translateX(-33.3333%); }
+              from { transform: translateX(-33.3333%); }
+              to { transform: translateX(0); }
             }
             .topics-marquee-track {
-              animation: topicsMarquee 60s linear infinite;
+              animation: topicsMarquee 70s linear infinite;
               width: max-content;
             }
             .topics-marquee-track:hover { animation-play-state: paused; }
@@ -435,67 +316,122 @@ export default function PersonalMarketing() {
               .topics-marquee-track { animation: none; }
             }
           `}</style>
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#F7F7F7] to-transparent z-10" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#F7F7F7] to-transparent z-10" />
-          <div className="flex topics-marquee-track gap-4 px-4">
-            {topicsTrack.map((c, i) => {
-              const isEager = i < 3;
-              return (
-              <Link
-                key={`${c.id}-${i}`}
-                to={`/topics/${c.slug}`}
-                className="block group shrink-0 w-64"
-              >
-                <Card className="overflow-hidden rounded-2xl h-full hover:shadow-lg transition-shadow bg-card">
-                  <div className="aspect-video bg-muted relative">
-                    {c.cover_url ? (
-                      <img
-                        src={c.cover_url}
-                        alt={c.title}
-                        className="w-full h-full object-cover"
-                        loading={isEager ? "eager" : "lazy"}
-                        decoding="async"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-primary/10">
-                        <BookOpen className="h-12 w-12 text-primary/40" />
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="p-4 text-left">
-                    <div className="flex gap-1.5 mb-2 flex-wrap">
-                      <Badge variant="secondary" className="capitalize text-[10px]">
-                        {c.level}
-                      </Badge>
-                      <Badge variant="outline" className="gap-1 text-[10px]">
-                        <Clock className="h-3 w-3" />
-                        {c.duration_minutes}m
-                      </Badge>
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-muted/30 to-transparent z-10" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-muted/30 to-transparent z-10" />
+            <div className="flex topics-marquee-track gap-4 px-4 pb-2">
+              {topicsTrack.map((t, i) => {
+                const isEager = i < 3;
+                return (
+                <Link key={`${t.id}-${i}`} to={`/topics/${t.slug}`} className="block group shrink-0 w-56">
+                  <Card className="overflow-hidden rounded-2xl bg-card hover:shadow-lg transition-shadow h-full">
+                    <div className="aspect-video bg-muted">
+                      {t.cover_url && (
+                        <img
+                          src={optimizeSupabaseImage(t.cover_url, 640, 360, 80)}
+                          alt={t.title}
+                          width={640}
+                          height={360}
+                          loading={isEager ? "eager" : "lazy"}
+                          fetchPriority={isEager ? "high" : "auto"}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
                     </div>
-                    <h3 className="font-display font-bold text-sm leading-snug group-hover:text-primary line-clamp-2">
-                      {c.title}
-                    </h3>
-                  </div>
-                </Card>
-              </Link>
-              );
-            })}
+                    <div className="p-3">
+                      <h3 className="font-semibold text-sm line-clamp-2 group-hover:text-primary">{t.title}</h3>
+                      <div className="flex items-center gap-2 mt-2 text-[11px] text-muted-foreground">
+                        <Clock className="h-3 w-3" /> {t.duration_minutes || 10} min
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              )})}
+            </div>
           </div>
         </section>
       )}
-          </>
+
+      {/* Pricing */}
+      <section className="py-16 px-4 bg-card border-y" id="certificates">
+        <div className="container max-w-6xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <Badge className="mb-3 bg-primary/10 text-primary hover:bg-primary/10">Certificate credits</Badge>
+            <h2 className="font-display text-3xl md:text-4xl font-bold mb-3">Get CPD-certified when you're ready</h2>
+            <p className="text-muted-foreground">
+              Training stays free. Certificate credits let you unlock official personal completion certificates after passing quizzes.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {TIERS.map((tier) => (
+              <Card key={tier.priceId} className={`relative p-6 rounded-2xl ${tier.popular ? "border-primary shadow-lg" : "border-border"}`}>
+                {tier.popular && (
+                  <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground">Best value</Badge>
+                )}
+                <h3 className="font-display text-xl font-bold mb-1">{tier.name}</h3>
+                <p className="text-sm text-muted-foreground mb-4">{tier.seats}</p>
+                <div className="mb-5">
+                  <span className="text-4xl font-bold">{tier.price}</span>
+                  <span className="text-muted-foreground text-sm"> {tier.unit}</span>
+                </div>
+                <ul className="space-y-3 mb-6">
+                  {tier.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2 text-sm">
+                      <Check className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  className="w-full"
+                  variant={tier.popular ? "default" : "outline"}
+                  disabled={checkoutLoading}
+                  onClick={() => handleBuy(tier.priceId)}
+                >
+                  {checkoutLoading ? "Opening…" : user ? "Buy credits" : "Sign in to buy"}
+                </Button>
+              </Card>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground text-center mt-6">
+            Certificate credits are for personal learning certificates only. For workplace teams, see our employer platform.
+          </p>
+        </div>
+      </section>
+
+      {/* Workplace cross-sell */}
+      <section className="py-14 px-4">
+        <div className="container max-w-4xl mx-auto">
+          <Card className="p-6 md:p-8 rounded-2xl bg-primary/5 border-primary/20">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-6 justify-between">
+              <div className="flex gap-4">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                  <Building2 className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <h2 className="font-display text-2xl font-bold mb-2">Need certificates for a workplace?</h2>
+                  <p className="text-muted-foreground">
+                    Invite staff, assign courses and manage completion records with organisation seats and admin dashboards.
+                  </p>
+                </div>
+              </div>
+              <Button asChild variant="outline" className="shrink-0">
+                <Link to="/employer">For employers</Link>
+              </Button>
+            </div>
+          </Card>
+        </div>
+      </section>
+      </>
         }
       />
-      <NetworkFooter />
 
+      <NetworkFooter />
       <EnrolAuthDialog
         open={authDialogOpen}
         onOpenChange={setAuthDialogOpen}
         onSuccess={onAuthSuccess}
-        variant="purchase-personal"
       />
-
     </div>
   );
 }
