@@ -107,6 +107,7 @@ import LessonRenderer from "./components/lesson/LessonRenderer";
 import RequireProgramAccess from "./components/RequireProgramAccess";
 import SiteHeader from "./components/SiteHeader";
 import PageBreadcrumbs from "./components/PageBreadcrumbs";
+import EmergencyTelInterceptor from "./components/shared/EmergencyTelInterceptor";
 import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
 import { useCartSync } from "./hooks/useCartSync";
@@ -156,6 +157,7 @@ const App = forwardRef(function App(_props, _ref) {
             <InstallPrompt />
             <BrowserRouter>
               <CartSyncMount />
+              <EmergencyTelInterceptor />
               <Routes>
                 {/* English (default, no prefix) */}
                 <Route path="/" element={<Index />} />
