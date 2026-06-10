@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Copy, MapPin, Phone, RefreshCw, Share2, AlertTriangle, Check, X } from "lucide-react";
+import { Copy, MapPin, Phone, RefreshCw, Share2, AlertTriangle, Check, X, HeartPulse, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useCountry } from "@/hooks/useCountry";
 import { emergencyNumberForCountry } from "@/lib/donations";
@@ -239,6 +239,7 @@ export default function MyLocation() {
   const [coords, setCoords] = useState<Coords | null>(null);
   const [geoError, setGeoError] = useState<GeoErrorState | null>(null);
   const [busy, setBusy] = useState(false);
+  const [aedOpen, setAedOpen] = useState(false);
   const [w3w, setW3w] = useState<LoadState<string>>({ status: "idle" });
   const [address, setAddress] = useState<LoadState<string>>({ status: "idle" });
   const [retry, setRetry] = useState<{ attempt: number; secondsLeft: number; total: number } | null>(null);
@@ -421,6 +422,44 @@ export default function MyLocation() {
       <p className="hidden sm:block text-xs text-muted-foreground text-center mt-1">
         In {country.name}, call {emergencyNumber} for emergency services.
       </p>
+
+      {/* AED near me — click to reveal */}
+      <div className="mt-3">
+        <button
+          type="button"
+          onClick={() => setAedOpen((o) => !o)}
+          className="w-full flex items-center justify-between gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground hover:bg-accent transition-colors"
+          aria-expanded={aedOpen}
+        >
+          <span className="flex items-center gap-2">
+            <HeartPulse className="h-4 w-4 text-destructive flex-shrink-0" />
+            AED near me
+          </span>
+          {aedOpen ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
+        </button>
+
+        {aedOpen && (
+          <div className="mt-2 rounded-2xl overflow-hidden border border-border bg-muted aspect-square animate-fade-in">
+            <iframe
+              key={coords ? `aed-${coords.lat}-${coords.lng}` : "aed-default"}
+              title="AED near me"
+              className="w-full h-full"
+              src={
+                coords
+                  ? `https://openaedmap.org/#15/${coords.lat.toFixed(5)}/${coords.lng.toFixed(5)}`
+                  : "https://openaedmap.org/#4/-25.3/133.8"
+              }
+              loading="lazy"
+              allow="geolocation"
+            />
+          </div>
+        )}
+        {aedOpen && !coords && (
+          <p className="text-xs text-muted-foreground mt-1.5 text-center">
+            Get your location above to centre the map on you.
+          </p>
+        )}
+      </div>
 
       {geoError && (
         <ErrorCard
