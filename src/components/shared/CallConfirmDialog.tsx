@@ -1,6 +1,8 @@
 import { useState, type ReactNode } from "react";
+import { X } from "lucide-react";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogTitle,
   DialogTrigger,
@@ -39,9 +41,18 @@ export default function CallConfirmDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto [&>button.right-4.top-4]:hidden">
         {/* Visible header removed by request; sr-only title retained for accessibility. */}
         <DialogTitle className="sr-only">Emergency call and location help — {number}</DialogTitle>
+        <DialogClose asChild>
+          <button
+            type="button"
+            aria-label="Close"
+            className="absolute top-3 right-3 z-10 inline-flex items-center justify-center w-14 h-14 rounded-full bg-muted text-muted-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+          >
+            <X className="h-7 w-7" aria-hidden="true" />
+          </button>
+        </DialogClose>
 
         <MyLocationPanel embedded />
 
