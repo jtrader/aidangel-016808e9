@@ -14,7 +14,7 @@ export const KB_QA: Record<string, QA[]> = {
     },
     {
       q: "Do I check for breathing before or after calling 000?",
-      a: "Send for help first (call 000 or get a bystander to call) so an ambulance is already on its way while you open the airway and check breathing.",
+      a: "Send for help first (Call 000 or get a bystander to call) so an ambulance is already on its way while you open the airway and check breathing.",
     },
     {
       q: "How do I check if someone is breathing normally?",
@@ -88,7 +88,7 @@ export const KB_QA: Record<string, QA[]> = {
     },
     {
       q: "What about an embedded object in the wound?",
-      a: "Do not remove it — it may be plugging the bleed. Apply pressure around the object and pad either side to support it, then call 000.",
+      a: "Do not remove it — it may be plugging the bleed. Apply pressure around the object and pad either side to support it, then Call 000.",
     },
   ],
   burns: [
@@ -136,7 +136,7 @@ export const KB_QA: Record<string, QA[]> = {
   anaphylaxis: [
     {
       q: "How do I use an EpiPen?",
-      a: "Pull off the blue safety cap, push the orange tip firmly into the outer thigh (through clothing if needed) and hold for 3 seconds. Lay the person flat and call 000.",
+      a: "Pull off the blue safety cap, push the orange tip firmly into the outer thigh (through clothing if needed) and hold for 3 seconds. Lay the person flat and Call 000.",
     },
     {
       q: "What if symptoms come back after the EpiPen?",
@@ -150,7 +150,7 @@ export const KB_QA: Record<string, QA[]> = {
   "allergic-reactions": [
     {
       q: "When does a mild allergy become anaphylaxis?",
-      a: "Any breathing difficulty, swelling of the tongue or throat, persistent dizziness, collapse, or wheeze — treat as anaphylaxis, give adrenaline if available, and call 000.",
+      a: "Any breathing difficulty, swelling of the tongue or throat, persistent dizziness, collapse, or wheeze — treat as anaphylaxis, give adrenaline if available, and Call 000.",
     },
     {
       q: "Do antihistamines help anaphylaxis?",
@@ -172,13 +172,13 @@ export const KB_QA: Record<string, QA[]> = {
     },
     {
       q: "Should I drive them to hospital myself?",
-      a: "No. Always call 000 — paramedics can start treatment in the ambulance and divert directly to a cardiac centre.",
+      a: "No. Always Call 000 — paramedics can start treatment in the ambulance and divert directly to a cardiac centre.",
     },
   ],
   stroke: [
     {
       q: "How do I use the FAST test?",
-      a: "Face — has their face drooped? Arms — can they lift both arms? Speech — is it slurred? Time — call 000 immediately if any sign is present.",
+      a: "Face — has their face drooped? Arms — can they lift both arms? Speech — is it slurred? Time — Call 000 immediately if any sign is present.",
     },
     {
       q: "Why does time matter so much in stroke?",
@@ -214,7 +214,7 @@ export const KB_QA: Record<string, QA[]> = {
     },
     {
       q: "What if they are unconscious?",
-      a: "Do not give anything by mouth. Place in the recovery position and call 000.",
+      a: "Do not give anything by mouth. Place in the recovery position and Call 000.",
     },
   ],
   "head-injury": [
@@ -256,7 +256,7 @@ export const KB_QA: Record<string, QA[]> = {
     },
     {
       q: "What about an open fracture (bone showing)?",
-      a: "Control bleeding with pressure around — not over — the bone, cover with a clean dressing, immobilise, and call 000.",
+      a: "Control bleeding with pressure around — not over — the bone, cover with a clean dressing, immobilise, and Call 000.",
     },
   ],
   "sprains-strains": [
@@ -290,7 +290,7 @@ export const KB_QA: Record<string, QA[]> = {
   "spider-bite": [
     {
       q: "Which spiders need pressure immobilisation?",
-      a: "Funnel-web and mouse spiders only. Treat exactly like a snake bite and call 000.",
+      a: "Funnel-web and mouse spiders only. Treat exactly like a snake bite and Call 000.",
     },
     {
       q: "Why not bandage a redback bite?",
@@ -312,7 +312,7 @@ export const KB_QA: Record<string, QA[]> = {
     },
     {
       q: "When is a jellyfish sting an emergency?",
-      a: "Any sting in tropical waters (box jellyfish, irukandji), difficulty breathing, chest or back pain, severe sweating, or collapse — call 000.",
+      a: "Any sting in tropical waters (box jellyfish, irukandji), difficulty breathing, chest or back pain, severe sweating, or collapse — Call 000.",
     },
   ],
   "heat-illness": [
@@ -368,7 +368,7 @@ export const KB_QA: Record<string, QA[]> = {
     },
     {
       q: "Why does every drowning casualty need to go to hospital?",
-      a: "Secondary drowning can develop hours later, even in someone who seems fine. Always call 000 and have them assessed.",
+      a: "Secondary drowning can develop hours later, even in someone who seems fine. Always Call 000 and have them assessed.",
     },
   ],
   nosebleed: [
@@ -392,7 +392,7 @@ export const KB_QA: Record<string, QA[]> = {
     },
     {
       q: "How long should recovery take?",
-      a: "Most people recover within 1–2 minutes. If they don't, treat as unconscious — place in the recovery position and call 000.",
+      a: "Most people recover within 1–2 minutes. If they don't, treat as unconscious — place in the recovery position and Call 000.",
     },
     {
       q: "When is fainting a warning sign?",
@@ -406,7 +406,7 @@ export const KB_QA: Record<string, QA[]> = {
     },
     {
       q: "How can I tell if dehydration is severe?",
-      a: "Confusion, no urine output, sunken eyes, very rapid pulse and breathing, or loss of consciousness — call 000.",
+      a: "Confusion, no urine output, sunken eyes, very rapid pulse and breathing, or loss of consciousness — Call 000.",
     },
     {
       q: "How do I rehydrate a young child?",
@@ -444,7 +444,7 @@ export const KB_QA: Record<string, QA[]> = {
   "eye-injuries": [
     {
       q: "How long do I flush a chemical splash?",
-      a: "At least 20 minutes of cool running water, holding the eyelids open and tilting the head so the chemical runs away from the unaffected eye. Then call 000.",
+      a: "At least 20 minutes of cool running water, holding the eyelids open and tilting the head so the chemical runs away from the unaffected eye. Then Call 000.",
     },
     {
       q: "What if something is embedded in the eye?",
@@ -458,7 +458,7 @@ export const KB_QA: Record<string, QA[]> = {
   "electric-shock": [
     {
       q: "Can I touch someone still in contact with electricity?",
-      a: "No. Turn off the power at the mains or unplug the appliance first. For fallen high-voltage lines, stay at least 8 metres away and call 000.",
+      a: "No. Turn off the power at the mains or unplug the appliance first. For fallen high-voltage lines, stay at least 8 metres away and Call 000.",
     },
     {
       q: "Do I need to go to hospital if I feel fine afterwards?",

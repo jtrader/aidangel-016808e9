@@ -150,7 +150,7 @@ export default function StyleGuide() {
           <Card className="p-6 space-y-4">
             <div><p className="text-xs text-muted-foreground mb-1">H1 · display · 36–48px · 700</p><p className="font-display text-4xl md:text-5xl font-bold">Recognise the signs early</p></div>
             <div><p className="text-xs text-muted-foreground mb-1">H2 · display · 24–30px · 700</p><p className="font-display text-2xl md:text-3xl font-bold">Direct pressure & bandaging</p></div>
-            <div><p className="text-xs text-muted-foreground mb-1">H3 · display · 18–20px · 600</p><p className="font-display text-lg md:text-xl font-semibold">When to call 000</p></div>
+            <div><p className="text-xs text-muted-foreground mb-1">H3 · display · 18–20px · 600</p><p className="font-display text-lg md:text-xl font-semibold">When to Call 000</p></div>
             <div><p className="text-xs text-muted-foreground mb-1">Lead · 18px · 400</p><p className="text-lg">A clear, calm first sentence sets the scene before any action.</p></div>
             <div><p className="text-xs text-muted-foreground mb-1">Body · 14–16px · 400</p><p>Use plain Australian English. Short sentences. Avoid jargon. If you must use a medical term, define it the first time.</p></div>
             <div><p className="text-xs text-muted-foreground mb-1">Caption · 12px · uppercase tracking</p><p className="font-display text-xs font-semibold uppercase tracking-widest text-primary">Emergency · Step 1 of 4</p></div>
@@ -188,7 +188,7 @@ export default function StyleGuide() {
         <section id="prose" className="mb-14 scroll-mt-20">
           <h2 className="font-display text-2xl font-bold mb-1">Authoring cheatsheet</h2>
           <Card className="p-6">
-            <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed"><code>{`:::danger[Title]      life-threatening / call 000
+            <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed"><code>{`:::danger[Title]      life-threatening / Call 000
 :::warning[Title]     caution, don't do X
 :::tip[Title]         helpful technique
 :::remember[Title]    memorable rule (DRSABCD)

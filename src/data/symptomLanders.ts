@@ -35,7 +35,7 @@ export const SYMPTOM_LANDERS: SymptomLander[] = [
   {
     slug: "chest-pain",
     h1: "Chest pain first aid — what to do right now",
-    title: "Chest pain first aid Australia — call 000 fast",
+    title: "Chest pain first aid Australia — Call 000 fast",
     description:
       "Sudden chest pain or pressure? Step-by-step first aid for a suspected heart attack in Australia. Call 000, sit them down, give aspirin if safe.",
     intro:
@@ -81,7 +81,7 @@ export const SYMPTOM_LANDERS: SymptomLander[] = [
     h1: "Severe bleeding — how to stop it fast",
     title: "How to stop severe bleeding · First Aid Angel",
     description:
-      "Heavy bleeding from a cut, wound or accident? Apply firm direct pressure, call 000, keep pressing. St John Australian First Aid 5th Edition steps.",
+      "Heavy bleeding from a cut, wound or accident? Apply firm direct pressure, Call 000, keep pressing. St John Australian First Aid 5th Edition steps.",
     intro:
       "Severe bleeding can kill in minutes. The single most important thing you can do is press hard on the wound and keep pressing — do not stop to look.",
     callTriple: [
@@ -135,7 +135,7 @@ export const SYMPTOM_LANDERS: SymptomLander[] = [
     ],
     quickSteps: [
       "Encourage them to cough.",
-      "If coughing fails, call 000.",
+      "If coughing fails, Call 000.",
       "Lean them forward and give up to 5 sharp back blows between the shoulder blades with the heel of your hand. Check after each.",
       "If still choking, give up to 5 chest thrusts — same position as CPR compressions but sharper and slower.",
       "Alternate 5 back blows and 5 chest thrusts until the blockage clears or they become unresponsive.",
@@ -241,9 +241,9 @@ export const SYMPTOM_LANDERS: SymptomLander[] = [
     h1: "Anaphylaxis — when and how to use an EpiPen",
     title: "Anaphylaxis & EpiPen first aid · Australia",
     description:
-      "Severe allergic reaction? Lay them flat, give the EpiPen into the outer thigh, call 000. Australian anaphylaxis first aid step by step.",
+      "Severe allergic reaction? Lay them flat, give the EpiPen into the outer thigh, Call 000. Australian anaphylaxis first aid step by step.",
     intro:
-      "Anaphylaxis is a severe, life-threatening allergic reaction. Any difficulty breathing, swelling of the tongue or throat, persistent dizziness, or collapse after an allergen means: give adrenaline (EpiPen) now and call 000.",
+      "Anaphylaxis is a severe, life-threatening allergic reaction. Any difficulty breathing, swelling of the tongue or throat, persistent dizziness, or collapse after an allergen means: give adrenaline (EpiPen) now and Call 000.",
     callTriple: [
       "Difficulty or noisy breathing, wheeze or persistent cough",
       "Swelling of the tongue or tightness in the throat",
@@ -285,9 +285,9 @@ export const SYMPTOM_LANDERS: SymptomLander[] = [
     h1: "Stroke signs — F.A.S.T. test and what to do",
     title: "Stroke signs FAST · Australian first aid",
     description:
-      "Face drooping, arm weakness, slurred speech? Use the FAST test and call 000 immediately. Stroke first aid for Australia.",
+      "Face drooping, arm weakness, slurred speech? Use the FAST test and Call 000 immediately. Stroke first aid for Australia.",
     intro:
-      "A stroke is a brain attack. Every minute without treatment, brain cells die. Use the F.A.S.T. test and call 000 the moment you suspect one — even if the signs go away.",
+      "A stroke is a brain attack. Every minute without treatment, brain cells die. Use the F.A.S.T. test and Call 000 the moment you suspect one — even if the signs go away.",
     callTriple: [
       "Face: drooping on one side",
       "Arms: one arm drifts down when both are raised",
@@ -307,11 +307,11 @@ export const SYMPTOM_LANDERS: SymptomLander[] = [
     faqs: [
       {
         q: "What does FAST stand for?",
-        a: "Face drooping, Arm weakness, Speech difficulty, Time to call 000. If any one of F, A or S is present, suspect stroke.",
+        a: "Face drooping, Arm weakness, Speech difficulty, Time to Call 000. If any one of F, A or S is present, suspect stroke.",
       },
       {
         q: "Symptoms went away — do they still need help?",
-        a: "Yes. A transient ischaemic attack (TIA, or 'mini-stroke') is a warning that a full stroke may follow within hours. Still call 000.",
+        a: "Yes. A transient ischaemic attack (TIA, or 'mini-stroke') is a warning that a full stroke may follow within hours. Still Call 000.",
       },
     ],
   },
@@ -321,7 +321,7 @@ export const SYMPTOM_LANDERS: SymptomLander[] = [
     h1: "Snake bite first aid in Australia — pressure immobilisation",
     title: "Snake bite first aid Australia · pressure bandage",
     description:
-      "Bitten by a snake in Australia? Don't wash the bite. Apply a firm pressure-immobilisation bandage from fingers/toes upward, splint the limb, call 000.",
+      "Bitten by a snake in Australia? Don't wash the bite. Apply a firm pressure-immobilisation bandage from fingers/toes upward, splint the limb, Call 000.",
     intro:
       "Australia has the world's most venomous snakes — but with correct first aid almost all bites are survivable. Keep the person still and bandage the entire limb firmly. Never cut, suck or wash the bite.",
     callTriple: [
@@ -412,7 +412,7 @@ export const SYMPTOM_LANDERS: SymptomLander[] = [
     description:
       "Severe asthma attack? Sit upright, 4 puffs of blue reliever via spacer, wait 4 minutes, repeat. Call 000 if no improvement.",
     intro:
-      "An asthma attack means the airways have narrowed. The Australian asthma first aid plan is simple: 4 puffs, wait 4 minutes, repeat — call 000 at any point if breathing is severe or not improving.",
+      "An asthma attack means the airways have narrowed. The Australian asthma first aid plan is simple: 4 puffs, wait 4 minutes, repeat — Call 000 at any point if breathing is severe or not improving.",
     callTriple: [
       "Can't speak in full sentences, very distressed",
       "Lips turning blue or face turning grey",
@@ -475,7 +475,7 @@ export const SYMPTOM_LANDERS: SymptomLander[] = [
         a: "No. That's a myth. Putting anything in their mouth risks broken teeth and a bitten finger. Just protect the head.",
       },
       {
-        q: "When do I have to call 000?",
+        q: "When do I have to Call 000?",
         a: "If the seizure lasts more than 5 minutes, a second one follows quickly, they're injured, in water, pregnant, diabetic, or it's their first known seizure.",
       },
     ],

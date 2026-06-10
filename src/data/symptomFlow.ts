@@ -242,7 +242,7 @@ export const FLOW_RESULTS: FlowResult[] = [
     callEmergency: true,
     callReason: "Call 000 now",
     steps: [
-      "Shout for help and call 000.",
+      "Shout for help and Call 000.",
       "Give 5 initial rescue breaths: tilt head back, cover mouth and nose, give 5 gentle puffs.",
       "Start 30 chest compressions with one or two hands in centre of chest, pressing down one-third of depth.",
       "Give 2 rescue breaths after every 30 compressions.",
@@ -262,7 +262,7 @@ export const FLOW_RESULTS: FlowResult[] = [
     callEmergency: true,
     callReason: "Call 000 now",
     steps: [
-      "Shout for help — send someone to call 000 while you start.",
+      "Shout for help — send someone to Call 000 while you start.",
       "Lay infant on a firm surface.",
       "Tilt head to neutral (sniffing) position — do not over-extend.",
       "Cover the infant's mouth AND nose with your mouth; give 5 gentle puffs.",
@@ -455,7 +455,7 @@ export const FLOW_RESULTS: FlowResult[] = [
       "Watch closely for signs of worsening — swelling of face/throat, difficulty breathing.",
       "Seek medical review — a GP visit is recommended even for mild reactions.",
     ],
-    watchFor: ["Swelling spreading to face or throat", "Any breathing difficulty — if this occurs, call 000 immediately."],
+    watchFor: ["Swelling spreading to face or throat", "Any breathing difficulty — if this occurs, Call 000 immediately."],
     kbSlug: "allergic-reactions",
   },
 
@@ -534,7 +534,7 @@ export const FLOW_RESULTS: FlowResult[] = [
       "F — Face: Ask them to smile. Is one side drooping?",
       "A — Arms: Can they raise both arms? Does one drift down?",
       "S — Speech: Is their speech slurred or strange?",
-      "T — Time: If any of those are YES — call 000 now. Note the time symptoms started.",
+      "T — Time: If any of those are YES — Call 000 now. Note the time symptoms started.",
       "Lie them down with head and shoulders slightly raised.",
       "Do not give food or drink.",
       "If unconscious: recovery position and monitor breathing.",
@@ -754,7 +754,7 @@ export const FLOW_RESULTS: FlowResult[] = [
       "Give 4 puffs of blue/grey reliever (Ventolin/Bricanyl) via spacer — one puff at a time, 4 breaths each.",
       "Wait 4 minutes.",
       "If no improvement: give 4 more puffs.",
-      "If still no improvement after 8 puffs: call 000.",
+      "If still no improvement after 8 puffs: Call 000.",
       "Continue giving 4 puffs every 4 minutes until the ambulance arrives.",
     ],
     doNot: [
@@ -847,7 +847,7 @@ export const FLOW_RESULTS: FlowResult[] = [
       "Apply ice (wrapped in cloth) to reduce swelling.",
       "Check circulation below the injury every 15 minutes (colour, warmth, sensation).",
       "Call 000 or go to ED for assessment and X-ray.",
-      "If an open fracture (bone visible): cover with a clean dressing, call 000.",
+      "If an open fracture (bone visible): cover with a clean dressing, Call 000.",
     ],
     doNot: [
       "Do not try to realign or straighten the bone.",
@@ -891,7 +891,7 @@ export const FLOW_RESULTS: FlowResult[] = [
     doNot: [
       "Do not give anything by mouth to an unconscious person.",
     ],
-    watchFor: ["Deteriorating consciousness — call 000 immediately if this occurs."],
+    watchFor: ["Deteriorating consciousness — Call 000 immediately if this occurs."],
     kbSlug: "diabetes",
   },
 
@@ -904,7 +904,7 @@ export const FLOW_RESULTS: FlowResult[] = [
     lead: "Use the full Knowledge Base to find guidance for your situation.",
     steps: [
       "Search the First Aid Knowledge Base for your specific situation.",
-      "For any life-threatening emergency, call 000 immediately.",
+      "For any life-threatening emergency, Call 000 immediately.",
       "For poisoning: call the Poisons Information Centre on 13 11 26.",
       "For 24/7 nurse advice: call Healthdirect on 1800 022 222.",
     ],

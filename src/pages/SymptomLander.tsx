@@ -119,10 +119,10 @@ const SymptomLander = () => {
             className="mb-6 flex items-center justify-center gap-2 rounded-2xl bg-destructive px-4 py-3 text-destructive-foreground font-bold text-base shadow-md hover:opacity-95 transition"
           >
             <Phone className="h-5 w-5" />
-            Emergency — call {emergencyNumber}
+            Emergency — Call {emergencyNumber}
           </a>
 
-          {/* When to call 000 */}
+          {/* When to Call 000 */}
           <section
             aria-labelledby="when-to-call"
             className="mb-6 rounded-2xl border-2 border-destructive/30 bg-destructive/5 p-4"

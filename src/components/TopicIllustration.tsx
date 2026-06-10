@@ -191,7 +191,7 @@ function Anaphylaxis() {
       <path d="M240 118 L210 118" {...StrokeStyle} />
       <path d="M220 110 L208 118 L220 126" {...StrokeStyle} />
       <text x="200" y="220" textAnchor="middle" fontSize="14" fontWeight="700" fill="currentColor">
-        Outer thigh · hold 3 seconds · call 000
+        Outer thigh · hold 3 seconds · Call 000
       </text>
     </g>
   );
@@ -203,7 +203,7 @@ function Stroke() {
     { x: 30, letter: "F", label: "Face drooping" },
     { x: 120, letter: "A", label: "Arm weakness" },
     { x: 210, letter: "S", label: "Speech slurred" },
-    { x: 300, letter: "T", label: "Time — call 000" },
+    { x: 300, letter: "T", label: "Time — Call 000" },
   ];
   return (
     <g>
@@ -480,7 +480,7 @@ function Diabetes() {
         <text x="40" y="156" textAnchor="middle" fontSize="10" fontWeight="600" fill="currentColor">thirst · slow</text>
       </g>
       <text x="200" y="225" textAnchor="middle" fontSize="13" fontWeight="700" fill="currentColor">
-        Unconscious? Recovery position · call 000
+        Unconscious? Recovery position · Call 000
       </text>
     </g>
   );
@@ -509,7 +509,7 @@ function HeadInjury() {
         ))}
       </g>
       <text x="200" y="222" textAnchor="middle" fontSize="13" fontWeight="700" fill="currentColor">
-        Any warning sign · call 000
+        Any warning sign · Call 000
       </text>
     </g>
   );
@@ -693,7 +693,7 @@ function HeatIllness() {
         Hot & dry skin + confusion = heat stroke
       </text>
       <text x="200" y="228" textAnchor="middle" fontSize="11" fontWeight="600" fill="currentColor">
-        Cool rapidly · call 000
+        Cool rapidly · Call 000
       </text>
     </g>
   );
@@ -1016,7 +1016,7 @@ const ALT_TEXT: Record<string, string> = {
   bleeding: "Direct pressure applied with a pad to a severely bleeding wound, limb elevated above heart level.",
   "snake-bite": "Pressure immobilisation bandage wrapped firmly along an entire limb after a snake bite.",
   anaphylaxis: "Adrenaline auto-injector pressed into the outer mid-thigh for anaphylaxis emergency treatment.",
-  stroke: "FAST stroke check: Face drooping, Arms weak, Speech slurred, Time to call 000.",
+  stroke: "FAST stroke check: Face drooping, Arms weak, Speech slurred, Time to Call 000.",
   burns: "Burn injury held under cool running water for 20 minutes — the standard burns first aid treatment.",
   drsabcd: "DRSABCD primary survey: Danger, Response, Send for help, Airway, Breathing, CPR, Defibrillation.",
   aed: "Automated external defibrillator (AED) pad placement on bare chest — upper right and lower left.",

@@ -33,7 +33,7 @@ export type Suggestion = {
 export const firstAidSuggestions: Suggestion[] = [
   // Emergency & general
   { text: "Someone is unconscious — what do I do?", category: "Emergency", keywords: ["unresponsive", "collapsed", "passed out", "fainted"] },
-  { text: "When should I call 000?", category: "Emergency", keywords: ["ambulance", "triple zero", "emergency number"] },
+  { text: "When should I Call 000?", category: "Emergency", keywords: ["ambulance", "triple zero", "emergency number"] },
   { text: "Walk me through DRSABCD step by step", category: "CPR & Resus", keywords: ["drsabcd", "primary survey", "assessment"] },
   { text: "How do I check if someone is breathing?", category: "Breathing", keywords: ["look listen feel", "breath check"] },
   { text: "How do I put someone in the recovery position?", category: "Emergency", keywords: ["recovery", "side", "lateral"] },

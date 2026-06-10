@@ -47,7 +47,7 @@ export default function AedCountry() {
   const faqs = [
     {
       q: `How do I find the nearest AED in ${country.name}?`,
-      a: `Open the city page closest to you below to see an interactive map of publicly accessible AEDs. In an emergency, call ${emergency} first — dispatchers can also direct you to the nearest defibrillator.`,
+      a: `Open the city page closest to you below to see an interactive map of publicly accessible AEDs. In an emergency, Call ${emergency} first — dispatchers can also direct you to the nearest defibrillator.`,
     },
     {
       q: `Are AEDs free to use in ${country.name}?`,

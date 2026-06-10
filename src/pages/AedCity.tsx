@@ -114,7 +114,7 @@ export default function AedCity() {
   const faqs = [
     {
       q: `Where can I find an AED in ${city.name}?`,
-      a: `The map above shows publicly accessible AEDs across ${city.name} sourced from OpenAEDMap. Click any pin for the exact location, access type, and directions. In a cardiac emergency call ${emergency} first.`,
+      a: `The map above shows publicly accessible AEDs across ${city.name} sourced from OpenAEDMap. Click any pin for the exact location, access type, and directions. In a cardiac emergency Call ${emergency} first.`,
     },
     {
       q: "What should I do if someone collapses?",

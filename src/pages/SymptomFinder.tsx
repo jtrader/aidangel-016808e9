@@ -304,7 +304,7 @@ const SymptomFinder = () => {
           <p className="text-muted-foreground mb-5 text-sm">
             Answer a few quick questions for tailored first-aid steps. For any life-threatening emergency,{" "}
             <EmergencyNumberLink number={emergencyNumber} className="text-primary font-semibold underline">
-              call {emergencyNumber}
+              Call {emergencyNumber}
             </EmergencyNumberLink>{" "}
             first.
           </p>
@@ -315,7 +315,7 @@ const SymptomFinder = () => {
             className="mb-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-destructive px-4 py-3 text-destructive-foreground font-bold text-base shadow-md hover:opacity-95 transition"
           >
             <Phone className="h-5 w-5" />
-            Emergency — call {emergencyNumber}
+            Emergency — Call {emergencyNumber}
           </EmergencyNumberLink>
 
           {/* ── Guided flow ──────────────────────────────────────────── */}
