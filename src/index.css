@@ -35,6 +35,7 @@
     --ring: 0 72% 51%;
 
     --radius: 0.75rem;
+    --site-page-width: 820px;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -93,6 +94,16 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+  }
+}
+
+@layer components {
+  .site-container,
+  .site-page-container,
+  .site-page-breadcrumb {
+    width: min(100% - 2rem, var(--site-page-width));
+    max-width: var(--site-page-width);
+    margin-inline: auto;
   }
 }
 
