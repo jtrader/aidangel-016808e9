@@ -1,5 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Loader2, RotateCcw, MapPin, Phone, HeartPulse, Stethoscope, FlaskConical, Search, LocateFixed } from "lucide-react";
+import { useOfflineMode } from "@/hooks/useOfflineMode";
+import OfflineToggle from "@/components/OfflineToggle";
+import OfflineKbPanel from "@/components/OfflineKbPanel";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { EmergencyBanner } from "@/components/shared";
@@ -92,6 +95,7 @@ const Index = () => {
   };
 
   const isEmpty = messages.length === 0;
+  const { enabled: offlineEnabled, isOnline, cacheStatus, toggle: toggleOffline } = useOfflineMode();
 
   // Derive walk-through state from the latest assistant message
   const lastAssistant = !isLoading && messages[messages.length - 1]?.role === "assistant"
@@ -189,13 +193,25 @@ const Index = () => {
                     <h2 className="font-display font-bold text-xl sm:text-2xl text-foreground px-2">
                       {t("welcomeHeading")}
                     </h2>
+                    <OfflineToggle
+                      enabled={offlineEnabled}
+                      cacheStatus={cacheStatus}
+                      isOnline={isOnline}
+                      onToggle={toggleOffline}
+                    />
                   </div>
 
-                  {/* Input directly below the welcome heading */}
-                  <div className="max-w-2xl mx-auto w-full">
-                    <ChatInput onSend={send} disabled={isLoading} />
-                    <ChatDisclaimer />
-                  </div>
+                  {/* Input directly below the welcome heading — hidden when offline */}
+                  {isOnline ? (
+                    <div className="max-w-2xl mx-auto w-full">
+                      <ChatInput onSend={send} disabled={isLoading} />
+                      <ChatDisclaimer />
+                    </div>
+                  ) : (
+                    <div className="max-w-2xl mx-auto w-full">
+                      <OfflineKbPanel />
+                    </div>
+                  )}
 
                   <div className="text-center space-y-3">
                     <p className="text-muted-foreground text-sm max-w-md mx-auto">
