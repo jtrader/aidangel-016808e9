@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Loader2, Sparkles, ArrowLeft } from "lucide-react";
+import SiteHeader from "@/components/SiteHeader";
+import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { SeoHead } from "@/components/SeoHead";
@@ -126,18 +127,7 @@ export default function AgentChat() {
       />
       <EmergencyBanner />
 
-      <header className="border-b border-border bg-card">
-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="h-4 w-4" /> Back
-          </Link>
-          <div className="inline-flex items-center gap-2 text-sm font-semibold">
-            <Sparkles className="h-4 w-4 text-primary" />
-            Gemini Agent
-          </div>
-          <span className="text-xs text-muted-foreground">Powered by Google Gemini</span>
-        </div>
-      </header>
+      <SiteHeader backTo="/" backLabel="Home" />
 
       <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-6 flex flex-col">
         <div

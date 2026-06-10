@@ -1,9 +1,11 @@
 import { CmsPageRenderer } from "@/components/CmsPageRenderer";
+import SiteHeader from "@/components/SiteHeader";
 import NetworkFooter from "@/components/NetworkFooter";
 
 export default function MedicalDisclaimer() {
   return (
     <>
+      <SiteHeader backTo="/" backLabel="Home" />
       <CmsPageRenderer
         slug="medical-disclaimer"
         fallback={

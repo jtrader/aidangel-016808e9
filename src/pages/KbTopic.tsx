@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import SiteHeader from "@/components/SiteHeader";
 import { Link, useParams, Navigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
-import { ArrowLeft, BookOpen, Loader2, MessageCircle } from "lucide-react";
+import { BookOpen, Loader2 } from "lucide-react";
 import { getTopic, getBody, topicsFor, relatedSlugs, autoLinkBody, autoLinkPhones } from "@/lib/kb";
 import { SeoHead } from "@/components/SeoHead";
 import { canonicalUrl, HREFLANG, localizedPath, SITE_ORIGIN } from "@/lib/i18n";
@@ -308,28 +309,7 @@ const KbTopic = () => {
           return schemas;
         })()}
       />
-      <header className="border-b border-border bg-card">
-        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
-          <Link
-            to={kbPath}
-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            {ui.allTopics}
-          </Link>
-          <div className="flex items-center gap-2">
-            <Link
-              to={homePath}
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80"
-            >
-              <MessageCircle className="h-4 w-4" aria-hidden="true" />
-              <span className="hidden sm:inline">{ui.askAssistant}</span>
-              <span className="sr-only sm:hidden">{ui.askAssistant}</span>
-            </Link>
-            <HamburgerMenu />
-          </div>
-        </div>
-      </header>
+      <SiteHeader backTo={kbPath} backLabel="Knowledge base" />
       <SupportUsBar />
 
       <main className="flex-1 px-4 py-8">

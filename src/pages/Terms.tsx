@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import SiteHeader from "@/components/SiteHeader";
 import { CmsPageRenderer } from "@/components/CmsPageRenderer";
 import NetworkFooter from "@/components/NetworkFooter";
 
@@ -202,6 +203,7 @@ function TermsContent() {
 export default function Terms() {
   return (
     <>
+      <SiteHeader backTo="/" backLabel="Home" />
       <Helmet>
         <title>Terms and Conditions · First Aid Angel</title>
         <meta name="description" content={`Terms and Conditions for First Aid Angel, operated by ${ENTITY}.`} />

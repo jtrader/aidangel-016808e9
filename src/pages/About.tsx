@@ -1,15 +1,6 @@
 import { Link } from "react-router-dom";
-import {
-  ArrowLeft,
-  Info,
-  ShieldCheck,
-  BookOpen,
-  WifiOff,
-  Sparkles,
-  HelpCircle,
-  CheckCircle2,
-  XCircle,
-} from "lucide-react";
+import SiteHeader from "@/components/SiteHeader";
+import { Info, ShieldCheck, BookOpen, WifiOff, Sparkles, HelpCircle, CheckCircle2, XCircle } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
 import HamburgerMenu from "@/components/HamburgerMenu";
 import NetworkFooter from "@/components/NetworkFooter";
@@ -363,18 +354,7 @@ export default function About() {
         description="About First Aid Angel — our credentials, sources, mission to educate and aid in emergencies, and how our offline AI app compares to traditional resources."
       />
 
-      <header className="border-b border-border bg-card">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
-          <Link
-            to={localizedPath(language, "/")}
-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            First Aid Angel
-          </Link>
-          <HamburgerMenu />
-        </div>
-      </header>
+      <SiteHeader backTo={localizedPath(language, "/")} backLabel="Home" />
 
       <main className="flex-1 px-4 py-10">
         <div className="max-w-4xl mx-auto">

@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import SiteHeader from "@/components/SiteHeader";
 import { CmsPageRenderer } from "@/components/CmsPageRenderer";
 import NetworkFooter from "@/components/NetworkFooter";
 
@@ -72,6 +73,7 @@ function RefundContent() {
 export default function RefundPolicy() {
   return (
     <>
+      <SiteHeader backTo="/" backLabel="Home" />
       <Helmet>
         <title>Refund Policy · First Aid Angel</title>
         <meta name="description" content={`Refund policy for First Aid Angel, operated by ${ENTITY}. 30-day money-back guarantee, refunds handled by Paddle.`} />

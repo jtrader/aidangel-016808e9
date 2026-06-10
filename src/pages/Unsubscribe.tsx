@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import SiteHeader from "@/components/SiteHeader";
 import { useSearchParams } from "react-router-dom";
 import { Loader2, CheckCircle2, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -36,7 +37,9 @@ export default function Unsubscribe() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-4 bg-background">
+    <>
+      <SiteHeader backTo="/" backLabel="Home" />
+      <main className="min-h-screen flex items-center justify-center p-4 bg-background">
       <Card className="max-w-md w-full">
         <CardHeader>
           <CardTitle>Email preferences</CardTitle>
@@ -70,5 +73,6 @@ export default function Unsubscribe() {
         </CardContent>
       </Card>
     </main>
+    </>
   );
 }

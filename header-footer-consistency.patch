@@ -1,0 +1,869 @@
+diff --git a/src/pages/About.tsx b/src/pages/About.tsx
+index 00ce40f..4b412ef 100644
+--- a/src/pages/About.tsx
++++ b/src/pages/About.tsx
+@@ -1,15 +1,6 @@
+ import { Link } from "react-router-dom";
+-import {
+-  ArrowLeft,
+-  Info,
+-  ShieldCheck,
+-  BookOpen,
+-  WifiOff,
+-  Sparkles,
+-  HelpCircle,
+-  CheckCircle2,
+-  XCircle,
+-} from "lucide-react";
++import SiteHeader from "@/components/SiteHeader";
++import { Info, ShieldCheck, BookOpen, WifiOff, Sparkles, HelpCircle, CheckCircle2, XCircle } from "lucide-react";
+ import { SeoHead } from "@/components/SeoHead";
+ import HamburgerMenu from "@/components/HamburgerMenu";
+ import NetworkFooter from "@/components/NetworkFooter";
+@@ -363,18 +354,7 @@ export default function About() {
+         description="About First Aid Angel — our credentials, sources, mission to educate and aid in emergencies, and how our offline AI app compares to traditional resources."
+       />
+ 
+-      <header className="border-b border-border bg-card">
+-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+-          <Link
+-            to={localizedPath(language, "/")}
+-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+-          >
+-            <ArrowLeft className="h-4 w-4" />
+-            First Aid Angel
+-          </Link>
+-          <HamburgerMenu />
+-        </div>
+-      </header>
++      <SiteHeader backTo={localizedPath(language, "/")} backLabel="Home" />
+ 
+       <main className="flex-1 px-4 py-10">
+         <div className="max-w-4xl mx-auto">
+diff --git a/src/pages/AedCity.tsx b/src/pages/AedCity.tsx
+index e380f21..7fdc19d 100644
+--- a/src/pages/AedCity.tsx
++++ b/src/pages/AedCity.tsx
+@@ -1,5 +1,6 @@
+ import { Link, useParams } from "react-router-dom";
+-import { ArrowLeft, AlertCircle, Cross, Loader2, MapPin, Navigation } from "lucide-react";
++import SiteHeader from "@/components/SiteHeader";
++import { AlertCircle, Cross, Loader2, MapPin, Navigation } from "lucide-react";
+ import { useEffect, useRef, useState } from "react";
+ import { SeoHead } from "@/components/SeoHead";
+ import { useLanguage } from "@/contexts/LanguageContext";
+@@ -160,11 +161,7 @@ export default function AedCity() {
+     <div className="min-h-screen flex flex-col bg-[#F7F7F7]">
+       <SeoHead lang={language} title={title} description={desc} basePath={basePath} jsonLd={jsonLd} />
+ 
+-      <header className="bg-white border-b px-4 py-3 flex items-center justify-between">
+-        <Link to={`/aed/${country.slug}`} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+-          <ArrowLeft className="h-4 w-4" /> {country.flag} {country.name}
+-        </Link>
+-      </header>
++      <SiteHeader backTo={`/aed/${country.slug}`} backLabel={`${country.flag} ${country.name}`} />
+ 
+       <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
+         <h1 className="font-heading text-3xl font-bold mb-1">AED Locations in {city.name}</h1>
+diff --git a/src/pages/AedCountry.tsx b/src/pages/AedCountry.tsx
+index 2dc0a7b..3cc620b 100644
+--- a/src/pages/AedCountry.tsx
++++ b/src/pages/AedCountry.tsx
+@@ -1,5 +1,6 @@
+ import { Link, useParams } from "react-router-dom";
+-import { ArrowLeft, MapPin, Cross, AlertCircle } from "lucide-react";
++import SiteHeader from "@/components/SiteHeader";
++import { MapPin, Cross, AlertCircle } from "lucide-react";
+ import { useEffect, useState } from "react";
+ import { SeoHead } from "@/components/SeoHead";
+ import { useLanguage } from "@/contexts/LanguageContext";
+@@ -82,11 +83,7 @@ export default function AedCountry() {
+     <div className="min-h-screen flex flex-col bg-[#F7F7F7]">
+       <SeoHead lang={language} title={title} description={desc} basePath={basePath} jsonLd={jsonLd} />
+ 
+-      <header className="bg-white border-b px-4 py-3 flex items-center justify-between">
+-        <Link to="/aed" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+-          <ArrowLeft className="h-4 w-4" /> All countries
+-        </Link>
+-      </header>
++      <SiteHeader backTo="/aed" backLabel="All countries" />
+ 
+       <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-8">
+         <div className="flex items-center gap-3 mb-2">
+diff --git a/src/pages/AedIndex.tsx b/src/pages/AedIndex.tsx
+index 05a4cdd..58421f6 100644
+--- a/src/pages/AedIndex.tsx
++++ b/src/pages/AedIndex.tsx
+@@ -1,5 +1,6 @@
+ import { Link } from "react-router-dom";
+-import { Cross, MapPin } from "lucide-react";
++import SiteHeader from "@/components/SiteHeader";
++import { MapPin } from "lucide-react";
+ import { SeoHead } from "@/components/SeoHead";
+ import { useLanguage } from "@/contexts/LanguageContext";
+ import { AED_COUNTRIES } from "@/lib/aedLocations";
+@@ -31,11 +32,7 @@ export default function AedIndex() {
+     <div className="min-h-screen flex flex-col bg-[#F7F7F7]">
+       <SeoHead lang={language} title={title} description={desc} basePath={basePath} jsonLd={jsonLd} />
+ 
+-      <header className="bg-white border-b px-4 py-3 flex items-center justify-between">
+-        <Link to="/" className="font-heading font-bold text-primary inline-flex items-center gap-2">
+-          <Cross className="w-5 h-5" /> First Aid Angel
+-        </Link>
+-      </header>
++      <SiteHeader backTo="/" backLabel="Home" />
+ 
+       <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-8">
+         <h1 className="font-heading text-3xl font-bold mb-2">Find an AED Anywhere</h1>
+diff --git a/src/pages/AgentChat.tsx b/src/pages/AgentChat.tsx
+index 523f927..8ead9cc 100644
+--- a/src/pages/AgentChat.tsx
++++ b/src/pages/AgentChat.tsx
+@@ -1,5 +1,6 @@
+ import { useState, useRef, useEffect } from "react";
+-import { Loader2, Sparkles, ArrowLeft } from "lucide-react";
++import SiteHeader from "@/components/SiteHeader";
++import { Loader2 } from "lucide-react";
+ import { Link } from "react-router-dom";
+ import { toast } from "sonner";
+ import { SeoHead } from "@/components/SeoHead";
+@@ -126,18 +127,7 @@ export default function AgentChat() {
+       />
+       <EmergencyBanner />
+ 
+-      <header className="border-b border-border bg-card">
+-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+-          <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+-            <ArrowLeft className="h-4 w-4" /> Back
+-          </Link>
+-          <div className="inline-flex items-center gap-2 text-sm font-semibold">
+-            <Sparkles className="h-4 w-4 text-primary" />
+-            Gemini Agent
+-          </div>
+-          <span className="text-xs text-muted-foreground">Powered by Google Gemini</span>
+-        </div>
+-      </header>
++      <SiteHeader backTo="/" backLabel="Home" />
+ 
+       <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-6 flex flex-col">
+         <div
+diff --git a/src/pages/AngelActionIndex.tsx b/src/pages/AngelActionIndex.tsx
+index 3b0d3f7..8bbeb17 100644
+--- a/src/pages/AngelActionIndex.tsx
++++ b/src/pages/AngelActionIndex.tsx
+@@ -1,5 +1,6 @@
+ import { Link } from "react-router-dom";
+-import { ArrowLeft, Download, FileText, Printer } from "lucide-react";
++import SiteHeader from "@/components/SiteHeader";
++import { Download, FileText, Printer } from "lucide-react";
+ import { topicsByCategory, topicsFor } from "@/lib/kb";
+ import { SeoHead } from "@/components/SeoHead";
+ import { localizedPath } from "@/lib/i18n";
+@@ -23,26 +24,7 @@ const AngelActionIndex = () => {
+         title="Angel Action Cards · Printable First Aid PDFs"
+         description={`Download free A4 printable first aid quick-reference cards for all ${all.length} topics — CPR, choking, anaphylaxis, bleeding, burns and more.`}
+       />
+-      <header className="border-b border-border bg-card">
+-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+-          <Link
+-            to={localizedPath(language, "/")}
+-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+-          >
+-            <ArrowLeft className="h-4 w-4" />
+-            First Aid Angel
+-          </Link>
+-          <div className="flex items-center gap-2">
+-            <Link
+-              to={localizedPath(language, "/kb")}
+-              className="text-sm font-semibold text-primary hover:text-primary/80"
+-            >
+-              Knowledge base →
+-            </Link>
+-            <HamburgerMenu />
+-          </div>
+-        </div>
+-      </header>
++      <SiteHeader backTo={localizedPath(language, "/")} backLabel="Home" />
+       <SupportUsBar />
+ 
+       <main className="flex-1 px-4 py-10">
+diff --git a/src/pages/Availability.tsx b/src/pages/Availability.tsx
+index 6607cf2..a279592 100644
+--- a/src/pages/Availability.tsx
++++ b/src/pages/Availability.tsx
+@@ -1,6 +1,7 @@
+ import { Link } from "react-router-dom";
++import SiteHeader from "@/components/SiteHeader";
+ import { useEffect, useState, useMemo } from "react";
+-import { ArrowLeft, Globe, ShieldCheck, CheckCircle2, Languages, Database } from "lucide-react";
++import { Globe, ShieldCheck, CheckCircle2, Languages, Database } from "lucide-react";
+ import { SeoHead } from "@/components/SeoHead";
+ import HamburgerMenu from "@/components/HamburgerMenu";
+ import NetworkFooter from "@/components/NetworkFooter";
+@@ -70,18 +71,7 @@ export default function Availability() {
+         description="Directory of countries, UI languages and locale packs supported by First Aid Angel — including verified emergency numbers and crisis lines."
+       />
+ 
+-      <header className="border-b border-border bg-card">
+-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+-          <Link
+-            to={localizedPath(language, "/")}
+-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+-          >
+-            <ArrowLeft className="h-4 w-4" />
+-            First Aid Angel
+-          </Link>
+-          <HamburgerMenu />
+-        </div>
+-      </header>
++      <SiteHeader backTo={localizedPath(language, "/")} backLabel="Home" />
+ 
+       <main className="flex-1 px-4 py-10">
+         <div className="max-w-5xl mx-auto">
+diff --git a/src/pages/BlogCategory.tsx b/src/pages/BlogCategory.tsx
+index 09f807d..b55c5ef 100644
+--- a/src/pages/BlogCategory.tsx
++++ b/src/pages/BlogCategory.tsx
+@@ -1,4 +1,5 @@
+ import { useEffect, useState } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { Link, useParams } from "react-router-dom";
+ import { SeoHead } from "@/components/SeoHead";
+ import CoursesHeader from "@/components/CoursesHeader";
+@@ -35,6 +36,7 @@ export default function BlogCategoryPage() {
+   if (!cat) {
+     return (
+       <div className="min-h-screen bg-background">
++      <SiteHeader backTo="/blog" backLabel="Blog" />
+         <CoursesHeader />
+         <div className="max-w-2xl mx-auto px-4 py-20 text-center">
+           <h1 className="font-display text-2xl font-bold mb-2">Category not found</h1>
+diff --git a/src/pages/BlogIndex.tsx b/src/pages/BlogIndex.tsx
+index 2253217..367ce32 100644
+--- a/src/pages/BlogIndex.tsx
++++ b/src/pages/BlogIndex.tsx
+@@ -1,4 +1,5 @@
+ import { useEffect, useState } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { Link } from "react-router-dom";
+ import { SeoHead } from "@/components/SeoHead";
+ import CoursesHeader from "@/components/CoursesHeader";
+@@ -25,6 +26,7 @@ export default function BlogIndex() {
+ 
+   return (
+     <div className="min-h-screen bg-background">
++      <SiteHeader backTo="/" backLabel="Home" />
+       <SeoHead
+         lang="en"
+         basePath="/blog"
+diff --git a/src/pages/BlogPost.tsx b/src/pages/BlogPost.tsx
+index 4600aff..f31f194 100644
+--- a/src/pages/BlogPost.tsx
++++ b/src/pages/BlogPost.tsx
+@@ -1,4 +1,5 @@
+ import { useEffect, useState } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { Link, useParams } from "react-router-dom";
+ import { SeoHead } from "@/components/SeoHead";
+ import CoursesHeader from "@/components/CoursesHeader";
+@@ -38,6 +39,7 @@ export default function BlogPostPage() {
+   if (!post || !cat) {
+     return (
+       <div className="min-h-screen bg-background">
++      <SiteHeader backTo="/blog" backLabel="Blog" />
+         <CoursesHeader />
+         <div className="max-w-2xl mx-auto px-4 py-20 text-center">
+           <h1 className="font-display text-2xl font-bold mb-2">Article not found</h1>
+diff --git a/src/pages/CheckoutSuccess.tsx b/src/pages/CheckoutSuccess.tsx
+index 6c91429..7590139 100644
+--- a/src/pages/CheckoutSuccess.tsx
++++ b/src/pages/CheckoutSuccess.tsx
+@@ -1,4 +1,5 @@
+ import { Link } from "react-router-dom";
++import SiteHeader from "@/components/SiteHeader";
+ import { CheckCircle2 } from "lucide-react";
+ import { Button } from "@/components/ui/button";
+ import { Card } from "@/components/ui/card";
+@@ -17,6 +18,7 @@ export default function CheckoutSuccess() {
+   });
+   return (
+     <div className="min-h-screen bg-background flex flex-col">
++      <SiteHeader backTo="/" backLabel="Home" />
+       <SeoHead
+         lang="en"
+         basePath="/checkout/success"
+diff --git a/src/pages/CountryDetail.tsx b/src/pages/CountryDetail.tsx
+index 6c8539c..4bd9743 100644
+--- a/src/pages/CountryDetail.tsx
++++ b/src/pages/CountryDetail.tsx
+@@ -1,18 +1,7 @@
+ import { useEffect, useMemo, useState, useCallback } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { Link, useParams, Navigate } from "react-router-dom";
+-import {
+-  ArrowLeft,
+-  Phone,
+-  ShieldCheck,
+-  Languages,
+-  HeartPulse,
+-  Database,
+-  ExternalLink,
+-  AlertTriangle,
+-  Copy,
+-  Check,
+-  Clock,
+-} from "lucide-react";
++import { Phone, ShieldCheck, Languages, HeartPulse, Database, ExternalLink, AlertTriangle, Copy, Check, Clock } from "lucide-react";
+ import { SeoHead } from "@/components/SeoHead";
+ import HamburgerMenu from "@/components/HamburgerMenu";
+ import NetworkFooter from "@/components/NetworkFooter";
+@@ -145,18 +134,7 @@ export default function CountryDetail() {
+         description={`Emergency numbers, crisis lines and supported languages in ${country.name}.`}
+       />
+ 
+-      <header className="border-b border-border bg-card">
+-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+-          <Link
+-            to={localizedPath(language, "/availability")}
+-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+-          >
+-            <ArrowLeft className="h-4 w-4" />
+-            All countries
+-          </Link>
+-          <HamburgerMenu />
+-        </div>
+-      </header>
++      <SiteHeader backTo={localizedPath(language, "/availability")} backLabel="Availability" />
+ 
+       <main className="flex-1 px-4 py-10">
+         <div className="max-w-4xl mx-auto">
+diff --git a/src/pages/EmployerMarketing.tsx b/src/pages/EmployerMarketing.tsx
+index 3758853..7ae274f 100644
+--- a/src/pages/EmployerMarketing.tsx
++++ b/src/pages/EmployerMarketing.tsx
+@@ -1,4 +1,5 @@
+ import { useEffect, useState } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { Link } from "react-router-dom";
+ import { Button } from "@/components/ui/button";
+ import { Card } from "@/components/ui/card";
+@@ -83,6 +84,7 @@ export default function EmployerMarketing() {
+ 
+   return (
+     <div className="min-h-screen bg-background flex flex-col">
++      <SiteHeader backTo="/" backLabel="Home" />
+       <SeoHead
+         lang="en"
+         basePath="/employer"
+diff --git a/src/pages/EmployerOnboarding.tsx b/src/pages/EmployerOnboarding.tsx
+index fe6c5d2..a768e34 100644
+--- a/src/pages/EmployerOnboarding.tsx
++++ b/src/pages/EmployerOnboarding.tsx
+@@ -1,4 +1,5 @@
+ import { useState } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { useNavigate } from "react-router-dom";
+ import { supabase } from "@/integrations/supabase/client";
+ import { useAuth } from "@/hooks/useAuth";
+@@ -85,6 +86,7 @@ export default function EmployerOnboarding() {
+ 
+   return (
+     <div className="min-h-screen flex flex-col bg-muted/30">
++      <SiteHeader backTo="/" backLabel="Home" />
+       <div className="flex-1 flex items-center justify-center p-6">
+         <form onSubmit={handleCreate} className="max-w-md w-full bg-card rounded-2xl shadow-sm p-8 space-y-5">
+           <div className="text-center space-y-2">
+diff --git a/src/pages/JoinCodeEntry.tsx b/src/pages/JoinCodeEntry.tsx
+index 18d6646..04509df 100644
+--- a/src/pages/JoinCodeEntry.tsx
++++ b/src/pages/JoinCodeEntry.tsx
+@@ -1,4 +1,5 @@
+ import { useState } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { useNavigate } from "react-router-dom";
+ import { Button } from "@/components/ui/button";
+ import { Input } from "@/components/ui/input";
+@@ -28,6 +29,7 @@ export default function JoinCodeEntry() {
+ 
+   return (
+     <div className="min-h-screen flex flex-col bg-muted/30">
++      <SiteHeader backTo="/" backLabel="Home" />
+       <div className="flex-1 flex items-center justify-center p-6">
+         <form onSubmit={submit} className="max-w-md w-full bg-card rounded-2xl shadow-sm p-8 space-y-4">
+           <Building2 className="h-10 w-10 mx-auto text-primary" />
+diff --git a/src/pages/JoinOrg.tsx b/src/pages/JoinOrg.tsx
+index 7518540..0dc68ee 100644
+--- a/src/pages/JoinOrg.tsx
++++ b/src/pages/JoinOrg.tsx
+@@ -1,4 +1,5 @@
+ import { useEffect, useState } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { useNavigate, useParams } from "react-router-dom";
+ import { supabase } from "@/integrations/supabase/client";
+ import { useAuth } from "@/hooks/useAuth";
+@@ -109,6 +110,7 @@ export default function JoinOrg() {
+ 
+   return (
+     <div className="min-h-screen flex flex-col bg-muted/30">
++      <SiteHeader backTo="/" backLabel="Home" />
+       <div className="flex-1 flex items-center justify-center p-6">
+         <div className="max-w-md w-full bg-card rounded-2xl shadow-sm p-8 text-center space-y-4">
+           <Building2 className="h-10 w-10 mx-auto text-primary" />
+diff --git a/src/pages/KbIndex.tsx b/src/pages/KbIndex.tsx
+index da03d41..74bd9ad 100644
+--- a/src/pages/KbIndex.tsx
++++ b/src/pages/KbIndex.tsx
+@@ -1,6 +1,7 @@
+ import { useEffect, useMemo, useState } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { Link } from "react-router-dom";
+-import { ArrowLeft, BookOpen, Loader2, Search } from "lucide-react";
++import { Loader2, Search } from "lucide-react";
+ import { topicsByCategory, topicsFor } from "@/lib/kb";
+ import { SeoHead } from "@/components/SeoHead";
+ import { canonicalUrl, SITE_ORIGIN, localizedPath } from "@/lib/i18n";
+@@ -156,24 +157,7 @@ const KbIndex = () => {
+           })),
+         }}
+       />
+-      <header className="border-b border-border bg-card">
+-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+-          <Link
+-            to={homePath}
+-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+-          >
+-            <ArrowLeft className="h-4 w-4" />
+-            {ui.backToChat}
+-          </Link>
+-          <div className="flex items-center gap-2">
+-            <span className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-foreground">
+-              <BookOpen className="h-4 w-4 text-primary" />
+-              {ui.knowledgeBase}
+-            </span>
+-            <HamburgerMenu />
+-          </div>
+-        </div>
+-      </header>
++      <SiteHeader backTo={homePath} backLabel="Home" />
+       <SupportUsBar />
+ 
+       <main className="flex-1 px-4 py-8">
+diff --git a/src/pages/KbTopic.tsx b/src/pages/KbTopic.tsx
+index 45765b7..a5d174b 100644
+--- a/src/pages/KbTopic.tsx
++++ b/src/pages/KbTopic.tsx
+@@ -1,7 +1,8 @@
+ import { useEffect, useState } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { Link, useParams, Navigate } from "react-router-dom";
+ import ReactMarkdown from "react-markdown";
+-import { ArrowLeft, BookOpen, Loader2, MessageCircle } from "lucide-react";
++import { BookOpen, Loader2 } from "lucide-react";
+ import { getTopic, getBody, topicsFor, relatedSlugs, autoLinkBody, autoLinkPhones } from "@/lib/kb";
+ import { SeoHead } from "@/components/SeoHead";
+ import { canonicalUrl, HREFLANG, localizedPath, SITE_ORIGIN } from "@/lib/i18n";
+@@ -308,28 +309,7 @@ const KbTopic = () => {
+           return schemas;
+         })()}
+       />
+-      <header className="border-b border-border bg-card">
+-        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+-          <Link
+-            to={kbPath}
+-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+-          >
+-            <ArrowLeft className="h-4 w-4" />
+-            {ui.allTopics}
+-          </Link>
+-          <div className="flex items-center gap-2">
+-            <Link
+-              to={homePath}
+-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80"
+-            >
+-              <MessageCircle className="h-4 w-4" aria-hidden="true" />
+-              <span className="hidden sm:inline">{ui.askAssistant}</span>
+-              <span className="sr-only sm:hidden">{ui.askAssistant}</span>
+-            </Link>
+-            <HamburgerMenu />
+-          </div>
+-        </div>
+-      </header>
++      <SiteHeader backTo={kbPath} backLabel="Knowledge base" />
+       <SupportUsBar />
+ 
+       <main className="flex-1 px-4 py-8">
+diff --git a/src/pages/MedicalDisclaimer.tsx b/src/pages/MedicalDisclaimer.tsx
+index 1858ffe..4deac05 100644
+--- a/src/pages/MedicalDisclaimer.tsx
++++ b/src/pages/MedicalDisclaimer.tsx
+@@ -1,9 +1,11 @@
+ import { CmsPageRenderer } from "@/components/CmsPageRenderer";
++import SiteHeader from "@/components/SiteHeader";
+ import NetworkFooter from "@/components/NetworkFooter";
+ 
+ export default function MedicalDisclaimer() {
+   return (
+     <>
++      <SiteHeader backTo="/" backLabel="Home" />
+       <CmsPageRenderer
+         slug="medical-disclaimer"
+         fallback={
+diff --git a/src/pages/MyLocationPage.tsx b/src/pages/MyLocationPage.tsx
+index f402f61..8db6896 100644
+--- a/src/pages/MyLocationPage.tsx
++++ b/src/pages/MyLocationPage.tsx
+@@ -1,9 +1,9 @@
+ import { SeoHead } from "@/components/SeoHead";
++import SiteHeader from "@/components/SiteHeader";
+ import HamburgerMenu from "@/components/HamburgerMenu";
+ import NetworkFooter from "@/components/NetworkFooter";
+ import { MyLocationPanel } from "@/components/shared";
+ import { Link } from "react-router-dom";
+-import { ArrowLeft } from "lucide-react";
+ 
+ export default function MyLocationPage() {
+   return (
+@@ -15,14 +15,7 @@ export default function MyLocationPage() {
+         description="Get your what3words address, GPS coordinates and nearest street address to share with 000 emergency services."
+       />
+       <div className="min-h-screen bg-background">
+-        <header className="border-b border-border bg-card">
+-          <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+-            <Link to="/" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
+-              <ArrowLeft className="h-4 w-4" /> Home
+-            </Link>
+-            <HamburgerMenu />
+-          </div>
+-        </header>
++        <SiteHeader backTo="/" backLabel="Home" />
+         <main>
+           <MyLocationPanel />
+         </main>
+diff --git a/src/pages/NotFound.tsx b/src/pages/NotFound.tsx
+index 0d6b6f6..6a4fcda 100644
+--- a/src/pages/NotFound.tsx
++++ b/src/pages/NotFound.tsx
+@@ -1,4 +1,5 @@
+ import { useLocation } from "react-router-dom";
++import SiteHeader from "@/components/SiteHeader";
+ import { useEffect } from "react";
+ import { useLanguage } from "@/contexts/LanguageContext";
+ 
+@@ -11,7 +12,9 @@ const NotFound = () => {
+   }, [location.pathname]);
+ 
+   return (
+-    <div className="flex min-h-screen items-center justify-center bg-muted">
++    <>
++      <SiteHeader backTo="/" backLabel="Home" />
++      <div className="flex min-h-screen items-center justify-center bg-muted">
+       <div className="text-center">
+         <h1 className="mb-4 text-4xl font-bold">404</h1>
+         <p className="mb-4 text-xl text-muted-foreground">{t("notFoundTitle")}</p>
+@@ -20,6 +23,7 @@ const NotFound = () => {
+         </a>
+       </div>
+     </div>
++    </>
+   );
+ };
+ 
+diff --git a/src/pages/Partners.tsx b/src/pages/Partners.tsx
+index 0365f20..61ef094 100644
+--- a/src/pages/Partners.tsx
++++ b/src/pages/Partners.tsx
+@@ -1,7 +1,8 @@
+ import { useMemo } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { CmsPageRenderer } from "@/components/CmsPageRenderer";
+ import { Link } from "react-router-dom";
+-import { ArrowLeft, HandHeart, Globe, MapPin, ExternalLink, Check } from "lucide-react";
++import { HandHeart, Globe, MapPin, ExternalLink, Check } from "lucide-react";
+ import { SeoHead } from "@/components/SeoHead";
+ import HamburgerMenu from "@/components/HamburgerMenu";
+ import EmergencyCallButton from "@/components/EmergencyCallButton";
+@@ -61,18 +62,7 @@ export default function Partners() {
+         description={`Donate to trusted first aid and humanitarian organisations in ${country.name} — Doctors Without Borders and St John Ambulance.`}
+       />
+ 
+-      <header className="border-b border-border bg-card">
+-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+-          <Link
+-            to={localizedPath(language, "/")}
+-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+-          >
+-            <ArrowLeft className="h-4 w-4" />
+-            First Aid Angel
+-          </Link>
+-          <HamburgerMenu />
+-        </div>
+-      </header>
++      <SiteHeader backTo={localizedPath(language, "/")} backLabel="Home" />
+ 
+       <main className="flex-1 px-4 py-10">
+         <div className="max-w-5xl mx-auto">
+diff --git a/src/pages/PersonalMarketing.tsx b/src/pages/PersonalMarketing.tsx
+index 18bb053..fd723ae 100644
+--- a/src/pages/PersonalMarketing.tsx
++++ b/src/pages/PersonalMarketing.tsx
+@@ -1,4 +1,5 @@
+ import { useEffect, useState } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { Link } from "react-router-dom";
+ import { Button } from "@/components/ui/button";
+ import { Card } from "@/components/ui/card";
+@@ -167,6 +168,7 @@ export default function PersonalMarketing() {
+ 
+   return (
+     <div className="min-h-screen bg-background flex flex-col">
++      <SiteHeader backTo="/" backLabel="Home" />
+       <SeoHead
+         lang="en"
+         basePath="/personal"
+diff --git a/src/pages/Privacy.tsx b/src/pages/Privacy.tsx
+index 6ba9dd7..9703d07 100644
+--- a/src/pages/Privacy.tsx
++++ b/src/pages/Privacy.tsx
+@@ -1,4 +1,5 @@
+ import { Helmet } from "react-helmet-async";
++import SiteHeader from "@/components/SiteHeader";
+ import { CmsPageRenderer } from "@/components/CmsPageRenderer";
+ import NetworkFooter from "@/components/NetworkFooter";
+ 
+@@ -134,6 +135,7 @@ function PrivacyContent() {
+ export default function PrivacyPolicy() {
+   return (
+     <>
++      <SiteHeader backTo="/" backLabel="Home" />
+       <Helmet>
+         <title>Privacy Notice · First Aid Angel</title>
+         <meta name="description" content={`Privacy notice for First Aid Angel, operated by ${ENTITY}.`} />
+diff --git a/src/pages/ProductDetail.tsx b/src/pages/ProductDetail.tsx
+index 91ef564..047f85a 100644
+--- a/src/pages/ProductDetail.tsx
++++ b/src/pages/ProductDetail.tsx
+@@ -1,4 +1,5 @@
+ import { useEffect, useState } from "react";
++import NetworkFooter from "@/components/NetworkFooter";
+ import { Link, useParams } from "react-router-dom";
+ import { Helmet } from "react-helmet-async";
+ import { Loader2 } from "lucide-react";
+@@ -146,6 +147,7 @@ export default function ProductDetail() {
+           )}
+         </div>
+       </main>
++      <NetworkFooter />
+     </div>
+   );
+ }
+diff --git a/src/pages/Refund.tsx b/src/pages/Refund.tsx
+index 2396781..22529e8 100644
+--- a/src/pages/Refund.tsx
++++ b/src/pages/Refund.tsx
+@@ -1,4 +1,5 @@
+ import { Helmet } from "react-helmet-async";
++import SiteHeader from "@/components/SiteHeader";
+ import { CmsPageRenderer } from "@/components/CmsPageRenderer";
+ import NetworkFooter from "@/components/NetworkFooter";
+ 
+@@ -72,6 +73,7 @@ function RefundContent() {
+ export default function RefundPolicy() {
+   return (
+     <>
++      <SiteHeader backTo="/" backLabel="Home" />
+       <Helmet>
+         <title>Refund Policy · First Aid Angel</title>
+         <meta name="description" content={`Refund policy for First Aid Angel, operated by ${ENTITY}. 30-day money-back guarantee, refunds handled by Paddle.`} />
+diff --git a/src/pages/Shop.tsx b/src/pages/Shop.tsx
+index b899633..dbf781c 100644
+--- a/src/pages/Shop.tsx
++++ b/src/pages/Shop.tsx
+@@ -2,6 +2,7 @@
+ // visitor's region; below it sits the existing Shopify product grid.
+ 
+ import { useEffect, useState } from "react";
++import NetworkFooter from "@/components/NetworkFooter";
+ import { Helmet } from "react-helmet-async";
+ import { Link } from "react-router-dom";
+ import { ArrowLeft, Loader2 } from "lucide-react";
+@@ -72,6 +73,7 @@ export default function Shop() {
+           )}
+         </section>
+       </main>
++      <NetworkFooter />
+     </div>
+   );
+ }
+diff --git a/src/pages/ShopKits.tsx b/src/pages/ShopKits.tsx
+index a178fc3..542b845 100644
+--- a/src/pages/ShopKits.tsx
++++ b/src/pages/ShopKits.tsx
+@@ -1,7 +1,8 @@
+ import { useMemo, useState } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { Link } from "react-router-dom";
+ import { Helmet } from "react-helmet-async";
+-import { ArrowLeft, ShoppingBag } from "lucide-react";
++import { ShoppingBag } from "lucide-react";
+ import { useCountry } from "@/hooks/useCountry";
+ import { KitGrid } from "@/components/kits/KitGrid";
+ import { ZONE_LABEL, ZONE_SHIPS_FROM, zoneForCountry, type KitZone } from "@/lib/kitZones";
+@@ -32,13 +33,7 @@ export default function ShopKits() {
+         <link rel="canonical" href="https://firstaidangel.org/shop/kits" />
+       </Helmet>
+ 
+-      <header className="border-b border-border bg-card">
+-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+-          <Link to="/shop" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground">
+-            <ArrowLeft className="h-4 w-4" /> Back to shop
+-          </Link>
+-        </div>
+-      </header>
++      <SiteHeader backTo="/shop" backLabel="Shop" />
+ 
+       <main className="flex-1 px-4 py-10">
+         <div className="max-w-5xl mx-auto">
+diff --git a/src/pages/ShopPartners.tsx b/src/pages/ShopPartners.tsx
+index dab1d72..1a85607 100644
+--- a/src/pages/ShopPartners.tsx
++++ b/src/pages/ShopPartners.tsx
+@@ -1,6 +1,7 @@
+ import { Link } from "react-router-dom";
++import SiteHeader from "@/components/SiteHeader";
+ import { CmsPageRenderer } from "@/components/CmsPageRenderer";
+-import { ArrowLeft, ShoppingBag, Globe, MapPin, ExternalLink, Check, Package } from "lucide-react";
++import { ShoppingBag, Globe, MapPin, ExternalLink, Check, Package } from "lucide-react";
+ import { SeoHead } from "@/components/SeoHead";
+ import HamburgerMenu from "@/components/HamburgerMenu";
+ import EmergencyCallButton from "@/components/EmergencyCallButton";
+@@ -42,18 +43,7 @@ export default function ShopPartners() {
+         description={`Buy first aid kits, refills and emergency supplies in ${country.name} from trusted partners — St John Ambulance and local first aid shops.`}
+       />
+ 
+-      <header className="border-b border-border bg-card">
+-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+-          <Link
+-            to={localizedPath(language, "/")}
+-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+-          >
+-            <ArrowLeft className="h-4 w-4" />
+-            First Aid Angel
+-          </Link>
+-          <HamburgerMenu />
+-        </div>
+-      </header>
++      <SiteHeader backTo={localizedPath(language, "/")} backLabel="Home" />
+ 
+       <main className="flex-1 px-4 py-10">
+         <div className="max-w-5xl mx-auto">
+diff --git a/src/pages/SymptomFinder.tsx b/src/pages/SymptomFinder.tsx
+index d2ca680..28d5e76 100644
+--- a/src/pages/SymptomFinder.tsx
++++ b/src/pages/SymptomFinder.tsx
+@@ -1,6 +1,7 @@
+ import { useMemo, useState } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { Link } from "react-router-dom";
+-import { ArrowLeft, Search, Phone, AlertTriangle } from "lucide-react";
++import { Search, Phone, AlertTriangle } from "lucide-react";
+ import { SeoHead } from "@/components/SeoHead";
+ import { useLanguage } from "@/contexts/LanguageContext";
+ import { useCountry } from "@/hooks/useCountry";
+@@ -118,19 +119,7 @@ const SymptomFinder = () => {
+           },
+         ]}
+       />
+-      <header className="border-b border-border bg-card">
+-        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+-          <Link
+-            to={homePath}
+-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+-          >
+-            <ArrowLeft className="h-4 w-4" /> Home
+-          </Link>
+-          <div className="flex items-center gap-2">
+-            <HamburgerMenu />
+-          </div>
+-        </div>
+-      </header>
++      <SiteHeader backTo={homePath} backLabel="Home" />
+ 
+       <main className="flex-1 px-4 py-8">
+         <div className="max-w-3xl mx-auto">
+diff --git a/src/pages/SymptomLander.tsx b/src/pages/SymptomLander.tsx
+index ce51a1a..bdef63a 100644
+--- a/src/pages/SymptomLander.tsx
++++ b/src/pages/SymptomLander.tsx
+@@ -1,6 +1,7 @@
+ import { useMemo } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { Link, useParams, Navigate } from "react-router-dom";
+-import { ArrowLeft, Phone, AlertTriangle, BookOpen, ArrowRight, Check, X } from "lucide-react";
++import { Phone, AlertTriangle, BookOpen, ArrowRight, Check, X } from "lucide-react";
+ import { SeoHead } from "@/components/SeoHead";
+ import { useLanguage } from "@/contexts/LanguageContext";
+ import { useCountry } from "@/hooks/useCountry";
+@@ -95,16 +96,7 @@ const SymptomLander = () => {
+         jsonLd={jsonLd}
+       />
+ 
+-      <header className="border-b border-border bg-card">
+-        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+-          <Link
+-            to={symptomsPath}
+-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+-          >
+-            <ArrowLeft className="h-4 w-4" /> All symptoms
+-          </Link>
+-        </div>
+-      </header>
++      <SiteHeader backTo={symptomsPath} backLabel="Symptoms" />
+ 
+       <main className="flex-1 px-4 py-8">
+         <article className="max-w-3xl mx-auto">
+diff --git a/src/pages/Terms.tsx b/src/pages/Terms.tsx
+index 1008626..3c5a85d 100644
+--- a/src/pages/Terms.tsx
++++ b/src/pages/Terms.tsx
+@@ -1,4 +1,5 @@
+ import { Helmet } from "react-helmet-async";
++import SiteHeader from "@/components/SiteHeader";
+ import { CmsPageRenderer } from "@/components/CmsPageRenderer";
+ import NetworkFooter from "@/components/NetworkFooter";
+ 
+@@ -202,6 +203,7 @@ function TermsContent() {
+ export default function Terms() {
+   return (
+     <>
++      <SiteHeader backTo="/" backLabel="Home" />
+       <Helmet>
+         <title>Terms and Conditions · First Aid Angel</title>
+         <meta name="description" content={`Terms and Conditions for First Aid Angel, operated by ${ENTITY}.`} />
+diff --git a/src/pages/Unsubscribe.tsx b/src/pages/Unsubscribe.tsx
+index 72fabc0..701a802 100644
+--- a/src/pages/Unsubscribe.tsx
++++ b/src/pages/Unsubscribe.tsx
+@@ -1,4 +1,5 @@
+ import { useEffect, useState } from "react";
++import SiteHeader from "@/components/SiteHeader";
+ import { useSearchParams } from "react-router-dom";
+ import { Loader2, CheckCircle2, AlertTriangle } from "lucide-react";
+ import { supabase } from "@/integrations/supabase/client";
+@@ -36,7 +37,9 @@ export default function Unsubscribe() {
+   };
+ 
+   return (
+-    <main className="min-h-screen flex items-center justify-center p-4 bg-background">
++    <>
++      <SiteHeader backTo="/" backLabel="Home" />
++      <main className="min-h-screen flex items-center justify-center p-4 bg-background">
+       <Card className="max-w-md w-full">
+         <CardHeader>
+           <CardTitle>Email preferences</CardTitle>
+@@ -70,5 +73,6 @@ export default function Unsubscribe() {
+         </CardContent>
+       </Card>
+     </main>
++    </>
+   );
+ }

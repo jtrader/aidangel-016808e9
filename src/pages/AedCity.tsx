@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, AlertCircle, Cross, Loader2, MapPin, Navigation } from "lucide-react";
+import SiteHeader from "@/components/SiteHeader";
+import { AlertCircle, Cross, Loader2, MapPin, Navigation } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { SeoHead } from "@/components/SeoHead";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -160,11 +161,7 @@ export default function AedCity() {
     <div className="min-h-screen flex flex-col bg-[#F7F7F7]">
       <SeoHead lang={language} title={title} description={desc} basePath={basePath} jsonLd={jsonLd} />
 
-      <header className="bg-white border-b px-4 py-3 flex items-center justify-between">
-        <Link to={`/aed/${country.slug}`} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-4 w-4" /> {country.flag} {country.name}
-        </Link>
-      </header>
+      <SiteHeader backTo={`/aed/${country.slug}`} backLabel={`${country.flag} ${country.name}`} />
 
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
         <h1 className="font-heading text-3xl font-bold mb-1">AED Locations in {city.name}</h1>

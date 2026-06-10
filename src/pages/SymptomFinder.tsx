@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
+import SiteHeader from "@/components/SiteHeader";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Search, Phone, AlertTriangle } from "lucide-react";
+import { Search, Phone, AlertTriangle } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCountry } from "@/hooks/useCountry";
@@ -118,19 +119,7 @@ const SymptomFinder = () => {
           },
         ]}
       />
-      <header className="border-b border-border bg-card">
-        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
-          <Link
-            to={homePath}
-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="h-4 w-4" /> Home
-          </Link>
-          <div className="flex items-center gap-2">
-            <HamburgerMenu />
-          </div>
-        </div>
-      </header>
+      <SiteHeader backTo={homePath} backLabel="Home" />
 
       <main className="flex-1 px-4 py-8">
         <div className="max-w-3xl mx-auto">

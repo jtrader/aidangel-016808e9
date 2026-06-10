@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
+import SiteHeader from "@/components/SiteHeader";
 import { Link } from "react-router-dom";
-import { ArrowLeft, BookOpen, Loader2, Search } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 import { topicsByCategory, topicsFor } from "@/lib/kb";
 import { SeoHead } from "@/components/SeoHead";
 import { canonicalUrl, SITE_ORIGIN, localizedPath } from "@/lib/i18n";
@@ -156,24 +157,7 @@ const KbIndex = () => {
           })),
         }}
       />
-      <header className="border-b border-border bg-card">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link
-            to={homePath}
-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            {ui.backToChat}
-          </Link>
-          <div className="flex items-center gap-2">
-            <span className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-foreground">
-              <BookOpen className="h-4 w-4 text-primary" />
-              {ui.knowledgeBase}
-            </span>
-            <HamburgerMenu />
-          </div>
-        </div>
-      </header>
+      <SiteHeader backTo={homePath} backLabel="Home" />
       <SupportUsBar />
 
       <main className="flex-1 px-4 py-8">

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import SiteHeader from "@/components/SiteHeader";
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -17,6 +18,7 @@ export default function CheckoutSuccess() {
   });
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <SiteHeader backTo="/" backLabel="Home" />
       <SeoHead
         lang="en"
         basePath="/checkout/success"

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import SiteHeader from "@/components/SiteHeader";
 import { Link, useParams } from "react-router-dom";
 import { SeoHead } from "@/components/SeoHead";
 import CoursesHeader from "@/components/CoursesHeader";
@@ -38,6 +39,7 @@ export default function BlogPostPage() {
   if (!post || !cat) {
     return (
       <div className="min-h-screen bg-background">
+      <SiteHeader backTo="/blog" backLabel="Blog" />
         <CoursesHeader />
         <div className="max-w-2xl mx-auto px-4 py-20 text-center">
           <h1 className="font-display text-2xl font-bold mb-2">Article not found</h1>

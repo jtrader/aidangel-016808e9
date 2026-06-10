@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import SiteHeader from "@/components/SiteHeader";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -109,6 +110,7 @@ export default function JoinOrg() {
 
   return (
     <div className="min-h-screen flex flex-col bg-muted/30">
+      <SiteHeader backTo="/" backLabel="Home" />
       <div className="flex-1 flex items-center justify-center p-6">
         <div className="max-w-md w-full bg-card rounded-2xl shadow-sm p-8 text-center space-y-4">
           <Building2 className="h-10 w-10 mx-auto text-primary" />

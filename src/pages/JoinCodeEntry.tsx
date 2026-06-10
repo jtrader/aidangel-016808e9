@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SiteHeader from "@/components/SiteHeader";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +29,7 @@ export default function JoinCodeEntry() {
 
   return (
     <div className="min-h-screen flex flex-col bg-muted/30">
+      <SiteHeader backTo="/" backLabel="Home" />
       <div className="flex-1 flex items-center justify-center p-6">
         <form onSubmit={submit} className="max-w-md w-full bg-card rounded-2xl shadow-sm p-8 space-y-4">
           <Building2 className="h-10 w-10 mx-auto text-primary" />

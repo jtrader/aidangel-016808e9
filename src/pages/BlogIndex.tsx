@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import SiteHeader from "@/components/SiteHeader";
 import { Link } from "react-router-dom";
 import { SeoHead } from "@/components/SeoHead";
 import CoursesHeader from "@/components/CoursesHeader";
@@ -25,6 +26,7 @@ export default function BlogIndex() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SiteHeader backTo="/" backLabel="Home" />
       <SeoHead
         lang="en"
         basePath="/blog"

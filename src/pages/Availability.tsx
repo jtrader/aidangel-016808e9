@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import SiteHeader from "@/components/SiteHeader";
 import { useEffect, useState, useMemo } from "react";
-import { ArrowLeft, Globe, ShieldCheck, CheckCircle2, Languages, Database } from "lucide-react";
+import { Globe, ShieldCheck, CheckCircle2, Languages, Database } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
 import HamburgerMenu from "@/components/HamburgerMenu";
 import NetworkFooter from "@/components/NetworkFooter";
@@ -70,18 +71,7 @@ export default function Availability() {
         description="Directory of countries, UI languages and locale packs supported by First Aid Angel — including verified emergency numbers and crisis lines."
       />
 
-      <header className="border-b border-border bg-card">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
-          <Link
-            to={localizedPath(language, "/")}
-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            First Aid Angel
-          </Link>
-          <HamburgerMenu />
-        </div>
-      </header>
+      <SiteHeader backTo={localizedPath(language, "/")} backLabel="Home" />
 
       <main className="flex-1 px-4 py-10">
         <div className="max-w-5xl mx-auto">

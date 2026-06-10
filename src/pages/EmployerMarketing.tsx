@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import SiteHeader from "@/components/SiteHeader";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -83,6 +84,7 @@ export default function EmployerMarketing() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <SiteHeader backTo="/" backLabel="Home" />
       <SeoHead
         lang="en"
         basePath="/employer"

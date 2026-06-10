@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import SiteHeader from "@/components/SiteHeader";
 import { CmsPageRenderer } from "@/components/CmsPageRenderer";
-import { ArrowLeft, ShoppingBag, Globe, MapPin, ExternalLink, Check, Package } from "lucide-react";
+import { ShoppingBag, Globe, MapPin, ExternalLink, Check, Package } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
 import HamburgerMenu from "@/components/HamburgerMenu";
 import EmergencyCallButton from "@/components/EmergencyCallButton";
@@ -42,18 +43,7 @@ export default function ShopPartners() {
         description={`Buy first aid kits, refills and emergency supplies in ${country.name} from trusted partners — St John Ambulance and local first aid shops.`}
       />
 
-      <header className="border-b border-border bg-card">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
-          <Link
-            to={localizedPath(language, "/")}
-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            First Aid Angel
-          </Link>
-          <HamburgerMenu />
-        </div>
-      </header>
+      <SiteHeader backTo={localizedPath(language, "/")} backLabel="Home" />
 
       <main className="flex-1 px-4 py-10">
         <div className="max-w-5xl mx-auto">

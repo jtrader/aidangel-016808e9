@@ -2,6 +2,7 @@
 // visitor's region; below it sits the existing Shopify product grid.
 
 import { useEffect, useState } from "react";
+import NetworkFooter from "@/components/NetworkFooter";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Loader2 } from "lucide-react";
@@ -72,6 +73,7 @@ export default function Shop() {
           )}
         </section>
       </main>
+      <NetworkFooter />
     </div>
   );
 }

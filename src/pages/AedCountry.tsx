@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, MapPin, Cross, AlertCircle } from "lucide-react";
+import SiteHeader from "@/components/SiteHeader";
+import { MapPin, Cross, AlertCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SeoHead } from "@/components/SeoHead";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -82,11 +83,7 @@ export default function AedCountry() {
     <div className="min-h-screen flex flex-col bg-[#F7F7F7]">
       <SeoHead lang={language} title={title} description={desc} basePath={basePath} jsonLd={jsonLd} />
 
-      <header className="bg-white border-b px-4 py-3 flex items-center justify-between">
-        <Link to="/aed" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-4 w-4" /> All countries
-        </Link>
-      </header>
+      <SiteHeader backTo="/aed" backLabel="All countries" />
 
       <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-8">
         <div className="flex items-center gap-3 mb-2">

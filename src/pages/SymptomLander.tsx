@@ -1,6 +1,7 @@
 import { useMemo } from "react";
+import SiteHeader from "@/components/SiteHeader";
 import { Link, useParams, Navigate } from "react-router-dom";
-import { ArrowLeft, Phone, AlertTriangle, BookOpen, ArrowRight, Check, X } from "lucide-react";
+import { Phone, AlertTriangle, BookOpen, ArrowRight, Check, X } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCountry } from "@/hooks/useCountry";
@@ -95,16 +96,7 @@ const SymptomLander = () => {
         jsonLd={jsonLd}
       />
 
-      <header className="border-b border-border bg-card">
-        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
-          <Link
-            to={symptomsPath}
-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="h-4 w-4" /> All symptoms
-          </Link>
-        </div>
-      </header>
+      <SiteHeader backTo={symptomsPath} backLabel="Symptoms" />
 
       <main className="flex-1 px-4 py-8">
         <article className="max-w-3xl mx-auto">

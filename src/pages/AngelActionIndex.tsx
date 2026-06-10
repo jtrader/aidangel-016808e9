@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, Download, FileText, Printer } from "lucide-react";
+import SiteHeader from "@/components/SiteHeader";
+import { Download, FileText, Printer } from "lucide-react";
 import { topicsByCategory, topicsFor } from "@/lib/kb";
 import { SeoHead } from "@/components/SeoHead";
 import { localizedPath } from "@/lib/i18n";
@@ -23,26 +24,7 @@ const AngelActionIndex = () => {
         title="Angel Action Cards · Printable First Aid PDFs"
         description={`Download free A4 printable first aid quick-reference cards for all ${all.length} topics — CPR, choking, anaphylaxis, bleeding, burns and more.`}
       />
-      <header className="border-b border-border bg-card">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
-          <Link
-            to={localizedPath(language, "/")}
-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            First Aid Angel
-          </Link>
-          <div className="flex items-center gap-2">
-            <Link
-              to={localizedPath(language, "/kb")}
-              className="text-sm font-semibold text-primary hover:text-primary/80"
-            >
-              Knowledge base →
-            </Link>
-            <HamburgerMenu />
-          </div>
-        </div>
-      </header>
+      <SiteHeader backTo={localizedPath(language, "/")} backLabel="Home" />
       <SupportUsBar />
 
       <main className="flex-1 px-4 py-10">

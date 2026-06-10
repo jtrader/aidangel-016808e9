@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
+import SiteHeader from "@/components/SiteHeader";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft, ShoppingBag } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { useCountry } from "@/hooks/useCountry";
 import { KitGrid } from "@/components/kits/KitGrid";
 import { ZONE_LABEL, ZONE_SHIPS_FROM, zoneForCountry, type KitZone } from "@/lib/kitZones";
@@ -32,13 +33,7 @@ export default function ShopKits() {
         <link rel="canonical" href="https://firstaidangel.org/shop/kits" />
       </Helmet>
 
-      <header className="border-b border-border bg-card">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
-          <Link to="/shop" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="h-4 w-4" /> Back to shop
-          </Link>
-        </div>
-      </header>
+      <SiteHeader backTo="/shop" backLabel="Shop" />
 
       <main className="flex-1 px-4 py-10">
         <div className="max-w-5xl mx-auto">

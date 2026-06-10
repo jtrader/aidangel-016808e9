@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import SiteHeader from "@/components/SiteHeader";
 import { CmsPageRenderer } from "@/components/CmsPageRenderer";
 import NetworkFooter from "@/components/NetworkFooter";
 
@@ -134,6 +135,7 @@ function PrivacyContent() {
 export default function PrivacyPolicy() {
   return (
     <>
+      <SiteHeader backTo="/" backLabel="Home" />
       <Helmet>
         <title>Privacy Notice · First Aid Angel</title>
         <meta name="description" content={`Privacy notice for First Aid Angel, operated by ${ENTITY}.`} />

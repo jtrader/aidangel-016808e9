@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import NetworkFooter from "@/components/NetworkFooter";
 import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Loader2 } from "lucide-react";
@@ -146,6 +147,7 @@ export default function ProductDetail() {
           )}
         </div>
       </main>
+      <NetworkFooter />
     </div>
   );
 }

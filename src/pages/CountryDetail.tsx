@@ -1,18 +1,7 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
+import SiteHeader from "@/components/SiteHeader";
 import { Link, useParams, Navigate } from "react-router-dom";
-import {
-  ArrowLeft,
-  Phone,
-  ShieldCheck,
-  Languages,
-  HeartPulse,
-  Database,
-  ExternalLink,
-  AlertTriangle,
-  Copy,
-  Check,
-  Clock,
-} from "lucide-react";
+import { Phone, ShieldCheck, Languages, HeartPulse, Database, ExternalLink, AlertTriangle, Copy, Check, Clock } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
 import HamburgerMenu from "@/components/HamburgerMenu";
 import NetworkFooter from "@/components/NetworkFooter";
@@ -145,18 +134,7 @@ export default function CountryDetail() {
         description={`Emergency numbers, crisis lines and supported languages in ${country.name}.`}
       />
 
-      <header className="border-b border-border bg-card">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
-          <Link
-            to={localizedPath(language, "/availability")}
-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            All countries
-          </Link>
-          <HamburgerMenu />
-        </div>
-      </header>
+      <SiteHeader backTo={localizedPath(language, "/availability")} backLabel="Availability" />
 
       <main className="flex-1 px-4 py-10">
         <div className="max-w-4xl mx-auto">
