@@ -8,7 +8,6 @@ import NetworkFooter from "@/components/NetworkFooter";
 import SupportUsBar from "@/components/SupportUsBar";
 import { useLanguage } from "@/contexts/LanguageContext";
 import EmergencyCallButton from "@/components/EmergencyCallButton";
-import HamburgerMenu from "@/components/HamburgerMenu";
 
 const AngelActionIndex = () => {
   const { language } = useLanguage();
@@ -28,7 +27,7 @@ const AngelActionIndex = () => {
       <SupportUsBar />
 
       <main className="flex-1 px-4 py-10">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-[820px] mx-auto">
           <div className="text-center mb-10">
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary text-primary-foreground mb-4 shadow-sm">
               <Printer className="h-7 w-7" />
