@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import aidAngelLogo from "@/assets/aidangel-logo.png";
-import { useNavigate, useSearchParams, Link } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
@@ -8,9 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, ShieldPlus } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SeoHead } from "@/components/SeoHead";
+import SiteHeader from "@/components/SiteHeader";
 import { z } from "zod";
 
 const schema = z.object({
@@ -105,92 +105,88 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-background">
       <SeoHead lang="en" basePath="/auth" title={`${mode === "signin" ? "Sign in" : "Create account"} — First Aid Angel Learning`} description="Sign in to track your first aid course progress and earn certificates." />
-      <Card className="w-full max-w-md p-8 rounded-2xl">
-        <Link to="/" className="flex items-center gap-2 mb-6">
-          <img src={aidAngelLogo} alt="First Aid Angel" width={28} height={28} className="h-7 w-7" />
-          <span className="font-display font-bold text-lg">
-            <span className="text-foreground">First Aid Angel </span>
-            <span className="text-primary">Learning</span>
-          </span>
-        </Link>
-        <h1 className="text-2xl font-display font-bold mb-2">
-          {mode === "signin" ? "Welcome back" : "Create your account"}
-        </h1>
-        <p className="text-muted-foreground mb-6 text-sm">
-          {mode === "signin" ? "Sign in to continue your courses." : "Track progress and earn certificates."}
-        </p>
+      <SiteHeader backTo="/topics" backLabel="First Aid Topics" />
+      <main className="flex items-center justify-center px-4 py-12">
+        <Card className="w-full max-w-md p-8 rounded-2xl">
+          <h1 className="text-2xl font-display font-bold mb-2">
+            {mode === "signin" ? "Welcome back" : "Create your account"}
+          </h1>
+          <p className="text-muted-foreground mb-6 text-sm">
+            {mode === "signin" ? "Sign in to continue your courses." : "Track progress and earn certificates."}
+          </p>
 
-        <div className="space-y-2 mb-4">
-          <Button type="button" variant="outline" onClick={() => oauth("google")} disabled={busy} className="w-full">
-            Continue with Google
-          </Button>
-          <Button type="button" variant="outline" onClick={() => oauth("apple")} disabled={busy} className="w-full">
-            Continue with Apple
-          </Button>
-        </div>
-        <div className="relative my-4">
-          <div className="absolute inset-0 flex items-center"><span className="w-full border-t" /></div>
-          <span className="relative bg-card px-2 text-xs text-muted-foreground mx-auto block w-fit">or</span>
-        </div>
+          <div className="space-y-2 mb-4">
+            <Button type="button" variant="outline" onClick={() => oauth("google")} disabled={busy} className="w-full">
+              Continue with Google
+            </Button>
+            <Button type="button" variant="outline" onClick={() => oauth("apple")} disabled={busy} className="w-full">
+              Continue with Apple
+            </Button>
+          </div>
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center"><span className="w-full border-t" /></div>
+            <span className="relative bg-card px-2 text-xs text-muted-foreground mx-auto block w-fit">or</span>
+          </div>
 
-        <form onSubmit={submit} className="space-y-4">
-          {mode === "signup" && (
+          <form onSubmit={submit} className="space-y-4">
+            {mode === "signup" && (
+              <div>
+                <Label htmlFor="name">Full name (for your certificate)</Label>
+                <Input id="name" value={name} onChange={(e) => setName(e.target.value)} maxLength={100} required />
+              </div>
+            )}
             <div>
-              <Label htmlFor="name">Full name (for your certificate)</Label>
-              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} maxLength={100} required />
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} required />
             </div>
-          )}
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} required />
-          </div>
-          <div>
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} minLength={8} maxLength={72} required />
-          </div>
-          {mode === "signup" && (
-            <div className="space-y-3">
-              <label className="flex items-start gap-2 text-sm text-muted-foreground cursor-pointer">
-                <Checkbox
-                  checked={privacyAccepted}
-                  onCheckedChange={(v) => setPrivacyAccepted(v === true)}
-                  className="mt-0.5"
-                />
-                <span>
-                  I have read and agree to the{" "}
-                  <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-primary/80">
-                    Privacy Policy
-                  </a>
-                  . Required to create an account.
-                </span>
-              </label>
-              <label className="flex items-start gap-2 text-sm text-muted-foreground cursor-pointer">
-                <Checkbox
-                  checked={marketingOptIn}
-                  onCheckedChange={(v) => setMarketingOptIn(v === true)}
-                  className="mt-0.5"
-                />
-                <span>
-                  Send me first aid tips, course updates, and discounts on official certifications. You can unsubscribe anytime.
-                </span>
-              </label>
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} minLength={8} maxLength={72} required />
             </div>
-          )}
-          <Button type="submit" disabled={busy} className="w-full">
-            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : mode === "signin" ? "Sign in" : "Create account"}
-          </Button>
-        </form>
+            {mode === "signup" && (
+              <div className="space-y-3">
+                <label className="flex items-start gap-2 text-sm text-muted-foreground cursor-pointer">
+                  <Checkbox
+                    checked={privacyAccepted}
+                    onCheckedChange={(v) => setPrivacyAccepted(v === true)}
+                    className="mt-0.5"
+                  />
+                  <span>
+                    I have read and agree to the{" "}
+                    <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-primary/80">
+                      Privacy Policy
+                    </a>
+                    . Required to create an account.
+                  </span>
+                </label>
+                <label className="flex items-start gap-2 text-sm text-muted-foreground cursor-pointer">
+                  <Checkbox
+                    checked={marketingOptIn}
+                    onCheckedChange={(v) => setMarketingOptIn(v === true)}
+                    className="mt-0.5"
+                  />
+                  <span>
+                    Send me first aid tips, course updates, and discounts on official certifications. You can unsubscribe anytime.
+                  </span>
+                </label>
+              </div>
+            )}
+            <Button type="submit" disabled={busy} className="w-full">
+              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : mode === "signin" ? "Sign in" : "Create account"}
+            </Button>
+          </form>
 
-        <button
-          type="button"
-          onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-          className="text-sm text-primary hover:underline mt-4 w-full text-center"
-        >
-          {mode === "signin" ? "Don't have an account? Create one" : "Already have an account? Sign in"}
-        </button>
-      </Card>
+          <button
+            type="button"
+            onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+            className="text-sm text-primary hover:underline mt-4 w-full text-center"
+          >
+            {mode === "signin" ? "Don't have an account? Create one" : "Already have an account? Sign in"}
+          </button>
+        </Card>
+      </main>
     </div>
   );
 }
