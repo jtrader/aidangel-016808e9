@@ -17,6 +17,7 @@ export function KitCard({
     typeof window !== "undefined" ? window.location.pathname : "",
   );
   if (zone) params.set("zone", zone);
+  if (kit.country) params.set("country", kit.country);
   if (kit.shopify_handle) params.set("handle", kit.shopify_handle);
   const href = `/go/${encodeURIComponent(kit.route_slug)}?${params.toString()}`;
 
