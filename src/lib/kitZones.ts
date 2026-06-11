@@ -19,7 +19,7 @@ export const ZONE_LABEL: Record<KitZone, string> = {
 
 export const ZONE_SHIPS_FROM: Record<KitZone, string> = {
   AU: "Ships from Australia (AUD)",
-  UK_IE: "Ships from the UK (GBP)",
+  UK_IE: "Ships from the UK",
   NORTH_AM: "Ships internationally from the UK (GBP)",
   EU_MENA: "Ships internationally from the UK (GBP)",
 };
