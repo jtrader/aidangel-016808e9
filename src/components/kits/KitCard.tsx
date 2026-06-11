@@ -14,6 +14,13 @@ function formatLoveKeyPrice(price: number | null): string {
   return `$${price.toFixed(2)}`;
 }
 
+function buttonTextForKit(kit: Kit, isLoveKeyGuardian: boolean): string {
+  if (isLoveKeyGuardian) {
+    return (kit.cta_label ?? "Buy at Love Key").replace(/^Buy from\b/i, "Buy at");
+  }
+  return kit.cta_label ?? (kit.vendor ? `Buy at ${kit.vendor}` : "Buy now");
+}
+
 export function KitCard({
   kit,
   zone,
@@ -29,6 +36,7 @@ export function KitCard({
   const priceText = isLoveKeyGuardian
     ? formatLoveKeyPrice(kit.price)
     : formatPrice(kit.price, kit.currency, kit.destination_url);
+  const buttonText = buttonTextForKit(kit, isLoveKeyGuardian);
 
   const params = new URLSearchParams();
   params.set(
@@ -84,7 +92,7 @@ export function KitCard({
           rel="noopener sponsored"
           className="mt-auto inline-flex items-center justify-center gap-1.5 w-full px-3 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
         >
-          {kit.cta_label ?? (kit.vendor ? `Buy at ${kit.vendor}` : "Buy now")}
+          {buttonText}
           <ExternalLink className="h-3.5 w-3.5 opacity-80" />
         </a>
       </div>
