@@ -48,9 +48,10 @@ const CURRENCY_SYMBOL: Record<string, string> = {
 
 // The currency a visitor will actually be charged is determined by the host
 // shop, not by the visitor's country (e.g. a French shopper checking out on
-// shop.sja.org.uk pays in GBP). Use this to override stored `currency` when a
-// destination_url is known.
+// shop.sja.org.uk pays in GBP, while Love Key orders check out on the AU store).
+// Use this to override stored `currency` when a destination_url is known.
 const HOST_CURRENCY: Record<string, string> = {
+  "lovekey.com.au": "AUD",
   "shop.stjohn.org.au": "AUD",
   "shop.sja.org.uk": "GBP",
 };
