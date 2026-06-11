@@ -4,7 +4,7 @@
 // Strict privacy gate: GPS / W3W / address lookups only run after the user
 // explicitly taps "Get My Location".
 import { useCallback, useState } from "react";
-import { AlertTriangle, Check, Copy, HeartPulse, MapPin, RefreshCw, Share2 } from "lucide-react";
+import { AlertTriangle, Check, Copy, HeartPulse, MapPin, Phone, RefreshCw, Share2 } from "lucide-react";
 import LegacyMyLocation from "@/components/MyLocation";
 import AedMiniMap from "@/components/AedMiniMap";
 import { toast } from "@/hooks/use-toast";
@@ -13,8 +13,7 @@ import { emergencyNumberForCountry } from "@/lib/donations";
 
 export interface MyLocationPanelProps {
   locale?: string;
-  /** When true, hides the panel's own page header and hardcoded "Call 000"
-   *  CTA — used when the panel is shown inside CallConfirmDialog. */
+  /** When true, uses the compact panel shown inside CallConfirmDialog. */
   embedded?: boolean;
 }
 
@@ -188,6 +187,13 @@ function DialogMyLocationPanel() {
           <>📍 {coords ? "Update location" : "Get my location"}</>
         )}
       </button>
+
+      <a
+        href={telHref}
+        className="flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-base font-bold text-primary-foreground shadow-md transition hover:bg-primary/90"
+      >
+        <Phone className="h-5 w-5" aria-hidden /> Call {emergencyNumber} Now
+      </a>
 
       {geoError && (
         <div className="flex items-start gap-2 rounded-xl border border-primary/20 bg-primary/5 p-3 text-sm text-foreground">
