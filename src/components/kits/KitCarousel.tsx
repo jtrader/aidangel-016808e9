@@ -18,6 +18,8 @@ interface KitCarouselProps {
   zone?: KitZone;
   limit?: number;
   heading?: string;
+  vendor?: string;
+  emptyMessage?: string;
   /** When true, renders for a constrained surface (dialog/drawer): smaller
    *  vertical rhythm, no "See all" rail, items basis tuned for narrow widths,
    *  and arrows tucked inside the carousel so they don't overlap the dialog edge. */
@@ -33,13 +35,15 @@ export function KitCarousel({
   zone,
   limit = 12,
   heading,
+  vendor,
+  emptyMessage,
   autoplay = false,
   compact = false,
 }: KitCarouselProps & { autoplay?: boolean }) {
   const { country } = useCountry();
   const code = countryCode ?? country.code;
   const resolvedZone = useMemo<KitZone>(() => zone ?? zoneForCountry(code), [zone, code]);
-  const { kits, loading } = useKitsForZone(resolvedZone, { limit, preferCountry: code });
+  const { kits, loading } = useKitsForZone(resolvedZone, { limit, preferCountry: code, vendor });
   const [api, setApi] = useState<import("@/components/ui/carousel").CarouselApi | null>(null);
 
   // Autoplay: advance the embla carousel every few seconds if enabled
@@ -103,7 +107,7 @@ export function KitCarousel({
         </div>
       ) : kits.length === 0 ? (
         <p className="text-sm text-muted-foreground py-8 text-center">
-          No kits available for this region yet.
+          {emptyMessage ?? "No kits available for this region yet."}
         </p>
       ) : (
         <Carousel opts={{ align: "start", loop: true }} setApi={setApi} className="w-full">
