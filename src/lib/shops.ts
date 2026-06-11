@@ -4,13 +4,14 @@
 
 import { COUNTRIES, type CountryCode, getCountry, DEFAULT_COUNTRY } from "@/lib/donations";
 
-export type ShopId = "stjohn";
+export type ShopId = "stjohn" | "lovekey";
 
 export type ShopMeta = {
   id: ShopId;
   name: string;
   short: string;
   international: string;
+  logo?: string;
 };
 
 export const SHOPS: Record<ShopId, ShopMeta> = {
@@ -19,6 +20,13 @@ export const SHOPS: Record<ShopId, ShopMeta> = {
     name: "St John First Aid Shop",
     short: "St John First Aid",
     international: "https://shop.stjohn.org.au/",
+  },
+  lovekey: {
+    id: "lovekey",
+    name: "Love Key Shop",
+    short: "Love Key",
+    international: "https://lovekey.com.au/#product-section",
+    logo: "https://lovekey.com.au/assets/heart-logo-CHHfs6fW.png",
   },
 };
 
@@ -39,9 +47,13 @@ export function shopsForCountry(
   const country = getCountry(code ?? DEFAULT_COUNTRY);
   const national = COUNTRY_SHOPS[country.code] ?? {};
   const out: Array<{ id: ShopId; url: string; isNational: boolean }> = [];
-  const url = national.stjohn;
-  if (url) {
-    out.push({ id: "stjohn", url, isNational: true });
+
+  // Love Key ships internationally — always show it first.
+  out.push({ id: "lovekey", url: SHOPS.lovekey.international, isNational: false });
+
+  const stjohnUrl = national.stjohn;
+  if (stjohnUrl) {
+    out.push({ id: "stjohn", url: stjohnUrl, isNational: true });
   } else {
     out.push({ id: "stjohn", url: SHOPS.stjohn.international, isNational: false });
   }

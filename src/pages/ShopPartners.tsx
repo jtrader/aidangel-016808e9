@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/select";
 
 const SHOP_DESCRIPTIONS: Record<ShopId, string> = {
+  lovekey:
+    "A beautifully crafted metal keyring that keeps your emergency contacts and medical information one tap away. NFC enabled and QR coded — your personal safety profile, always on your keys.",
   stjohn:
     "Official St John Ambulance first aid shop — workplace-compliant kits, refills, defibrillators, and training supplies trusted by schools, businesses, and families.",
 };
@@ -139,15 +141,24 @@ export default function ShopPartners() {
                           className="flex flex-col bg-card border border-border rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow"
                         >
                           <div className="flex items-center gap-3 mb-4">
-                            <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center flex-shrink-0">
-                              <Favicon url={url} alt="" size={28} />
+                            <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center flex-shrink-0 overflow-hidden">
+                              {shop.logo ? (
+                                <img src={shop.logo} alt={shop.short} className="w-full h-full object-contain p-1" />
+                              ) : (
+                                <Favicon url={url} alt="" size={28} />
+                              )}
                             </div>
                             <div className="min-w-0">
                               <h2 className="text-lg font-bold text-foreground leading-tight">
                                 {shop.short}
                               </h2>
                               <p className="text-[11px] text-muted-foreground mt-0.5 inline-flex items-center gap-1">
-                                {isNational ? (
+                                {id === "lovekey" ? (
+                                  <>
+                                    <Globe className="h-3 w-3 text-primary" />
+                                    Ships worldwide
+                                  </>
+                                ) : isNational ? (
                                   <>
                                     <Check className="h-3 w-3 text-primary" />
                                     Ships in {country.name}
