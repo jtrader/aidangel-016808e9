@@ -86,7 +86,7 @@ export function HelpNetworkHandoff({ immediateDanger = false }: HelpNetworkHando
             : isAidAngel
             ? "https://aidangel.app"
             : isLoveKeyNfcQr
-            ? "https://lovekey.com.au"
+            ? loveKeyHref(countryCode)
             : buildHandoffUrl(TARGETS[site.key], null, language, "");
           const targetBlank = isFirstAidAngel ? undefined : "_blank";
           const relNoopener = isFirstAidAngel ? undefined : "noopener noreferrer";
