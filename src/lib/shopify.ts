@@ -27,6 +27,7 @@ export interface ShopifyProduct {
     title: string;
     description: string;
     handle: string;
+    tags: string[];
     priceRange: { minVariantPrice: { amount: string; currencyCode: string } };
     images: { edges: Array<{ node: ShopifyImage }> };
     variants: { edges: Array<{ node: ShopifyVariant }> };
@@ -71,7 +72,7 @@ export const PRODUCTS_QUERY = `
     products(first: $first, query: $query) {
       edges {
         node {
-          id title description handle
+          id title description handle tags
           priceRange { minVariantPrice { amount currencyCode } }
           images(first: 5) { edges { node { url altText } } }
           variants(first: 10) {
@@ -88,7 +89,7 @@ export const PRODUCTS_QUERY = `
 export const PRODUCT_BY_HANDLE_QUERY = `
   query GetProductByHandle($handle: String!) {
     product(handle: $handle) {
-      id title description handle
+      id title description handle tags
       priceRange { minVariantPrice { amount currencyCode } }
       images(first: 10) { edges { node { url altText } } }
       variants(first: 25) {
@@ -136,7 +137,7 @@ export const CART_CREATE_MUTATION = `
 export const CART_LINES_ADD_MUTATION = `
   mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
     cartLinesAdd(cartId: $cartId, lines: $lines) {
-      cart { id lines(first: 100) { edges { node { id merchandise { ... on ProductVariant { id } } } } } }
+      cart { id lines(first: 100) { edges { node { id merchandise { ... on ProductVariant { id } } } } }
       userErrors { field message }
     }
   }`;
@@ -148,7 +149,7 @@ export const CART_LINES_UPDATE_MUTATION = `
 
 export const CART_LINES_REMOVE_MUTATION = `
   mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
-    cartLinesRemove(cartId: $cartId, lineIds: $lineIds) { cart { id } userErrors { field message } }
+    cartLinesRemove(cartId: $cartId, linesIds: $lineIds) { cart { id } userErrors { field message } }
   }`;
 
 export function formatCheckoutUrl(checkoutUrl: string): string {
