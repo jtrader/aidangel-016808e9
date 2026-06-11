@@ -62,6 +62,14 @@ const LOVE_KEY_ZONE_TAGS_BY_COUNTRY: Record<string, string[]> = {
   US: ["zone-US"],
 };
 
+const LOVE_KEY_CURRENCY_BY_COUNTRY: Record<string, string> = {
+  AU: "AUD",
+  CA: "CAD",
+  GB: "GBP",
+  NZ: "NZD",
+  US: "USD",
+};
+
 function loveKeyZoneTagsForCountry(code: string | null | undefined): string[] {
   return LOVE_KEY_ZONE_TAGS_BY_COUNTRY[(code ?? "").toUpperCase()] ?? [];
 }
@@ -75,6 +83,32 @@ function productHasAnyTag(product: ShopifyProduct["node"] | undefined, tags: str
 function productZoneTags(product: ShopifyProduct["node"] | undefined): string[] | undefined {
   const tags = product?.tags?.filter((tag) => /^zone-/i.test(tag));
   return tags && tags.length > 0 ? tags : undefined;
+}
+
+function uniqueCountries(countries: string[]): string[] {
+  return Array.from(new Set(countries.map((c) => c.toUpperCase())));
+}
+
+function localizeLoveKeyUrl(destinationUrl: string | null, countryCode: string): string | null {
+  if (!destinationUrl) return null;
+  try {
+    const url = new URL(destinationUrl);
+    url.searchParams.set("locale", countryCode);
+    return url.toString();
+  } catch {
+    return destinationUrl;
+  }
+}
+
+function localizeLoveKeyRow(row: Kit, preferredCountry: string | undefined, isLoveKeyAudience: boolean): Kit {
+  if (!isLoveKeyAudience || !preferredCountry || !isLoveKeyVendor(row.vendor)) return row;
+  const country = preferredCountry.toUpperCase();
+  return {
+    ...row,
+    country,
+    currency: LOVE_KEY_CURRENCY_BY_COUNTRY[country] ?? row.currency,
+    destination_url: localizeLoveKeyUrl(row.destination_url, country),
+  };
 }
 
 // Cache Shopify product master data per zone/query for the session.
@@ -126,9 +160,13 @@ export function useKitsForZone(
     let cancelled = false;
     setLoading(true);
     setError(null);
-    const loveKeyTags = isLoveKeyVendor(opts?.vendor) ? loveKeyZoneTagsForCountry(opts?.preferCountry) : [];
-    const countries = loveKeyTags.length > 0 && opts?.preferCountry
-      ? [opts.preferCountry.toUpperCase()]
+    const preferred = opts?.preferCountry?.toUpperCase();
+    const loveKeyTags = isLoveKeyVendor(opts?.vendor) ? loveKeyZoneTagsForCountry(preferred) : [];
+    const isLoveKeyAudience = loveKeyTags.length > 0;
+    const countries = isLoveKeyAudience && preferred
+      // Production may only have the AU Love Key catalogue rows; include AU as
+      // a base catalogue fallback, then localize those rows to the selected locale.
+      ? uniqueCountries([preferred, "AU"])
       : countriesInZone(zone);
 
     (async () => {
@@ -157,26 +195,25 @@ export function useKitsForZone(
           ? data.filter((row) => matchesVendor(row.vendor, opts.vendor!))
           : data;
 
-        // Dedupe by Shopify handle — prefer exact country match, then any.
+        // Dedupe by Shopify handle — prefer exact country match, then any base row.
         const byHandle = new Map<string, Kit>();
-        const preferred = opts?.preferCountry?.toUpperCase();
         for (const row of rows) {
           const handle = titleToHandle(row.title);
           const shop = (await shopifyMap)?.get(handle);
           // Verify the Shopify zone when master data is available. Do not hide
-          // country-specific route_catalogue rows solely because Shopify master
-          // lookup failed; the country row is already the audience fallback.
-          if (loveKeyTags.length > 0 && shop && !productHasAnyTag(shop, loveKeyTags)) continue;
+          // route_catalogue rows solely because Shopify master lookup failed;
+          // the country/AU row is the display fallback.
+          if (isLoveKeyAudience && shop && !productHasAnyTag(shop, loveKeyTags)) continue;
           // Merge: Shopify owns title/image/description; route_catalogue owns price + affiliate URL.
-          const merged: Kit = {
+          const merged: Kit = localizeLoveKeyRow({
             ...row,
             title: shop?.title ?? row.title,
             description: shop?.description ?? row.description,
             image_url: shop?.images?.edges?.[0]?.node?.url ?? row.image_url,
             shopify_handle: shop?.handle ?? null,
             shopify_tags: shop?.tags ?? undefined,
-            shopify_zone_tags: productZoneTags(shop),
-          };
+            shopify_zone_tags: productZoneTags(shop) ?? (isLoveKeyAudience ? loveKeyTags : undefined),
+          }, preferred, isLoveKeyAudience);
           const existing = byHandle.get(handle);
           if (!existing) {
             byHandle.set(handle, merged);
