@@ -96,7 +96,7 @@ export default function LoveKeyGuardianCard({ className, compact }: Props) {
             return (
               <a
                 key={node.id}
-                href={colourUrl(colour)}
+                href={buildLoveKeyUrl(locale, colour)}
                 target="_blank"
                 rel="noopener noreferrer sponsored"
                 title={`Love Key Guardian — ${colour}`}
@@ -126,7 +126,7 @@ export default function LoveKeyGuardianCard({ className, compact }: Props) {
       <div className="mt-4 flex items-center gap-3">
         <span className="font-semibold">{formatPrice(PRICE, currency)}</span>
         <Button asChild size="sm">
-          <a href={LOVEKEY_URL} target="_blank" rel="noopener noreferrer sponsored">
+          <a href={buildLoveKeyUrl(locale)} target="_blank" rel="noopener noreferrer sponsored">
             Buy from Love Key <ExternalLink className="h-3.5 w-3.5 ml-1.5" />
           </a>
         </Button>
