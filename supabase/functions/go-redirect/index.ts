@@ -33,7 +33,6 @@ Deno.serve(async (req) => {
     const shopifyHandle = url.searchParams.get("handle") ?? null;
     const selectedCountry = url.searchParams.get("country")?.toUpperCase() ?? null;
     const countryHeader = req.headers.get("cf-ipcountry") ?? req.headers.get("x-vercel-ip-country") ?? null;
-    const trackingCountry = selectedCountry ?? countryHeader;
 
     if (!slug || slug === "go-redirect") {
       return json({ error: "missing_slug" }, 400);
