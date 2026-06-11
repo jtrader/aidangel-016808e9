@@ -18,7 +18,7 @@ const COLLECTION_HANDLE = "love-key-guardian";
 const PRICE = 5.0;
 
 // Guardian referral price is 5.00 in the visitor's zone currency;
-// AUD is the default for countries outside the listed zones.
+// USD is the fallback for countries outside the listed zones.
 const COUNTRY_CURRENCY: Record<string, string> = {
   AU: "AUD",
   GB: "GBP",
@@ -57,7 +57,7 @@ function fetchGuardians(): Promise<ShopifyProduct[]> {
 export default function LoveKeyGuardianCard({ className, compact }: Props) {
   const [guardians, setGuardians] = useState<ShopifyProduct[]>([]);
   const { code } = useCountry();
-  const currency = COUNTRY_CURRENCY[(code ?? "").toUpperCase()] ?? "AUD";
+  const currency = COUNTRY_CURRENCY[(code ?? "").toUpperCase()] ?? "USD";
 
   useEffect(() => {
     if (!SHOPIFY_CONFIGURED) return;
