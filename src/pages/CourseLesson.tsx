@@ -14,11 +14,21 @@ import { buildLessonSeo } from "@/lib/lessonSeo";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { pickTranslated } from "@/lib/lmsI18n";
+import { useCountry } from "@/hooks/useCountry";
+import { emergencyNumberForCountry } from "@/lib/donations";
+import { resolveEmergency, resolveCountry } from "@/lib/resolveEmergency";
 
 export default function CourseLesson() {
   const { slug, lessonSlug } = useParams();
   const { user } = useAuth();
   const { t, language } = useLanguage();
+  const { code: countryCode, country } = useCountry();
+  const emergencyNumber = emergencyNumberForCountry(countryCode);
+  const countryName = (() => {
+    try {
+      return new Intl.DisplayNames(["en"], { type: "region" }).of(countryCode.toUpperCase()) || country.name;
+    } catch { return country.name; }
+  })();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const fromKb = searchParams.get("from") === "kb";
@@ -133,7 +143,9 @@ export default function CourseLesson() {
 
         {lesson.body && (
           <Card className="p-6 md:p-8 rounded-2xl mb-6">
-            <LessonContent>{lesson.body}</LessonContent>
+            <LessonContent>
+              {resolveCountry(resolveEmergency(lesson.body, emergencyNumber), countryName)}
+            </LessonContent>
           </Card>
         )}
 
