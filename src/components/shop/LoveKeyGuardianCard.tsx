@@ -11,8 +11,7 @@ import { storefrontApiRequest, PRODUCTS_QUERY, SHOPIFY_CONFIGURED, type ShopifyP
 import { useCountry } from "@/hooks/useCountry";
 import { formatPrice } from "@/lib/kitZones";
 
-const LOVEKEY_URL = "https://lovekey.com.au";
-const LOVEKEY_PRODUCT_URL = "https://lovekey.com.au/?variant=metal&color={color}#product-section";
+const LOVEKEY_ORIGIN = "https://lovekey.com.au";
 const COLLECTION_HANDLE = "love-key-guardian";
 
 const PRICE = 5.0;
@@ -27,8 +26,20 @@ const COUNTRY_CURRENCY: Record<string, string> = {
   NZ: "NZD",
 };
 
-function colourUrl(colour: string): string {
-  return LOVEKEY_PRODUCT_URL.replace("{color}", encodeURIComponent(colour.toLowerCase().replace(/\s+/g, "-")));
+// Locales supported by lovekey.com.au — anything else falls back to AU.
+const SUPPORTED_LOCALES = new Set(["AU", "GB", "US", "CA", "NZ"]);
+function resolveLocale(code: string | null | undefined): string {
+  const c = (code ?? "").toUpperCase();
+  return SUPPORTED_LOCALES.has(c) ? c : "AU";
+}
+
+function buildLoveKeyUrl(locale: string, colour?: string): string {
+  const params = new URLSearchParams({ locale });
+  if (colour) {
+    params.set("variant", "metal");
+    params.set("color", colour.toLowerCase().replace(/\s+/g, "-"));
+  }
+  return `${LOVEKEY_ORIGIN}/?${params.toString()}#product-section`;
 }
 
 const DESCRIPTION =
