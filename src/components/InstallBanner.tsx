@@ -21,6 +21,11 @@ export default function InstallBanner() {
       setDismissed(true);
     }
 
+    // Detect already-installed standalone mode
+    if (window.matchMedia("(display-mode: standalone)").matches) {
+      setInstalled(true);
+    }
+
     const handler = (e: Event) => {
       e.preventDefault();
       setEvt(e as BIPEvent);
@@ -42,12 +47,15 @@ export default function InstallBanner() {
     setDismissed(true);
   };
 
-  if (dismissed || installed || !evt) return null;
+  if (dismissed || installed) return null;
+
+  // iOS hint: no beforeinstallprompt, but can still be added via Share sheet
+  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const canNativeInstall = !!evt;
 
   return (
     <div className="max-w-2xl mx-auto w-full animate-fade-in">
       <div className="relative rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-card to-primary/5 p-4 shadow-sm overflow-hidden">
-        {/* Subtle decorative ring */}
         <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-primary/5 pointer-events-none" />
 
         <button
@@ -72,7 +80,6 @@ export default function InstallBanner() {
               One tap to life-saving guidance — always ready, even without signal.
             </p>
 
-            {/* Feature chips */}
             <div className="flex flex-wrap gap-1.5 mt-2.5">
               {[
                 { Icon: WifiOff, label: "Works offline" },
@@ -89,13 +96,23 @@ export default function InstallBanner() {
               ))}
             </div>
 
-            <button
-              onClick={onInstall}
-              className="mt-3 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 active:scale-95 transition-all shadow-sm"
-            >
-              <Download className="h-3.5 w-3.5" />
-              Add to Home Screen
-            </button>
+            {canNativeInstall ? (
+              <button
+                onClick={onInstall}
+                className="mt-3 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 active:scale-95 transition-all shadow-sm"
+              >
+                <Download className="h-3.5 w-3.5" />
+                Add to Home Screen
+              </button>
+            ) : isIos ? (
+              <p className="mt-2.5 text-[11px] text-muted-foreground leading-relaxed">
+                Tap <strong>Share</strong> then <strong>Add to Home Screen</strong> in Safari to install.
+              </p>
+            ) : (
+              <p className="mt-2.5 text-[11px] text-muted-foreground leading-relaxed">
+                Open in Chrome or Edge and tap <strong>Install app</strong> from the browser menu.
+              </p>
+            )}
           </div>
         </div>
       </div>
