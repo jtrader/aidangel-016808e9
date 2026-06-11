@@ -27,10 +27,10 @@ export default function Shop() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Shop | First Aid Angel</title>
+        <title>First Aid Angel Shop</title>
         <meta
           name="description"
-          content="Shop First Aid Angel certificates, keyrings and kits — curated first aid supplies for your region."
+          content="Shop recommended first aid products from Love Key and St John — keyrings, kits and supplies curated for your region."
         />
       </Helmet>
 
@@ -39,7 +39,10 @@ export default function Shop() {
           <Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-4 w-4" /> First Aid Angel
           </Link>
-          <h1 className="text-xl sm:text-2xl font-bold">Shop</h1>
+          <div className="text-center">
+            <h1 className="text-xl sm:text-2xl font-bold leading-tight">First Aid Angel Shop</h1>
+            <p className="text-xs text-muted-foreground">Recommended Products</p>
+          </div>
           <CartDrawer />
         </div>
       </header>
@@ -56,7 +59,7 @@ export default function Shop() {
 
         <section aria-labelledby="store-heading">
           <h2 id="store-heading" className="text-xl sm:text-2xl font-bold text-foreground mb-4">
-            First Aid Angel store
+            St John First Aid Store
           </h2>
           {loading ? (
             <div className="flex justify-center py-16">
