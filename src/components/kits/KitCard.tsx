@@ -28,7 +28,7 @@ export function KitCard({
             src={kit.image_url}
             alt={kit.title}
             loading="lazy"
-            className="w-full h-full object-contain hover:scale-105 transition-transform"
+            className="w-full h-full object-cover hover:scale-105 transition-transform"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">
