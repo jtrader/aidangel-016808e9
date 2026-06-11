@@ -68,6 +68,7 @@ const NETWORK_SITES: NetworkSite[] = [
 
 export function HelpNetworkHandoff({ immediateDanger = false }: HelpNetworkHandoffProps) {
   const { language, t } = useLanguage();
+  const { code: countryCode } = useCountry();
   if (immediateDanger) return null;
 
   return (
