@@ -14,7 +14,7 @@ import {
   List,
 } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage, type LanguageCode } from "@/contexts/LanguageContext";
 import { useCountry } from "@/hooks/useCountry";
 import { emergencyNumberForCountry } from "@/lib/donations";
 import { localizedPath, SITE_ORIGIN, HREFLANG } from "@/lib/i18n";
@@ -93,7 +93,7 @@ function ResultPanel({
   result: FlowResult;
   emergencyNumber: string;
   countryName: string;
-  language: string;
+  language: LanguageCode;
   onReset: () => void;
 }) {
   const cfg = SEVERITY_CONFIG[result.severity];

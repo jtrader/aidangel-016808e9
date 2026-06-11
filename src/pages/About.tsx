@@ -129,7 +129,7 @@ const FAQS = [
   },
 ];
 
-function HardcodedAbout() {
+function HardcodedAbout({ emergencyNumber }: { emergencyNumber: string }) {
   return (
     <>
       {/* Hero */}
@@ -361,7 +361,7 @@ export default function About() {
 
       <main className="flex-1 px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <CmsPageRenderer slug="about" fallback={<HardcodedAbout />} />
+          <CmsPageRenderer slug="about" fallback={<HardcodedAbout emergencyNumber={emergencyNumber} />} />
         </div>
       </main>
 

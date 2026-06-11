@@ -257,7 +257,7 @@ export default function PersonalMarketing() {
                     <div className="aspect-video bg-muted relative">
                       {c.cover_url ? (
                         <img
-                          src={optimizeSupabaseImage(c.cover_url, 768, 432, 80)}
+                          src={optimizeSupabaseImage(c.cover_url, 768, 80)}
                           alt={c.title}
                           width={768}
                           height={432}
@@ -328,7 +328,7 @@ export default function PersonalMarketing() {
                     <div className="aspect-video bg-muted">
                       {t.cover_url && (
                         <img
-                          src={optimizeSupabaseImage(t.cover_url, 640, 360, 80)}
+                          src={optimizeSupabaseImage(t.cover_url, 640, 80)}
                           alt={t.title}
                           width={640}
                           height={360}
