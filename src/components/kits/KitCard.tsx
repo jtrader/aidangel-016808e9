@@ -37,6 +37,18 @@ export function KitCard({
         )}
       </a>
       <div className="p-4 flex flex-col flex-1 gap-2">
+        {kit.shopify_zone_tags && kit.shopify_zone_tags.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {kit.shopify_zone_tags.map((tag) => (
+              <span
+                key={tag}
+                className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
         <h3 className="font-semibold text-sm text-foreground leading-snug line-clamp-2">
           {kit.title}
         </h3>
