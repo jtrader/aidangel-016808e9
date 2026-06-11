@@ -201,8 +201,8 @@ const Index = () => {
                     />
                   </div>
 
-                  {/* Input directly below the welcome heading — hidden when offline */}
-                  {isOnline ? (
+                  {/* Input hidden when offline toggle is on or device is offline */}
+                  {isOnline && !offlineEnabled ? (
                     <div className="max-w-2xl mx-auto w-full">
                       <ChatInput onSend={send} disabled={isLoading} />
                       <ChatDisclaimer />
