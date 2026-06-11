@@ -17,6 +17,7 @@ import KbCourseHandoff from "@/components/kb/KbCourseHandoff";
 import KbProgramHandoff from "@/components/kb/KbProgramHandoff";
 import KbKitRecommendation from "@/components/kb/KbKitRecommendation";
 import KBHandoffCard from "@/components/kb/KBHandoffCard";
+import LoveKeyGuardianCard from "@/components/shop/LoveKeyGuardianCard";
 import { KB_COURSE_MAP as KB_TO_COURSE } from "@/lib/kbCourseMap";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -542,6 +543,7 @@ const KbTopic = () => {
             </p>
           </aside>
           <KBHandoffCard topic={topic.slug} lang={language} />
+          <LoveKeyGuardianCard compact className="mt-6" />
         </article>
       </main>
 

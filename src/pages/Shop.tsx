@@ -10,6 +10,7 @@ import { fetchProducts, type ShopifyProduct } from "@/lib/shopify";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { CartDrawer } from "@/components/shop/CartDrawer";
 import { KitCarousel } from "@/components/kits/KitCarousel";
+import LoveKeyGuardianCard from "@/components/shop/LoveKeyGuardianCard";
 
 export default function Shop() {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
@@ -46,6 +47,12 @@ export default function Shop() {
       <main className="container mx-auto px-4 py-8">
         <KitCarousel />
 
+        <section aria-labelledby="guardian-heading" className="mb-8">
+          <h2 id="guardian-heading" className="text-xl sm:text-2xl font-bold text-foreground mb-4">
+            Love Key Guardian
+          </h2>
+          <LoveKeyGuardianCard />
+        </section>
 
         <section aria-labelledby="store-heading">
           <h2 id="store-heading" className="text-xl sm:text-2xl font-bold text-foreground mb-4">
