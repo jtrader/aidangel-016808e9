@@ -110,6 +110,4 @@ verify_jwt = false
 [functions.embed-kb]
 verify_jwt = false
 
-[functions.go-redirect]
-verify_jwt = false
 
