@@ -2,7 +2,7 @@ import { ExternalLink } from "lucide-react";
 import { formatPrice, type KitZone } from "@/lib/kitZones";
 import type { Kit } from "@/hooks/useKits";
 
-const LOVE_KEY_SHIPS_FROM_LABEL = "Ships from Australia (AUD)";
+const LOVE_KEY_SHIPS_FROM_LABEL = "Ships from Australia";
 
 function isLoveKeyGuardianKit(kit: Kit): boolean {
   const vendor = (kit.vendor ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "");
