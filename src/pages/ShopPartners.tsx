@@ -153,12 +153,7 @@ export default function ShopPartners() {
                                 {shop.short}
                               </h2>
                               <p className="text-[11px] text-muted-foreground mt-0.5 inline-flex items-center gap-1">
-                                {id === "lovekey" ? (
-                                  <>
-                                    <Globe className="h-3 w-3 text-primary" />
-                                    Ships worldwide
-                                  </>
-                                ) : isNational ? (
+                                {isNational ? (
                                   <>
                                     <Check className="h-3 w-3 text-primary" />
                                     Ships in {country.name}

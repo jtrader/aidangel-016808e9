@@ -41,6 +41,9 @@ export const COUNTRY_SHOPS: Record<string, Partial<Record<ShopId, string>>> = {
   HK: { stjohn: "https://www.stjohn.org.hk/en/shop/" },
 };
 
+/** Countries Love Key ships to. */
+const LOVEKEY_COUNTRIES = new Set(["AU", "GB", "US", "CA", "NZ"]);
+
 export function shopsForCountry(
   code: string | null | undefined,
 ): Array<{ id: ShopId; url: string; isNational: boolean }> {
@@ -48,8 +51,10 @@ export function shopsForCountry(
   const national = COUNTRY_SHOPS[country.code] ?? {};
   const out: Array<{ id: ShopId; url: string; isNational: boolean }> = [];
 
-  // Love Key ships internationally — always show it first.
-  out.push({ id: "lovekey", url: SHOPS.lovekey.international, isNational: false });
+  // Love Key — only show for supported regions.
+  if (LOVEKEY_COUNTRIES.has(country.code)) {
+    out.push({ id: "lovekey", url: SHOPS.lovekey.international, isNational: true });
+  }
 
   const stjohnUrl = national.stjohn;
   if (stjohnUrl) {
