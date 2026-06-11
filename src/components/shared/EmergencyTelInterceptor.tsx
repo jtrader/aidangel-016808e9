@@ -11,7 +11,7 @@ const UPDATED_ST_JOHN_TEXT = "St John Australia";
 const TEXT_ATTRIBUTES = ["aria-label", "alt", "placeholder", "title"];
 
 function replaceLegacyText(value: string) {
-  return value.replaceAll(LEGACY_ST_JOHN_TEXT, UPDATED_ST_JOHN_TEXT);
+  return value.replace(new RegExp(LEGACY_ST_JOHN_TEXT, "g"), UPDATED_ST_JOHN_TEXT);
 }
 
 function replaceLegacyTextInDom(root: ParentNode = document) {
