@@ -66,9 +66,9 @@ export default function InstallBanner() {
         <button
           onClick={onDismiss}
           aria-label="Dismiss install prompt"
-          className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors"
+          className="absolute top-3 right-3 inline-flex items-center justify-center w-10 h-10 rounded-full bg-muted text-muted-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 transition-colors"
         >
-          <X className="h-4 w-4" />
+          <X className="h-5 w-5" aria-hidden="true" />
         </button>
 
         <div className="flex items-start gap-3 pr-6">
