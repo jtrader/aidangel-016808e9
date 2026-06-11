@@ -7,6 +7,17 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
+const LOVE_KEY_COUNTRIES = new Set(["AU", "CA", "GB", "NZ", "US"]);
+
+function localizeLoveKeyDestination(destinationUrl: string, country: string | null): URL {
+  const dest = new URL(destinationUrl);
+  const normalizedCountry = (country ?? "").toUpperCase();
+  if (dest.hostname === "lovekey.com.au" && LOVE_KEY_COUNTRIES.has(normalizedCountry)) {
+    dest.searchParams.set("locale", normalizedCountry);
+  }
+  return dest;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
@@ -20,7 +31,9 @@ Deno.serve(async (req) => {
     const sessionId = url.searchParams.get("sid") ?? null;
     const zone = url.searchParams.get("zone") ?? null;
     const shopifyHandle = url.searchParams.get("handle") ?? null;
+    const selectedCountry = url.searchParams.get("country")?.toUpperCase() ?? null;
     const countryHeader = req.headers.get("cf-ipcountry") ?? req.headers.get("x-vercel-ip-country") ?? null;
+    const trackingCountry = selectedCountry ?? countryHeader;
 
     if (!slug || slug === "go-redirect") {
       return json({ error: "missing_slug" }, 400);
@@ -46,7 +59,7 @@ Deno.serve(async (req) => {
     }
 
     // Build outbound URL with UTM + referral
-    const dest = new URL(route.destination_url);
+    const dest = localizeLoveKeyDestination(route.destination_url, selectedCountry);
     dest.searchParams.set("utm_source", "firstaidangel");
     dest.searchParams.set("utm_medium", "referral");
     if (route.utm_campaign) dest.searchParams.set("utm_campaign", route.utm_campaign);
@@ -59,7 +72,7 @@ Deno.serve(async (req) => {
       route_slug: route.route_slug,
       partner_slug: route.partner_entity,
       destination_url: dest.toString(),
-      country: route.country ?? countryHeader,
+      country: selectedCountry ?? route.country ?? countryHeader,
       source_page: sourcePage,
       session_id: sessionId,
       zone,
