@@ -135,6 +135,7 @@ export default function ShopPartners() {
                   <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                     {shops.map(({ id, url, isNational }) => {
                       const shop = SHOPS[id];
+                      if (!shop) return null;
                       return (
                         <article
                           key={id}
