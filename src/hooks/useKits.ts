@@ -34,6 +34,16 @@ function titleToHandle(t: string): string {
     .replace(/(^-|-$)/g, "");
 }
 
+function normalizeVendor(vendor: string | null | undefined): string {
+  return (vendor ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "");
+}
+
+function matchesVendor(rowVendor: string | null | undefined, vendorFilter: string): boolean {
+  const normalizedRowVendor = normalizeVendor(rowVendor);
+  const normalizedVendorFilter = normalizeVendor(vendorFilter);
+  return normalizedVendorFilter.length > 0 && normalizedRowVendor.includes(normalizedVendorFilter);
+}
+
 // Cache Shopify product master data per zone for the session.
 const shopifyCache = new Map<KitZone, Promise<Map<string, ShopifyProduct["node"]>>>();
 
@@ -70,7 +80,10 @@ function fetchShopifyMastersForZone(zone: KitZone) {
   return p;
 }
 
-export function useKitsForZone(zone: KitZone, opts?: { limit?: number; preferCountry?: string }) {
+export function useKitsForZone(
+  zone: KitZone,
+  opts?: { limit?: number; preferCountry?: string; vendor?: string },
+) {
   const [kits, setKits] = useState<Kit[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -103,10 +116,14 @@ export function useKitsForZone(zone: KitZone, opts?: { limit?: number; preferCou
           return;
         }
 
+        const rows = opts?.vendor
+          ? data.filter((row) => matchesVendor(row.vendor, opts.vendor!))
+          : data;
+
         // Dedupe by Shopify handle — prefer exact country match, then any.
         const byHandle = new Map<string, Kit>();
         const preferred = opts?.preferCountry?.toUpperCase();
-        for (const row of data as Kit[]) {
+        for (const row of rows) {
           const handle = titleToHandle(row.title);
           const shop = (await shopifyMap)?.get(handle);
           // Merge: Shopify owns title/image/description; route_catalogue owns price + affiliate URL.
@@ -138,7 +155,7 @@ export function useKitsForZone(zone: KitZone, opts?: { limit?: number; preferCou
     return () => {
       cancelled = true;
     };
-  }, [zone, opts?.limit, opts?.preferCountry]);
+  }, [zone, opts?.limit, opts?.preferCountry, opts?.vendor]);
 
   return { kits, loading, error };
 }
