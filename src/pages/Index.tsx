@@ -297,11 +297,9 @@ const Index = () => {
                       })}
                     </div>
                   ) : (
-                    <>
-                      <QuickActions onSelect={send} />
-                      <DRSABCDPanel onSelect={send} />
-                    </>
+                    <QuickActions onSelect={send} />
                   )}
+                  <DRSABCDPanel onSelect={send} />
                 </>
               }
             />

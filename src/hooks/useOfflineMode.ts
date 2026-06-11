@@ -25,7 +25,7 @@ export const OFFLINE_KB_SLUGS = [
 
 async function cacheKbGuides(): Promise<void> {
   if (!("caches" in window)) return;
-  const urls = ["/", ...OFFLINE_KB_SLUGS.map((s) => `/kb/${s}`)];
+  const urls = ["/", "/cpr", ...OFFLINE_KB_SLUGS.map((s) => `/kb/${s}`)];
   const cache = await caches.open("faa-offline-guides");
   await Promise.all(
     urls.map((url) =>
