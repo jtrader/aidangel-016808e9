@@ -16,7 +16,7 @@ import stJohnIcon from "@/assets/stjohn-icon.png";
 
 // Love Key logo — use the blue Guardian keyring from Shopify CDN until a
 // dedicated logo asset is added.
-const LOVEKEY_LOGO = "https://cdn.shopify.com/s/files/1/0823/1786/9311/files/light-blue-BPsMIC5u.png?v=1781137684";
+const LOVEKEY_LOGO = "https://lovekey.com.au/assets/heart-logo-CHHfs6fW.png";
 
 export default function Shop() {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
