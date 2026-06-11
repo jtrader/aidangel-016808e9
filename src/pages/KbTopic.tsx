@@ -28,7 +28,7 @@ import { emergencyNumberForCountry } from "@/lib/donations";
 import { translateTopic } from "@/lib/kbTranslate";
 import { translateStrings } from "@/lib/uiTranslate";
 import { buildHowToJsonLd, buildFaqJsonLd, buildSpeakableJsonLd } from "@/lib/kbSchema";
-import { resolveEmergency } from "@/lib/resolveEmergency";
+import { resolveEmergency, resolveCountry } from "@/lib/resolveEmergency";
 
 // Editorial review date — bump when KB content is reviewed against the source.
 const LAST_REVIEWED_ISO = "2026-05-22";
@@ -53,8 +53,13 @@ const STATIC_TOPIC_STRINGS = [
 const KbTopic = () => {
   const { slug = "" } = useParams<{ slug: string }>();
   const { language } = useLanguage();
-  const { code: countryCode } = useCountry();
+  const { code: countryCode, country } = useCountry();
   const emergencyNumber = emergencyNumberForCountry(countryCode);
+  const countryName = (() => {
+    try {
+      return new Intl.DisplayNames(["en"], { type: "region" }).of(countryCode.toUpperCase()) || country.name;
+    } catch { return country.name; }
+  })();
   const topicEn = getTopic(slug, "en");
 
   if (!topicEn) {
@@ -181,16 +186,19 @@ const KbTopic = () => {
     return () => { cancelled = true; };
   }, [language, slug]);
 
-  const linkedBody = resolveEmergency(
-    autoLinkPhones(
-      autoLinkBody(
-        translated.body,
-        topicEn.slug,
-        language,
-        (s) => localizedPath(language, `/kb/${s}`),
+  const linkedBody = resolveCountry(
+    resolveEmergency(
+      autoLinkPhones(
+        autoLinkBody(
+          translated.body,
+          topicEn.slug,
+          language,
+          (s) => localizedPath(language, `/kb/${s}`),
+        ),
       ),
+      emergencyNumber,
     ),
-    emergencyNumber,
+    countryName,
   );
 
   const kbPath = localizedPath(language, "/kb");
@@ -460,7 +468,7 @@ const KbTopic = () => {
                       </span>
                     </summary>
                     <p lang={language} className="mt-3 text-sm text-card-foreground leading-relaxed">
-                      {item.a.split(/(\b000\b)/g).map((part, i) =>
+                      {resolveCountry(item.a, countryName).split(/(\b000\b)/g).map((part, i) =>
                         part === "000" ? (
                           <a key={i} href={`tel:${emergencyNumber}`} className="text-primary font-semibold underline">
                             {emergencyNumber}

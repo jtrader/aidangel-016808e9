@@ -23,7 +23,7 @@ import { SYMPTOM_LANDERS } from "@/data/symptomLanders";
 import NetworkFooter from "@/components/NetworkFooter";
 import EmergencyCallButton from "@/components/EmergencyCallButton";
 import EmergencyNumberLink from "@/components/shared/EmergencyNumberLink";
-import { resolveEmergency } from "@/lib/resolveEmergency";
+import { resolveEmergency, resolveCountry } from "@/lib/resolveEmergency";
 import {
   getQuestion,
   getResult,
@@ -86,16 +86,19 @@ type FlowStep =
 function ResultPanel({
   result,
   emergencyNumber,
+  countryName,
   language,
   onReset,
 }: {
   result: FlowResult;
   emergencyNumber: string;
+  countryName: string;
   language: string;
   onReset: () => void;
 }) {
   const cfg = SEVERITY_CONFIG[result.severity];
   const kbHref = result.kbSlug ? localizedPath(language, `/kb/${result.kbSlug}`) : null;
+  const re = (t: string) => resolveCountry(resolveEmergency(t, emergencyNumber), countryName);
 
   return (
     <div className="animate-fade-in space-y-4">
@@ -108,7 +111,7 @@ function ResultPanel({
       </div>
 
       {result.lead && (
-        <p className="text-sm text-muted-foreground leading-relaxed">{resolveEmergency(result.lead, emergencyNumber)}</p>
+        <p className="text-sm text-muted-foreground leading-relaxed">{re(result.lead)}</p>
       )}
 
       {/* Emergency call CTA */}
@@ -133,7 +136,7 @@ function ResultPanel({
               <span className="flex-shrink-0 mt-0.5 w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">
                 {i + 1}
               </span>
-              <p className="text-sm text-foreground leading-relaxed">{resolveEmergency(step, emergencyNumber)}</p>
+              <p className="text-sm text-foreground leading-relaxed">{re(step)}</p>
             </li>
           ))}
         </ol>
@@ -149,7 +152,7 @@ function ResultPanel({
             {result.doNot.map((item, i) => (
               <li key={i} className="flex items-start gap-2">
                 <XCircle className="h-3.5 w-3.5 flex-shrink-0 mt-0.5 text-destructive" />
-                <p className="text-sm text-foreground">{resolveEmergency(item, emergencyNumber)}</p>
+                <p className="text-sm text-foreground">{re(item)}</p>
               </li>
             ))}
           </ul>
@@ -166,7 +169,7 @@ function ResultPanel({
             {result.watchFor.map((item, i) => (
               <li key={i} className="flex items-start gap-2">
                 <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0 mt-0.5 text-orange-500" />
-                <p className="text-sm text-foreground">{resolveEmergency(item, emergencyNumber)}</p>
+                <p className="text-sm text-foreground">{re(item)}</p>
               </li>
             ))}
           </ul>
@@ -206,8 +209,13 @@ function ResultPanel({
 
 const SymptomFinder = () => {
   const { language } = useLanguage();
-  const { code: countryCode } = useCountry();
+  const { code: countryCode, country } = useCountry();
   const emergencyNumber = emergencyNumberForCountry(countryCode);
+  const countryName = (() => {
+    try {
+      return new Intl.DisplayNames(["en"], { type: "region" }).of(countryCode.toUpperCase()) || country.name;
+    } catch { return country.name; }
+  })();
 
   /* Flow state */
   const [history, setHistory] = useState<FlowStep[]>([{ type: "question", id: "root" }]);
@@ -375,6 +383,7 @@ const SymptomFinder = () => {
                   <ResultPanel
                     result={r}
                     emergencyNumber={emergencyNumber}
+                    countryName={countryName}
                     language={language}
                     onReset={reset}
                   />

@@ -11,6 +11,11 @@ export default function LearnIndex() {
   const { language, t } = useLanguage();
   const { country, code: countryCode } = useCountry();
   const emergencyNumber = emergencyNumberForCountry(countryCode);
+  const countryDisplayName = (() => {
+    try {
+      return new Intl.DisplayNames([language], { type: "region" }).of(countryCode.toUpperCase()) || country.name;
+    } catch { return country.name; }
+  })();
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SeoHead lang={language}
@@ -62,7 +67,7 @@ export default function LearnIndex() {
           <div className="text-sm">
             <div className="font-medium text-foreground mb-1">{t("learnNeedHelpNow")}</div>
             <p className="text-muted-foreground">
-              {t("learnEmergencyPrefix")} <a href={`tel:${emergencyNumber}`} className="font-semibold text-primary underline">{emergencyNumber}</a> {t("learnEmergencyCountry")} {t("learnOtherwise")}{" "}
+              {t("learnEmergencyPrefix")} <a href={`tel:${emergencyNumber}`} className="font-semibold text-primary underline">{emergencyNumber}</a> ({countryDisplayName}). {t("learnOtherwise")}{" "}
               <Link to="/symptoms" className="text-primary underline">{t("learnFindBySymptom")}</Link>.
             </p>
           </div>

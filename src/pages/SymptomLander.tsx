@@ -10,6 +10,7 @@ import { localizedPath, SITE_ORIGIN, HREFLANG } from "@/lib/i18n";
 import { getTopic } from "@/lib/kb";
 import { SYMPTOM_LANDERS, getLanderBySlug } from "@/data/symptomLanders";
 import NetworkFooter from "@/components/NetworkFooter";
+import { resolveCountry } from "@/lib/resolveEmergency";
 
 
 const REVIEWED_BY = "First Aid Angel editorial team";
@@ -18,8 +19,14 @@ const DATE_MODIFIED = "2026-05-22";
 const SymptomLander = () => {
   const { slug = "" } = useParams<{ slug: string }>();
   const { language } = useLanguage();
-  const { code: countryCode } = useCountry();
+  const { code: countryCode, country } = useCountry();
   const emergencyNumber = emergencyNumberForCountry(countryCode);
+  const countryName = (() => {
+    try {
+      return new Intl.DisplayNames(["en"], { type: "region" }).of(countryCode.toUpperCase()) || country.name;
+    } catch { return country.name; }
+  })();
+  const rc = (t: string) => resolveCountry(t, countryName);
 
   const lander = useMemo(() => getLanderBySlug(slug), [slug]);
 
@@ -137,7 +144,7 @@ const SymptomLander = () => {
               {lander.callTriple.map((c, i) => (
                 <li key={i} className="text-sm text-foreground flex gap-2">
                   <span className="text-destructive font-bold mt-0.5">•</span>
-                  <span>{c}</span>
+                  <span>{rc(c)}</span>
                 </li>
               ))}
             </ul>
@@ -154,7 +161,7 @@ const SymptomLander = () => {
                   <span className="flex-shrink-0 w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm flex items-center justify-center">
                     {i + 1}
                   </span>
-                  <p className="text-sm text-foreground leading-relaxed pt-0.5">{s}</p>
+                  <p className="text-sm text-foreground leading-relaxed pt-0.5">{rc(s)}</p>
                 </li>
               ))}
             </ol>
@@ -170,7 +177,7 @@ const SymptomLander = () => {
                 {lander.doNot.map((c, i) => (
                   <li key={i} className="text-sm text-foreground flex gap-2">
                     <X className="h-4 w-4 text-destructive flex-shrink-0 mt-0.5" />
-                    <span>{c}</span>
+                    <span>{rc(c)}</span>
                   </li>
                 ))}
               </ul>
@@ -210,7 +217,7 @@ const SymptomLander = () => {
                       <ArrowRight className="h-4 w-4" />
                     </span>
                   </summary>
-                  <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{f.a}</p>
+                  <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{rc(f.a)}</p>
                 </details>
               ))}
             </div>
