@@ -2,6 +2,14 @@ import { ExternalLink } from "lucide-react";
 import { formatPrice, type KitZone } from "@/lib/kitZones";
 import type { Kit } from "@/hooks/useKits";
 
+const LOVE_KEY_SHIPS_FROM_LABEL = "Ships from Australia (AUD)";
+const LOVE_KEY_CURRENCY = "AUD";
+
+function isLoveKeyGuardianKit(kit: Kit): boolean {
+  const vendor = (kit.vendor ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "");
+  return vendor.includes("lovekey") || /love\s*key\s*guardian/i.test(kit.title);
+}
+
 export function KitCard({
   kit,
   zone,
@@ -11,6 +19,11 @@ export function KitCard({
   zone?: KitZone;
   shipsFromLabel?: string;
 }) {
+  const isLoveKeyGuardian = isLoveKeyGuardianKit(kit);
+  const visibleZoneTags = isLoveKeyGuardian ? [] : (kit.shopify_zone_tags ?? []);
+  const effectiveShipsFromLabel = isLoveKeyGuardian ? LOVE_KEY_SHIPS_FROM_LABEL : shipsFromLabel;
+  const displayCurrency = isLoveKeyGuardian ? LOVE_KEY_CURRENCY : kit.currency;
+
   const params = new URLSearchParams();
   params.set(
     "src",
@@ -38,9 +51,9 @@ export function KitCard({
         )}
       </a>
       <div className="p-4 flex flex-col flex-1 gap-2">
-        {kit.shopify_zone_tags && kit.shopify_zone_tags.length > 0 && (
+        {visibleZoneTags.length > 0 && (
           <div className="flex flex-wrap gap-1">
-            {kit.shopify_zone_tags.map((tag) => (
+            {visibleZoneTags.map((tag) => (
               <span
                 key={tag}
                 className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground"
@@ -54,10 +67,10 @@ export function KitCard({
           {kit.title}
         </h3>
         <p className="text-lg font-bold text-foreground">
-          {formatPrice(kit.price, kit.currency, kit.destination_url)}
+          {formatPrice(kit.price, displayCurrency, kit.destination_url)}
         </p>
-        {shipsFromLabel && (
-          <p className="text-[11px] text-muted-foreground">{shipsFromLabel}</p>
+        {effectiveShipsFromLabel && (
+          <p className="text-[11px] text-muted-foreground">{effectiveShipsFromLabel}</p>
         )}
         <a
           href={href}
