@@ -93,7 +93,7 @@ function ResultPanel({
   result: FlowResult;
   emergencyNumber: string;
   countryName: string;
-  language: string;
+  language: LanguageCode;
   onReset: () => void;
 }) {
   const cfg = SEVERITY_CONFIG[result.severity];
