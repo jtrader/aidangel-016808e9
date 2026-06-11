@@ -19,6 +19,7 @@ interface ShopDialogContentProps {
 
 export function ShopDialogContent({ country, autoplay = true }: ShopDialogContentProps) {
   const countryCode = country?.code;
+  const countryName = country?.name ?? "your region";
 
   return (
     <>
@@ -44,6 +45,7 @@ export function ShopDialogContent({ country, autoplay = true }: ShopDialogConten
             compact
             heading=""
             vendor="Love Key"
+            emptyMessage={`No Love Key products available for ${countryName} yet.`}
           />
         </section>
 
@@ -63,6 +65,7 @@ export function ShopDialogContent({ country, autoplay = true }: ShopDialogConten
             compact
             heading=""
             vendor="St John"
+            emptyMessage={`No St John products available for ${countryName} yet.`}
           />
         </section>
       </div>
