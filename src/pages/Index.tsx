@@ -203,7 +203,7 @@ const Index = () => {
                     />
                   </div>
 
-                  <InstallBanner />
+                  {offlineEnabled && <InstallBanner />}
 
                   {/* Input and description hidden when offline toggle is on */}
                   {offlineEnabled ? null : isOnline ? (
