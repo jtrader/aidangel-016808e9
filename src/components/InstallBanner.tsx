@@ -21,14 +21,19 @@ export default function InstallBanner() {
       setDismissed(true);
     }
 
-    // Detect already-installed standalone mode
     if (window.matchMedia("(display-mode: standalone)").matches) {
       setInstalled(true);
     }
 
+    // Pick up the event captured in main.tsx before React mounted.
+    const w = window as typeof window & { __bipEvent?: BIPEvent };
+    if (w.__bipEvent) setEvt(w.__bipEvent);
+
+    // Also listen for future fires (e.g. after dismissing and re-opening).
     const handler = (e: Event) => {
       e.preventDefault();
       setEvt(e as BIPEvent);
+      w.__bipEvent = e as BIPEvent;
     };
     window.addEventListener("beforeinstallprompt", handler);
     window.addEventListener("appinstalled", () => setInstalled(true));
