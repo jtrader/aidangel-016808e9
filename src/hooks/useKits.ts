@@ -16,6 +16,7 @@ export interface Kit {
   vendor: string | null;
   cta_label: string | null;
   shopify_handle?: string | null;
+  shopify_tags?: string[];
 }
 
 // Normalize a kit title so Shopify product master data can be matched
@@ -44,8 +45,29 @@ function matchesVendor(rowVendor: string | null | undefined, vendorFilter: strin
   return normalizedVendorFilter.length > 0 && normalizedRowVendor.includes(normalizedVendorFilter);
 }
 
-// Cache Shopify product master data per zone for the session.
-const shopifyCache = new Map<KitZone, Promise<Map<string, ShopifyProduct["node"]>>>();
+function isLoveKeyVendor(vendor: string | null | undefined): boolean {
+  return normalizeVendor(vendor).includes("lovekey");
+}
+
+const LOVE_KEY_ZONE_TAG_BY_COUNTRY: Record<string, string> = {
+  AU: "zone-AU",
+  CA: "zone-CA",
+  GB: "zone-GB",
+  NZ: "zone-NZ",
+  US: "zone-US",
+};
+
+function loveKeyZoneTagForCountry(code: string | null | undefined): string | null {
+  return LOVE_KEY_ZONE_TAG_BY_COUNTRY[(code ?? "").toUpperCase()] ?? null;
+}
+
+function productHasTag(product: ShopifyProduct["node"] | undefined, tag: string): boolean {
+  const expected = tag.toLowerCase();
+  return product?.tags?.some((t) => t.toLowerCase() === expected) ?? false;
+}
+
+// Cache Shopify product master data per zone/query for the session.
+const shopifyCache = new Map<string, Promise<Map<string, ShopifyProduct["node"]>>>();
 
 // Zone → Shopify smart collection handle (created via
 // scripts/shopify-create-kit-zone-collections.ts). Curating membership in
@@ -59,12 +81,13 @@ const ZONE_COLLECTION_HANDLE: Record<KitZone, string> = {
   EU_MENA: "kits-eu-mena",
 };
 
-function fetchShopifyMastersForZone(zone: KitZone) {
-  let p = shopifyCache.get(zone);
+function fetchShopifyMastersForZone(zone: KitZone, opts?: { vendor?: string; preferCountry?: string }) {
+  const loveKeyTag = isLoveKeyVendor(opts?.vendor) ? loveKeyZoneTagForCountry(opts?.preferCountry) : null;
+  const query = loveKeyTag ? `tag:${loveKeyTag}` : `collection:${ZONE_COLLECTION_HANDLE[zone]}`;
+  const cacheKey = `${zone}:${query}`;
+  let p = shopifyCache.get(cacheKey);
   if (!p) {
     p = (async () => {
-      const handle = ZONE_COLLECTION_HANDLE[zone];
-      const query = `collection:${handle}`;
       const res = await storefrontApiRequest<{ products: { edges: ShopifyProduct[] } }>(
         PRODUCTS_QUERY,
         { first: 50, query },
@@ -75,7 +98,7 @@ function fetchShopifyMastersForZone(zone: KitZone) {
       }
       return map;
     })();
-    shopifyCache.set(zone, p);
+    shopifyCache.set(cacheKey, p);
   }
   return p;
 }
@@ -92,7 +115,10 @@ export function useKitsForZone(
     let cancelled = false;
     setLoading(true);
     setError(null);
-    const countries = countriesInZone(zone);
+    const loveKeyTag = isLoveKeyVendor(opts?.vendor) ? loveKeyZoneTagForCountry(opts?.preferCountry) : null;
+    const countries = loveKeyTag && opts?.preferCountry
+      ? [opts.preferCountry.toUpperCase()]
+      : countriesInZone(zone);
 
     (async () => {
       try {
@@ -105,7 +131,7 @@ export function useKitsForZone(
             // Exclude rows explicitly marked unavailable; allow null/unknown to surface.
             .neq("availability_status", "unavailable")
             .in("country", countries),
-          fetchShopifyMastersForZone(zone),
+          fetchShopifyMastersForZone(zone, opts),
         ]);
 
         if (cancelled) return;
@@ -126,6 +152,7 @@ export function useKitsForZone(
         for (const row of rows) {
           const handle = titleToHandle(row.title);
           const shop = (await shopifyMap)?.get(handle);
+          if (loveKeyTag && !productHasTag(shop, loveKeyTag)) continue;
           // Merge: Shopify owns title/image/description; route_catalogue owns price + affiliate URL.
           const merged: Kit = {
             ...row,
@@ -133,6 +160,7 @@ export function useKitsForZone(
             description: shop?.description ?? row.description,
             image_url: shop?.images?.edges?.[0]?.node?.url ?? row.image_url,
             shopify_handle: shop?.handle ?? null,
+            shopify_tags: shop?.tags ?? undefined,
           };
           const existing = byHandle.get(handle);
           if (!existing) {
