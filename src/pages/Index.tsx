@@ -201,8 +201,8 @@ const Index = () => {
                     />
                   </div>
 
-                  {/* Input hidden when offline toggle is on or device is offline */}
-                  {isOnline && !offlineEnabled ? (
+                  {/* Input and description hidden when offline toggle is on */}
+                  {offlineEnabled ? null : isOnline ? (
                     <div className="max-w-2xl mx-auto w-full">
                       <ChatInput onSend={send} disabled={isLoading} />
                       <ChatDisclaimer />
@@ -214,9 +214,11 @@ const Index = () => {
                   )}
 
                   <div className="text-center space-y-3">
-                    <p className="text-muted-foreground text-sm max-w-md mx-auto">
-                      {t("welcomeDescription")}
-                    </p>
+                    {!offlineEnabled && (
+                      <p className="text-muted-foreground text-sm max-w-md mx-auto">
+                        {t("welcomeDescription")}
+                      </p>
+                    )}
                     <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
                       <Link
                         to="/cpr"
