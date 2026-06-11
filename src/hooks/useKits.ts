@@ -17,6 +17,7 @@ export interface Kit {
   cta_label: string | null;
   shopify_handle?: string | null;
   shopify_tags?: string[];
+  shopify_zone_tags?: string[];
 }
 
 // Normalize a kit title so Shopify product master data can be matched
@@ -49,21 +50,31 @@ function isLoveKeyVendor(vendor: string | null | undefined): boolean {
   return normalizeVendor(vendor).includes("lovekey");
 }
 
-const LOVE_KEY_ZONE_TAG_BY_COUNTRY: Record<string, string> = {
-  AU: "zone-AU",
-  CA: "zone-CA",
-  GB: "zone-GB",
-  NZ: "zone-NZ",
-  US: "zone-US",
+// Love Key audiences are tagged on Shopify by locale. The site country selector
+// uses ISO country codes, so map that locale to the matching Shopify zone tag.
+// GB visitors are the UK audience, so the primary tag is zone-UK; zone-GB is
+// accepted as a defensive alias if products were tagged that way later.
+const LOVE_KEY_ZONE_TAGS_BY_COUNTRY: Record<string, string[]> = {
+  AU: ["zone-AU"],
+  CA: ["zone-CA"],
+  GB: ["zone-UK", "zone-GB"],
+  NZ: ["zone-NZ"],
+  US: ["zone-US"],
 };
 
-function loveKeyZoneTagForCountry(code: string | null | undefined): string | null {
-  return LOVE_KEY_ZONE_TAG_BY_COUNTRY[(code ?? "").toUpperCase()] ?? null;
+function loveKeyZoneTagsForCountry(code: string | null | undefined): string[] {
+  return LOVE_KEY_ZONE_TAGS_BY_COUNTRY[(code ?? "").toUpperCase()] ?? [];
 }
 
-function productHasTag(product: ShopifyProduct["node"] | undefined, tag: string): boolean {
-  const expected = tag.toLowerCase();
-  return product?.tags?.some((t) => t.toLowerCase() === expected) ?? false;
+function productHasAnyTag(product: ShopifyProduct["node"] | undefined, tags: string[]): boolean {
+  if (!product || tags.length === 0) return false;
+  const productTags = new Set((product.tags ?? []).map((t) => t.toLowerCase()));
+  return tags.some((tag) => productTags.has(tag.toLowerCase()));
+}
+
+function productZoneTags(product: ShopifyProduct["node"] | undefined): string[] | undefined {
+  const tags = product?.tags?.filter((tag) => /^zone-/i.test(tag));
+  return tags && tags.length > 0 ? tags : undefined;
 }
 
 // Cache Shopify product master data per zone/query for the session.
@@ -82,8 +93,8 @@ const ZONE_COLLECTION_HANDLE: Record<KitZone, string> = {
 };
 
 function fetchShopifyMastersForZone(zone: KitZone, opts?: { vendor?: string; preferCountry?: string }) {
-  const loveKeyTag = isLoveKeyVendor(opts?.vendor) ? loveKeyZoneTagForCountry(opts?.preferCountry) : null;
-  const query = loveKeyTag ? `tag:${loveKeyTag}` : `collection:${ZONE_COLLECTION_HANDLE[zone]}`;
+  const loveKeyTags = isLoveKeyVendor(opts?.vendor) ? loveKeyZoneTagsForCountry(opts?.preferCountry) : [];
+  const query = loveKeyTags.length > 0 ? `tag:${loveKeyTags[0]}` : `collection:${ZONE_COLLECTION_HANDLE[zone]}`;
   const cacheKey = `${zone}:${query}`;
   let p = shopifyCache.get(cacheKey);
   if (!p) {
@@ -115,8 +126,8 @@ export function useKitsForZone(
     let cancelled = false;
     setLoading(true);
     setError(null);
-    const loveKeyTag = isLoveKeyVendor(opts?.vendor) ? loveKeyZoneTagForCountry(opts?.preferCountry) : null;
-    const countries = loveKeyTag && opts?.preferCountry
+    const loveKeyTags = isLoveKeyVendor(opts?.vendor) ? loveKeyZoneTagsForCountry(opts?.preferCountry) : [];
+    const countries = loveKeyTags.length > 0 && opts?.preferCountry
       ? [opts.preferCountry.toUpperCase()]
       : countriesInZone(zone);
 
@@ -152,7 +163,10 @@ export function useKitsForZone(
         for (const row of rows) {
           const handle = titleToHandle(row.title);
           const shop = (await shopifyMap)?.get(handle);
-          if (loveKeyTag && !productHasTag(shop, loveKeyTag)) continue;
+          // Verify the Shopify zone when master data is available. Do not hide
+          // country-specific route_catalogue rows solely because Shopify master
+          // lookup failed; the country row is already the audience fallback.
+          if (loveKeyTags.length > 0 && shop && !productHasAnyTag(shop, loveKeyTags)) continue;
           // Merge: Shopify owns title/image/description; route_catalogue owns price + affiliate URL.
           const merged: Kit = {
             ...row,
@@ -161,6 +175,7 @@ export function useKitsForZone(
             image_url: shop?.images?.edges?.[0]?.node?.url ?? row.image_url,
             shopify_handle: shop?.handle ?? null,
             shopify_tags: shop?.tags ?? undefined,
+            shopify_zone_tags: productZoneTags(shop),
           };
           const existing = byHandle.get(handle);
           if (!existing) {
