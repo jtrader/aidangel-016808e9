@@ -47,7 +47,7 @@ INSERT INTO public.route_catalogue (
   (
     'gid://shopify/Product/9532178792703',
     'love-key-guardian-light-blue',
-    'Love Key Guardian - Light Blue',
+    'Love Key Guardian - Blue',
     'Crafted with a polished metal frame for strength, beauty, and permanence. The Love Key Guardian is a premium reminder that care is always close. NFC enabled and QR Coded for convenience.',
     'Love Key',
     'https://cdn.shopify.com/s/files/1/0823/1786/9311/files/light-blue-BPsMIC5u.png?v=1781137684',

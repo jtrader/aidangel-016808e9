@@ -8,7 +8,7 @@ WITH colours(colour_slug, colour_title, shopify_gid, image_url) AS (
     ('pink',       'Pink',       'gid://shopify/Product/9532178465023', 'https://cdn.shopify.com/s/files/1/0823/1786/9311/files/pink-CgNLQ3cn.png?v=1781137647'),
     ('red',        'Red',        'gid://shopify/Product/9532178563327', 'https://cdn.shopify.com/s/files/1/0823/1786/9311/files/red-CcOv5Ndk.png?v=1781137663'),
     ('green',      'Green',      'gid://shopify/Product/9532178694399', 'https://cdn.shopify.com/s/files/1/0823/1786/9311/files/green-DW-hTDRI.png?v=1781137674'),
-    ('light-blue', 'Light Blue', 'gid://shopify/Product/9532178792703', 'https://cdn.shopify.com/s/files/1/0823/1786/9311/files/light-blue-BPsMIC5u.png?v=1781137684'),
+    ('light-blue', 'Blue', 'gid://shopify/Product/9532178792703', 'https://cdn.shopify.com/s/files/1/0823/1786/9311/files/light-blue-BPsMIC5u.png?v=1781137684'),
     ('orange',     'Orange',     'gid://shopify/Product/9532178858239', 'https://cdn.shopify.com/s/files/1/0823/1786/9311/files/orange-CH0pAYci.png?v=1781137695'),
     ('aqua',       'Aqua',       'gid://shopify/Product/9532179022079', 'https://cdn.shopify.com/s/files/1/0823/1786/9311/files/aqua-BuMPYs_I.png?v=1781137707'),
     ('white',      'White',      'gid://shopify/Product/9532179120383', 'https://cdn.shopify.com/s/files/1/0823/1786/9311/files/white-NO6un04K.png?v=1781137719'),
