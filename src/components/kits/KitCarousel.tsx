@@ -69,6 +69,7 @@ export function KitCarousel({
       aria-labelledby="kit-carousel-heading"
       className={compact ? "mb-0" : "mb-10"}
     >
+      {heading !== "" && (
       <div className={`flex items-end justify-between gap-3 ${compact ? "mb-3" : "mb-4"}`}>
         <div className="min-w-0">
           <h2
@@ -94,6 +95,7 @@ export function KitCarousel({
           </Link>
         )}
       </div>
+      )}
 
       {loading ? (
         <div className="flex justify-center py-10">

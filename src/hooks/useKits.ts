@@ -13,6 +13,8 @@ export interface Kit {
   country: string | null;
   price: number | null;
   currency: string | null;
+  vendor: string | null;
+  cta_label: string | null;
   shopify_handle?: string | null;
 }
 
@@ -85,7 +87,7 @@ export function useKitsForZone(zone: KitZone, opts?: { limit?: number; preferCou
           supabase
             .from("route_catalogue")
             .select(
-              "id, route_slug, title, description, image_url, destination_url, country, price, currency",
+              "id, route_slug, title, description, image_url, destination_url, country, price, currency, vendor, cta_label",
             )
             // Exclude rows explicitly marked unavailable; allow null/unknown to surface.
             .neq("availability_status", "unavailable")

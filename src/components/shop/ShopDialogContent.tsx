@@ -20,5 +20,13 @@ interface ShopDialogContentProps {
 export function ShopDialogContent({ autoplay = true }: ShopDialogContentProps) {
   // TODO(marketing): const variant = useAudienceVariant("shop_dialog");
   // switch on variant.kind to render different surfaces.
-  return <KitCarousel limit={6} autoplay={autoplay} compact />;
+  return (
+    <>
+      <div className="mb-4">
+        <h2 className="font-display font-bold text-xl text-foreground">First Aid Angel Shop</h2>
+        <p className="text-sm text-muted-foreground">Recommended Products</p>
+      </div>
+      <KitCarousel limit={6} autoplay={autoplay} compact heading="" />
+    </>
+  );
 }
