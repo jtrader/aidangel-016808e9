@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Loader2, RotateCcw, MapPin, Phone, HeartPulse, Stethoscope, FlaskConical, Search, LocateFixed, Wind, Droplets } from "lucide-react";
-import { useOfflineMode } from "@/hooks/useOfflineMode";
+import { useOfflineMode, OFFLINE_KB_SLUGS } from "@/hooks/useOfflineMode";
 import OfflineToggle from "@/components/OfflineToggle";
 import OfflineKbPanel from "@/components/OfflineKbPanel";
 import { Link } from "react-router-dom";
@@ -281,8 +281,27 @@ const Index = () => {
                     </div>
                   </div>
 
-                  <QuickActions onSelect={send} />
-                  <DRSABCDPanel onSelect={send} />
+                  {offlineEnabled ? (
+                    <div className="flex flex-wrap items-center justify-center gap-2">
+                      {OFFLINE_KB_SLUGS.filter((s) => !["cpr", "choking", "bleeding", "poisoning"].includes(s)).map((slug) => {
+                        const topic = getTopic(slug, language) ?? getTopic(slug, "en");
+                        return (
+                          <Link
+                            key={slug}
+                            to={localizedPath(language, `/kb/${slug}`)}
+                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
+                          >
+                            {topic?.title ?? slug}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <>
+                      <QuickActions onSelect={send} />
+                      <DRSABCDPanel onSelect={send} />
+                    </>
+                  )}
                 </>
               }
             />
