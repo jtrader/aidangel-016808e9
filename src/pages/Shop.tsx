@@ -15,7 +15,7 @@ export default function Shop() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchProducts(24)
+    fetchProducts(24, "vendor:FirstAidAngel")
       .then(setProducts)
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
