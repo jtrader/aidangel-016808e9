@@ -10,7 +10,12 @@ import { ExternalLink, KeyRound } from "lucide-react";
 import { storefrontApiRequest, PRODUCTS_QUERY, SHOPIFY_CONFIGURED, type ShopifyProduct } from "@/lib/shopify";
 
 const LOVEKEY_URL = "https://lovekey.com.au";
+const LOVEKEY_PRODUCT_URL = "https://lovekey.com.au/?variant=metal&color={color}#product-section";
 const COLLECTION_HANDLE = "love-key-guardian";
+
+function colourUrl(colour: string): string {
+  return LOVEKEY_PRODUCT_URL.replace("{color}", encodeURIComponent(colour.toLowerCase().replace(/\s+/g, "-")));
+}
 
 const DESCRIPTION =
   "Crafted with a polished metal frame for strength, beauty, and permanence. The Love Key Guardian is a premium reminder that care is always close. NFC enabled and QR Coded for convenience.";
@@ -63,7 +68,7 @@ export default function LoveKeyGuardianCard({ className, compact }: Props) {
             return (
               <a
                 key={node.id}
-                href={LOVEKEY_URL}
+                href={colourUrl(colour)}
                 target="_blank"
                 rel="noopener noreferrer sponsored"
                 title={`Love Key Guardian — ${colour}`}
