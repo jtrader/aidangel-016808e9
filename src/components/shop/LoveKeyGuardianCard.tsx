@@ -69,6 +69,7 @@ export default function LoveKeyGuardianCard({ className, compact }: Props) {
   const [guardians, setGuardians] = useState<ShopifyProduct[]>([]);
   const { code } = useCountry();
   const currency = COUNTRY_CURRENCY[(code ?? "").toUpperCase()] ?? "USD";
+  const locale = resolveLocale(code);
 
   useEffect(() => {
     if (!SHOPIFY_CONFIGURED) return;
