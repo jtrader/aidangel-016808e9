@@ -8,10 +8,24 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, KeyRound } from "lucide-react";
 import { storefrontApiRequest, PRODUCTS_QUERY, SHOPIFY_CONFIGURED, type ShopifyProduct } from "@/lib/shopify";
+import { useCountry } from "@/hooks/useCountry";
+import { formatPrice } from "@/lib/kitZones";
 
 const LOVEKEY_URL = "https://lovekey.com.au";
 const LOVEKEY_PRODUCT_URL = "https://lovekey.com.au/?variant=metal&color={color}#product-section";
 const COLLECTION_HANDLE = "love-key-guardian";
+
+const PRICE = 5.0;
+
+// Guardian referral price is 5.00 in the visitor's zone currency;
+// AUD is the default for countries outside the listed zones.
+const COUNTRY_CURRENCY: Record<string, string> = {
+  AU: "AUD",
+  GB: "GBP",
+  US: "USD",
+  CA: "CAD",
+  NZ: "NZD",
+};
 
 function colourUrl(colour: string): string {
   return LOVEKEY_PRODUCT_URL.replace("{color}", encodeURIComponent(colour.toLowerCase().replace(/\s+/g, "-")));
@@ -42,6 +56,8 @@ function fetchGuardians(): Promise<ShopifyProduct[]> {
 
 export default function LoveKeyGuardianCard({ className, compact }: Props) {
   const [guardians, setGuardians] = useState<ShopifyProduct[]>([]);
+  const { code } = useCountry();
+  const currency = COUNTRY_CURRENCY[(code ?? "").toUpperCase()] ?? "AUD";
 
   useEffect(() => {
     if (!SHOPIFY_CONFIGURED) return;
@@ -95,7 +111,8 @@ export default function LoveKeyGuardianCard({ className, compact }: Props) {
         </div>
       )}
 
-      <div className="mt-4">
+      <div className="mt-4 flex items-center gap-3">
+        <span className="font-semibold">{formatPrice(PRICE, currency)}</span>
         <Button asChild size="sm">
           <a href={LOVEKEY_URL} target="_blank" rel="noopener noreferrer sponsored">
             Buy from Love Key <ExternalLink className="h-3.5 w-3.5 ml-1.5" />

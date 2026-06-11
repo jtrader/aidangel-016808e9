@@ -43,6 +43,7 @@ const CURRENCY_SYMBOL: Record<string, string> = {
   USD: "US$",
   EUR: "€",
   CAD: "C$",
+  NZD: "NZ$",
 };
 
 // The currency a visitor will actually be charged is determined by the host
