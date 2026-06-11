@@ -129,7 +129,7 @@ const FAQS = [
   },
 ];
 
-function HardcodedAbout() {
+function HardcodedAbout({ emergencyNumber }: { emergencyNumber: string }) {
   return (
     <>
       {/* Hero */}
