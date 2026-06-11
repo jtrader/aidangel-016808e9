@@ -3,11 +3,15 @@ import { formatPrice, type KitZone } from "@/lib/kitZones";
 import type { Kit } from "@/hooks/useKits";
 
 const LOVE_KEY_SHIPS_FROM_LABEL = "Ships from Australia (AUD)";
-const LOVE_KEY_CURRENCY = "AUD";
 
 function isLoveKeyGuardianKit(kit: Kit): boolean {
   const vendor = (kit.vendor ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "");
   return vendor.includes("lovekey") || /love\s*key\s*guardian/i.test(kit.title);
+}
+
+function formatLoveKeyPrice(price: number | null): string {
+  if (price == null) return "";
+  return `$${price.toFixed(2)}`;
 }
 
 export function KitCard({
@@ -22,7 +26,9 @@ export function KitCard({
   const isLoveKeyGuardian = isLoveKeyGuardianKit(kit);
   const visibleZoneTags = isLoveKeyGuardian ? [] : (kit.shopify_zone_tags ?? []);
   const effectiveShipsFromLabel = isLoveKeyGuardian ? LOVE_KEY_SHIPS_FROM_LABEL : shipsFromLabel;
-  const displayCurrency = isLoveKeyGuardian ? LOVE_KEY_CURRENCY : kit.currency;
+  const priceText = isLoveKeyGuardian
+    ? formatLoveKeyPrice(kit.price)
+    : formatPrice(kit.price, kit.currency, kit.destination_url);
 
   const params = new URLSearchParams();
   params.set(
@@ -67,7 +73,7 @@ export function KitCard({
           {kit.title}
         </h3>
         <p className="text-lg font-bold text-foreground">
-          {formatPrice(kit.price, displayCurrency, kit.destination_url)}
+          {priceText}
         </p>
         {effectiveShipsFromLabel && (
           <p className="text-[11px] text-muted-foreground">{effectiveShipsFromLabel}</p>
