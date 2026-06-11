@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Loader2, RotateCcw, MapPin, Phone, HeartPulse, Stethoscope, FlaskConical, Search, LocateFixed } from "lucide-react";
+import { Loader2, RotateCcw, MapPin, Phone, HeartPulse, Stethoscope, FlaskConical, Search, LocateFixed, Wind, Droplets } from "lucide-react";
 import { useOfflineMode } from "@/hooks/useOfflineMode";
 import OfflineToggle from "@/components/OfflineToggle";
 import OfflineKbPanel from "@/components/OfflineKbPanel";
@@ -18,7 +18,8 @@ import KbSuggestionCard from "@/components/KbSuggestionCard";
 import EmergencyCallButton from "@/components/EmergencyCallButton";
 import HamburgerMenu from "@/components/HamburgerMenu";
 import { CmsPageRenderer } from "@/components/CmsPageRenderer";
-import { findBestTopic } from "@/lib/kb";
+import { findBestTopic, getTopic } from "@/lib/kb";
+import { localizedPath } from "@/lib/i18n";
 
 const URGENT_SLUGS = new Set([
   "cpr", "choking", "anaphylaxis", "snake-bite", "severe-bleeding",
@@ -220,38 +221,63 @@ const Index = () => {
                       </p>
                     )}
                     <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
-                      <Link
-                        to="/cpr"
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
-                        aria-label={t("homePillLiveCprAria")}
-                      >
-                        <HeartPulse className="h-4 w-4" />
-                        {t("homePillLiveCpr")}
-                      </Link>
-                      <Link
-                        to="/aed-finder"
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
-                        aria-label={t("homePillAedFinderAria")}
-                      >
-                        <MapPin className="h-4 w-4" />
-                        {t("homePillAedFinder")}
-                      </Link>
-                      <Link
-                        to="/symptoms"
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
-                        aria-label={t("homePillSymptomFinderAria")}
-                      >
-                        <Search className="h-4 w-4" />
-                        {t("homePillSymptomFinder")}
-                      </Link>
-                      <Link
-                        to="/my-location"
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
-                        aria-label={t("homePillMyLocationAria")}
-                      >
-                        <LocateFixed className="h-4 w-4" />
-                        {t("homePillMyLocation")}
-                      </Link>
+                      {offlineEnabled ? (
+                        <>
+                          {([
+                            { slug: "cpr", Icon: HeartPulse },
+                            { slug: "choking", Icon: Wind },
+                            { slug: "bleeding", Icon: Droplets },
+                            { slug: "poisoning", Icon: FlaskConical },
+                          ] as const).map(({ slug, Icon }) => {
+                            const topic = getTopic(slug, language) ?? getTopic(slug, "en");
+                            return (
+                              <Link
+                                key={slug}
+                                to={localizedPath(language, `/kb/${slug}`)}
+                                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
+                              >
+                                <Icon className="h-4 w-4" />
+                                {topic?.title ?? slug}
+                              </Link>
+                            );
+                          })}
+                        </>
+                      ) : (
+                        <>
+                          <Link
+                            to="/cpr"
+                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
+                            aria-label={t("homePillLiveCprAria")}
+                          >
+                            <HeartPulse className="h-4 w-4" />
+                            {t("homePillLiveCpr")}
+                          </Link>
+                          <Link
+                            to="/aed-finder"
+                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
+                            aria-label={t("homePillAedFinderAria")}
+                          >
+                            <MapPin className="h-4 w-4" />
+                            {t("homePillAedFinder")}
+                          </Link>
+                          <Link
+                            to="/symptoms"
+                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
+                            aria-label={t("homePillSymptomFinderAria")}
+                          >
+                            <Search className="h-4 w-4" />
+                            {t("homePillSymptomFinder")}
+                          </Link>
+                          <Link
+                            to="/my-location"
+                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-bold hover:bg-secondary/80 transition-colors border border-border"
+                            aria-label={t("homePillMyLocationAria")}
+                          >
+                            <LocateFixed className="h-4 w-4" />
+                            {t("homePillMyLocation")}
+                          </Link>
+                        </>
+                      )}
                     </div>
                   </div>
 
