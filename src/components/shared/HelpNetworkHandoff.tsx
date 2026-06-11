@@ -2,7 +2,15 @@
 // sister sites, preserving the user's active language via buildHandoffUrl.
 // Hidden during immediate-danger contexts so it doesn't distract active crises.
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCountry } from "@/hooks/useCountry";
 import { TARGETS, buildHandoffUrl, type SisterSite } from "@/lib/localeCodes";
+
+const LOVEKEY_SUPPORTED_LOCALES = new Set(["AU", "GB", "US", "CA", "NZ"]);
+function loveKeyHref(countryCode: string | null | undefined): string {
+  const c = (countryCode ?? "").toUpperCase();
+  const locale = LOVEKEY_SUPPORTED_LOCALES.has(c) ? c : "AU";
+  return `https://lovekey.com.au/?locale=${locale}#product-section`;
+}
 
 export interface HelpNetworkHandoffProps {
   /** When true, the handoff is hidden (e.g. user is in immediate danger). */
