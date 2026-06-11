@@ -11,6 +11,7 @@ import ChatInput from "@/components/ChatInput";
 import ChatDisclaimer from "@/components/ChatDisclaimer";
 import QuickActions from "@/components/QuickActions";
 import DRSABCDPanel from "@/components/DRSABCDPanel";
+import InstallBanner from "@/components/InstallBanner";
 
 import NetworkFooter from "@/components/NetworkFooter";
 import SupportUsBar from "@/components/SupportUsBar";
@@ -201,6 +202,8 @@ const Index = () => {
                       onToggle={toggleOffline}
                     />
                   </div>
+
+                  <InstallBanner />
 
                   {/* Input and description hidden when offline toggle is on */}
                   {offlineEnabled ? null : isOnline ? (
