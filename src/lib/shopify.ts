@@ -149,7 +149,7 @@ export const CART_LINES_UPDATE_MUTATION = `
 
 export const CART_LINES_REMOVE_MUTATION = `
   mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
-    cartLinesRemove(cartId: $cartId, linesIds: $lineIds) { cart { id } userErrors { field message } }
+    cartLinesRemove(cartId: $cartId, lineIds: $lineIds) { cart { id } userErrors { field message } }
   }`;
 
 export function formatCheckoutUrl(checkoutUrl: string): string {
