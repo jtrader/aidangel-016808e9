@@ -13,6 +13,7 @@ export default function GoRedirect() {
 
     const src = params.get("src") ?? (typeof document !== "undefined" ? document.referrer : "");
     const zone = params.get("zone") ?? "";
+    const country = params.get("country") ?? "";
     const handle = params.get("handle") ?? "";
     let sid = "";
     try {
@@ -27,6 +28,7 @@ export default function GoRedirect() {
     if (src) url.searchParams.set("src", src);
     if (sid) url.searchParams.set("sid", sid);
     if (zone) url.searchParams.set("zone", zone);
+    if (country) url.searchParams.set("country", country);
     if (handle) url.searchParams.set("handle", handle);
 
     // Let the browser perform the 302 as a real top-level navigation.
