@@ -1,5 +1,5 @@
-// In-house shop landing page. Top of page features a kit carousel for the
-// visitor's region; below it sits the existing Shopify product grid.
+// In-house shop landing page. Features vendor cards + carousels for Love Key
+// and St John, replacing the old flat product grid.
 
 import { useEffect, useState } from "react";
 import NetworkFooter from "@/components/NetworkFooter";
@@ -11,6 +11,12 @@ import { ProductCard } from "@/components/shop/ProductCard";
 import { CartDrawer } from "@/components/shop/CartDrawer";
 import { KitCarousel } from "@/components/kits/KitCarousel";
 import LoveKeyGuardianCard from "@/components/shop/LoveKeyGuardianCard";
+import { VendorCard } from "@/components/shop/VendorCard";
+import stJohnIcon from "@/assets/stjohn-icon.png";
+
+// Love Key logo — use the blue Guardian keyring from Shopify CDN until a
+// dedicated logo asset is added.
+const LOVEKEY_LOGO = "https://cdn.shopify.com/s/files/1/0823/1786/9311/files/light-blue-BPsMIC5u.png?v=1781137684";
 
 export default function Shop() {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
@@ -47,16 +53,44 @@ export default function Shop() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
-        <KitCarousel />
+      <main className="container mx-auto px-4 py-8 space-y-10">
 
-        <section aria-labelledby="guardian-heading" className="mb-8">
-          <h2 id="guardian-heading" className="text-xl sm:text-2xl font-bold text-foreground mb-4">
+        {/* Vendor cards */}
+        <section aria-label="Our partners" className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <VendorCard
+            logo={LOVEKEY_LOGO}
+            logoAlt="Love Key"
+            name="Love Key"
+            badge="NFC & QR enabled keyring"
+            description="A beautifully crafted metal keyring that keeps your emergency contacts and medical information one tap away. NFC enabled and QR coded — your personal safety profile, always on your keys."
+            ctaLabel="Shop Love Key"
+            ctaHref="https://lovekey.com.au/#product-section"
+          />
+          <VendorCard
+            logo={stJohnIcon}
+            logoAlt="St John First Aid"
+            name="St John First Aid"
+            badge="Ships in Australia"
+            description="Official St John Ambulance first aid shop — workplace-compliant kits, refills, defibrillators, and training supplies trusted by schools, businesses, and families."
+            ctaLabel="Shop St John First Aid"
+            ctaHref="https://www.stjohnwa.com.au/first-aid-supplies"
+          />
+        </section>
+
+        {/* Love Key Guardian colour carousel */}
+        <section aria-labelledby="lovekey-heading">
+          <h2 id="lovekey-heading" className="text-xl sm:text-2xl font-bold text-foreground mb-4">
             Love Key Guardian
           </h2>
           <LoveKeyGuardianCard />
         </section>
 
+        {/* St John regional kit carousel */}
+        <section aria-labelledby="stjohn-carousel-heading">
+          <KitCarousel heading="St John First Aid Kits" />
+        </section>
+
+        {/* St John full product grid */}
         <section aria-labelledby="store-heading">
           <h2 id="store-heading" className="text-xl sm:text-2xl font-bold text-foreground mb-4">
             St John First Aid Store
